@@ -5,7 +5,7 @@ import {
   CreateSliceOptions,
 } from '@reduxjs/toolkit';
 
-import { getAPI } from '@/Config';
+import { getAPI } from '@/services/Config';
 
 import { SecureHeaders } from '@/model/SecureHeaders';
 import { Gallery, GalleryObject } from '@/model/Gallery';

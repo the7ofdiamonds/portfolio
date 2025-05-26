@@ -7,12 +7,12 @@ import {
 
 import { collection, getDocs, setDoc, doc, getDoc } from 'firebase/firestore';
 
-import { getDB } from '@/Config';
+import { getDB, getAPI } from '@/services/Config';
 
 import Taxonomy from '@/model/Taxonomy';
 import { Project } from '@/model/Project';
 
-export interface AddState {
+interface AddState {
   addLoading: boolean;
   addSuccessMessage: string;
   addError: Error | null;
@@ -62,93 +62,37 @@ export const addProject = createAsyncThunk<AddResponse, Record<string, any>>(
   }
 );
 
-export const addProjectType = createAsyncThunk(
-  'add/addProjectType',
+export const addSkill = createAsyncThunk<string, Taxonomy>(
+  'add/addSkill',
   async (taxonomy: Taxonomy) => {
     try {
-      const db = getDB();
+      const api = getAPI();
 
-      if (!db) {
-        throw new Error('Database is not initialized');
-      }
-      const projectTypeCollection = collection(db, 'project_types');
-
-      await setDoc(
-        doc(projectTypeCollection, taxonomy.id),
-        taxonomy.toObject()
-      );
-
-      return `${taxonomy.id} was added to projectTypes`;
-    } catch (error) {
-      const err = error as Error;
-
-      console.error(err);
-      throw new Error(err.message);
-    }
-  }
-);
-
-export const addLanguage = createAsyncThunk(
-  'add/addLanguage',
-  async (taxonomy: Taxonomy) => {
-    try {
-      const db = getDB();
-
-      if (!db) {
-        throw new Error('Database is not initialized');
-      }
-      const languageCollection = collection(db, 'languages');
-
-      await setDoc(doc(languageCollection, taxonomy.id), taxonomy.toObject());
-
-      return `${taxonomy.id} was added to languages`;
-    } catch (error) {
-      const err = error as Error;
-
-      console.error(err);
-      throw new Error(err.message);
-    }
-  }
-);
-
-export const addFramework = createAsyncThunk(
-  'add/addFramework',
-  async (taxonomy: Taxonomy) => {
-    try {
-      const db = getDB();
-
-      if (!db) {
-        throw new Error('Database is not initialized');
+      if (!api) {
+        throw new Error('API is not initialized');
       }
 
-      const frameworkCollection = collection(db, 'frameworks');
-
-      await setDoc(doc(frameworkCollection, taxonomy.id), taxonomy.toObject());
-
-      return `${taxonomy.id} was added to frameworks`;
-    } catch (error) {
-      const err = error as Error;
-
-      console.error(err);
-      throw new Error(err.message);
-    }
-  }
-);
-
-export const addTechnology = createAsyncThunk<string, Taxonomy>(
-  'add/addTechnology',
-  async (taxonomy: Taxonomy) => {
-    try {
-      const db = getDB();
-
-      if (!db) {
-        throw new Error('Database is not initialized');
+      if (!taxonomy.path) {
+        throw new Error('Skill type is required.');
       }
-      const technologyCollection = collection(db, 'technologies');
 
-      await setDoc(doc(technologyCollection, taxonomy.id), taxonomy.toObject());
+      const response = await fetch(`${api}/taxonomies/skills`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(taxonomy.toObject()),
+      });
 
-      return `${taxonomy.id} was added to technologies`;
+      const text = response ? await response.text() : null;
+
+      if (text) {
+        const data = JSON.parse(text);
+
+        return data;
+      }
+
+      return null;
     } catch (error) {
       const err = error as Error;
 
@@ -169,26 +113,12 @@ const addSliceOptions: CreateSliceOptions<AddState> = {
         state.addSuccessMessage = action.payload.success_message;
         state.projectID = action.payload.project_id;
       })
+      .addMatcher(isAnyOf(addSkill.fulfilled), (state, action) => {
+        state.addLoading = false;
+        state.addSuccessMessage = action.payload;
+      })
       .addMatcher(
-        isAnyOf(
-          addProjectType.fulfilled,
-          addLanguage.fulfilled,
-          addFramework.fulfilled,
-          addTechnology.fulfilled
-        ),
-        (state, action) => {
-          state.addLoading = false;
-          state.addSuccessMessage = action.payload;
-        }
-      )
-      .addMatcher(
-        isAnyOf(
-          addProject.pending,
-          addProjectType.pending,
-          addLanguage.pending,
-          addFramework.pending,
-          addTechnology.pending
-        ),
+        isAnyOf(addProject.pending, addSkill.pending),
         (state) => {
           state.addLoading = true;
           state.addError = null;
@@ -196,13 +126,7 @@ const addSliceOptions: CreateSliceOptions<AddState> = {
         }
       )
       .addMatcher(
-        isAnyOf(
-          addProject.rejected,
-          addProjectType.rejected,
-          addLanguage.rejected,
-          addFramework.rejected,
-          addTechnology.rejected
-        ),
+        isAnyOf(addProject.rejected, addSkill.rejected),
         (state, action) => {
           state.addLoading = false;
           state.addError = (action.error as Error) || null;
@@ -212,6 +136,4 @@ const addSliceOptions: CreateSliceOptions<AddState> = {
   },
 };
 
-const addSlice = createSlice(addSliceOptions);
-
-export default addSlice;
+export const addSlice = createSlice(addSliceOptions);

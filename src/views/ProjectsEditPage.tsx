@@ -4,7 +4,7 @@ import { User } from '@/model/User';
 import { Project } from '@/model/Project';
 import { Portfolio } from '@/model/Portfolio';
 
-import UpdatePortfolioProject from './components/update/components/UpdatePortfolioProject';
+import { UpdatePortfolioProject } from './components/update/components/UpdatePortfolioProject';
 
 interface PortfolioEditPageProps {
     user: User;

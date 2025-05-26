@@ -18,7 +18,7 @@ interface UpdateCheckListProps {
     checkList: CheckList;
 }
 
-const UpdateCheckList: React.FC<UpdateCheckListProps> = ({ location, checkList }) => {
+export const UpdateCheckList: React.FC<UpdateCheckListProps> = ({ location, checkList }) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const [checkListObject, setCheckListObject] = useState<CheckListObject>(checkList.toCheckListObject());
@@ -293,5 +293,3 @@ const UpdateCheckList: React.FC<UpdateCheckListProps> = ({ location, checkList }
         </details>
     )
 }
-
-export default UpdateCheckList;

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { LoadingComponent } from './components/LoadingComponent';
 import ProjectComponent from './components/project/ProjectComponent';
-import StatusBarComponent from './components/StatusBarComponent';
+import { StatusBarComponent } from './components/StatusBarComponent';
 
 import { setMessage, setMessageType, setShowStatusBar } from '../controllers/messageSlice';
 import { getProject } from '@/controllers/projectSlice';

@@ -17,9 +17,10 @@ import {
   DocumentSnapshot,
 } from 'firebase/firestore';
 
-import { getDB } from '@/Config';
+import { getDB } from '@/services/Config';
 
-import Taxonomy, {
+import {
+  Taxonomy,
   Framework,
   Language,
   ProjectType,

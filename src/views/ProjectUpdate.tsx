@@ -10,11 +10,11 @@ import {
 } from '@/controllers/messageSlice';
 import { getProject } from '@/controllers/projectSlice';
 
-import UpdateDetails from './components/update/UpdateDetails';
-import UpdateProcess from './components/update/process/UpdateProcess';
-import UpdateSolution from './components/update/UpdateSolution';
-import UpdateProblem from './components/update/UpdateProblem';
-import StatusBarComponent from './components/StatusBarComponent';
+import { UpdateDetails } from './components/update/UpdateDetails';
+import { UpdateProcess } from './components/update/process/UpdateProcess';
+import { UpdateSolution } from './components/update/UpdateSolution';
+import { UpdateProblem } from './components/update/UpdateProblem';
+import { StatusBarComponent } from './components/StatusBarComponent';
 
 import type { AppDispatch, RootState } from '@/model/store';
 import { Project, ProjectObject } from '@/model/Project';

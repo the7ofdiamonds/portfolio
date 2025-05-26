@@ -5,7 +5,7 @@ import {
   CreateSliceOptions,
 } from '@reduxjs/toolkit';
 
-import { getAPI } from '@/Config';
+import { getAPI } from '@/services/Config';
 
 export interface DatabaseState {
   databaseLoading: boolean;

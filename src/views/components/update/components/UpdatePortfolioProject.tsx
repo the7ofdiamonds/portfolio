@@ -9,7 +9,7 @@ interface UpdatePortfolioProjectProps {
     project: Project
 }
 
-const UpdatePortfolioProject: React.FC<UpdatePortfolioProjectProps> = ({ project }) => {
+export const UpdatePortfolioProject: React.FC<UpdatePortfolioProjectProps> = ({ project }) => {
     const [id, setID] = useState<string | null>(null);
     const [owner, setOwner] = useState<Owner | null>(null);
 
@@ -25,5 +25,3 @@ const UpdatePortfolioProject: React.FC<UpdatePortfolioProjectProps> = ({ project
         </>
     )
 }
-
-export default UpdatePortfolioProject

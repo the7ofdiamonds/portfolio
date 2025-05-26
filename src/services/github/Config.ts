@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/rest';
 
-import { getToken } from '@/config';
+import { getToken } from '@/services/Config';
 
 let instance: Octokit | null = null;
 

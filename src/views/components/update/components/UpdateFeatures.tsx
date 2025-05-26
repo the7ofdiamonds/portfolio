@@ -16,7 +16,7 @@ interface UpdateFeaturesProps {
     features: Set<Feature> | undefined | null;
 }
 
-const UpdateFeatures: React.FC<UpdateFeaturesProps> = ({ features }) => {
+export const UpdateFeatures: React.FC<UpdateFeaturesProps> = ({ features }) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const [featuresObject, setFeaturesObject] = useState<Array<FeatureObject> | null>(null);
@@ -154,5 +154,3 @@ const UpdateFeatures: React.FC<UpdateFeaturesProps> = ({ features }) => {
         </div>
     )
 }
-
-export default UpdateFeatures

@@ -5,7 +5,7 @@ import type { RootState } from '@/model/store';
 
 import { StatusBar } from '@/views/components/StatusBar';
 
-const StatusBarComponent: React.FC = () => {
+export const StatusBarComponent: React.FC = () => {
   const { message, messageType, visibility } = useSelector(
     (state: RootState) => state.message
   );
@@ -42,5 +42,3 @@ const StatusBarComponent: React.FC = () => {
     <StatusBar show={show} message={statusMessage} messageType={statusMessageType} />
   );
 }
-
-export default StatusBarComponent;

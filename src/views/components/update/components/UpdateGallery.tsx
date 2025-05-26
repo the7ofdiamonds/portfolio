@@ -17,7 +17,7 @@ interface UpdateGalleryProps {
     gallery: Gallery | undefined | null;
 }
 
-const UpdateGallery: React.FC<UpdateGalleryProps> = ({ location, gallery }) => {
+export const UpdateGallery: React.FC<UpdateGalleryProps> = ({ location, gallery }) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const [galleryObject, setGalleryObject] = useState<GalleryObject | null>(null);
@@ -614,5 +614,3 @@ const UpdateGallery: React.FC<UpdateGalleryProps> = ({ location, gallery }) => {
         </details>
     )
 }
-
-export default UpdateGallery;

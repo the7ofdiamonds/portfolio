@@ -15,14 +15,14 @@ import {
 } from '@/controllers/messageSlice';
 import { updateProject } from '@/controllers/updateSlice';
 
-import UpdateGallery from '../components/UpdateGallery';
-import UpdateCheckList from '../components/UpdateCheckList';
+import { UpdateGallery } from '../components/UpdateGallery';
+import { UpdateCheckList } from '../components/UpdateCheckList';
 
 interface UpdateDeliveryProps {
   project: Project;
 }
 
-const UpdateDelivery: React.FC<UpdateDeliveryProps> = ({ project }) => {
+export const UpdateDelivery: React.FC<UpdateDeliveryProps> = ({ project }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { updatedDeliveryGallery, updatedDeliveryCheckList } = useSelector((state: RootState) => state.update);
@@ -130,5 +130,3 @@ const UpdateDelivery: React.FC<UpdateDeliveryProps> = ({ project }) => {
     </div>
   )
 }
-
-export default UpdateDelivery

@@ -15,7 +15,7 @@ interface UpdateStatusProps {
     project: Project;
 }
 
-const UpdateStatus: React.FC<UpdateStatusProps> = ({ project }) => {
+export const UpdateStatus: React.FC<UpdateStatusProps> = ({ project }) => {
     const { updatedDesignCheckList, updatedDevelopmentCheckList, updatedDeliveryCheckList } = useSelector(
         (state: RootState) => state.update
     );
@@ -87,9 +87,7 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ project }) => {
 
     return (
         <>
-            {project.process && project.process.status && <Status project={project} />}
+            {project.process && project.process.status && <Status status={project.process.status} />}
         </>
     )
 }
-
-export default UpdateStatus

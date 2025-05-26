@@ -9,7 +9,7 @@ import {
   signInWithCustomToken,
 } from 'firebase/auth';
 
-import { getAPI } from '@/Config';
+import { getAPI } from '@/services/Config';
 
 import { SecureHeaders } from '@/model/SecureHeaders';
 

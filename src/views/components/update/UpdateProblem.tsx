@@ -14,13 +14,13 @@ import { Project, ProjectObject } from '@/model/Project';
 import { DocumentURL, DocumentURLObject } from '@/model/DocumentURL';
 import { ContentURL } from '@/model/ContentURL';
 
-import UpdateGallery from './components/UpdateGallery';
+import { UpdateGallery } from './components/UpdateGallery';
 
 interface UpdateProblemProps {
   project: Project;
 }
 
-const UpdateProblem: React.FC<UpdateProblemProps> = ({ project }) => {
+export const UpdateProblem: React.FC<UpdateProblemProps> = ({ project }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { updatedProblemGallery } = useSelector(
@@ -133,5 +133,3 @@ const UpdateProblem: React.FC<UpdateProblemProps> = ({ project }) => {
     </div>
   );
 };
-
-export default UpdateProblem;

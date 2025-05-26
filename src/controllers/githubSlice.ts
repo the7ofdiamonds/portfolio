@@ -5,7 +5,9 @@ import {
   CreateSliceOptions,
 } from '@reduxjs/toolkit';
 
-import { getHeaders, getInstance } from '@/octokit';
+import { Octokit } from '@octokit/rest';
+
+import { getHeaders, getInstance } from '@/services/github/Config';
 import { graphql } from '@octokit/graphql';
 import {
   GetResponseDataTypeFromEndpointMethod,
@@ -79,7 +81,7 @@ const initialState: GithubState = {
   issues: null,
 };
 
-const octokit = getInstance();
+const octokit = new Octokit();
 
 type SocialAccountsResponse = GetResponseTypeFromEndpointMethod<
   typeof octokit.rest.users.listSocialAccountsForUser
@@ -535,7 +537,7 @@ export const getAuthenticatedAccount = createAsyncThunk(
             avatarUrl
             bio
             url
-            repositories(first: 10) {
+            repositories(first: 20) {
               nodes {
                 id
                 name
@@ -572,7 +574,7 @@ export const getAuthenticatedAccount = createAsyncThunk(
                 login
                 name
                 avatarUrl
-                repositories(first: 20) {
+                repositories(first: 25) {
                   nodes {
                     id
                     name

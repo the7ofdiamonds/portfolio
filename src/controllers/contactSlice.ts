@@ -6,7 +6,7 @@ import {
 
 import { collection, doc, getDoc } from 'firebase/firestore';
 
-import { getDB } from '@/Config';
+import { getDB } from '@/services/Config';
 
 import { Contact, ContactObject } from '@/model/Contact';
 

@@ -17,7 +17,7 @@ interface UpdateSkillsProps {
   projectSkills: ProjectSkills;
 }
 
-const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
+export const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   // const { projectTypesObject, languagesObject, frameworksObject, technologiesObject } = useSelector(
@@ -146,7 +146,7 @@ const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
       <div className="project-selection form-item">
         <label htmlFor="options">Choose Project Types:</label>
 
-        {skills.types.size > 0 &&
+        {skills?.types && skills.types.size > 0 &&
           Array.from(skills.types)
             .map((type) => new ProjectType(type))
             .map((type) => (
@@ -167,7 +167,7 @@ const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
       <div className="project-selection form-item">
         <label htmlFor="options">Choose Languages:</label>
 
-        {skills.languages.size > 0 &&
+        {skills.languages && skills.languages.size > 0 &&
           Array.from(skills.languages)
             .map((lang) => new Language(lang))
             .map((language) => (
@@ -187,7 +187,7 @@ const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
       <div className="project-selection form-item">
         <label htmlFor="options">Choose Frameworks:</label>
 
-        {skills.frameworks.size > 0 &&
+        {skills.frameworks && skills.frameworks.size > 0 &&
           Array.from(skills.frameworks)
             .map((framework) => new Framework(framework))
             .map((framework) => (
@@ -207,7 +207,7 @@ const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
       <div className="project-selection form-item">
         <label htmlFor="options">Choose Technologies:</label>
 
-        {skills.technologies.size > 0 &&
+        {skills.technologies && skills.technologies.size > 0 &&
           Array.from(skills.technologies)
             .map((tech) => new Technology(tech))
             .map((technology) => (
@@ -227,7 +227,7 @@ const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
       <div className="project-selection form-item">
         <label htmlFor="options">Choose Services:</label>
 
-        {skills.services.size > 0 &&
+        {skills.services && skills.services.size > 0 &&
           Array.from(skills.services)
             .map((service) => new Service(service))
             .map((service) => (
@@ -250,5 +250,3 @@ const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
     </div>
   )
 }
-
-export default UpdateSkills;

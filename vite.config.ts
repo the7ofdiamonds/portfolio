@@ -6,6 +6,10 @@ import path from 'path';
 
 import rollupOptions from './rollup.config';
 
+import fs from 'fs-extra';
+
+fs.emptyDirSync(path.resolve(__dirname, 'dist'));
+
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
   plugins: [dts({ insertTypesEntry: true, outDir: 'dist/types' })],

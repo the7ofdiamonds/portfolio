@@ -15,7 +15,7 @@ interface UpdateProjectVersionsProps {
     projectVersions: ProjectVersions;
 }
 
-const UpdateProjectVersions: React.FC<UpdateProjectVersionsProps> = ({ projectVersions }) => {
+export const UpdateProjectVersions: React.FC<UpdateProjectVersionsProps> = ({ projectVersions }) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const [history, setHistory] = useState<Set<string>>(new Set());
@@ -154,5 +154,3 @@ const UpdateProjectVersions: React.FC<UpdateProjectVersionsProps> = ({ projectVe
         </div>
     )
 }
-
-export default UpdateProjectVersions

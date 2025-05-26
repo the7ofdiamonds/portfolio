@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import type { RootState } from '../model/store';
 
-import { getAuthorization } from '@/Config';
+import { getAuthorization } from '@/services/Config';
 
 import { LoginComponent } from './components/LoginComponent';
 

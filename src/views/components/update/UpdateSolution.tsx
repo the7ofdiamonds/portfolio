@@ -16,15 +16,15 @@ import {
   setShowStatusBar,
 } from '@/controllers/messageSlice';
 
-import UpdateFeatures from './components/UpdateFeatures';
-import UpdateProjectURL from './components/UpdateProjectURL';
-import UpdateGallery from './components/UpdateGallery';
+import { UpdateFeatures } from './components/UpdateFeatures';
+import { UpdateProjectURL } from './components/UpdateProjectURL';
+import { UpdateGallery } from './components/UpdateGallery';
 
 interface UpdateSolutionProps {
   project: Project;
 }
 
-const UpdateSolution: React.FC<UpdateSolutionProps> = ({ project }) => {
+export const UpdateSolution: React.FC<UpdateSolutionProps> = ({ project }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { updatedSolutionGallery, updatedFeatures, updatedProjectURLs } = useSelector(
@@ -141,5 +141,3 @@ const UpdateSolution: React.FC<UpdateSolutionProps> = ({ project }) => {
     </div>
   )
 }
-
-export default UpdateSolution

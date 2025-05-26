@@ -6,7 +6,7 @@ import {
 
 import { collection, doc, getDoc } from 'firebase/firestore';
 
-import { getDB } from '@/config';
+import { getDB } from '@/services/Config';
 
 export class AboutPage {
   missionStatement: string;

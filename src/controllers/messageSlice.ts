@@ -28,9 +28,7 @@ const messageSliceOptions: CreateSliceOptions<MessageState> = {
   },
 };
 
-const messageSlice = createSlice(messageSliceOptions);
+export const messageSlice = createSlice(messageSliceOptions);
 
 export const { setMessage, setMessageType, setShowStatusBar } =
   messageSlice.actions;
-
-export default messageSlice;

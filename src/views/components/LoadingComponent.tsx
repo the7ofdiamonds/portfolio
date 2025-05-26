@@ -1,6 +1,6 @@
 import React from 'react';
 
-import StatusBarComponent from "./StatusBarComponent";
+import { StatusBarComponent } from "./StatusBarComponent";
 
 export const LoadingComponent: React.FC = () => {
   return (

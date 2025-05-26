@@ -2,16 +2,16 @@ import React from 'react'
 
 import { Project } from '@/model/Project';
 
-import UpdateStatus from '../components/UpdateStatus';
-import UpdateDesign from './UpdateDesign';
-import UpdateDevelopment from './UpdateDevelopment';
-import UpdateDelivery from './UpdateDelivery';
+import { UpdateStatus } from '../components/UpdateStatus';
+import { UpdateDesign } from './UpdateDesign';
+import { UpdateDevelopment } from './UpdateDevelopment';
+import { UpdateDelivery } from './UpdateDelivery';
 
 interface UpdateProcessProps {
     project: Project;
 }
 
-const UpdateProcess: React.FC<UpdateProcessProps> = ({ project }) => {
+export const UpdateProcess: React.FC<UpdateProcessProps> = ({ project }) => {
     return (
         <div className='update' id='update_process'>
             <h1 className='title'>process</h1>
@@ -38,5 +38,3 @@ const UpdateProcess: React.FC<UpdateProcessProps> = ({ project }) => {
         </div>
     )
 }
-
-export default UpdateProcess

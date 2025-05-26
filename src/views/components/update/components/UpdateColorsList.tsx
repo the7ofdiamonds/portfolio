@@ -16,7 +16,7 @@ interface UpdateColorsListProps {
     colorsObject: Array<ColorObject>;
 }
 
-const UpdateColorsList: React.FC<UpdateColorsListProps> = ({ colorsObject }) => {
+export const UpdateColorsList: React.FC<UpdateColorsListProps> = ({ colorsObject }) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const [colors, setColors] = useState<Colors>(new Colors(colorsObject.map((color) => new Color(color))));
@@ -186,5 +186,3 @@ const UpdateColorsList: React.FC<UpdateColorsListProps> = ({ colorsObject }) => 
         </div>
     )
 }
-
-export default UpdateColorsList

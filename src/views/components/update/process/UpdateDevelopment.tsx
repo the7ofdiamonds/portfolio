@@ -18,16 +18,16 @@ import {
 } from '@/controllers/messageSlice';
 import { updateProject } from '@/controllers/updateSlice';
 
-import UpdateCheckList from '../components/UpdateCheckList';
-import UpdateSkills from '../components/UpdateSkills';
-import UpdateProjectVersions from '../components/UpdateProjectVersions';
-import UpdateGallery from '../components/UpdateGallery';
+import { UpdateCheckList } from '../components/UpdateCheckList';
+import { UpdateSkills } from '../components/UpdateSkills';
+import { UpdateProjectVersions } from '../components/UpdateProjectVersions';
+import { UpdateGallery } from '../components/UpdateGallery';
 
 interface UpdateDevelopmentProps {
   project: Project;
 }
 
-const UpdateDevelopment: React.FC<UpdateDevelopmentProps> = ({ project }) => {
+export const UpdateDevelopment: React.FC<UpdateDevelopmentProps> = ({ project }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { updatedDevelopmentCheckList, updatedVersionsList, updatedProjectSkills, updatedDevelopmentGallery } = useSelector(
@@ -189,5 +189,3 @@ const UpdateDevelopment: React.FC<UpdateDevelopmentProps> = ({ project }) => {
     </div>
   )
 }
-
-export default UpdateDevelopment

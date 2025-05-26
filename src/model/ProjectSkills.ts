@@ -1,5 +1,6 @@
 import { Skills } from './Skills';
-import Taxonomy, {
+import {
+  Taxonomy,
   existsInSet,
   Framework,
   Language,

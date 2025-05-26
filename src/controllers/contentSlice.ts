@@ -4,7 +4,7 @@ import {
   CreateSliceOptions,
 } from '@reduxjs/toolkit';
 
-import { getHeaders } from '@/octokit';
+import { getHeaders } from '@/services/github/Config';
 
 export interface ContentState {
   contentLoading: boolean;

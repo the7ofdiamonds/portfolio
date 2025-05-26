@@ -22,6 +22,14 @@ export class Image extends Model {
     this.className = data?.class_name || '';
   }
 
+  setID(id: string) {
+    this.id = id;
+  }
+
+  setTitle(title: string) {
+    this.title = title;
+  }
+
   setURL(url: string) {
     this.url = url;
   }

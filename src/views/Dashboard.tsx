@@ -10,11 +10,11 @@ import { setMessage, setMessageType, setShowStatusBar } from '@/controllers/mess
 
 import { checkHeaders } from '@/utilities/Headers';
 
-interface DashboardPageProps {
-    user: User;
-}
+// interface DashboardPageProps {
+//     user: User;
+// }
 
-export const DashboardPage: React.FC<DashboardPageProps> = ({ user }) => {
+export const DashboardPage: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
 

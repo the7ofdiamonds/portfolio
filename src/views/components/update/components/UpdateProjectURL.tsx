@@ -15,7 +15,7 @@ interface UpdateProjectURLProps {
     projectURLs: ProjectURLs | undefined | null;
 }
 
-const UpdateProjectURL: React.FC<UpdateProjectURLProps> = ({ projectURLs }) => {
+export const UpdateProjectURL: React.FC<UpdateProjectURLProps> = ({ projectURLs }) => {
     const urls = new ProjectURLs();
     const homepage = urls.homepage;
     const ios = urls.ios;
@@ -132,5 +132,3 @@ const UpdateProjectURL: React.FC<UpdateProjectURLProps> = ({ projectURLs }) => {
         </div>
     )
 }
-
-export default UpdateProjectURL

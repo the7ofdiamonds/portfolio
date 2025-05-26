@@ -1,5 +1,6 @@
 import { Model } from './Model';
-import Taxonomy, {
+import {
+   Taxonomy,
   Framework,
   Language,
   ProjectType,

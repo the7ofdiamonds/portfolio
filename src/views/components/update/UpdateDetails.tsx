@@ -21,7 +21,7 @@ interface UpdateDetailsProps {
   project: Project;
 }
 
-const UpdateDetails: React.FC<UpdateDetailsProps> = ({ project }) => {
+export const UpdateDetails: React.FC<UpdateDetailsProps> = ({ project }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [projectObject, setProjectObject] = useState<ProjectObject>(project.toProjectObject());
@@ -145,5 +145,3 @@ const UpdateDetails: React.FC<UpdateDetailsProps> = ({ project }) => {
     </>
   )
 }
-
-export default UpdateDetails

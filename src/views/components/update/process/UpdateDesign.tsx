@@ -16,15 +16,15 @@ import {
 } from '@/controllers/messageSlice';
 import { updateProject } from '@/controllers/updateSlice';
 
-import UpdateCheckList from '../components/UpdateCheckList';
-import UpdateGallery from '../components/UpdateGallery';
-import UpdateColorsList from '../components/UpdateColorsList';
+import { UpdateCheckList } from '../components/UpdateCheckList';
+import { UpdateGallery } from '../components/UpdateGallery';
+import { UpdateColorsList } from '../components/UpdateColorsList';
 
 interface UpdateDesignProps {
   project: Project;
 }
 
-const UpdateDesign: React.FC<UpdateDesignProps> = ({ project }) => {
+export const UpdateDesign: React.FC<UpdateDesignProps> = ({ project }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { updatedDesignGallery, updatedDesignCheckList, updatedColors } = useSelector(
@@ -152,5 +152,3 @@ const UpdateDesign: React.FC<UpdateDesignProps> = ({ project }) => {
     </div>
   )
 }
-
-export default UpdateDesign
