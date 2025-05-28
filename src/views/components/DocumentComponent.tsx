@@ -6,7 +6,7 @@ interface DocumentComponentProps {
     documentURL: DocumentURL;
 }
 
-const DocumentComponent: React.FC<DocumentComponentProps> = ({ documentURL }) => {
+export const DocumentComponent: React.FC<DocumentComponentProps> = ({ documentURL }) => {
     if (!documentURL?.url) return null;
 
     return (
@@ -28,5 +28,3 @@ const DocumentComponent: React.FC<DocumentComponentProps> = ({ documentURL }) =>
         </main>
     );
 };
-
-export default DocumentComponent;

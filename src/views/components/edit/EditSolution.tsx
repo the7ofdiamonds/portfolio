@@ -1,36 +1,32 @@
-import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent } from 'react';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
+import { useAppSelector } from '@/model/hooks';
 import { Project } from '@/model/Project';
 import { ProjectSolution } from '@/model/ProjectSolution';
 import { Gallery } from '@/model/Gallery';
 import { Feature } from '@/model/Feature';
 import { ProjectURLs } from '@/model/ProjectURLs';
-import { ContentURL } from '@/model/ContentURL';
 
-import {
-  setMessage,
-  setMessageType,
-  setShowStatusBar,
-} from '@/controllers/messageSlice';
+import { UpdateFeatures } from '@/views/components/update/components/UpdateFeatures';
+import { UpdateProjectURL } from '@/views/components/update/components/UpdateProjectURL';
+import { UpdateGallery } from '@/views/components/update/components/UpdateGallery';
 
-import { UpdateFeatures } from './components/UpdateFeatures';
-import { UpdateProjectURL } from './components/UpdateProjectURL';
-import { UpdateGallery } from './components/UpdateGallery';
+import { StatusBar } from '@/views/components/StatusBar';
 
-interface UpdateSolutionProps {
+interface EditSolutionProps {
   project: Project;
   change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const UpdateSolution: React.FC<UpdateSolutionProps> = ({ project, change }) => {
-  const dispatch = useAppDispatch();
-
+export const EditSolution: React.FC<EditSolutionProps> = ({ project, change }) => {
   const { updatedSolutionGallery, updatedFeatures, updatedProjectURLs } = useAppSelector(
     (state) => state.update
   );
 
-  const [content, setContent] = useState<ContentURL | null>(null);
+  const [content, setContent] = useState<string>('');
+  const [show, setShow] = useState<string>('hide');
+  const [message, setMessage] = useState<string>('');
+  const [messageType, setMessageType] = useState<string>('info');
 
   useEffect(() => {
     if (updatedSolutionGallery) {
@@ -82,6 +78,7 @@ export const UpdateSolution: React.FC<UpdateSolutionProps> = ({ project, change 
       const { name, value } = target;
 
       if (name === 'solution_content_url') {
+        setContent(value)
         if (project.solution) {
           project.solution.setContentURL(value);
         } else {
@@ -92,8 +89,9 @@ export const UpdateSolution: React.FC<UpdateSolutionProps> = ({ project, change 
       }
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessage(err.message));
-      dispatch(setMessageType('error'));
+      setShow('show');
+      setMessage(err.message);
+      setMessageType('error');
     }
   };
 
@@ -115,12 +113,14 @@ export const UpdateSolution: React.FC<UpdateSolutionProps> = ({ project, change 
 
       <div className="form-item-flex">
         <label htmlFor="solution_content_url">Solution Content URL:</label>
-        <input type="text" id="solution_content_url" value={content?.url ?? ''} placeholder='URL to the html content' name='solution_content_url' onChange={handleSolutionContentURLChange} />
+        <input type="text" id="solution_content_url" value={content} placeholder='URL to the html content' name='solution_content_url' onChange={handleSolutionContentURLChange} />
       </div>
 
       <button onClick={change(project)}>
         <h3>SAVE SOLUTION</h3>
       </button>
+
+      <StatusBar show={show} messageType={messageType} message={message} />
     </div>
   )
 }

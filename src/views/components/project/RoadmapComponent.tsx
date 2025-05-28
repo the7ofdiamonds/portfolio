@@ -6,7 +6,7 @@ interface RoadmapProps {
     roadmap: FeaturesRoadmap;
 }
 
-const RoadmapComponent: React.FC<RoadmapProps> = ({ roadmap }) => {
+export const RoadmapComponent: React.FC<RoadmapProps> = ({ roadmap }) => {
     return (
         <>
             {roadmap.path && roadmap.path.length > 0 &&
@@ -26,5 +26,3 @@ const RoadmapComponent: React.FC<RoadmapProps> = ({ roadmap }) => {
         </>
     )
 }
-
-export default RoadmapComponent

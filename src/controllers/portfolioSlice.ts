@@ -72,7 +72,7 @@ export const getPortfolioDetails = createAsyncThunk(
   }
 );
 
-const portfolioSlice = createSlice({
+export const portfolioSlice = createSlice({
   name: 'portfolio',
   initialState,
   reducers: {},
@@ -96,5 +96,3 @@ const portfolioSlice = createSlice({
       });
   },
 });
-
-export default portfolioSlice;

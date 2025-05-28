@@ -1,33 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 
 import { LoadingComponent } from './components/LoadingComponent';
-import ProjectComponent from './components/project/ProjectComponent';
+import { ProjectComponent } from './components/project/ProjectComponent';
 import { StatusBarComponent } from './components/StatusBarComponent';
 
 import { setMessage, setMessageType, setShowStatusBar } from '../controllers/messageSlice';
 import { getProject } from '@/controllers/projectSlice';
 
-import type { AppDispatch, RootState } from '@/model/store';
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
 import { Project } from '@/model/Project';
 import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
-import { User } from '@/model/User';
+import { Account } from '@/model/Account';
 
 interface ProjectPageProps {
-  user: User;
+  account: Account;
 }
 
-export const ProjectPage: React.FC<ProjectPageProps> = ({ user }) => {
-  const dispatch = useDispatch<AppDispatch>();
+export const ProjectPage: React.FC<ProjectPageProps> = ({ account }) => {
+  const dispatch = useAppDispatch();
 
   const { owner, projectID } = useParams<string>();
 
-  const { githubLoading, githubErrorMessage } = useSelector(
-    (state: RootState) => state.github
+  const { githubLoading, githubErrorMessage } = useAppSelector(
+    (state) => state.github
   );
-  const { projectLoading, projectErrorMessage, projectObject } = useSelector(
-    (state: RootState) => state.project
+  const { projectLoading, projectErrorMessage, projectObject } = useAppSelector(
+    (state) => state.project
   );
 
   const [repoQuery, setRepoQuery] = useState<GitHubRepoQuery | null>(null);
@@ -39,13 +38,13 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ user }) => {
   }, [projectID]);
 
   useEffect(() => {
-    if (user.portfolio && user.portfolio.projects.size > 0 && projectID) {
-      const selectedProject = user.portfolio.filterProject(projectID);
+    if (account.portfolio && account.portfolio.projects.size > 0 && projectID) {
+      const selectedProject = account.portfolio.filterProject(projectID);
       if (selectedProject) {
         setTitle(selectedProject.title);
       }
     }
-  }, [user?.portfolio?.projects, projectID]);
+  }, [account?.portfolio?.projects, projectID]);
 
   useEffect(() => {
     if (title) {
@@ -113,7 +112,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ user }) => {
     <section>
       <>
         {project &&
-          <ProjectComponent user={user} project={project} />
+          <ProjectComponent account={account} project={project} />
         }
       </>
     </section>

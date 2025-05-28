@@ -11,7 +11,7 @@ interface CheckListProps {
   query: ProjectQuery;
 }
 
-const CheckListComponent: React.FC<CheckListProps> = ({ checkList, query }) => {
+export const CheckListComponent: React.FC<CheckListProps> = ({ checkList, query }) => {
   const [id, setId] = useState<string | null>(null);
   const [title, setTitle] = useState<string | null>(null);
   const [tasks, setTasks] = useState<Set<Task> | null>(null);
@@ -51,5 +51,3 @@ const CheckListComponent: React.FC<CheckListProps> = ({ checkList, query }) => {
     </>
   );
 }
-
-export default CheckListComponent;

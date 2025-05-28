@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import GalleryComponent from '../GalleryComponent';
-import ContentComponent from '../content/ContentComponent';
-import CheckListComponent from './CheckListComponent';
+import { GalleryComponent } from '@/views/components/GalleryComponent';
+
+import { ContentComponent } from '@/views/components/content/ContentComponent';
+
+import { CheckListComponent } from '@/views/components/project/CheckListComponent';
 
 import { ContentURL } from '@/model/ContentURL';
 import { Gallery } from '@/model/Gallery';
@@ -15,7 +17,7 @@ interface DeliveryProps {
   projectQuery: ProjectQuery | null;
 }
 
-const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) => {
+export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) => {
   const [gallery, setGallery] = useState<Gallery | null>(null);
   const [content, setContent] = useState<ContentURL | null>(null);
   const [checkList, setCheckList] = useState<CheckList | null>(null);
@@ -65,5 +67,3 @@ const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) => {
   )
   );
 };
-
-export default Delivery;

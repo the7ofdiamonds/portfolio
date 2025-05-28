@@ -6,7 +6,7 @@ interface ColorsProps {
   colors: Array<Color>;
 }
 
-const ColorsComponent: React.FC<ColorsProps> = ({ colors }) => {
+export const ColorsComponent: React.FC<ColorsProps> = ({ colors }) => {
 
   return (
     <>
@@ -31,5 +31,3 @@ const ColorsComponent: React.FC<ColorsProps> = ({ colors }) => {
     </>
   );
 }
-
-export default ColorsComponent;

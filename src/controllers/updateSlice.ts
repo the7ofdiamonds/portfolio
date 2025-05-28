@@ -710,6 +710,4 @@ const updateSliceOptions: CreateSliceOptions<UpdateState> = {
   },
 };
 
-const updateSlice = createSlice(updateSliceOptions);
-
-export default updateSlice;
+export const updateSlice = createSlice(updateSliceOptions);

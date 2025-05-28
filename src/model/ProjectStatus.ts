@@ -36,6 +36,10 @@ export class ProjectStatus extends Model {
     this.updatedAt = dateTime ? formatTime(dateTime) : null;
   }
 
+  setProgress(progress: ProjectProgress | number) {
+    this.progress = progress;
+  }
+
   fromRepo(repo: Repo) {
     if (repo.createdAt) {
       this.setCreatedAt(repo.createdAt);

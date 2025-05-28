@@ -1,23 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import MemberBio from './MemberBio';
 import MemberPic from './MemberPic';
 
+import { Account } from '@/model/Account';
 import { User } from '@/model/User';
 
 interface MemberInfoProps {
-  user: User;
+  account: Account;
 }
 
-export const MemberInfoComponent: React.FC<MemberInfoProps> = ({ user }) => {
+export const MemberInfoComponent: React.FC<MemberInfoProps> = ({ account }) => {
+  const [bio, setBio] = useState<string | null>(null);
+  const [title, setTitle] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (account instanceof User) {
+      setBio(account.bio)
+      setTitle(account.title)
+    }
+  }, [account]);
+
   return (
     <>
       <div className="author-info">
-        {user.bio && <MemberBio bio={user.bio} />}
+        {bio && <MemberBio bio={bio} />}
 
-        <MemberPic user={user} />
+        <MemberPic account={account} />
 
-        <h2 className="title">{user?.title}</h2>
+        {title && <h2 className="title">{title}</h2>}
       </div>
     </>
   );

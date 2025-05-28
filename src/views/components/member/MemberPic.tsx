@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
 
-import { User } from '@/model/User';
+import { Account } from '@/model/Account';
 import { Contributor } from '@/model/Contributor';
 
 interface MemberPicProps {
-    user: User | Contributor | null;
+    account: Account | Contributor | null;
 }
 
-const MemberPic: React.FC<MemberPicProps> = ({ user }) => {
+const MemberPic: React.FC<MemberPicProps> = ({ account }) => {
     const [avatarURL, setAvatarURL] = useState<string | null>(null);
 
     useEffect(() => {
-        if (user && user.avatarURL) {
-            setAvatarURL(user.avatarURL)
+        if (account && account.avatarURL) {
+            setAvatarURL(account.avatarURL)
         }
-    }, [user]);
+    }, [account]);
 
     return (avatarURL &&
         <div className="author-pic">

@@ -2,17 +2,17 @@ import React from 'react';
 
 import { MemberInfoComponent } from './MemberInfoComponent';
 
-import { User } from '@/model/User';
+import { Account } from '@/model/Account';
 
 interface MemberIntroductionProps {
-  user: User | null
+  account: Account | null
 }
 
-export const MemberIntroductionComponent: React.FC<MemberIntroductionProps> = ({ user }) => {
+export const MemberIntroductionComponent: React.FC<MemberIntroductionProps> = ({ account }) => {
 
-  return (user &&
+  return (account &&
     <div className="author-intro">
-      <MemberInfoComponent user={user} />
+      <MemberInfoComponent account={account} />
     </div>
   );
 }

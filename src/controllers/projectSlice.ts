@@ -65,7 +65,7 @@ export const getProject = createAsyncThunk(
   }
 );
 
-const projectSlice = createSlice({
+export const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {},
@@ -92,5 +92,3 @@ const projectSlice = createSlice({
       });
   },
 });
-
-export default projectSlice;

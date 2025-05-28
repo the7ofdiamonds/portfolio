@@ -1,19 +1,12 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import type { AppDispatch, RootState } from '@/model/store';
-
 import { addSkill } from '@/controllers/addSlice';
-import {
-  setMessage,
-  setMessageType,
-  setShowStatusBar,
-} from '@/controllers/messageSlice';
 
-import { StatusBarComponent } from '@/views/components/StatusBarComponent';
-
+import type { AppDispatch, RootState } from '@/model/store';
 import { Image } from '@/model/Image';
 import { Taxonomy } from '@/model/Taxonomy';
+import { StatusBar } from '../StatusBar';
 
 export interface AddTaxonomyProps {
   taxonomy: Taxonomy;
@@ -22,7 +15,7 @@ export interface AddTaxonomyProps {
 export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { addLoading, addStatusCode, addSuccessMessage, addErrorMessage } =
+  const { addLoading, addStatusCode, addSuccessMessage, addErrorMessage, taxType } =
     useSelector((state: RootState) => state.add);
 
   const [id, setID] = useState('');
@@ -31,6 +24,9 @@ export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
   const [path, setPath] = useState('');
   const [url, setUrl] = useState('');
   const [className, setClassName] = useState('');
+  const [show, setShow] = useState('show');
+  const [messageType, setMessageType] = useState('');
+  const [message, setMessage] = useState(`Add ${taxonomy.type} to your skill set.`);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     try {
@@ -53,8 +49,8 @@ export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
       }
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessage(err.message));
-      dispatch(setMessageType('error'));
+      setMessage(err.message);
+      setMessageType('error');
     }
   };
 
@@ -69,8 +65,8 @@ export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
       }
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessage(err.message));
-      dispatch(setMessageType('error'));
+      setMessage(err.message);
+      setMessageType('error');
     }
   };
 
@@ -91,42 +87,50 @@ export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
       taxonomy.setImage(image);
 
       dispatch(addSkill(taxonomy));
-      dispatch(setMessageType('info'));
-      dispatch(setMessage('Standbye while an attempt to log you is made.'));
+
+      setShow('show')
+      setMessageType('info');
+
+      setID('');
+      setTitle('');
+      setDescription('');
+      setPath('');
+      setUrl('');
+      setClassName('');
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessageType('error'));
-      dispatch(setMessage(err.message));
-      dispatch(setShowStatusBar(Date.now()));
+      setMessageType('error');
+      setMessage(err.message);
+      setShow('show');
     }
   };
 
   useEffect(() => {
     if (addLoading) {
-      dispatch(setShowStatusBar(Date.now()));
+      setShow('show');
     }
   }, [addLoading]);
 
   useEffect(() => {
-    if (addSuccessMessage) {
-      dispatch(setMessage(addSuccessMessage));
-      dispatch(setMessageType('success'));
-      dispatch(setShowStatusBar(Date.now()));
+    if (addSuccessMessage && taxType === taxonomy.type) {
+      setMessage(addSuccessMessage);
+      setMessageType('success');
+      setShow('show');
     }
   }, [addSuccessMessage]);
 
   useEffect(() => {
     if (addErrorMessage) {
-      dispatch(setMessage(addErrorMessage));
-      dispatch(setMessageType('error'));
-      dispatch(setShowStatusBar(Date.now()));
+      setMessage(addErrorMessage);
+      setMessageType('error');
+      setShow('show');
     }
   }, [addErrorMessage]);
 
   return (
     <>
       <main>
-        <h2>Add {taxonomy.title}</h2>
+        <h2>Add {taxonomy.type}</h2>
 
         <form action="">
           <input
@@ -181,7 +185,7 @@ export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
           </button>
         </form>
 
-        <StatusBarComponent />
+        <StatusBar show={show} messageType={messageType} message={message} />
       </main>
     </>
   );

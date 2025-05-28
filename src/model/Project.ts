@@ -21,10 +21,6 @@ import {
 } from './ProjectDetails';
 import { Repo } from './Repo';
 import { Owner, OwnerObject } from './Owner';
-import { ProjectDesign } from './ProjectDesign';
-import { ProjectDevelopment } from './ProjectDevelopment';
-import { ProjectDelivery } from './ProjectDelivery';
-import { ProjectStatus } from './ProjectStatus';
 import { ProjectQuery } from './ProjectQuery';
 
 export type ProjectObject = {

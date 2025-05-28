@@ -7,7 +7,7 @@ interface GalleryProps {
   gallery: Array<Image>;
 }
 
-const GalleryComponent: React.FC<GalleryProps> = ({ title, gallery }) => {
+export const GalleryComponent: React.FC<GalleryProps> = ({ title, gallery }) => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>(0);
   const galleryRowRef = useRef<HTMLDivElement | null>(null);
 
@@ -97,5 +97,3 @@ const GalleryComponent: React.FC<GalleryProps> = ({ title, gallery }) => {
     </>
   );
 }
-
-export default GalleryComponent;

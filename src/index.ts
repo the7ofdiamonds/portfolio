@@ -17,10 +17,7 @@ export * from './controllers/taxonomiesSlice';
 export * from './controllers/updateSlice';
 export * from './controllers/userSlice';
 
-export * from './views/About';
-export * from './views/ContactPage';
 export * from './views/Dashboard';
-export * from './views/Home';
 export * from './views/LoginPage';
 export * from './views/NotFound';
 export * from './views/OrganizationPage';
@@ -28,10 +25,8 @@ export * from './views/PortfolioPage';
 export * from './views/ProjectPage';
 export * from './views/ProjectsEditPage';
 export * from './views/ProjectUpdate';
-export * from './views/Resume';
 export * from './views/Search';
 export * from './views/SkillAdd';
-export * from './views/UserPage';
 
 export * from './views/components/ButtonIconExternal';
 export * from './views/components/ContactBar';
@@ -64,8 +59,7 @@ export * from './views/components/add/AddLanguages';
 export * from './views/components/add/AddProjectTypes';
 export * from './views/components/add/AddTechnologies';
 
-export * from './views/components/contact/ContactComponent';
-export * from './views/components/contact/MessageCardComponent';
+export * from './views/components/edit/EditProject';
 
 export * from './views/components/member/MemberBio';
 export * from './views/components/member/MemberCard';
@@ -79,6 +73,28 @@ export * from './views/components/member/MemberPic';
 export * from './views/components/portfolio/PortfolioComponent';
 export * from './views/components/portfolio/PortfolioProject';
 export * from './views/components/portfolio/ProjectsComponent';
+
+export * from './views/components/project/CheckListComponent';
+export * from './views/components/project/Colors';
+export * from './views/components/project/Delivery';
+export * from './views/components/project/Design';
+export * from './views/components/project/Details';
+export * from './views/components/project/Development';
+export * from './views/components/project/Features';
+export * from './views/components/project/OwnerComponent';
+export * from './views/components/project/ProjectComponent';
+export * from './views/components/project/ProjectSkillsComponent';
+export * from './views/components/project/ProjectURLsComponent';
+export * from './views/components/project/RoadmapComponent';
+export * from './views/components/project/Status';
+export * from './views/components/project/TaskCheckbox';
+export * from './views/components/project/TaskComponent';
+export * from './views/components/project/TaskDescription';
+export * from './views/components/project/ProjectTeam';
+export * from './views/components/project/TheProblem';
+export * from './views/components/project/TheProcess';
+export * from './views/components/project/TheSolution';
+export * from './views/components/project/Versions';
 
 export * from './views/components/update/UpdateDetails';
 

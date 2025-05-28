@@ -6,7 +6,7 @@ interface VersionsProps {
   projectVersions: ProjectVersions;
 }
 
-const Versions: React.FC<VersionsProps> = ({ projectVersions }) => {
+export const Versions: React.FC<VersionsProps> = ({ projectVersions }) => {
   return (
     <>
       {projectVersions && (projectVersions.current || projectVersions.history.size > 0) &&
@@ -21,5 +21,3 @@ const Versions: React.FC<VersionsProps> = ({ projectVersions }) => {
     </>
   );
 }
-
-export default Versions;

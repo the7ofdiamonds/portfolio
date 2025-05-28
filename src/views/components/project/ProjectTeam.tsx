@@ -2,15 +2,15 @@ import React from 'react';
 
 import Member from '../member/MemberCard';
 
-import { User } from '@/model/User';
 import { Contributor } from '@/model/Contributor';
+import { Account } from '@/model/Account';
 
 interface TeamProps {
-  user: User;
+  account: Account;
   projectTeam: Array<Contributor>
 }
 
-const Team: React.FC<TeamProps> = ({ user, projectTeam }) => {
+export const ProjectTeamComponent: React.FC<TeamProps> = ({ account, projectTeam }) => {
   return (
     <>
       {Array.isArray(projectTeam) && projectTeam.length > 0 && (
@@ -19,7 +19,7 @@ const Team: React.FC<TeamProps> = ({ user, projectTeam }) => {
 
           <div className="project-team-list">
             {projectTeam.map((team_member, index) => (
-              <Member key={index} user={user} member={team_member} />
+              <Member key={index} account={account} member={team_member} />
             ))}
           </div>
         </div>
@@ -27,5 +27,3 @@ const Team: React.FC<TeamProps> = ({ user, projectTeam }) => {
     </>
   );
 }
-
-export default Team;

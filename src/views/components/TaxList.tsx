@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import Taxonomy from '@/model/Taxonomy';
+import { Taxonomy } from '@/model/Taxonomy';
 
 interface TaxListProps {
   taxonomiesSet: Set<Taxonomy>;
   taxonomiesTitle: string;
 }
 
-const TaxList: React.FC<TaxListProps> = ({ taxonomiesSet, taxonomiesTitle }) => {
+export const TaxList: React.FC<TaxListProps> = ({ taxonomiesSet, taxonomiesTitle }) => {
   const [taxonomies, setTaxonomies] = useState<Array<Taxonomy>>(Array.from(taxonomiesSet));
   const [title, setTitle] = useState<string>(taxonomiesTitle);
 
@@ -53,5 +53,3 @@ const TaxList: React.FC<TaxListProps> = ({ taxonomiesSet, taxonomiesTitle }) => 
     )
   );
 }
-
-export default TaxList;

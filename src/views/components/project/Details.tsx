@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
-import ProjectTeamComponent from './Team';
-import ContentComponent from '../content/ContentComponent';
+import { ProjectTeamComponent } from '@/views/components/project/ProjectTeam';
+import { ContentComponent } from '@/views/components/content/ContentComponent';
 
-import type { RootState } from '@/model/store';
-import { User } from '@/model/User';
+import { useAppSelector } from '@/model/hooks';
 import { Project } from '@/model/Project';
 import { Contributor } from '@/model/Contributor';
 import { RepoSize } from '@/model/RepoSize';
 import { ContentURL } from '@/model/ContentURL';
+import { Account } from '@/model/Account';
 
 interface ProjectDetailsProps {
-  user: User;
+  account: Account;
   project: Project;
 }
 
-const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ user, project }) => {
+export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account, project }) => {
   const [privacy, setPrivacy] = useState<string>('public');
   const [repoSize, setRepoSize] = useState<RepoSize | null>(null);
   const [content, setContent] = useState<ContentURL | null>(null);
   const [contributors, setContributors] = useState<Array<Contributor> | null>(null);
 
-  const { isAuthenticated } = useSelector(
-    (state: RootState) => state.auth
+  const { isAuthenticated } = useAppSelector(
+    (state) => state.auth
   );
 
   useEffect(() => {
@@ -73,11 +72,9 @@ const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ user, project 
             <h5>This project is private login to see the details.</h5>}
 
           {contributors &&
-            <ProjectTeamComponent user={user} projectTeam={contributors} />}
+            <ProjectTeamComponent account={account} projectTeam={contributors} />}
         </div>
       )}
     </>
   );
 }
-
-export default ProjectDetailsComponent;

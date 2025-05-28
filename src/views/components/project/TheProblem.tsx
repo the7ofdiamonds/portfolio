@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import GalleryComponent from '../GalleryComponent';
-import ContentComponent from '../content/ContentComponent';
+import { GalleryComponent } from '@/views/components/GalleryComponent';
 
-import DocumentComponent from '@/views/components/DocumentComponent';
+import { ContentComponent } from '@/views/components/content/ContentComponent';
+
+import { DocumentComponent } from '@/views/components/DocumentComponent';
 
 import { Project } from '@/model/Project';
 import { ContentURL } from '@/model/ContentURL';
@@ -14,7 +15,7 @@ interface ProblemProps {
   project: Project;
 }
 
-const TheProblem: React.FC<ProblemProps> = ({ project }) => {
+export const TheProblem: React.FC<ProblemProps> = ({ project }) => {
   const [gallery, setGallery] = useState<Gallery | null>(null);
   const [content, setContent] = useState<ContentURL | null>(null);
   const [whitepaperURL, setWhitepaperURL] = useState<DocumentURL | null>(null);
@@ -59,5 +60,3 @@ const TheProblem: React.FC<ProblemProps> = ({ project }) => {
     </>
   );
 }
-
-export default TheProblem;

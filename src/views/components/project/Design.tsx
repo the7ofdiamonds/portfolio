@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import CheckListComponent from './CheckListComponent';
-import Colors from './Colors';
-import GalleryComponent from '../GalleryComponent';
-import ContentComponent from '../content/ContentComponent';
+import { CheckListComponent } from '@/views/components/project/CheckListComponent';
+import { ColorsComponent } from '@/views/components/project/Colors';
+
+import { GalleryComponent } from '@/views/components/GalleryComponent';
+import { ContentComponent } from '@/views/components/content/ContentComponent';
 
 import { ContentURL } from '@/model/ContentURL';
 import { Color } from '@/model/Color';
@@ -17,7 +18,7 @@ interface DesignProps {
   projectQuery: ProjectQuery | null;
 }
 
-const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
+export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
   const [colors, setColors] = useState<Array<Color> | null>(null);
   const [logos, setLogos] = useState<Array<Image> | null>(null);
   const [icons, setIcons] = useState<Array<Image> | null>(null);
@@ -99,7 +100,7 @@ const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
           <h3 className="title">design</h3>
 
           {colors &&
-            <Colors colors={colors} />}
+            <ColorsComponent colors={colors} />}
 
           {logos &&
             <GalleryComponent title={'Logos'} gallery={logos} />}
@@ -123,5 +124,3 @@ const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
     </>
   );
 }
-
-export default Design;

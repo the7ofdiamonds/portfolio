@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ContentComponent from './content/ContentComponent';
+import { ContentComponent } from '@/views/components/content/ContentComponent';
 
 import { ContentURL } from '@/model/ContentURL';
 
@@ -8,7 +8,7 @@ interface StoryComponentProps {
     story: ContentURL;
 }
 
-const StoryComponent: React.FC<StoryComponentProps> = ({ story }) => {
+export const StoryComponent: React.FC<StoryComponentProps> = ({ story }) => {
     return (<>{
         story &&
         <div className="story" id="story">
@@ -18,5 +18,3 @@ const StoryComponent: React.FC<StoryComponentProps> = ({ story }) => {
         </div>
     }</>)
 }
-
-export default StoryComponent

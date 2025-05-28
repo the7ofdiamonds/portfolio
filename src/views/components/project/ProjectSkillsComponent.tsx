@@ -8,7 +8,7 @@ interface ProjectSkillsComponentProps {
     skills: ProjectSkills;
 }
 
-const ProjectSkillsComponent: React.FC<ProjectSkillsComponentProps> = ({ skills }) => {
+export const ProjectSkillsComponent: React.FC<ProjectSkillsComponentProps> = ({ skills }) => {
 
     const hasContent = skills?.types || skills?.languages || skills?.frameworks || skills?.technologies || skills?.services;
 
@@ -31,5 +31,3 @@ const ProjectSkillsComponent: React.FC<ProjectSkillsComponentProps> = ({ skills 
         </>
     )
 }
-
-export default ProjectSkillsComponent;

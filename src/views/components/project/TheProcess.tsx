@@ -2,23 +2,25 @@ import React, { useEffect, useState } from 'react';
 
 import ProjectStatusComponent from './Status';
 
-import Design from './Design';
-import Development from './Development';
-import Delivery from './Delivery';
+import { Design } from '@/views/components/project/Design';
+import { Development } from '@/views/components/project/Development';
+import { Delivery } from '@/views/components/project/Delivery';
 
 import { ProjectStatus } from '@/model/ProjectStatus';
 import { ProjectDesign } from '@/model/ProjectDesign';
 import { ProjectDevelopment } from '@/model/ProjectDevelopment';
 import { ProjectDelivery } from '@/model/ProjectDelivery';
-import { ProjectProcess } from '@/model/ProjectProcess';
+import { Project } from '@/model/Project';
 import { ProjectQuery } from '@/model/ProjectQuery';
+import { ProjectSolution } from '@/model/ProjectSolution';
 
 interface ProcessProps {
-  process: ProjectProcess;
+  project: Project;
   projectQuery: ProjectQuery | null;
 }
 
-const TheProcess: React.FC<ProcessProps> = ({ process, projectQuery }) => {
+export const TheProcess: React.FC<ProcessProps> = ({ project, projectQuery }) => {
+  const [solution, setSolution] = useState<ProjectSolution | null>(null);
   const [status, setStatus] = useState<ProjectStatus | null>(null);
   const [design, setDesign] = useState<ProjectDesign | null>(null);
   const [development, setDevelopment] = useState<ProjectDevelopment | null>(null);
@@ -26,28 +28,40 @@ const TheProcess: React.FC<ProcessProps> = ({ process, projectQuery }) => {
   const [query, setQuery] = useState<ProjectQuery | null>(null);
 
   useEffect(() => {
-    if (process?.status) {
-      setStatus(process.status)
+    if (project?.solution) {
+      setSolution(project.solution)
     }
-  }, [process?.status]);
+  }, [project?.solution]);
 
   useEffect(() => {
-    if (process?.design) {
-      setDesign(process.design)
+    if (project?.process?.status) {
+      setStatus(project.process.status)
     }
-  }, [process?.design]);
+  }, [project?.process?.status]);
 
   useEffect(() => {
-    if (process?.development) {
-      setDevelopment(process.development)
+    if (project?.process?.status) {
+      setStatus(project.process.status)
     }
-  }, [process?.development]);
+  }, [project?.process?.status]);
 
   useEffect(() => {
-    if (process?.delivery) {
-      setDelivery(process.delivery)
+    if (project?.process?.design) {
+      setDesign(project.process.design)
     }
-  }, [process?.delivery]);
+  }, [project?.process?.design]);
+
+  useEffect(() => {
+    if (project?.process?.development) {
+      setDevelopment(project?.process.development)
+    }
+  }, [project?.process?.development]);
+
+  useEffect(() => {
+    if (project?.process?.delivery) {
+      setDelivery(project.process.delivery)
+    }
+  }, [project?.process?.delivery]);
 
   useEffect(() => {
     if (projectQuery) {
@@ -68,7 +82,7 @@ const TheProcess: React.FC<ProcessProps> = ({ process, projectQuery }) => {
 
           {design && <Design design={design} projectQuery={query} />}
 
-          {development && <Development development={development} projectQuery={query} />}
+          {development && <Development solution={solution} development={development} projectQuery={query} />}
 
           {delivery && <Delivery delivery={delivery} projectQuery={query} />}
         </div>
@@ -76,5 +90,3 @@ const TheProcess: React.FC<ProcessProps> = ({ process, projectQuery }) => {
     </>
   );
 };
-
-export default TheProcess;

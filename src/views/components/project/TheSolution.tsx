@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import FeaturesComponent from './Features';
-import ProjectURLsComponent from './ProjectURLsComponent';
-import GalleryComponent from '../GalleryComponent';
-import ContentComponent from '../content/ContentComponent';
+import FeaturesComponent from '@/views/components/project/Features';
+import ProjectURLsComponent from '@/views/components/project/ProjectURLsComponent';
+
+import { GalleryComponent } from '@/views/components/GalleryComponent';
+
+import { ContentComponent } from '@/views/components/content/ContentComponent';
 
 import { Project } from '@/model/Project';
 import { Version } from '@/model/Version';
@@ -16,7 +18,7 @@ interface SolutionProps {
   project: Project
 }
 
-const TheSolution: React.FC<SolutionProps> = ({ project }) => {
+export const TheSolution: React.FC<SolutionProps> = ({ project }) => {
   const [gallery, setGallery] = useState<Gallery | null>(null);
   const [content, setContent] = useState<ContentURL | null>(null);
   const [projectURLs, setProjectURLs] = useState<ProjectURLs | null>(null);
@@ -81,5 +83,3 @@ const TheSolution: React.FC<SolutionProps> = ({ project }) => {
     </>
   );
 }
-
-export default TheSolution;

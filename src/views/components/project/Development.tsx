@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
-import ProjectSkillsComponent from './ProjectSkillsComponent';
-import CheckListComponent from './CheckListComponent';
-import Versions from './Versions';
-import ContentComponent from '../content/ContentComponent';
+import { ProjectSkillsComponent } from '@/views/components/project/ProjectSkillsComponent';
+import { CheckListComponent } from '@/views/components/project/CheckListComponent';
+import { Versions } from '@/views/components/project/Versions';
+import { RoadmapComponent } from '@/views/components/project/RoadmapComponent';
+
+import { ContentComponent } from '@/views/components/content/ContentComponent';
 import { StatusBar } from '../StatusBar';
 import { ImageComponent } from '../ImageComponent';
-import RoadmapComponent from './RoadmapComponent';
 
 import {
   signInWithGitHubPopup
 } from '@/controllers/authSlice';
 
-import type { AppDispatch, RootState } from '@/model/store';
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
 import { Image } from '@/model/Image';
 import { RepoURL } from '@/model/RepoURL';
 import { Project } from '@/model/Project';
@@ -27,13 +27,13 @@ import { ProjectDevelopment } from '@/model/ProjectDevelopment';
 import { ProjectSolution } from '@/model/ProjectSolution';
 
 interface DevelopmentProps {
-  solution: ProjectSolution;
+  solution: ProjectSolution | null;
   development: ProjectDevelopment;
   projectQuery: ProjectQuery | null;
 }
 
-const Development: React.FC<DevelopmentProps> = ({ solution, development, projectQuery }) => {
-  const dispatch = useDispatch<AppDispatch>();
+export const Development: React.FC<DevelopmentProps> = ({ solution, development, projectQuery }) => {
+  const dispatch = useAppDispatch();
 
   const [versions, setVersions] = useState<ProjectVersions | null>(null);
   const [featuresRoadmap, setFeaturesRoadmap] = useState<FeaturesRoadmap | null>(null)
@@ -46,8 +46,8 @@ const Development: React.FC<DevelopmentProps> = ({ solution, development, projec
   const [messageType, setMessageType] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  const { isAuthenticated } = useSelector(
-    (state: RootState) => state.auth
+  const { isAuthenticated } = useAppSelector(
+    (state) => state.auth
   );
 
   useEffect(() => {
@@ -153,5 +153,3 @@ const Development: React.FC<DevelopmentProps> = ({ solution, development, projec
     </>
   );
 }
-
-export default Development;

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-import Details from './Details';
+import { ProjectDetailsComponent } from '@/views/components/project/Details';
 import { DescriptionComponent } from '../DescriptionComponent';
-import TheSolution from './TheSolution';
-import TheProcess from './TheProcess';
-import TheProblem from './TheProblem';
-import OwnerComponent from './OwnerComponent';
+import { TheSolution } from '@/views/components/project/TheSolution';
+import { TheProcess } from '@/views/components/project/TheProcess';
+import { TheProblem } from '@/views/components/project/TheProblem';
+import { OwnerComponent } from '@/views/components/project/OwnerComponent';
 
 import { Project } from '@/model/Project';
-import { User } from '@/model/User';
+import { Account } from '@/model/Account';
 import { ProjectSolution } from '@/model/ProjectSolution';
 import { ProjectProcess } from '@/model/ProjectProcess';
 import { ProjectDetails } from '@/model/ProjectDetails';
@@ -19,11 +19,11 @@ import { ProjectSkills } from '@/model/ProjectSkills';
 import { ProjectQuery } from '@/model/ProjectQuery';
 
 interface ProjectComponentProps {
-  user: User;
+  account: Account;
   project: Project;
 }
 
-const ProjectComponent: React.FC<ProjectComponentProps> = ({ user, project }) => {
+export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, project }) => {
   const [title, setTitle] = useState<string | null>(null);
   const [subtitle, setSubtitle] = useState<string | null>(null);
   const [description, setDescription] = useState<string | null>(null);
@@ -32,6 +32,10 @@ const ProjectComponent: React.FC<ProjectComponentProps> = ({ user, project }) =>
   const [details, setDetails] = useState<ProjectDetails | null>(null);
   const [problem, setProblem] = useState<ProjectProblem | null>(null);
   const [owner, setOwner] = useState<Owner | null>(null);
+
+  const [skills, setSkills] = useState<Skills | null>(null);
+  const [projectSkills, setProjectSkills] = useState<ProjectSkills | null>(null);
+  const [query, setQuery] = useState<ProjectQuery | null>(null);
 
   useEffect(() => {
     if (project?.title) {
@@ -57,21 +61,17 @@ const ProjectComponent: React.FC<ProjectComponentProps> = ({ user, project }) =>
     }
   }, [project?.solution]);
 
-  const [skills, setSkills] = useState<Skills | null>(null);
-  const [projectSkills, setProjectSkills] = useState<ProjectSkills | null>(null);
-  const [query, setQuery] = useState<ProjectQuery | null>(null);
-
   useEffect(() => {
-    if (user.skills) {
-      setSkills(user.skills)
+    if (account.skills) {
+      setSkills(account.skills)
     }
-  }, [user.skills]);
+  }, [account.skills]);
 
   useEffect(() => {
     if (skills && project.process?.development?.skills) {
       setProjectSkills(skills.show(project.process.development.skills))
     }
-  }, [user.skills]);
+  }, [account.skills]);
 
   useEffect(() => {
     if (project?.process?.development && projectSkills) {
@@ -115,9 +115,9 @@ const ProjectComponent: React.FC<ProjectComponentProps> = ({ user, project }) =>
 
         {solution && <TheSolution project={project} />}
 
-        {process && <TheProcess process={process} projectQuery={query} />}
+        {process && <TheProcess project={project} projectQuery={query} />}
 
-        {details && <Details user={user} project={project} />}
+        {details && <ProjectDetailsComponent account={account} project={project} />}
 
         {problem && <TheProblem project={project} />}
 
@@ -126,5 +126,3 @@ const ProjectComponent: React.FC<ProjectComponentProps> = ({ user, project }) =>
     </>
   );
 }
-
-export default ProjectComponent;

@@ -1,0 +1,161 @@
+import React, { useState, useEffect, ChangeEvent } from 'react';
+
+import { ProjectVersions } from '@/model/ProjectVersions';
+import { Project } from '@/model/Project';
+import { ProjectSkills } from '@/model/ProjectSkills';
+import { Gallery } from '@/model/Gallery';
+import { CheckList } from '@/model/CheckList';
+import { ProjectDevelopment } from '@/model/ProjectDevelopment';
+import { ProjectProcess } from '@/model/ProjectProcess';
+
+import { UpdateCheckList } from '@/views/components/update/components/UpdateCheckList';
+import { UpdateSkills } from '@/views/components/update/components/UpdateSkills';
+import { UpdateProjectVersions } from '@/views/components/update/components/UpdateProjectVersions';
+import { UpdateGallery } from '@/views/components/update/components/UpdateGallery';
+
+import { StatusBar } from '@/views/components/StatusBar';
+
+interface EditDevelopmentProps {
+  project: Project;
+  change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, change }) => {
+  const [gallery, setGallery] = useState<Gallery>(new Gallery);
+  const [checkList, setCheckList] = useState<CheckList>(new CheckList);
+  const [projectSkills, setProjectSkills] = useState<ProjectSkills>(new ProjectSkills);
+  const [repoURL, setRepoURL] = useState<string>('');
+  const [content, setContent] = useState<string>('');
+  const [projectVersions, setProjectVersions] = useState<ProjectVersions>(new ProjectVersions);
+  const [show, setShow] = useState<string>('hide');
+  const [message, setMessage] = useState<string>('');
+  const [messageType, setMessageType] = useState<string>('info');
+
+  useEffect(() => {
+    if (project.process?.development?.gallery) {
+      setGallery(project.process.development.gallery)
+    }
+  }, [project?.process?.development?.gallery])
+
+  useEffect(() => {
+    if (project.process?.development?.checkList) {
+      setCheckList(project.process.development.checkList)
+    }
+  }, [project.process?.development?.checkList]);
+
+  useEffect(() => {
+    if (project.process?.development?.skills) {
+      setProjectSkills(project.process.development.skills)
+    }
+  }, [project.process?.development?.skills]);
+
+  useEffect(() => {
+    if (project.process?.development?.repoURL?.url) {
+      setRepoURL(project.process.development.repoURL.url)
+    }
+  }, [project.process?.development?.repoURL]);
+
+  useEffect(() => {
+    if (project.process?.development?.contentURL?.url) {
+      setContent(project.process.development.contentURL.url)
+    }
+  }, [project.process?.development?.contentURL]);
+
+  useEffect(() => {
+    if (project.process?.development?.versionsList) {
+      setProjectVersions(project.process.development.versionsList)
+    }
+  }, [project.process?.development?.versionsList]);
+
+  const handleRepoURLChange = (e: ChangeEvent<HTMLInputElement>) => {
+    try {
+      const target = e.target as HTMLInputElement;
+
+      const { name, value } = target;
+
+      if (name === 'repo_url') {
+        setRepoURL(value);
+        if (project.process && project.process.development) {
+          project.process.development.setContentURL(value);
+        } else {
+          const projectDevelopment = new ProjectDevelopment();
+          projectDevelopment.setRepoURL(value);
+          const projectProcess = new ProjectProcess();
+          projectProcess.setDevelopment(projectDevelopment);
+          project.setProcess(projectProcess);
+        }
+      }
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      setMessage(err.message);
+      setMessageType('error');
+      setShow('show');
+    }
+  }
+
+  const handleDevelopmentContentURLChange = (e: ChangeEvent<HTMLInputElement>) => {
+    try {
+      const target = e.target as HTMLInputElement;
+
+      const { name, value } = target;
+
+      if (name === 'content_url') {
+        setContent(value);
+        if (project.process && project.process.development) {
+          project.process.development.setContentURL(value);
+        } else {
+          const projectDevelopment = new ProjectDevelopment();
+          projectDevelopment.setContentURL(value);
+          const projectProcess = new ProjectProcess();
+          projectProcess.setDevelopment(projectDevelopment);
+          project.setProcess(projectProcess);
+        }
+      }
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      setMessage(err.message);
+      setMessageType('error');
+      setShow('show');
+    }
+  }
+
+  return (
+    <div className='update' id='update_development'>
+      <h2 className="title">development</h2>
+
+      <UpdateCheckList location='development' checkList={checkList} />
+
+      <br />
+
+      <UpdateSkills projectSkills={projectSkills} />
+
+      <br />
+
+      <UpdateGallery location='development' gallery={gallery} />
+
+      <br />
+
+      <UpdateProjectVersions projectVersions={projectVersions} />
+
+      <hr />
+
+      <div className="form-item-flex">
+        <label htmlFor="repo_url">Repo URL:</label>
+        <input type="text" name='repo_url' value={repoURL} onChange={handleRepoURLChange} />
+      </div>
+
+      <div className="form-item-flex">
+        <label htmlFor="development_content_url">Development Content URL:</label>
+        <input type="text" name='development_content_url' value={content} onChange={handleDevelopmentContentURLChange} />
+      </div>
+
+      <button onClick={change(project)}>
+        <h3>SAVE DEVELOPMENT</h3>
+      </button>
+
+      <StatusBar show={show} messageType={messageType} message={message} />
+    </div>
+  )
+}

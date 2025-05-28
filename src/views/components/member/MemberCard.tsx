@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 
 import { User } from '@/model/User';
 import { Contributor } from '@/model/Contributor';
+import { Account } from '@/model/Account';
 
 import MemberPic from './MemberPic';
 
 interface MemberProps {
-  user: User,
+  account: Account,
   member: User | Contributor
 }
 
-const MemberCard: React.FC<MemberProps> = ({ user, member }) => {
+const MemberCard: React.FC<MemberProps> = ({ account, member }) => {
   const [title, setTitle] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,7 +28,7 @@ const MemberCard: React.FC<MemberProps> = ({ user, member }) => {
 
   const handleClick = () => {
     handleUsers();
-    if (user.login === member.login) {
+    if (account.login === member.login) {
       window.location.href = '/#/about'
     } else {
       window.location.href = `/#/user/${member.login}`
@@ -48,7 +49,7 @@ const MemberCard: React.FC<MemberProps> = ({ user, member }) => {
         className="user-button"
         onClick={() => handleClick()}>
         <div className="author-card card">
-          <MemberPic user={member} />
+          <MemberPic account={member} />
           <h3 className="title">{title}</h3>
         </div>
       </button>

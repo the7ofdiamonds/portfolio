@@ -10,7 +10,7 @@ interface ContentComponentProps {
   content: ContentURL;
 }
 
-const ContentComponent: React.FC<ContentComponentProps> = ({ title, content }) => {
+export const ContentComponent: React.FC<ContentComponentProps> = ({ title, content }) => {
   const [query, setQuery] = useState<RepoContentQuery | null>(null);
   const [file, setFile] = useState<string | null>(null);
   const [html, setHTML] = useState<string | object | null>(null);
@@ -73,5 +73,3 @@ const ContentComponent: React.FC<ContentComponentProps> = ({ title, content }) =
     </>
   );
 };
-
-export default ContentComponent;

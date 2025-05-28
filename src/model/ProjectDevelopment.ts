@@ -84,6 +84,18 @@ export class ProjectDevelopment extends Model {
     }
   }
 
+  setRepoURL(url: string) {
+    this.repoURL = new RepoURL(url);
+  }
+
+  setVersionsList(versionsList: ProjectVersions) {
+    this.versionsList = versionsList;
+  }
+
+  setRoadmap(roadmap: FeaturesRoadmap) {
+    this.roadmap = roadmap;
+  }
+
   fromRepo(repo: Repo) {
     if (repo.contents?.development?.downloadURL) {
       this.contentURL = new ContentURL(repo.contents.development.downloadURL);

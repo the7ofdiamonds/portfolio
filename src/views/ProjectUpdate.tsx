@@ -1,6 +1,5 @@
 import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 
 import { updateProject } from '@/controllers/updateSlice';
 import {
@@ -10,38 +9,33 @@ import {
 } from '@/controllers/messageSlice';
 import { getProject } from '@/controllers/projectSlice';
 
-import { UpdateDetails } from './components/update/UpdateDetails';
-import { UpdateProcess } from './components/update/process/UpdateProcess';
-import { UpdateSolution } from './components/update/UpdateSolution';
-import { UpdateProblem } from './components/update/UpdateProblem';
-import { StatusBarComponent } from './components/StatusBarComponent';
-
-import type { AppDispatch, RootState } from '@/model/store';
-import { Project, ProjectObject } from '@/model/Project';
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
+import { Project } from '@/model/Project';
 import { Owner } from '@/model/Owner';
 import { Portfolio } from '@/model/Portfolio';
 import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
 import { RepoURL } from '@/model/RepoURL';
 import { User } from '@/model/User';
+import { EditProject } from './components/edit/EditProject';
 
 interface ProjectUpdateProps {
     user: User;
 }
 
 export const ProjectUpdate: React.FC<ProjectUpdateProps> = ({ user }) => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const { login, projectID } = useParams();
 
-    const { projectLoading, projectLoadingMessage, projectErrorMessage, projectObject } = useSelector(
-        (state: RootState) => state.project
+    const { projectLoading, projectLoadingMessage, projectErrorMessage, projectObject } = useAppSelector(
+        (state) => state.project
     );
-    const { portfolioObject } = useSelector(
-        (state: RootState) => state.portfolio
+    const { portfolioObject } = useAppSelector(
+        (state) => state.portfolio
     );
-    const { updateLoading, updateLoadingMessage, updateErrorMessage, updateSuccessMessage, updateStatusCode } = useSelector(
-        (state: RootState) => state.update
+    const { updateLoading, updateLoadingMessage, updateErrorMessage, updateSuccessMessage, updateStatusCode } = useAppSelector(
+        (state) => state.update
     );
 
     const [portfolio, setPortfolio] = useState<Portfolio | null>(user.portfolio);
@@ -151,31 +145,7 @@ export const ProjectUpdate: React.FC<ProjectUpdateProps> = ({ user }) => {
         }
     }, [project]);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        try {
-            const target = e.target as HTMLInputElement;
-
-            const { name, value } = target;
-
-            if (name === 'title') {
-                setTitle(value);
-
-                const updatedProjectObject: ProjectObject = {
-                    ...project.toProjectObject(),
-                    title: value
-                }
-
-                setProject(new Project(updatedProjectObject))
-            }
-        } catch (error) {
-            const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
-        }
-    };
-
-    const handleUpdateProject = async (e: MouseEvent<HTMLButtonElement>) => {
+    const handleUpdateProject = (project: Project) => (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         try {
@@ -198,51 +168,11 @@ export const ProjectUpdate: React.FC<ProjectUpdateProps> = ({ user }) => {
             dispatch(setShowStatusBar(Date.now()));
         }
     };
-    console.log(project)
+
     return (
         <section className='update-project'>
             <h1 className='title'>update project</h1>
-
-            <form action="" id="add_project">
-                <div className="form-item-flex">
-                    <label htmlFor="title">Title:</label>
-                    <input
-                        type="text"
-                        name="title"
-                        placeholder="Title"
-                        value={title}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <button onClick={handleUpdateProject}>
-                    <h3>Update Title</h3>
-                </button>
-            </form>
-
-            <hr />
-
-            <UpdateSolution project={project} />
-
-            <hr />
-
-            <UpdateProcess project={project} />
-
-            <hr />
-
-            <UpdateProblem project={project} />
-
-            <hr />
-
-            <UpdateDetails project={project} />
-
-            <br />
-
-            <button onClick={handleUpdateProject}>
-                <h3 className='title'>Update Project</h3>
-            </button>
-
-            <StatusBarComponent />
+            <EditProject project={project} change={handleUpdateProject} />
         </section>
     )
 }

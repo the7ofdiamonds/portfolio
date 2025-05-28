@@ -5,54 +5,77 @@ import {
   CreateSliceOptions,
 } from '@reduxjs/toolkit';
 
-import { collection, getDocs, setDoc, doc, getDoc } from 'firebase/firestore';
+import { getAPI } from '@/services/Config';
 
-import { getDB, getAPI } from '@/services/Config';
-
-import Taxonomy from '@/model/Taxonomy';
 import { Project } from '@/model/Project';
+import { Taxonomy } from '@/model/Taxonomy';
+import { addSecureHeaders } from '@/utilities/Headers';
+import { SecureHeaders } from '@/model/SecureHeaders';
 
-interface AddState {
+export interface AddState {
   addLoading: boolean;
-  addSuccessMessage: string;
+  addSuccessMessage: string | null;
   addError: Error | null;
-  addErrorMessage: string;
-  addStatusCode: string;
-  projectID: string;
+  addErrorMessage: string | null;
+  addStatusCode: string | null;
+  projectID: string | null;
+  taxType: string | null;
 }
 
 const initialState: AddState = {
   addLoading: false,
-  addSuccessMessage: '',
+  addSuccessMessage: null,
   addError: null,
-  addErrorMessage: '',
-  addStatusCode: '',
-  projectID: '',
+  addErrorMessage: null,
+  addStatusCode: null,
+  projectID: null,
+  taxType: null,
 };
 
-type AddResponse = {
-  project_id: string;
+export type AddProjectResponse = {
+  id: string;
+  repo_url: string;
   success_message: string;
 };
 
-export const addProject = createAsyncThunk<AddResponse, Record<string, any>>(
+export const addProject = createAsyncThunk<AddProjectResponse, Project>(
   'add/addProject',
-  async (project) => {
+  async (project: Project) => {
     try {
-      const db = getDB();
+      const api = getAPI();
 
-      if (!db) {
-        throw new Error('Database is not initialized');
+      if (!api) {
+        throw new Error('API is not initialized');
       }
 
-      const projectCollection = collection(db, 'portfolio');
+      if (!project.id) {
+        throw new Error('Project ID is required.');
+      }
 
-      await setDoc(doc(projectCollection, project.id), project);
+      const headers: SecureHeaders = await addSecureHeaders();
 
-      return {
-        project_id: project.id,
-        success_message: `${project.id} was added to portfolio`,
-      };
+      if (headers.errorMessage) {
+        return headers;
+      }
+
+      const response = await fetch(`${api}/projects/add`, {
+        method: 'POST',
+        headers:
+          headers instanceof SecureHeaders
+            ? new Headers(headers.toObject())
+            : {},
+        body: JSON.stringify(project.toProjectDataObject()),
+      });
+
+      const text = response ? await response.text() : null;
+
+      if (text) {
+        const data = JSON.parse(text);
+
+        return data;
+      }
+
+      return null;
     } catch (error) {
       const err = error as Error;
 
@@ -62,7 +85,14 @@ export const addProject = createAsyncThunk<AddResponse, Record<string, any>>(
   }
 );
 
-export const addSkill = createAsyncThunk<string, Taxonomy>(
+export type AddSkillResponse = {
+  type: string | null;
+  success_message: string | null;
+  error_message: string | null;
+  status_code: string | null;
+};
+
+export const addSkill = createAsyncThunk<AddSkillResponse, Taxonomy>(
   'add/addSkill',
   async (taxonomy: Taxonomy) => {
     try {
@@ -76,11 +106,18 @@ export const addSkill = createAsyncThunk<string, Taxonomy>(
         throw new Error('Skill type is required.');
       }
 
+      const headers: SecureHeaders = await addSecureHeaders();
+
+      if (headers.errorMessage) {
+        return headers;
+      }
+
       const response = await fetch(`${api}/taxonomies/skills`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers:
+          headers instanceof SecureHeaders
+            ? new Headers(headers.toObject())
+            : {},
         body: JSON.stringify(taxonomy.toObject()),
       });
 
@@ -110,21 +147,21 @@ const addSliceOptions: CreateSliceOptions<AddState> = {
     builder
       .addCase(addProject.fulfilled, (state, action) => {
         state.addLoading = false;
+        state.projectID = action.payload.id;
         state.addSuccessMessage = action.payload.success_message;
-        state.projectID = action.payload.project_id;
       })
       .addMatcher(isAnyOf(addSkill.fulfilled), (state, action) => {
         state.addLoading = false;
-        state.addSuccessMessage = action.payload;
+        state.addSuccessMessage = action.payload.success_message;
+        state.taxType = action.payload.type;
+        state.addErrorMessage = action.payload.error_message;
+        state.addStatusCode = action.payload.status_code;
       })
-      .addMatcher(
-        isAnyOf(addProject.pending, addSkill.pending),
-        (state) => {
-          state.addLoading = true;
-          state.addError = null;
-          state.addErrorMessage = '';
-        }
-      )
+      .addMatcher(isAnyOf(addProject.pending, addSkill.pending), (state) => {
+        state.addLoading = true;
+        state.addError = null;
+        state.addErrorMessage = '';
+      })
       .addMatcher(
         isAnyOf(addProject.rejected, addSkill.rejected),
         (state, action) => {

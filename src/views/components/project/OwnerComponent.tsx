@@ -6,7 +6,7 @@ interface OwnerComponentProps {
     project: Project;
 }
 
-const OwnerComponent: React.FC<OwnerComponentProps> = ({ project }) => {
+export const OwnerComponent: React.FC<OwnerComponentProps> = ({ project }) => {
     const [type, setType] = useState<string | null>(null);
     const [login, setLogin] = useState<string | null>(null);
     const [avatarURL, setAvatarURL] = useState<string | null>(null);
@@ -50,5 +50,3 @@ const OwnerComponent: React.FC<OwnerComponentProps> = ({ project }) => {
         </>
     )
 }
-
-export default OwnerComponent
