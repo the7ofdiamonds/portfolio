@@ -1,21 +1,24 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
 import { PortfolioComponent } from './components/portfolio/PortfolioComponent';
 
-import type { AppDispatch, RootState } from '@/model/store';
-import { User } from '@/model/User';
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
+import { Account } from '@/model/Account';
 
 import { setMessage, setMessageType, setShowStatusBar } from '@/controllers/messageSlice';
 
 interface PortfolioProps {
-  user: User;
+  account: Account;
 }
 
-export const PortfolioPage: React.FC<PortfolioProps> = ({ user }) => {
-  const dispatch = useDispatch<AppDispatch>();
+export const PortfolioPage: React.FC<PortfolioProps> = ({ account }) => {
+  const dispatch = useAppDispatch();
 
-  const { portfolioLoading, portfolioObject, portfolioErrorMessage } = useSelector((state: RootState) => state.portfolio);
+  const {
+    portfolioLoading,
+    portfolioObject,
+    portfolioErrorMessage
+  } = useAppSelector((state) => state.portfolio);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -44,13 +47,13 @@ export const PortfolioPage: React.FC<PortfolioProps> = ({ user }) => {
   }, [portfolioErrorMessage]);
 
   useEffect(() => {
-    document.title = `Portfolio - ${user.name}`;
+    document.title = `Portfolio - ${account.name}`;
   }, []);
 
   return (
     <section className="portfolio">
       <>
-        <PortfolioComponent account={user} />
+        <PortfolioComponent account={account} />
       </>
     </section>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import IconComponent from './IconComponent';
+import { IconComponent } from './IconComponent';
 
 import { ProjectURL } from '@/model/ProjectURL';
 

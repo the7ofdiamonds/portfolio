@@ -1,8 +1,8 @@
 import React from 'react'
 
-import Taxonomy from '@/model/Taxonomy'
+import { Taxonomy } from '@/model/Taxonomy'
 
-import IconComponent from './IconComponent'
+import { IconComponent } from './IconComponent'
 
 interface HeaderTaxonomyComponentProps {
     skill: Taxonomy

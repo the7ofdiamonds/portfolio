@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addSkill } from '@/controllers/addSlice';
+import { addSkill } from '@/controllers/skillsSlice';
 
 import type { AppDispatch, RootState } from '@/model/store';
 import { Image } from '@/model/Image';
@@ -15,8 +15,8 @@ export interface AddTaxonomyProps {
 export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { addLoading, addStatusCode, addSuccessMessage, addErrorMessage, taxType } =
-    useSelector((state: RootState) => state.add);
+  const { skillsLoading, skillsStatusCode, skillsSuccessMessage, skillsErrorMessage, taxType } =
+    useSelector((state: RootState) => state.skills);
 
   const [id, setID] = useState('');
   const [title, setTitle] = useState('');
@@ -106,26 +106,26 @@ export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
   };
 
   useEffect(() => {
-    if (addLoading) {
+    if (skillsLoading) {
       setShow('show');
     }
-  }, [addLoading]);
+  }, [skillsLoading]);
 
   useEffect(() => {
-    if (addSuccessMessage && taxType === taxonomy.type) {
-      setMessage(addSuccessMessage);
+    if (skillsSuccessMessage && taxType === taxonomy.type) {
+      setMessage(skillsSuccessMessage);
       setMessageType('success');
       setShow('show');
     }
-  }, [addSuccessMessage]);
+  }, [skillsSuccessMessage]);
 
   useEffect(() => {
-    if (addErrorMessage) {
-      setMessage(addErrorMessage);
+    if (skillsErrorMessage) {
+      setMessage(skillsErrorMessage);
       setMessageType('error');
       setShow('show');
     }
-  }, [addErrorMessage]);
+  }, [skillsErrorMessage]);
 
   return (
     <>

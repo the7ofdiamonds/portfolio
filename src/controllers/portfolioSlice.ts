@@ -5,23 +5,23 @@ import { getRepo, getRepoLanguages } from './githubSlice';
 
 import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
 import { Portfolio, PortfolioObject } from '@/model/Portfolio';
-import { Project } from '@/model/Project';
+import { Project, ProjectObject } from '@/model/Project';
 import { Repo } from '@/model/Repo';
 import { Repos } from '@/model/Repos';
 
 export interface PortfolioState {
   portfolioLoading: boolean;
   portfolioError: Error | null;
-  portfolioErrorMessage: string;
+  portfolioErrorMessage: string | null;
   portfolioObject: PortfolioObject | null;
-  organizationPortfolioObject: Array<Record<string, any>> | null;
-  projects: Array<Record<string, any>> | null;
+  organizationPortfolioObject: PortfolioObject | null;
+  projects: Array<ProjectObject> | null;
 }
 
 const initialState: PortfolioState = {
   portfolioLoading: false,
   portfolioError: null,
-  portfolioErrorMessage: '',
+  portfolioErrorMessage: null,
   portfolioObject: null,
   organizationPortfolioObject: null,
   projects: null,

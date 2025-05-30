@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import Taxonomy from '@/model/Taxonomy';
+import { Taxonomy } from '@/model/Taxonomy';
 
-import IconComponent from './IconComponent';
+import { IconComponent } from './IconComponent';
 
 interface ProjectSkillsProp {
   skillsSet: Set<Taxonomy>;

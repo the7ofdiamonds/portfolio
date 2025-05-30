@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 
-import IconComponent from '../IconComponent';
+import { IconComponent } from '../IconComponent';
 
-import Taxonomy from '@/model/Taxonomy';
+import { Taxonomy } from '@/model/Taxonomy';
 import { Skills } from '@/model/Skills';
 
 interface MemberKnowledgeProps {
@@ -17,10 +17,10 @@ export const MemberKnowledgeComponent: React.FC<MemberKnowledgeProps> = ({ skill
     services
   } = skills;
 
-  const arrayLang = Array.from(languages);
-  const arrayFrame = Array.from(frameworks);
-  const arrayTech = Array.from(technologies);
-  const arrayService = Array.from(services);
+  const arrayLang = languages ? Array.from(languages) : [];
+  const arrayFrame = frameworks ? Array.from(frameworks) : [];
+  const arrayTech = technologies ? Array.from(technologies) : [];
+  const arrayService = services ? Array.from(services) : [];
 
   const knowledge = [...arrayLang, ...arrayFrame, ...arrayTech, ...arrayService];
 

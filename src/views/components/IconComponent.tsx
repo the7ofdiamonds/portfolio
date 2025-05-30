@@ -6,7 +6,7 @@ interface IconComponentProps {
   imageClass: Image;
 }
 
-const IconComponent: React.FC<IconComponentProps> = ({ imageClass }) => {
+export const IconComponent: React.FC<IconComponentProps> = ({ imageClass }) => {
   const [image, setImage] = useState<Image>(imageClass);
 
   useEffect(() => { setImage(imageClass) }, [imageClass, setImage]);
@@ -23,5 +23,3 @@ const IconComponent: React.FC<IconComponentProps> = ({ imageClass }) => {
     </>
   );
 }
-
-export default IconComponent;
