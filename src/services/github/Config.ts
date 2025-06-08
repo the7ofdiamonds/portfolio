@@ -15,7 +15,9 @@ export const getInstance = () => {
     const token = getToken();
     instance = new Octokit({
       auth: token,
-      'X-GitHub-Api-Version': '2022-11-28',
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
     });
   }
   return instance;

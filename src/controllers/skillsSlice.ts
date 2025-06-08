@@ -104,7 +104,7 @@ export const getSkill = createAsyncThunk(
       }
 
       const response = await fetch(
-        `${api}/taxonomies/skills/${taxonomy.type}/${taxonomy.id}`,
+        `${api}/taxonomies/skills/${taxonomy.type}/${taxonomy.path}`,
         {
           method: 'GET',
         }
@@ -205,7 +205,7 @@ type UpdateSkillResponse = {
 };
 
 export const updateSkill = createAsyncThunk(
-  'skills/getSkills',
+  'skills/updateSkill',
   async (taxonomy: Taxonomy) => {
     try {
       const api = getAPI();
@@ -221,7 +221,7 @@ export const updateSkill = createAsyncThunk(
       }
 
       const response = await fetch(
-        `${api}/taxonomies/skills/${taxonomy.type}/${taxonomy.id}`,
+        `${api}/taxonomies/skills/${taxonomy.type}/${taxonomy.path}`,
         {
           method: 'PUT',
           headers:

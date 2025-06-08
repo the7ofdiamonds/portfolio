@@ -2,7 +2,7 @@ import { Feature } from './Feature';
 import { Issue, IssueObject, IssueGQL } from './Issue';
 import { Task } from './Task';
 
-export interface IssuesObject {
+export type IssuesObject ={
   list: Array<IssueObject> | null;
 }
 
@@ -14,9 +14,9 @@ export class Issues {
   development: Array<Issue>;
   delivery: Array<Issue>;
 
-  constructor(data?: Array<IssueObject>) {
+  constructor(data?: IssuesObject) {
     this.list =
-      data && Array.isArray(data) ? data.map((issue) => new Issue(issue)) : [];
+      data && Array.isArray(data.list) ? data.list.map((issue) => new Issue(issue)) : [];
     this.features = this.list.filter(
       (issue) => issue.type && issue.type.includes('Feature')
     );

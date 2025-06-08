@@ -15,11 +15,11 @@ import { SecureHeaders } from '@/model/SecureHeaders';
 
 import { addSecureHeaders } from '@/utilities/Headers';
 
-export interface loginState {
+export type loginState = {
   authLoading: boolean;
   authError: Error | null;
-  authSuccessMessage: string;
-  authErrorMessage: string;
+  authSuccessMessage: string | null;
+  authErrorMessage: string | null;
   authStatusCode: number | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
@@ -31,24 +31,24 @@ export interface loginState {
   profileImage: string | null;
   accessToken: string | null;
   refreshToken: string | null;
-}
+};
 
 const initialState: loginState = {
   authLoading: false,
   authError: null,
-  authSuccessMessage: '',
-  authErrorMessage: '',
+  authSuccessMessage: null,
+  authErrorMessage: null,
   authStatusCode: null,
-  isAuthenticated: Boolean(localStorage.getItem('is_authenticated')),
-  isAdmin: Boolean(localStorage.getItem('is_admin')),
+  isAuthenticated: false,
+  isAdmin: false,
   user: null,
-  id: localStorage.getItem('id'),
-  username: localStorage.getItem('username'),
-  email: localStorage.getItem('email'),
-  phoneNumber: localStorage.getItem('phone_number'),
-  profileImage: localStorage.getItem('profile_image'),
-  accessToken: localStorage.getItem('access_token'),
-  refreshToken: localStorage.getItem('refresh_token'),
+  id: null,
+  username: null,
+  email: null,
+  phoneNumber: null,
+  profileImage: null,
+  accessToken: null,
+  refreshToken: null,
 };
 
 export const checkAdmin = createAsyncThunk('auth/checkAdmin', async () => {
@@ -273,7 +273,7 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 
 export const authSlice = createSlice({
   name: 'auth',
-  initialState: initialState,
+  initialState,
   reducers: {
     updateIsAuthenticated: (state, action) => {
       localStorage.setItem('is_authenticated', action.payload);

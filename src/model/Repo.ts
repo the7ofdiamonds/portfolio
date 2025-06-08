@@ -90,7 +90,7 @@ export class Repo extends Model {
       : null;
     this.issues =
       data?.issues && Array.isArray(data.issues.list)
-        ? new Issues(data.issues.list)
+        ? new Issues(data.issues)
         : null;
   }
 
@@ -367,8 +367,8 @@ export class Repo extends Model {
     this.contributors = contributors;
   }
 
-  setIssues(data: Array<IssueObject>) {
-    this.issues = new Issues(data);
+  setIssues(issues: Issues) {
+    this.issues = issues;
   }
 
   toRepoObject(): RepoObject {

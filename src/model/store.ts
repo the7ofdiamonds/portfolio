@@ -5,7 +5,7 @@ import contactSlice from '@/controllers/contactSlice.js';
 import contentSlice from '@/controllers/contentSlice.js';
 import { portfolioSlice } from '@/controllers/portfolioSlice.js';
 import { projectSlice } from '@/controllers/projectSlice.js';
-import githubSlice from '@/controllers/githubSlice.js';
+import { githubSlice } from '@/controllers/githubSlice.js';
 import { skillsSlice } from '@/controllers/skillsSlice.js';
 import { userSlice } from '@/controllers/userSlice.js';
 import { addSlice } from '@/controllers/addSlice.js';

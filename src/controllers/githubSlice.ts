@@ -117,9 +117,11 @@ export type GitHubRepo = RepoResponse['data'];
 
 export const getRepo = createAsyncThunk(
   'github/getRepo',
-  async (query: GitHubRepoQuery) => {
+  async (query: GitHubRepoQuery, { rejectWithValue }) => {
     try {
       if (query.owner && query.repo) {
+        const octokit = getInstance();
+
         const repoResponse: RepoResponse = await octokit.rest.repos.get({
           owner: query.owner,
           repo: query.repo,
@@ -130,18 +132,18 @@ export const getRepo = createAsyncThunk(
           repo.fromGitHub(repoResponse.data);
           return repo.toRepoObject();
         }
+
+        return rejectWithValue('Unexpected response status.');
       }
 
-      return null;
+      return rejectWithValue('Missing owner or repo name.');
     } catch (error) {
-      if (error instanceof RequestError) {
-        if (error.status === 404) {
-          throw new Error('Project could not be found or does not exits.');
-        }
+      if (error instanceof RequestError && error.status === 404) {
+        return rejectWithValue('Project could not be found or does not exist.');
       }
 
       const err = error as Error;
-      throw new Error(err.message);
+      return rejectWithValue(err.message || 'An unknown error occurred.');
     }
   }
 );
@@ -156,6 +158,8 @@ export const getRepoContents = createAsyncThunk(
   'github/getRepoContents',
   async (query: GitHubRepoQuery) => {
     try {
+      const octokit = getInstance();
+
       const repoContents: RepoContentsResponse =
         await octokit.rest.repos.getContent({
           owner: query.owner,
@@ -189,6 +193,8 @@ export const getRepoLanguages = createAsyncThunk(
   'github/getRepoLanguages',
   async (query: GitHubRepoQuery) => {
     try {
+      const octokit = getInstance();
+
       const repoLanguages: RepoLanguagesResponse =
         await octokit.rest.repos.listLanguages({
           owner: query.owner,
@@ -276,6 +282,8 @@ export type GitHubRepoFile = RepoFileResponse['data'];
 
 export const getRepoFile = async (query: RepoContentQuery) => {
   try {
+    const octokit = getInstance();
+
     const { owner, repo, path, branch } = query;
 
     const response: OctokitResponse = await octokit.repos.getContent({
@@ -414,43 +422,53 @@ export const getRepoDetails = createAsyncThunk(
   'github/getRepoDetails',
   async (query: GitHubRepoQuery, thunkAPI) => {
     try {
-      const repoResponse = await thunkAPI.dispatch(getRepo(query)).unwrap();
+      const repoResponse = await thunkAPI.dispatch(getRepo(query));
 
-      if (repoResponse) {
-        const repo = new Repo(repoResponse);
+      if (getRepo.fulfilled.match(repoResponse) && repoResponse.payload) {
+        const repo = new Repo(repoResponse.payload);
 
-        const langResponse = await thunkAPI
-          .dispatch(getRepoLanguages(query))
-          .unwrap();
+        const langResponse = await thunkAPI.dispatch(getRepoLanguages(query));
 
-        if (langResponse) {
-          repo.languagesFromGithub(langResponse);
+        if (
+          getRepoLanguages.fulfilled.match(langResponse) &&
+          langResponse.payload
+        ) {
+          repo.languagesFromGithub(langResponse.payload);
         }
 
-        const contentsResponse = await thunkAPI
-          .dispatch(getRepoContents(query))
-          .unwrap();
+        const contentsResponse = await thunkAPI.dispatch(
+          getRepoContents(query)
+        );
 
-        if (contentsResponse) {
-          repo.filterContents(contentsResponse);
+        if (
+          getRepoContents.fulfilled.match(contentsResponse) &&
+          contentsResponse.payload
+        ) {
+          repo.filterContents(contentsResponse.payload);
         }
 
-        const contributorsResponse = await thunkAPI
-          .dispatch(getContributors(query))
-          .unwrap();
+        const contributorsResponse = await thunkAPI.dispatch(
+          getContributors(query)
+        );
 
-        if (contributorsResponse) {
-          const contributors = new Contributors(contributorsResponse);
+        if (
+          getContributors.fulfilled.match(contributorsResponse) &&
+          contributorsResponse.payload
+        ) {
+          const contributors = new Contributors(contributorsResponse.payload);
           repo.setContributors(contributors);
         }
 
-        // const issuesResponse = repo.apiURL
-        //   ? await thunkAPI.dispatch(getIssues(repo.apiURL)).unwrap()
-        //   : null;
+        if (repo.apiURL) {
+          const issuesResponse = await thunkAPI.dispatch(
+            getIssues(repo.apiURL)
+          );
 
-        // if (issuesResponse && issuesResponse.list) {
-        //   repo.setIssues(issuesResponse.list);
-        // }
+          if (getIssues.fulfilled.match(issuesResponse) && issuesResponse.payload) {
+            const issues = new Issues(issuesResponse.payload)
+            repo.setIssues(issues);
+          }
+        }
 
         return repo.toRepoObject();
       }
@@ -1008,6 +1026,4 @@ const githubSliceOptions: CreateSliceOptions<GithubState> = {
   },
 };
 
-const githubSlice = createSlice(githubSliceOptions);
-
-export default githubSlice;
+export const githubSlice = createSlice(githubSliceOptions);

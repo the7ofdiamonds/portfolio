@@ -20,10 +20,14 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
   const [repoSize, setRepoSize] = useState<RepoSize | null>(null);
   const [content, setContent] = useState<ContentURL | null>(null);
   const [contributors, setContributors] = useState<Array<Contributor> | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  const { isAuthenticated } = useAppSelector(
-    (state) => state.auth
-  );
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token');
+    const refreshToken = localStorage.getItem('refresh_token');
+
+    setIsAuthenticated(Boolean(accessToken && refreshToken));
+  }, [project]);
 
   useEffect(() => {
     if (project.details && project.details.privacy) {

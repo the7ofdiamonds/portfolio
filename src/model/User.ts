@@ -206,7 +206,7 @@ export class User extends Account {
     this.title = data?.title || this.title;
 
     try {
-      const resume = new URL(data?.resume);
+      const resume = data?.resume ? new URL(data?.resume) : null;
       this.resume = resume ? resume.href : this.resume;
     } catch (error) {
       console.error(`Invalid URL: ${data?.resume}`, error);

@@ -13,7 +13,7 @@ export * from './controllers/messageSlice';
 export * from './controllers/organizationSlice';
 export * from './controllers/portfolioSlice';
 export * from './controllers/projectSlice';
-export * from './controllers/skillsSlice';
+export * from './controllers/taxonomiesSlice';
 export * from './controllers/updateSlice';
 export * from './controllers/userSlice';
 
