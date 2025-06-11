@@ -10,6 +10,8 @@ import { getOrganization } from '@/controllers/organizationSlice';
 
 import type { AppDispatch, RootState } from '@/model/store';
 import { Organization } from '@/model/Organization';
+import { Portfolio } from '@/model/Portfolio';
+import { Skills } from '@/model/Skills';
 
 export const OrganizationPage: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +22,8 @@ export const OrganizationPage: React.FC = () => {
         (state: RootState) => state.organization);
 
     const [organization, setOrganization] = useState<Organization | null>(null);
+    const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
+    const [skills, setSkills] = useState<Skills | null>(null);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -43,6 +47,18 @@ export const OrganizationPage: React.FC = () => {
         }
     }, [organization]);
 
+    useEffect(() => {
+        if (organization && organization.portfolio) {
+            setPortfolio(organization.portfolio)
+        }
+    }, [organization?.portfolio]);
+
+    useEffect(() => {
+        if (organization && organization.skills) {
+            setSkills(organization.skills)
+        }
+    }, [organization?.skills]);
+
     return (
         <section className='organization' id='top'>
             <>
@@ -50,7 +66,7 @@ export const OrganizationPage: React.FC = () => {
 
                 {organization && organization.contactMethods && <ContactBar contactMethods={organization.contactMethods} location='' />}
 
-                {organization && <PortfolioComponent account={organization} />}
+                {organization && <PortfolioComponent portfolio={portfolio} skills={skills} />}
             </>
         </section>
     )

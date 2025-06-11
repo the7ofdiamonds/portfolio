@@ -12,7 +12,8 @@ import { getPortfolioDetails } from '@/controllers/portfolioSlice';
 
 import { ProjectsComponent } from './components/portfolio/ProjectsComponent';
 import { SkillsComponent } from './components/SkillsComponent';
-import HeaderTaxonomyComponent from './components/HeaderTaxonomyComponent';
+
+import HeaderTaxonomyComponent from '@/views/components/header/HeaderTaxonomyComponent';
 
 interface SearchProps {
   user: User;

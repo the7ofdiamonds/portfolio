@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { CheckListComponent } from '@/views/components/project/CheckListComponent';
-import { ColorsComponent } from '@/views/components/project/Colors';
+import { CheckListComponent } from '@/views/components/CheckListComponent';
+import { ColorsComponent } from '@/views/components/Colors';
 
 import { GalleryComponent } from '@/views/components/GalleryComponent';
 import { ContentComponent } from '@/views/components/content/ContentComponent';
@@ -12,6 +12,8 @@ import { Image } from '@/model/Image';
 import { CheckList } from '@/model/CheckList';
 import { ProjectQuery } from '@/model/ProjectQuery';
 import { ProjectDesign } from '@/model/ProjectDesign';
+
+import styles from './Project.module.scss';
 
 interface DesignProps {
   design: ProjectDesign;
@@ -96,8 +98,8 @@ export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
   return (
     <>
       {hasContent &&
-        <div className="project-process-design" id="project_process_design">
-          <h3 className="title">design</h3>
+        <div className={styles['project-process-design']} id="project_process_design">
+          <h3 className={styles.title}>design</h3>
 
           {colors &&
             <ColorsComponent colors={colors} />}

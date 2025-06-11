@@ -1,3 +1,4 @@
+
 export * from './ProtectedRoute';
 export * from './services/Config';
 
@@ -98,12 +99,10 @@ export * from './views/components/ButtonIconExternal';
 export * from './views/components/ContactBar';
 export * from './views/components/DescriptionComponent';
 export * from './views/components/DocumentComponent';
-export * from './views/components/FooterBar';
-export * from './views/components/FooterComponent';
+export * from './views/components/footer/FooterBar';
+export * from './views/components/footer/FooterComponent';
 export * from './views/components/GalleryComponent';
-export * from './views/components/HeaderComponent';
-export * from './views/components/HeaderOrganizationComponent';
-export * from './views/components/HeaderTaxonomyComponent';
+
 export * from './views/components/IconComponent';
 export * from './views/components/ImageComponent';
 export * from './views/components/LoadingComponent';
@@ -115,8 +114,6 @@ export * from './views/components/ProjectCard';
 export * from './views/components/ProjectDescription';
 export * from './views/components/ProjectSkillsBar';
 export * from './views/components/SkillsComponent';
-export * from './views/components/StatusBar';
-export * from './views/components/StatusBarComponent';
 export * from './views/components/StoryComponent';
 export * from './views/components/TaxList';
 export * from './views/components/TaxListIcon';
@@ -128,6 +125,10 @@ export * from './views/components/add/AddTechnologies';
 
 export * from './views/components/edit/EditProject';
 
+export * from './views/components/header/HeaderComponent';
+export * from './views/components/header/HeaderOrganizationComponent';
+export * from './views/components/header/HeaderTaxonomyComponent';
+
 export * from './views/components/member/MemberBio';
 export * from './views/components/member/MemberCard';
 export * from './views/components/member/MemberComponent';
@@ -137,12 +138,14 @@ export * from './views/components/member/MemberKnowledgeComponent';
 export * from './views/components/member/MemberNavigationComponent';
 export * from './views/components/member/MemberPic';
 
+export * as portfolioStyles from './views/components/portfolio/Portfolio.module.scss';
 export * from './views/components/portfolio/PortfolioComponent';
 export * from './views/components/portfolio/PortfolioProject';
 export * from './views/components/portfolio/ProjectsComponent';
 
-export * from './views/components/project/CheckListComponent';
-export * from './views/components/project/Colors';
+export * as projectStyles from './views/components/project/Project.module.scss';
+export * from './views/components/CheckListComponent';
+export * from './views/components/Colors';
 export * from './views/components/project/Delivery';
 export * from './views/components/project/Design';
 export * from './views/components/project/Details';
@@ -154,14 +157,18 @@ export * from './views/components/project/ProjectSkillsComponent';
 export * from './views/components/project/ProjectURLsComponent';
 export * from './views/components/project/RoadmapComponent';
 export * from './views/components/project/Status';
-export * from './views/components/project/TaskCheckbox';
-export * from './views/components/project/TaskComponent';
-export * from './views/components/project/TaskDescription';
 export * from './views/components/project/ProjectTeam';
 export * from './views/components/project/TheProblem';
 export * from './views/components/project/TheProcess';
 export * from './views/components/project/TheSolution';
 export * from './views/components/project/Versions';
+
+export * from './views/components/status_bar/StatusBar';
+export * from './views/components/status_bar/StatusBarComponent';
+
+export * from './views/components/task/TaskCheckbox';
+export * from './views/components/task/TaskComponent';
+export * from './views/components/task/TaskDescription';
 
 export * from './views/components/update/UpdateDetails';
 

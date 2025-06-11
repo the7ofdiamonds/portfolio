@@ -7,7 +7,7 @@ import { CheckList } from '@/model/CheckList';
 import { UpdateCheckList } from '@/views/components/update/components/UpdateCheckList';
 import { UpdateGallery } from '@/views/components/update/components/UpdateGallery';
 
-import { StatusBar } from '@/views/components/StatusBar';
+import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 interface EditDeliveryProps {
   project: Project;

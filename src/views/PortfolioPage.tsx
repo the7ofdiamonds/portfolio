@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { PortfolioComponent } from './components/portfolio/PortfolioComponent';
 
@@ -6,6 +6,9 @@ import { useAppDispatch, useAppSelector } from '@/model/hooks';
 import { Account } from '@/model/Account';
 
 import { setMessage, setMessageType, setShowStatusBar } from '@/controllers/messageSlice';
+import { Project } from '@/model/Project';
+import { Portfolio } from '@/model/Portfolio';
+import { Skills } from '@/model/Skills';
 
 interface PortfolioProps {
   account: Account;
@@ -13,6 +16,9 @@ interface PortfolioProps {
 
 export const PortfolioPage: React.FC<PortfolioProps> = ({ account }) => {
   const dispatch = useAppDispatch();
+
+  const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
+  const [skills, setSkills] = useState<Skills | null>(null);
 
   const {
     portfolioLoading,
@@ -50,10 +56,22 @@ export const PortfolioPage: React.FC<PortfolioProps> = ({ account }) => {
     document.title = `Portfolio - ${account.name}`;
   }, []);
 
+  useEffect(() => {
+    if (account.portfolio && account.portfolio.projects && account.portfolio.projects.size > 0) {
+      setPortfolio(account.portfolio)
+    }
+  }, [account.portfolio]);
+
+  useEffect(() => {
+    if (account.skills && account.skills.count > 0) {
+      setSkills(account.skills)
+    }
+  }, [account.skills]);
+
   return (
     <section className="portfolio">
       <>
-        <PortfolioComponent account={account} />
+        <PortfolioComponent portfolio={portfolio} skills={skills} />
       </>
     </section>
   );

@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '@/model/store';
 
 import { setIsAdmin, setIsAuthenticated } from './controllers/authSlice';
-import { dispatch } from './model/hooks';
 
 interface ProtectedRouteProps {
     children: JSX.Element;

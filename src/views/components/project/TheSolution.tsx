@@ -14,6 +14,8 @@ import { Feature } from '@/model/Feature';
 import { ProjectURLs } from '@/model/ProjectURLs';
 import { Gallery } from '@/model/Gallery';
 
+import styles from './Project.module.scss';
+
 interface SolutionProps {
   project: Project
 }
@@ -64,7 +66,7 @@ export const TheSolution: React.FC<SolutionProps> = ({ project }) => {
   return (
     <>
       {hasContent &&
-        <div className="project-section project-solution" id="project_solution">
+        <div className={`${styles['project-section'], styles['project-solution']}`} id="project_solution">
           <h2>THE SOLUTION</h2>
 
           {gallery && gallery.images && gallery.images.length > 0 &&

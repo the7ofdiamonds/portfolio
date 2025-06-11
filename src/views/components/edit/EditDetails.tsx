@@ -5,7 +5,7 @@ import { ProjectDetails } from '@/model/ProjectDetails';
 import { Privacy, privacyFromString } from '@/model/enum/Enums';
 import { Contributor } from '@/model/Contributor';
 
-import { StatusBar } from '@/views/components/StatusBar';
+import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 interface EditDetailsProps {
   project: Project;

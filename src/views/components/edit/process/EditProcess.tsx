@@ -7,7 +7,7 @@ import { EditDesign } from '@/views/components/edit/process/EditDesign';
 import { EditDevelopment } from '@/views/components/edit/process/EditDevelopment';
 import { EditDelivery } from '@/views/components/edit/process/EditDelivery';
 
-import { StatusBarComponent } from '@/views/components/StatusBarComponent';
+import { StatusBarComponent } from '@/views/components/status_bar/StatusBarComponent';
 
 interface EditProcessProps {
     project: Project;

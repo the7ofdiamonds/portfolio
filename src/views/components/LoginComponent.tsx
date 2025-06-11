@@ -8,7 +8,8 @@ import {
   signInWithGitHubPopup
 } from '@/controllers/authSlice';
 
-import { StatusBar } from '@/views/components/StatusBar';
+import { StatusBar } from './status_bar/StatusBar';
+
 import { ImageComponent } from '@/views/components/ImageComponent';
 
 export const LoginComponent: React.FC = () => {

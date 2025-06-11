@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { ProjectTeamComponent } from '@/views/components/project/ProjectTeam';
 import { ContentComponent } from '@/views/components/content/ContentComponent';
 
-import { useAppSelector } from '@/model/hooks';
 import { Project } from '@/model/Project';
 import { Contributor } from '@/model/Contributor';
 import { RepoSize } from '@/model/RepoSize';
 import { ContentURL } from '@/model/ContentURL';
 import { Account } from '@/model/Account';
+
+import styles from './Project.module.scss';
 
 interface ProjectDetailsProps {
   account: Account;
@@ -61,14 +62,14 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
   return (
     <>
       {hasContent && (
-        <div className="project-details">
-          <h3 className="title">the details</h3>
+        <div className={styles['project-details']}>
+          <h3 className={styles.title}>the details</h3>
 
           {repoSize &&
             <h5>
               Repo Size
-              <span className='colon'>:</span>
-              <span className='repo-size'>{repoSize.display()}</span>
+              <span className={styles.colon}>:</span>
+              <span className={styles['repo-size']}>{repoSize.display()}</span>
             </h5>}
 
           {showContent ?

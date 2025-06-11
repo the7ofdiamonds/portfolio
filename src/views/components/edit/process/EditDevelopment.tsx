@@ -13,7 +13,7 @@ import { UpdateSkills } from '@/views/components/update/components/UpdateSkills'
 import { UpdateProjectVersions } from '@/views/components/update/components/UpdateProjectVersions';
 import { UpdateGallery } from '@/views/components/update/components/UpdateGallery';
 
-import { StatusBar } from '@/views/components/StatusBar';
+import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 interface EditDevelopmentProps {
   project: Project;

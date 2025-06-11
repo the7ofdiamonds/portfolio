@@ -10,7 +10,7 @@ import { UpdateGallery } from '@/views/components/update/components/UpdateGaller
 
 import { EditColorsList } from '@/views/components/edit/components/EditColorsList';
 
-import { StatusBar } from '@/views/components/StatusBar';
+import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 interface EditDesignProps {
   project: Project;

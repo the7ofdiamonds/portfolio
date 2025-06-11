@@ -4,13 +4,15 @@ import { GalleryComponent } from '@/views/components/GalleryComponent';
 
 import { ContentComponent } from '@/views/components/content/ContentComponent';
 
-import { CheckListComponent } from '@/views/components/project/CheckListComponent';
+import { CheckListComponent } from '@/views/components/CheckListComponent';
 
 import { ContentURL } from '@/model/ContentURL';
 import { Gallery } from '@/model/Gallery';
 import { CheckList } from '@/model/CheckList';
 import { ProjectQuery } from '@/model/ProjectQuery';
 import { ProjectDelivery } from '@/model/ProjectDelivery';
+
+import styles from './Project.module.scss';
 
 interface DeliveryProps {
   delivery: ProjectDelivery;
@@ -52,8 +54,8 @@ export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) =>
   const hasContent = gallery || content || (checkList && query);
 
   return (hasContent && (
-    <div className="project-process-delivery" id="project_process_delivery">
-      <h3 className="title">delivery</h3>
+    <div className={styles['project-process-delivery']} id="project_process_delivery">
+      <h3 className={styles.title}>delivery</h3>
 
       {gallery && gallery.images && gallery.images.length > 0 &&
         <GalleryComponent gallery={gallery.images} title="" />}

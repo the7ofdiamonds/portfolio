@@ -14,6 +14,8 @@ import { Project } from '@/model/Project';
 import { ProjectQuery } from '@/model/ProjectQuery';
 import { ProjectSolution } from '@/model/ProjectSolution';
 
+import styles from './Project.module.scss';
+
 interface ProcessProps {
   project: Project;
   projectQuery: ProjectQuery | null;
@@ -75,7 +77,7 @@ export const TheProcess: React.FC<ProcessProps> = ({ project, projectQuery }) =>
   return (
     <>
       {hasContent && (
-        <div className="project-section project-process" id="project_process">
+        <div className={`${styles['project-section'], styles['project-process']}`} id="project_process">
           <h2 className="title">the process</h2>
 
           {status && <ProjectStatusComponent status={status} />}

@@ -4,6 +4,8 @@ import TaxListIcon from '../TaxListIcon';
 
 import { ProjectSkills } from '@/model/ProjectSkills';
 
+import styles from './Project.module.scss';
+
 interface ProjectSkillsComponentProps {
     skills: ProjectSkills;
 }
@@ -15,8 +17,8 @@ export const ProjectSkillsComponent: React.FC<ProjectSkillsComponentProps> = ({ 
     return (
         <>
             {hasContent &&
-                <div className="skills" id="skills">
-                    <h4 className="title">skills</h4>
+                <div className={styles.skills} id="skills">
+                    <h4 className={styles.title}>skills</h4>
 
                     {skills.types && skills.types.size > 0 && <TaxListIcon taxonomiesSet={skills.types} taxonomiesTitle={'Project Types'} />}
 

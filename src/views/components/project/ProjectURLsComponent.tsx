@@ -5,6 +5,8 @@ import ButtonIconExternal from "../ButtonIconExternal";
 import { ProjectURLs } from "@/model/ProjectURLs";
 import { ProjectURL } from "@/model/ProjectURL";
 
+import styles from './Project.module.scss';
+
 interface ProjectURLsProps {
   projectUrls: ProjectURLs;
 }
@@ -36,7 +38,7 @@ const ProjectURLsComponent: React.FC<ProjectURLsProps> = ({ projectUrls }) => {
 
   return (
     <>{hasContent && (
-      <div className="project-urls">
+      <div className={styles['project-urls']}>
         {homepage && <ButtonIconExternal buttonProps={homepage} />}
 
         {ios && <ButtonIconExternal buttonProps={ios} />}

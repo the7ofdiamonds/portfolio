@@ -7,7 +7,7 @@ import { Project } from '@/model/Project';
 import { UpdateGallery } from '@/views/components/update/components/UpdateGallery';
 import { ProjectProblem } from '@/model/ProjectProblem';
 
-import { StatusBar } from '@/views/components/StatusBar';
+import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 interface EditProblemProps {
   project: Project;

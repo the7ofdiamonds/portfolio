@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 import { Project } from '@/model/Project';
 
+import styles from './Project.module.scss';
+
 interface OwnerComponentProps {
     project: Project;
 }
@@ -27,13 +29,13 @@ export const OwnerComponent: React.FC<OwnerComponentProps> = ({ project }) => {
     }, [project?.owner]);
 
     const handleClick = () => {
-        window.location.href = `/#/${type}/${login}`;
+        window.location.href = `/${type}/${login}`;
     };
 
     return (
         <>
             {avatarURL && name &&
-                <div className="project-owner">
+                <div className={styles['project-owner']}>
                     <h2 className="title">project owner</h2>
 
                     <button

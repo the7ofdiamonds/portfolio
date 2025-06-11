@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import Taxonomy from '@/model/Taxonomy';
+import { Taxonomy } from '@/model/Taxonomy';
 
 import ProjectSkillsBar from './ProjectSkillsBar';
 

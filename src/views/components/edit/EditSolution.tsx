@@ -11,7 +11,7 @@ import { UpdateFeatures } from '@/views/components/update/components/UpdateFeatu
 import { UpdateProjectURL } from '@/views/components/update/components/UpdateProjectURL';
 import { UpdateGallery } from '@/views/components/update/components/UpdateGallery';
 
-import { StatusBar } from '@/views/components/StatusBar';
+import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 interface EditSolutionProps {
   project: Project;

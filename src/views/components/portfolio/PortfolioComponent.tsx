@@ -7,11 +7,13 @@ import { ProjectsComponent } from '@/views/components/portfolio/ProjectsComponen
 
 import { Portfolio } from '@/model/Portfolio';
 import { Project } from '@/model/Project';
-import { ProjectSkills } from '@/model/ProjectSkills';
+import { Skills } from '@/model/Skills';
+
+import styles from './Portfolio.module.scss';
 
 interface PortfolioComponentProps {
-  portfolio: Portfolio;
-  skills: ProjectSkills | null;
+  portfolio: Portfolio | null;
+  skills: Skills | null;
 }
 
 export const PortfolioComponent: React.FC<PortfolioComponentProps> = ({ portfolio, skills }) => {
@@ -26,7 +28,7 @@ export const PortfolioComponent: React.FC<PortfolioComponentProps> = ({ portfoli
   return (
     <>
       {projects && projects.size > 0 ? (
-        <main className="portfolio">
+        <main className={styles.main}>
           <h1 className="title">portfolio</h1>
 
           <ProjectsComponent projects={projects} />
@@ -37,3 +39,5 @@ export const PortfolioComponent: React.FC<PortfolioComponentProps> = ({ portfoli
     </>
   );
 }
+
+export { styles }

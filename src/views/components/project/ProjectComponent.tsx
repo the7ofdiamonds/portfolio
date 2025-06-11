@@ -18,6 +18,8 @@ import { Skills } from '@/model/Skills';
 import { ProjectSkills } from '@/model/ProjectSkills';
 import { ProjectQuery } from '@/model/ProjectQuery';
 
+import styles from './Project.module.scss';
+
 interface ProjectComponentProps {
   account: Account;
   project: Project;
@@ -106,10 +108,10 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
 
   return (
     <>
-      <main className="project">
-        {title && <h1 className="title">{title}</h1>}
+      <main className={styles.main}>
+        {title && <h1 className={styles.title}>{title}</h1>}
 
-        {subtitle && <h2>{subtitle}</h2>}
+        {subtitle && <h2 className={styles.subtitle}>{subtitle}</h2>}
 
         {description && <DescriptionComponent description={description} />}
 

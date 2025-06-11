@@ -14,7 +14,7 @@ import { EditProcess } from '@/views/components/edit/process/EditProcess';
 import { EditSolution } from '@/views/components/edit/EditSolution';
 import { EditProblem } from '@/views/components/edit/EditProblem';
 
-import { StatusBarComponent } from '@/views/components/StatusBarComponent';
+import { StatusBarComponent } from '@/views/components/status_bar/StatusBarComponent';
 
 interface EditProjectProps {
     project: Project;

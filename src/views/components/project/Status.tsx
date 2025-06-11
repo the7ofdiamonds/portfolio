@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { ProjectProgress } from "@/model/ProjectProgress";
 import { ProjectStatus } from "@/model/ProjectStatus";
 
+import styles from './Project.module.scss';
+
 interface ProjectStatusProps {
   status: ProjectStatus;
 }
@@ -29,10 +31,10 @@ const Status: React.FC<ProjectStatusProps> = ({ status }) => {
   return (
     <>
       {hasContent &&
-        <div className="project-status">
+        <div className={styles['project-status']}>
           <h3>STATUS</h3>
 
-          <div className="status-details">
+          <div className={styles['status-details']}>
             {createdAt && <div className="row">
               <h4>Started:</h4>
               <h5>{createdAt}</h5>

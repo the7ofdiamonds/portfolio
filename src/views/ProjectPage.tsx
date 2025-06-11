@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 
 import { LoadingComponent } from './components/LoadingComponent';
 import { ProjectComponent } from './components/project/ProjectComponent';
-import { StatusBarComponent } from './components/StatusBarComponent';
+
+import { StatusBarComponent } from '@/views/components/status_bar/StatusBarComponent';
 
 import { setMessage, setMessageType, setShowStatusBar } from '../controllers/messageSlice';
 import { getProject } from '@/controllers/projectSlice';
@@ -12,6 +13,8 @@ import { useAppDispatch, useAppSelector } from '@/model/hooks';
 import { Project } from '@/model/Project';
 import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
 import { Account } from '@/model/Account';
+
+import styles from '../views/components/project/Project.module.scss';
 
 interface ProjectPageProps {
   account: Account;
@@ -109,7 +112,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ account }) => {
   }
 
   return (
-    <section>
+    <section className={styles.section}>
       <>
         {project &&
           <ProjectComponent account={account} project={project} />

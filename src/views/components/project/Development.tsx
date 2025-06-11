@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
 import { ProjectSkillsComponent } from '@/views/components/project/ProjectSkillsComponent';
-import { CheckListComponent } from '@/views/components/project/CheckListComponent';
+import { CheckListComponent } from '@/views/components/CheckListComponent';
 import { Versions } from '@/views/components/project/Versions';
 import { RoadmapComponent } from '@/views/components/project/RoadmapComponent';
-
 import { ContentComponent } from '@/views/components/content/ContentComponent';
-import { StatusBar } from '../StatusBar';
+
 import { ImageComponent } from '../ImageComponent';
+
+import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 import {
   signInWithGitHubPopup
@@ -16,7 +17,6 @@ import {
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 import { Image } from '@/model/Image';
 import { RepoURL } from '@/model/RepoURL';
-import { Project } from '@/model/Project';
 import { FeaturesRoadmap } from '@/model/FeaturesRoadmap';
 import { ContentURL } from '@/model/ContentURL';
 import { ProjectVersions } from '@/model/ProjectVersions';
@@ -25,6 +25,8 @@ import { ProjectSkills } from '@/model/ProjectSkills';
 import { ProjectQuery } from '@/model/ProjectQuery';
 import { ProjectDevelopment } from '@/model/ProjectDevelopment';
 import { ProjectSolution } from '@/model/ProjectSolution';
+
+import styles from './Project.module.scss';
 
 interface DevelopmentProps {
   solution: ProjectSolution | null;
@@ -126,9 +128,9 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
 
   return (
     <>{hasContent &&
-      <div className="project-process-development" id="project_process_development">
+      <div className={styles['project-process-development']} id="project_process_development">
 
-        <h3 className="title">development</h3>
+        <h3 className={styles.title}>development</h3>
 
         {versions && <Versions projectVersions={versions} />}
 
@@ -142,9 +144,9 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
         {skills && <ProjectSkillsComponent skills={skills} />}
 
         {repoURL && buttonTitle &&
-          <button className='repo' onClick={handleSeeCode}>
+          <button className={styles.repo} onClick={handleSeeCode}>
             <ImageComponent image={new Image({ title: 'GitHub', url: '', class_name: 'fa fa-github fa-fw' })} />
-            <h3 className='title'>{buttonTitle}</h3>
+            <h3 className={styles.title}>{buttonTitle}</h3>
           </button>}
 
         {messageType && message && <StatusBar show={'hide'} messageType={messageType} message={message} />}

@@ -6,7 +6,8 @@ import { addSkill } from '@/controllers/skillsSlice';
 import type { AppDispatch, RootState } from '@/model/store';
 import { Image } from '@/model/Image';
 import { Taxonomy } from '@/model/Taxonomy';
-import { StatusBar } from '../StatusBar';
+
+import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 export interface AddTaxonomyProps {
   taxonomy: Taxonomy;

@@ -11,6 +11,8 @@ import { ContentURL } from '@/model/ContentURL';
 import { Gallery } from '@/model/Gallery';
 import { DocumentURL } from '@/model/DocumentURL';
 
+import styles from './Project.module.scss';
+
 interface ProblemProps {
   project: Project;
 }
@@ -46,7 +48,7 @@ export const TheProblem: React.FC<ProblemProps> = ({ project }) => {
     <>
       {hasContent &&
         <>
-          <div className="project-section project-problem" id="project_problem">
+          <div className={`${styles['project-section'], styles['project-problem']}`} id="project_problem">
             <h2 className="title">the problem</h2>
 
             {gallery && gallery.images && < GalleryComponent title={'Problem'} gallery={gallery.images} />}

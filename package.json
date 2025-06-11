@@ -49,7 +49,7 @@
     "del": "^8.0.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "firebase": "^11.1.0",
+    "firebase": "^10.0.0",
     "fs": "^0.0.1-security",
     "glob": "^11.0.1",
     "jsonwebtoken": "^9.0.2",
@@ -86,16 +86,17 @@
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^5.1.0",
     "npm-run-all": "^4.1.5",
-    "sass": "^1.69.5",
+    "sass": "^1.89.2",
     "typescript": "^5.7.3",
     "vite": "^5.0.10",
+    "vite-plugin-css-injected-by-js": "^3.5.2",
     "vite-plugin-dts": "^4.5.4",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "peerDependencies": {
+    "firebase": "^10.0.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "firebase": "^10.0.0"
+    "react-dom": "^18.0.0"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.9.5"
