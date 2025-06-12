@@ -5,6 +5,8 @@ import { Organization } from '@/model/Organization';
 
 import { DescriptionComponent } from './DescriptionComponent';
 
+import styles from './Organizations.module.scss';
+
 interface OrganizationsComponentProps {
   organizations: Organizations;
 }
@@ -14,7 +16,7 @@ export const OrganizationsComponent: React.FC<OrganizationsComponentProps> = ({ 
 
   const handleClick = (organization: Organization) => {
     handleOrganizations();
-    window.location.href = `/#/organization/${organization.login}`;
+    window.location.href = `/organization/${organization.login}`;
   };
 
   const handleOrganizations = () => {
@@ -28,18 +30,18 @@ export const OrganizationsComponent: React.FC<OrganizationsComponentProps> = ({ 
   return (
     <>
       {Array.isArray(list) && list.length > 0 && (
-        <div className="organizations">
-          <h2 className="title">
+        <div className={styles.organizations}>
+          <h2 className={styles.title}>
             {list.length === 1
               ? 'Organization'
               : 'Organizations'}
           </h2>
 
           {list.map((organization, index) => (
-            <div className="organization" key={index}>
+            <div className={styles.organization} key={index}>
               <button
                 key={index}
-                className="organizations-button"
+                className={styles['organizations-button']}
                 onClick={() => handleClick(organization)}>
                 {organization.avatarURL && <img
                   src={organization.avatarURL}

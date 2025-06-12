@@ -35,19 +35,19 @@ const Status: React.FC<ProjectStatusProps> = ({ status }) => {
           <h3>STATUS</h3>
 
           <div className={styles['status-details']}>
-            {createdAt && <div className="row">
+            {createdAt && <div className={styles.row}>
               <h4>Started:</h4>
               <h5>{createdAt}</h5>
             </div>}
 
-            {updatedAt && <div className="row">
+            {updatedAt && <div className={styles.row}>
               <h4>Updated:</h4>
               <h5>{updatedAt}</h5>
             </div>}
           </div>
 
           {typeof progress === 'number' && progress > 0 && (
-            <div className="status-progress">
+            <div className={styles['status-progress']}>
               <progress value={progress} max={100}></progress>
               <h4>{progress.toFixed(1)}% Completed</h4>
             </div>

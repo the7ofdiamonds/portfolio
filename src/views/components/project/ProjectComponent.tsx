@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { ProjectDetailsComponent } from '@/views/components/project/Details';
-import { DescriptionComponent } from '../DescriptionComponent';
+import { DescriptionComponent } from '@/views/components/DescriptionComponent';
 import { TheSolution } from '@/views/components/project/TheSolution';
 import { TheProcess } from '@/views/components/project/TheProcess';
 import { TheProblem } from '@/views/components/project/TheProblem';
@@ -74,6 +74,12 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
       setProjectSkills(skills.show(project.process.development.skills))
     }
   }, [account.skills]);
+
+  useEffect(() => {
+    if (project?.process) {
+      setProcess(project.process)
+    }
+  }, [project?.process]);
 
   useEffect(() => {
     if (project?.process?.development && projectSkills) {

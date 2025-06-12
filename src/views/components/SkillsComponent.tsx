@@ -10,6 +10,8 @@ import { ProjectSkills } from '@/model/ProjectSkills';
 import { Framework, Language, ProjectType, Service, Technology } from '@/model/Taxonomy';
 import { Skills } from '@/model/Skills';
 
+import styles from './Skills.module.scss';
+
 interface SkillsComponentProps {
     projectSkills: ProjectSkills | Skills | null
 }
@@ -70,8 +72,8 @@ export const SkillsComponent: React.FC<SkillsComponentProps> = ({ projectSkills 
     // }, [taxonomiesLoading]);
 
     return (
-        <div className="skills" id="skills">
-            <h4 className="title">skills</h4>
+        <div className={styles.skills} id="skills">
+            <h4 className={styles.title}>skills</h4>
 
             {types && types.size > 0 && <TaxListIcon taxonomiesSet={types} taxonomiesTitle={'Project Types'} />}
 

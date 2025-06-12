@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 
 import { Organization } from '@/model/Organization'
 
-import { DescriptionComponent } from './DescriptionComponent';
+import { DescriptionComponent } from '@/views/components/DescriptionComponent';
+
+import styles from './Organization.module.scss';
 
 interface HeaderOrganizationComponentProps {
     organization: Organization;
@@ -32,12 +34,12 @@ export const OrganizationComponent: React.FC<HeaderOrganizationComponentProps> =
     }, [organization]);
 
     return (
-        <div className='organization organization-header'>
+        <div className={`${styles.organization, styles['organization-header']}`}>
             {avatarURL && <img
                 src={avatarURL}
                 alt={`${name} avatar`}
             />}
-            {name && <h2 className='title'>{name}</h2>}
+            {name && <h2 className={styles.title}>{name}</h2>}
             {description && <DescriptionComponent description={description} />}
         </div>
     )

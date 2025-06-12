@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { Account } from '@/model/Account';
 import { Contributor } from '@/model/Contributor';
 
+import styles from './Member.module.scss';
+
 interface MemberPicProps {
     account: Account | Contributor | null;
 }
@@ -17,7 +19,7 @@ const MemberPic: React.FC<MemberPicProps> = ({ account }) => {
     }, [account]);
 
     return (avatarURL &&
-        <div className="author-pic">
+        <div className={styles['author-pic']}>
             <img src={avatarURL} alt="" />
         </div>
     )

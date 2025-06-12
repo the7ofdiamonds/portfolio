@@ -10,6 +10,8 @@ import { setMessage, setMessageType, setShowStatusBar } from '@/controllers/mess
 
 import { checkHeaders } from '@/utilities/Headers';
 
+import styles from '@/views/components/dashboard/Dashboard.module.scss';
+
 // interface DashboardPageProps {
 //     user: User;
 // }
@@ -48,22 +50,22 @@ export const DashboardPage: React.FC = () => {
 
     return (
         <section>
-            <h2 className="title">Dashboard</h2>
+            <h2 className={styles.title}>Dashboard</h2>
 
             {/* Add info from read me file on use */}
 
-            <div className="options">
+            <div className={styles.options}>
                 <button onClick={handleSkillAdd}>
-                    <h3 className='title'>add skill</h3>
+                    <h3 className={styles.title}>add skill</h3>
                 </button>
 
                 <button onClick={handleUpdateProject}>
-                    <h3 className='title'>update projects</h3>
+                    <h3 className={styles.title}>update projects</h3>
                 </button>
             </div>
 
             <button onClick={handleLogout}>
-                <h3 className='title'>logout</h3>
+                <h3 className={styles.title}>logout</h3>
             </button>
         </section>
     )

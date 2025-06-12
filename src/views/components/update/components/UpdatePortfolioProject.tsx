@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import ProjectCard from '../../ProjectCard';
+import { ProjectCard } from '../../ProjectCard';
 
 import { Project } from '@/model/Project'
 import { Owner } from '@/model/Owner';

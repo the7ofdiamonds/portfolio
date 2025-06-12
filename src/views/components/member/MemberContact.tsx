@@ -4,6 +4,8 @@ import { ContactMethods } from '@/model/ContactMethods';
 
 import { ContactBar } from '@/views/components/ContactBar';
 
+import styles from './Member.module.scss';
+
 interface MemberContactProps {
     contactMethods: ContactMethods
 }
@@ -11,7 +13,7 @@ interface MemberContactProps {
 export const MemberContact: React.FC<MemberContactProps> = ({ contactMethods }) => {
 
     return (
-        <div className="author-contact">
+        <div className={styles['author-contact']}>
             <ContactBar contactMethods={contactMethods} location='' />
         </div>)
 }

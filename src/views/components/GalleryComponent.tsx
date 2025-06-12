@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 
 import { Image } from '@/model/Image';
 
+import styles from './Gallery.module.scss';
+
 interface GalleryProps {
   title: string;
   gallery: Array<Image>;
@@ -54,11 +56,11 @@ export const GalleryComponent: React.FC<GalleryProps> = ({ title, gallery }) => 
     <>
       {gallery && gallery.length > 0 ? (
         <>
-          {title && <h5 className="title">{title}</h5>}
+          {title && <h5 className={styles.title}>{title}</h5>}
 
-          <div className="gallery">
+          <div className={styles.gallery}>
             {currentPhotoIndex !== 0 ? (
-              <button className="arrow-left" onClick={previousPhoto}>
+              <button className={styles['arrow-left']} onClick={previousPhoto}>
                 <h2>V</h2>
               </button>
             ) : (
@@ -66,14 +68,14 @@ export const GalleryComponent: React.FC<GalleryProps> = ({ title, gallery }) => 
             )}
 
             <div
-              className="gallery-row"
+              className={styles['gallery-row']}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
               ref={galleryRowRef}>
               {Array.isArray(gallery) && (
-                <span className="gallery-photo">
+                <span className={styles['gallery-photo']}>
                   <img
-                    className="photo"
+                    className={styles.photo}
                     src={gallery[currentPhotoIndex].url}
                     alt={gallery[currentPhotoIndex].title}
                     title={gallery[currentPhotoIndex].title}
@@ -83,7 +85,7 @@ export const GalleryComponent: React.FC<GalleryProps> = ({ title, gallery }) => 
             </div>
 
             {currentPhotoIndex !== gallery.length - 1 ? (
-              <button className="arrow-right" onClick={nextPhoto}>
+              <button className={styles['arrow-right']} onClick={nextPhoto}>
                 <h2>V</h2>
               </button>
             ) : (

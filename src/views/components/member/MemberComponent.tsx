@@ -4,6 +4,8 @@ import { MemberInfoComponent } from './MemberInfoComponent';
 
 import { Account } from '@/model/Account';
 
+import styles from './Member.module.scss';
+
 interface MemberIntroductionProps {
   account: Account | null
 }
@@ -11,7 +13,7 @@ interface MemberIntroductionProps {
 export const MemberIntroductionComponent: React.FC<MemberIntroductionProps> = ({ account }) => {
 
   return (account &&
-    <div className="author-intro">
+    <div className={styles['author-intro']}>
       <MemberInfoComponent account={account} />
     </div>
   );

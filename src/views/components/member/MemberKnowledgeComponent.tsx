@@ -5,6 +5,8 @@ import { IconComponent } from '../IconComponent';
 import { Taxonomy } from '@/model/Taxonomy';
 import { Skills } from '@/model/Skills';
 
+import styles from './Member.module.scss';
+
 interface MemberKnowledgeProps {
   skills: Skills;
 }
@@ -57,13 +59,13 @@ export const MemberKnowledgeComponent: React.FC<MemberKnowledgeProps> = ({ skill
 
   return (
     <>
-      <div className="author-knowledge">
-        <div className="author-knowledge-slide" ref={skillsSlideRef}>
+      <div className={styles['author-knowledge']}>
+        <div className={styles['author-knowledge-slide']} ref={skillsSlideRef}>
           {Array.isArray(knowledge) &&
             knowledge.length > 0 &&
             knowledge.map((knowledge: Taxonomy, index) => (
 
-              <a href={`/#/projects/${knowledge.path}/${knowledge.id}`} key={index} >
+              <a href={`/projects/${knowledge.path}/${knowledge.id}`} key={index} >
                 {knowledge.image && <IconComponent imageClass={knowledge.image} />}
               </a>
             ))}

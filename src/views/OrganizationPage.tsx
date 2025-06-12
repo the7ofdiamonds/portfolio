@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import { OrganizationComponent } from '@/views/components/organization/OrganizationComponent';
 import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
-import { OrganizationComponent } from '@/views/components/OrganizationComponent';
+
 import { ContactBar } from '@/views/components/ContactBar';
 
 import { getOrganization } from '@/controllers/organizationSlice';
@@ -12,6 +13,8 @@ import type { AppDispatch, RootState } from '@/model/store';
 import { Organization } from '@/model/Organization';
 import { Portfolio } from '@/model/Portfolio';
 import { Skills } from '@/model/Skills';
+
+import styles from '@/views/components/organization/Organization.module.scss';
 
 export const OrganizationPage: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -60,7 +63,7 @@ export const OrganizationPage: React.FC = () => {
     }, [organization?.skills]);
 
     return (
-        <section className='organization' id='top'>
+        <section className={styles.organization} id='top'>
             <>
                 {organization && <OrganizationComponent organization={organization} />}
 

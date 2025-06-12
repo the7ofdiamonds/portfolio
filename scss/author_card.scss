@@ -1,5 +1,5 @@
-@use '_author-pic.scss';
-@use '_author-contact.scss';
+@use 'author_pic.scss';
+@use 'author_contact.scss';
 
 .author-card.card {
   background-color: var(--card-background-color-secondary);

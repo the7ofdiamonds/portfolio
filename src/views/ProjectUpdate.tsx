@@ -16,7 +16,10 @@ import { Portfolio } from '@/model/Portfolio';
 import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
 import { RepoURL } from '@/model/RepoURL';
 import { User } from '@/model/User';
-import { EditProject } from './components/edit/EditProject';
+
+import { EditProject } from '@/views/components/edit/EditProject';
+
+import styles from '@/views/components/update/Update.module.scss';
 
 interface ProjectUpdateProps {
     user: User;
@@ -170,8 +173,8 @@ export const ProjectUpdate: React.FC<ProjectUpdateProps> = ({ user }) => {
     };
 
     return (
-        <section className='update-project'>
-            <h1 className='title'>update project</h1>
+        <section className={styles['update-project']}>
+            <h1 className={styles.title}>update project</h1>
             <EditProject project={project} change={handleUpdateProject} />
         </section>
     )

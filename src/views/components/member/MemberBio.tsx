@@ -1,20 +1,20 @@
 import React from 'react'
 
+import styles from './Member.module.scss';
+
 interface MemberBioProps {
     bio: string;
 }
 
-const MemberBio: React.FC<MemberBioProps> = ({ bio }) => {
+export const MemberBio: React.FC<MemberBioProps> = ({ bio }) => {
     return (
         <>
             {bio !== '' && (
-                <div className="author-bio-card card">
-                    <h3 className="author-bio">
+                <div className={`${styles['author-bio-card']} ${styles.card}`}>
+                    <h3 className={styles['author-bio']}>
                         <q>{bio}</q>
                     </h3>
                 </div>
             )}
         </>)
 }
-
-export default MemberBio

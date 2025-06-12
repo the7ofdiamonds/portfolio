@@ -78,7 +78,7 @@ export const TheProcess: React.FC<ProcessProps> = ({ project, projectQuery }) =>
     <>
       {hasContent && (
         <div className={`${styles['project-section'], styles['project-process']}`} id="project_process">
-          <h2 className="title">the process</h2>
+          <h2 className={styles.title}>the process</h2>
 
           {status && <ProjectStatusComponent status={status} />}
 

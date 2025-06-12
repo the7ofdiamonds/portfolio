@@ -4,21 +4,23 @@ import ProjectDescription from './ProjectDescription';
 
 import { Project } from '@/model/Project';
 
+import styles from './ProjectCard.module.scss';
+
 interface ProjectCardProps {
     project: Project
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     const { title, description, solution, subtitle } = project;
 
     return (
-        <div className="project-card card">
+        <div className={`${styles['project-card']} ${styles.card}`}>
             <h2>{title}</h2>
 
             {solution && solution.gallery && Array.isArray(solution.gallery.images) &&
                 solution.gallery.images.length > 0 ? (
                 <img
-                    className="photo"
+                    className={styles.photo}
                     src={solution.gallery.images[0].url}
                     alt={solution.gallery.images[0].title}
                 />
@@ -32,5 +34,3 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         </div>
     )
 }
-
-export default ProjectCard

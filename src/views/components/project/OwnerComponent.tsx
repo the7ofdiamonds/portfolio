@@ -36,7 +36,7 @@ export const OwnerComponent: React.FC<OwnerComponentProps> = ({ project }) => {
         <>
             {avatarURL && name &&
                 <div className={styles['project-owner']}>
-                    <h2 className="title">project owner</h2>
+                    <h2 className={styles.title}>project owner</h2>
 
                     <button
                         className="organizations-button"

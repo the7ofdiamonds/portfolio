@@ -15,7 +15,8 @@ fs.emptyDirSync(path.resolve(__dirname, 'dist'));
 export default defineConfig({
   plugins: [
     cssInjectedByJsPlugin(),
-    dts({ insertTypesEntry: true, outDir: 'dist/types' })],
+    dts({ insertTypesEntry: true, outDir: 'dist/types' }),
+  ],
   build: {
     cssCodeSplit: true,
     sourcemap: true,
@@ -28,5 +29,10 @@ export default defineConfig({
     rollupOptions: rollupOptions,
     watch: {},
     minify: false,
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
   },
 });

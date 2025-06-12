@@ -2,6 +2,8 @@ import React from 'react'
 
 import { DocumentURL } from '@/model/DocumentURL';
 
+import styles from './Document.module.scss';
+
 interface DocumentComponentProps {
     documentURL: DocumentURL;
 }
@@ -10,7 +12,7 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({ documentUR
     if (!documentURL?.url) return null;
 
     return (
-        <main>
+        <main className={styles.main}>
             <iframe
                 id="pdf_viewer"
                 src={`${documentURL.url}#view=fit`}
@@ -28,3 +30,5 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({ documentUR
         </main>
     );
 };
+
+export { styles }

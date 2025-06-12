@@ -48,9 +48,7 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
   const [messageType, setMessageType] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  const { isAuthenticated } = useAppSelector(
-    (state) => state.auth
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
     if (development

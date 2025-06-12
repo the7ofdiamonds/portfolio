@@ -8,7 +8,7 @@ interface HeaderTaxonomyComponentProps {
     skill: Taxonomy
 }
 
-const HeaderTaxonomyComponent: React.FC<HeaderTaxonomyComponentProps> = ({ skill }) => {
+export const HeaderTaxonomyComponent: React.FC<HeaderTaxonomyComponentProps> = ({ skill }) => {
     return (
         <>
             <h1 className="page-title">
@@ -18,5 +18,3 @@ const HeaderTaxonomyComponent: React.FC<HeaderTaxonomyComponentProps> = ({ skill
         </>
     )
 }
-
-export default HeaderTaxonomyComponent

@@ -49,7 +49,7 @@ export const TheProblem: React.FC<ProblemProps> = ({ project }) => {
       {hasContent &&
         <>
           <div className={`${styles['project-section'], styles['project-problem']}`} id="project_problem">
-            <h2 className="title">the problem</h2>
+            <h2 className={styles.title}>the problem</h2>
 
             {gallery && gallery.images && < GalleryComponent title={'Problem'} gallery={gallery.images} />}
 

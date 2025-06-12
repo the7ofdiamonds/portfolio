@@ -12,6 +12,8 @@ import { StatusBar } from './status_bar/StatusBar';
 
 import { ImageComponent } from '@/views/components/ImageComponent';
 
+import styles from './Login.module.scss';
+
 export const LoginComponent: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -58,8 +60,8 @@ export const LoginComponent: React.FC = () => {
 
   return (
     <>
-      <div className="providers">
-        <button className="login-button google" onClick={handleGitHubSignIn}>
+      <div className={styles.providers}>
+        <button className={`${styles['login-button'], styles.google}`} onClick={handleGitHubSignIn}>
           <ImageComponent image={new Image({ title: 'GitHub', url: '', class_name: 'fa fa-github fa-fw' })} />
           <h3>Login with GitHub</h3>
         </button>

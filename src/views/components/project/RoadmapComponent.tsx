@@ -16,8 +16,8 @@ export const RoadmapComponent: React.FC<RoadmapProps> = ({ roadmap }) => {
                     <h4 className={styles.title}>Roadmap</h4>
 
                     {roadmap.path.map((feature) => (
-                        <div className='feature' key={feature.id}>
-                            <h3 className='feature-version'>
+                        <div className={styles.feature} key={feature.id}>
+                            <h3 className={styles['feature-version']}>
                                 v{feature.version ? feature.version.toString() : '1.0.0'}
                             </h3>
                             <h3>-</h3>

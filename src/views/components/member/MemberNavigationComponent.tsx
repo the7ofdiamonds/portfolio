@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styles from './Member.module.scss';
+
 interface MemberNavigationComponentProps {
   resume: string;
   portfolioElement: string;
@@ -35,17 +37,19 @@ const MemberNavigationComponent: React.FC<MemberNavigationComponentProps> = ({ r
   return (
     <>
       {resume != null || portfolioElement != null ? (
-        <nav className="author-nav">
+        <nav className={styles['author-nav']}>
           {portfolioElement ? (
             <>
-              <button onClick={() => scrollToSection('author_intro')} id="founder_button">
-                <h3 className="title">intro</h3>
+              <button
+                onClick={() => scrollToSection('author_intro')}
+                id="founder_button">
+                <h3 className={styles.title}>intro</h3>
               </button>
 
               <button
                 onClick={() => scrollToSection('seven_tech_portfolio')}
                 id="portfolio_button">
-                <h3 className="title">PORTFOLIO</h3>
+                <h3 className={styles.title}>PORTFOLIO</h3>
               </button>
             </>
           ) : (
@@ -54,7 +58,7 @@ const MemberNavigationComponent: React.FC<MemberNavigationComponentProps> = ({ r
 
           {resume ? (
             <button onClick={openResumeInNewTab}>
-              <h3 className="title">RÉSUMÉ</h3>
+              <h3 className={styles.title}>RÉSUMÉ</h3>
             </button>
           ) : (
             ''

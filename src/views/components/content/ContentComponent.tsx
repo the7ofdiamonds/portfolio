@@ -5,6 +5,8 @@ import { getRepoFile } from '@/controllers/githubSlice';
 import { ContentURL } from '@/model/ContentURL';
 import { RepoContentQuery } from '@/model/RepoContentQuery';
 
+import styles from './Content.module.scss';
+
 interface ContentComponentProps {
   title: string | null;
   content: ContentURL;
@@ -65,9 +67,9 @@ export const ContentComponent: React.FC<ContentComponentProps> = ({ title, conte
   return (
     <>
       {html && html != "" && (
-        <div className='content'>
-          {title && <h4 className='title'>{title}</h4>}
-          <div className='content-html' dangerouslySetInnerHTML={{ __html: html }}></div>
+        <div className={styles.content}>
+          {title && <h4 className={styles.title}>{title}</h4>}
+          <div className={styles['content-html']} dangerouslySetInnerHTML={{ __html: html }}></div>
         </div>
       )}
     </>

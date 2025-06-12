@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-import { PortfolioComponent } from './components/portfolio/PortfolioComponent';
+import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 import { Account } from '@/model/Account';
-
-import { setMessage, setMessageType, setShowStatusBar } from '@/controllers/messageSlice';
-import { Project } from '@/model/Project';
 import { Portfolio } from '@/model/Portfolio';
 import { Skills } from '@/model/Skills';
+
+import { setMessage, setMessageType, setShowStatusBar } from '@/controllers/messageSlice';
+
+import styles from '@/views/components/portfolio/Portfolio.module.scss';
 
 interface PortfolioProps {
   account: Account;
@@ -69,7 +70,7 @@ export const PortfolioPage: React.FC<PortfolioProps> = ({ account }) => {
   }, [account.skills]);
 
   return (
-    <section className="portfolio">
+    <section className={styles.section}>
       <>
         <PortfolioComponent portfolio={portfolio} skills={skills} />
       </>

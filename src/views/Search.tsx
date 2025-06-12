@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import type { AppDispatch, RootState } from '../model/store';
-import { Portfolio } from '../model/Portfolio';
+import type { AppDispatch, RootState } from '@/model/store';
+import { Portfolio } from '@/model/Portfolio';
 import { Skills } from '@/model/Skills';
 import { User } from '@/model/User';
 import { Project } from '@/model/Project';
 
 import { getPortfolioDetails } from '@/controllers/portfolioSlice';
 
-import { ProjectsComponent } from './components/portfolio/ProjectsComponent';
-import { SkillsComponent } from './components/SkillsComponent';
+import { ProjectsComponent } from '@/views/components/portfolio/ProjectsComponent';
+import { SkillsComponent } from '@/views/components/SkillsComponent';
 
-import HeaderTaxonomyComponent from '@/views/components/header/HeaderTaxonomyComponent';
+import { HeaderTaxonomyComponent } from '@/views/components/header/HeaderTaxonomyComponent';
+
+import styles from '@/views/components/search/Search.module.scss';
 
 interface SearchProps {
   user: User;
@@ -69,7 +71,7 @@ export const Search: React.FC<SearchProps> = ({ user, skills }) => {
   }, [portfolio, taxonomy, term]);
 
   return (
-    <section className="search" id="top">
+    <section className={styles.section} id="top">
       <>
         {taxonomy && term && <HeaderTaxonomyComponent skill={skills.filter(taxonomy, term)} />}
 
