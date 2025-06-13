@@ -95,61 +95,43 @@ export * from './views/Search';
 export * from './views/SkillAdd';
 
 export * from './views/components/ButtonIconExternal';
-// export * as checkListStyles from './views/components/CheckList.module.scss';
 export * from './views/components/CheckListComponent';
-// export * as colorsStyles from './views/components/ContactBar.module.scss';
 export * from './views/components/Colors';
-// export * as contactBarStyles from './views/components/ContactBar.module.scss';
 export * from './views/components/ContactBar';
 export * from './views/components/DescriptionComponent';
-// export * as documentStyles from './views/components/Document.module.scss';
 export * from './views/components/DocumentComponent';
-// export * as galleryStyles from './views/components/Document.module.scss';
 export * from './views/components/GalleryComponent';
-// export * as iconStyles from './views/components/Icon.module.scss';
 export * from './views/components/IconComponent';
-// export * as imageStyles from './views/components/Image.module.scss';
 export * from './views/components/ImageComponent';
-// export * as loadingStyles from './views/components/Loading.module.scss';
 export * from './views/components/LoadingComponent';
-// export * as loginStyles from './views/components/Login.module.scss';
 export * from './views/components/LoginComponent';
-// export * as modalStyles from './views/components/Modal.module.scss';
 export * from './views/components/Modal';
-// export * as organizationsStyles from './views/components/Organizations.module.scss';
 export * from './views/components/OrganizationsComponent';
-// export * as projectCardStyles from './views/components/ProjectCard.module.scss';
 export * from './views/components/ProjectCard';
-// export * as projectDescriptionStyles from './views/components/ProjectDescription.module.scss';
-export * from './views/components/ProjectDescription';
-// export * as documentStyles from './views/components/Document.module.scss';
+
+export * from './views/components/project/ProjectDescription';
 export * from './views/components/ProjectSkillsBar';
-// export * as skillsStyles from './views/components/Skills.module.scss';
+
 export * from './views/components/SkillsComponent';
 
 export * from './views/components/StoryComponent';
 export * from './views/components/TaxList';
 export * from './views/components/TaxListIcon';
 
-// export * as addStyles from './views/components/add/Add.module.scss';
 export * from './views/components/add/AddFrameworks';
 export * from './views/components/add/AddLanguages';
 export * from './views/components/add/AddProjectTypes';
 export * from './views/components/add/AddTechnologies';
 
-// export * as editStyles from './views/components/edit/Edit.module.scss';
 export * from './views/components/edit/EditProject';
 
-// export * as footerStyles from './views/components/Footer.module.scss';
 export * from './views/components/footer/FooterBar';
 export * from './views/components/footer/FooterComponent';
 
-// export * as headerStyles from './views/components/header/Header.module.scss';
 export * from './views/components/header/HeaderComponent';
 export * from './views/components/header/HeaderOrganizationComponent';
 export * from './views/components/header/HeaderTaxonomyComponent';
 
-// export * as memberStyles from './views/components/member/Member.module.scss';
 export * from './views/components/member/MemberBio';
 export * from './views/components/member/MemberCard';
 export * from './views/components/member/MemberComponent';
@@ -159,15 +141,12 @@ export * from './views/components/member/MemberKnowledgeComponent';
 export * from './views/components/member/MemberNavigationComponent';
 export * from './views/components/member/MemberPic';
 
-// export * as organizationStyles from './views/components/organization/Organization.module.scss';
 export * from './views/components/organization/OrganizationComponent';
 
-// export * as portfolioStyles from './views/components/portfolio/Portfolio.module.scss';
 export * from './views/components/portfolio/PortfolioComponent';
 export * from './views/components/portfolio/PortfolioProject';
 export * from './views/components/portfolio/ProjectsComponent';
 
-// export * as projectStyles from './views/components/project/Project.module.scss';
 export * from './views/components/project/Delivery';
 export * from './views/components/project/Design';
 export * from './views/components/project/Details';
@@ -185,18 +164,13 @@ export * from './views/components/project/TheProcess';
 export * from './views/components/project/TheSolution';
 export * from './views/components/project/Versions';
 
-// export * as searchStyles from './views/components/search/Search.module.scss';
-
-// export * as statusBarStyles from './views/components/status_bar/StatusBar.module.scss';
 export * from './views/components/status_bar/StatusBar';
 export * from './views/components/status_bar/StatusBarComponent';
 
-// export * as taskStyles from './views/components/task/Task.module.scss';
 export * from './views/components/task/TaskCheckbox';
 export * from './views/components/task/TaskComponent';
 export * from './views/components/task/TaskDescription';
 
-// export * as updateStyles from './views/components/update/Update.module.scss';
 export * from './views/components/update/UpdateDetails';
 export * from './views/components/update/process/UpdateProcess';
 export * from './views/components/update/process/UpdateDelivery';
@@ -216,4 +190,23 @@ export * from './views/components/update/components/UpdateProjectVersions';
 export * from './views/components/update/components/UpdateSkills';
 export * from './views/components/update/components/UpdateStatus';
 
-// export * as userStyles from './views/components/user/User.module.scss';
+export * from './views/components/CheckListComponent';
+export * from './views/components/Colors';
+export * from './views/components/ContactBar';
+export * from './views/components/DescriptionComponent';
+export * from './views/components/DocumentComponent';
+export * from './views/components/GalleryComponent';
+export * from './views/components/IconComponent';
+export * from './views/components/ImageComponent';
+export * from './views/components/LoadingComponent';
+export * from './views/components/Modal';
+export * from './views/components/OrganizationsComponent';
+export * from './views/components/ProjectCard';
+export * from './views/components/ProjectSkillsBar';
+export * from './views/components/SkillsComponent';
+
+
+
+
+
+

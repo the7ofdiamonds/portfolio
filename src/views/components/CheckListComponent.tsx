@@ -53,5 +53,3 @@ export const CheckListComponent: React.FC<CheckListProps> = ({ checkList, query 
     </>
   );
 }
-
-export { styles }

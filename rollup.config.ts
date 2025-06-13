@@ -10,6 +10,8 @@ const rollupConfig: RollupOptions = {
   input: 'src/index.ts',
   external: [
     ...Object.keys(pkg.dependencies || {}),
+    ...Object.keys(pkg.devDependencies || {}),
+    ...Object.keys(pkg.optionalDependencies || {}),
     ...Object.keys(pkg.peerDependencies || {}),
   ],
   output: {

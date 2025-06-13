@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { ProjectDetailsComponent } from '@/views/components/project/Details';
-import { DescriptionComponent } from '@/views/components/DescriptionComponent';
+import { ProjectDescription } from '@/views/components/project/ProjectDescription';
 import { TheSolution } from '@/views/components/project/TheSolution';
 import { TheProcess } from '@/views/components/project/TheProcess';
 import { TheProblem } from '@/views/components/project/TheProblem';
@@ -119,7 +119,7 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
 
         {subtitle && <h2 className={styles.subtitle}>{subtitle}</h2>}
 
-        {description && <DescriptionComponent description={description} />}
+        {description && <ProjectDescription description={description} />}
 
         {solution && <TheSolution project={project} />}
 

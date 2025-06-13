@@ -13,7 +13,7 @@ import { messageSlice } from '@/controllers/messageSlice.js';
 import { updateSlice } from '@/controllers/updateSlice.js';
 import { authSlice } from '@/controllers/authSlice.js';
 import databaseSlice from '@/controllers/databaseSlice.js';
-import organizationSlice from '@/controllers/organizationSlice.js';
+import { organizationSlice } from '@/controllers/organizationSlice.js';
 import accountSlice from '@/controllers/accountSlice.js';
 
 export const store = configureStore({

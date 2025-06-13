@@ -3,7 +3,7 @@ import { Repos } from './Repos';
 
 import { GitHubRepoQuery, GitHubRepoQueryObject } from './GitHubRepoQuery';
 import { RepoObject, RepositoryGQL } from './Repo';
-import { Account, AccountObject } from '@/model/Account';
+import { Account, AccountObject } from './Account';
 import { Portfolio, PortfolioObject } from './Portfolio';
 import { Skills } from './Skills';
 

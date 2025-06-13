@@ -4,7 +4,7 @@ import TaxListIcon from '../TaxListIcon';
 
 import { ProjectSkills } from '@/model/ProjectSkills';
 
-import styles from './Project.module.scss';
+import styles from './ProjectSkills.module.scss';
 
 interface ProjectSkillsComponentProps {
     skills: ProjectSkills;

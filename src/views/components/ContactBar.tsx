@@ -136,5 +136,3 @@ export const ContactBar: React.FC<ContactBarProps> = ({ contactMethods, location
         }
     </div>)
 }
-
-export { styles }

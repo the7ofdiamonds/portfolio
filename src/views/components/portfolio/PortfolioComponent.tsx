@@ -17,27 +17,17 @@ interface PortfolioComponentProps {
 }
 
 export const PortfolioComponent: React.FC<PortfolioComponentProps> = ({ portfolio, skills }) => {
-  const [projects, setProjects] = useState<Set<Project>>(new Set());
-
-  useEffect(() => {
-    if (portfolio && portfolio.projects instanceof Set && portfolio.projects.size > 0) {
-      setProjects(portfolio.projects);
-    }
-  }, [portfolio]);
-
   return (
     <>
-      {projects && projects.size > 0 ? (
+      {portfolio && portfolio.projects.size > 0 ? (
         <main className={styles.main}>
           <h1 className="title">portfolio</h1>
 
-          <ProjectsComponent projects={projects} />
+          <ProjectsComponent projects={portfolio.projects} />
 
-          <SkillsComponent projectSkills={skills} />
+          <SkillsComponent skills={skills} />
         </main>
       ) : <LoadingComponent />}
     </>
   );
 }
-
-export { styles }

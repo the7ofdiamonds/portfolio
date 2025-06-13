@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { OrganizationComponent } from '@/views/components/organization/OrganizationComponent';
@@ -9,7 +8,7 @@ import { ContactBar } from '@/views/components/ContactBar';
 
 import { getOrganization } from '@/controllers/organizationSlice';
 
-import type { AppDispatch, RootState } from '@/model/store';
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
 import { Organization } from '@/model/Organization';
 import { Portfolio } from '@/model/Portfolio';
 import { Skills } from '@/model/Skills';
@@ -17,12 +16,12 @@ import { Skills } from '@/model/Skills';
 import styles from '@/views/components/organization/Organization.module.scss';
 
 export const OrganizationPage: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
     const { login } = useParams<string>();
 
-    const { organizationObject } = useSelector(
-        (state: RootState) => state.organization);
+    const { organizationObject } = useAppSelector(
+        (state) => state.organization);
 
     const [organization, setOrganization] = useState<Organization | null>(null);
     const [portfolio, setPortfolio] = useState<Portfolio | null>(null);

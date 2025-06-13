@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ProjectDescription from './ProjectDescription';
+import { DescriptionComponent } from './DescriptionComponent';
 
 import { Project } from '@/model/Project';
 
@@ -30,7 +30,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
             {subtitle && <h3>{subtitle}</h3>}
 
-            {description && <ProjectDescription description={description} />}
+            {description && <DescriptionComponent description={description} />}
         </div>
     )
 }

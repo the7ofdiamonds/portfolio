@@ -1,8 +1,5 @@
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
-import type { RootState } from '../model/store';
 
 import { getAuthorization } from '@/services/Config';
 
@@ -10,11 +7,13 @@ import { LoginComponent } from './components/LoginComponent';
 
 import { setIsAdmin, setIsAuthenticated } from '@/controllers/authSlice';
 
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
+
 export const LoginPage: React.FC = () => {
     const navigate = useNavigate();
 
-    const { isAdmin, isAuthenticated } = useSelector(
-        (state: RootState) => state.auth
+    const { isAdmin, isAuthenticated } = useAppSelector(
+        (state) => state.auth
     );
 
     useEffect(() => {

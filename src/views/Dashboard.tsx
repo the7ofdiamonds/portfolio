@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 
-import type { AppDispatch, RootState } from '@/model/store';
 import { User } from '@/model/User';
 
 import { logout } from '@/controllers/authSlice';
 import { setMessage, setMessageType, setShowStatusBar } from '@/controllers/messageSlice';
 
 import { checkHeaders } from '@/utilities/Headers';
+
+import { useAppDispatch } from '@/model/hooks';
 
 import styles from '@/views/components/dashboard/Dashboard.module.scss';
 
@@ -18,7 +18,7 @@ import styles from '@/views/components/dashboard/Dashboard.module.scss';
 
 export const DashboardPage: React.FC = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (!checkHeaders()) {

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import type { AppDispatch, RootState } from '@/model/store';
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
 import { Portfolio } from '@/model/Portfolio';
 import { Skills } from '@/model/Skills';
 import { User } from '@/model/User';
@@ -23,12 +22,12 @@ interface SearchProps {
 }
 
 export const Search: React.FC<SearchProps> = ({ user, skills }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const { taxonomy, term } = useParams<string>();
 
-  const { portfolioLoading, portfolioErrorMessage, portfolioObject } = useSelector(
-    (state: RootState) => state.portfolio
+  const { portfolioLoading, portfolioErrorMessage, portfolioObject } = useAppSelector(
+    (state) => state.portfolio
   );
 
   const [portfolio, setPortfolio] = useState<Portfolio | null>(user.portfolio);
@@ -81,7 +80,7 @@ export const Search: React.FC<SearchProps> = ({ user, skills }) => {
           <ProjectsComponent projects={projects} />
         }
 
-        <SkillsComponent projectSkills={user.skills ?? skills} />
+        <SkillsComponent skills={user.skills ?? skills} />
       </>
     </section>
   );

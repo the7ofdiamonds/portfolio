@@ -4,6 +4,8 @@ import { Taxonomy } from '@/model/Taxonomy';
 
 import { IconComponent } from './IconComponent';
 
+import styles from './ProjectSkillsBar.module.scss';
+
 interface ProjectSkillsProp {
   skillsSet: Set<Taxonomy>;
 }
@@ -17,7 +19,7 @@ const ProjectSkills: React.FC<ProjectSkillsProp> = ({ skillsSet }) => {
 
   const handleClick = (skill: Taxonomy) => {
     handleSkills();
-    window.location.href = `/#/projects/${skill.path}/${skill.id}`;
+    window.location.href = `/projects/${skill.path}/${skill.id}`;
   };
 
   const handleSkills = () => {
@@ -31,19 +33,19 @@ const ProjectSkills: React.FC<ProjectSkillsProp> = ({ skillsSet }) => {
   return (
     <>
       {skills && skills.size > 0 && (
-        <div className="project-skills-bar">
+        <div className={styles['project-skills-bar']}>
           {Array.from(skills).map((skill, index) => (
-            <div className="icon" key={index}>
+            <div className={styles.icon} key={index}>
               {skill.image &&
                 (skill.image.className !== '' || skill.image.url !== '')
                 ? <button
                   key={index}
-                  className="skills-button"
+                  className={styles['skills-button']}
                   onClick={() => handleClick(skill)}>
                   <IconComponent imageClass={skill.image} />
                 </button> : <button
                   key={index}
-                  className="tag"
+                  className={styles.tag}
                   onClick={() => handleClick(skill)}>
                   <h6>{skill.title}</h6>
                 </button>}

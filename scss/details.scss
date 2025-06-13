@@ -1,3 +1,5 @@
+@use './variables.scss';
+
 details {
   box-shadow: var(--box-shadow);
   padding: 1rem;

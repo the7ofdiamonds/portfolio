@@ -89,6 +89,4 @@ const organizationSliceOptions: CreateSliceOptions<OrganizationState> = {
   },
 };
 
-const organizationSlice = createSlice(organizationSliceOptions);
-
-export default organizationSlice;
+export const organizationSlice = createSlice(organizationSliceOptions);

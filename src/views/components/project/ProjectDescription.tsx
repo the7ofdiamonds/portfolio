@@ -1,12 +1,12 @@
 import React from 'react';
 
-import styles from './Description.module.scss';
+import styles from './ProjectDescription.module.scss';
 
 interface ProjectDescriptionProps {
   description: string;
 }
 
-const ProjectDescription: React.FC<ProjectDescriptionProps> = ({ description }) => {
+export const ProjectDescription: React.FC<ProjectDescriptionProps> = ({ description }) => {
 
   return (
     <>
@@ -18,5 +18,3 @@ const ProjectDescription: React.FC<ProjectDescriptionProps> = ({ description }) 
     </>
   );
 }
-
-export default ProjectDescription;

@@ -30,5 +30,3 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({ documentUR
         </main>
     );
 };
-
-export { styles }
