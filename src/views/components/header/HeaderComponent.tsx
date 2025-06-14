@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { User } from '@/model/User';
 
+import styles from './Header.module.scss';
+
 interface HeaderComponentProps {
   user: User | null;
 }
@@ -26,72 +28,72 @@ export const HeaderComponent: React.FC<HeaderComponentProps> = ({ user }) => {
 
   return (
     <>
-      <header>
-        <div className="header">
-          <div className="top">
-            <div className="leftSide">
-              <div className="auth"></div>
+      <header className={styles.header}>
+        <div className={styles.header}>
+          <div className={styles.top}>
+            <div className={styles.leftSide}>
+              <div className={styles.auth}></div>
 
-              <div className="left-menu" id="left-menu">
+              <div className={styles['left-menu']} id="left-menu">
                 <a href="/#/about" onClick={toggleMenu}>
-                  <h2 className="title">ABOUT</h2>
+                  <h2 className={styles.title}>ABOUT</h2>
                 </a>
 
                 <a href="/#/portfolio" onClick={toggleMenu}>
-                  <h2 className="title">PORTFOLIO</h2>
+                  <h2 className={styles.title}>PORTFOLIO</h2>
                 </a>
               </div>
             </div>
 
-            <div className="center">
+            <div className={styles.center}>
               <a href="/#/">
-                <h1 className="header-title">{name}</h1>
+                <h1 className={styles['header-title']}>{name}</h1>
               </a>
             </div>
 
-            <div className="rightSide">
-              <div className="hamburger" id="toggle" onClick={toggleMenu}>
-                <h1 className="open" id="open">
+            <div className={styles.rightSide}>
+              <div className={styles.hamburger} id="toggle" onClick={toggleMenu}>
+                <h1 className={styles.open} id="open">
                   III
                 </h1>
 
-                <h1 className="close" id="close">
+                <h1 className={styles.close} id="close">
                   X
                 </h1>
               </div>
 
-              <div className="right-menu" id="right-menu">
+              <div className={styles['right-menu']} id="right-menu">
                 <a href="/#/resume" onClick={toggleMenu}>
-                  <h2 className="title">RESUME</h2>
+                  <h2 className={styles.title}>RESUME</h2>
                 </a>
                 <a href="/#/contact" onClick={toggleMenu}>
-                  <h2 className="title">CONTACT</h2>
+                  <h2 className={styles.title}>CONTACT</h2>
                 </a>
               </div>
             </div>
           </div>
 
           {dropdown == 'show' && (
-            <nav className="dropdown" id="dropdown">
+            <nav className={styles.dropdown} id="dropdown">
               <ul className="links">
                 <li>
                   <a href="/#/about" onClick={toggleMenu}>
-                    <h2 className="title">ABOUT</h2>
+                    <h2 className={styles.title}>ABOUT</h2>
                   </a>
                 </li>
                 <li>
                   <a href="/#/portfolio" onClick={toggleMenu}>
-                    <h2 className="title">PORTFOLIO</h2>
+                    <h2 className={styles.title}>PORTFOLIO</h2>
                   </a>
                 </li>
                 <li>
                   <a href="/#/resume" onClick={toggleMenu}>
-                    <h2 className="title">RESUME</h2>
+                    <h2 className={styles.title}>RESUME</h2>
                   </a>
                 </li>
                 <li>
                   <a href="/#/contact" onClick={toggleMenu}>
-                    <h2 className="title">CONTACT</h2>
+                    <h2 className={styles.title}>CONTACT</h2>
                   </a>
                 </li>
               </ul>

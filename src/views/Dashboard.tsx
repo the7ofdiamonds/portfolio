@@ -49,7 +49,7 @@ export const DashboardPage: React.FC = () => {
     };
 
     return (
-        <section>
+        <section className={styles.section}>
             <h2 className={styles.title}>Dashboard</h2>
 
             {/* Add info from read me file on use */}

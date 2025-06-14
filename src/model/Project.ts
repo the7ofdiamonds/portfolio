@@ -142,21 +142,19 @@ export class Project extends Model {
     this.query = query;
   }
 
-  getTitle(id?: string): string {
+  getTitle(id: string | null): string {
     return id
       ? id
           .split('-')
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
           .join(' ')
-      : '';
+      : 'Untitled Project';
   }
 
   fromRepo(repo: Repo) {
     this.id = repo.id;
     this.name = repo.name;
-    this.title = this.title
-      ? this.title
-      : this.getTitle(this.name || 'Untitled Project');
+    this.title = this.title ? this.title : this.getTitle(this.name);
     this.description = repo.description;
 
     if (repo.owner) {
@@ -201,7 +199,7 @@ export class Project extends Model {
   }
 
   fromDocumentData(data: ProjectDataObject) {
-    this.title = data?.title ? data.title : this.id;
+    this.title = data?.title ? data.title : this.getTitle(this.name);
 
     if (data?.solution) {
       this.solution ? this.solution : (this.solution = new ProjectSolution());

@@ -1,3 +1,8 @@
+@use './section.scss';
+@use './main.scss';
+@use './title.scss';
+@use './content.scss';
+
 @use './checklist.scss';
 @use './colors.scss';
 @use './delivery.scss';
@@ -18,7 +23,3 @@
 
 @use './tax_list.scss';
 @use './error_page.scss';
-@use './section.scss';
-@use './main.scss';
-@use './content.scss';
-@use './title.scss';

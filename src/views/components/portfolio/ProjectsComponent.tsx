@@ -11,7 +11,6 @@ interface ProjectsComponentProps {
 }
 
 export const ProjectsComponent: React.FC<ProjectsComponentProps> = ({ projects }) => {
-
   return (
     <>
       <div className={styles.projects}>

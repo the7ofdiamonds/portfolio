@@ -40,77 +40,77 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
   const [query, setQuery] = useState<ProjectQuery | null>(null);
 
   useEffect(() => {
-    if (project?.title) {
+    if (project && project.title) {
       setTitle(project.title)
     }
   }, [project?.title]);
 
   useEffect(() => {
-    if (project?.subtitle) {
+    if (project && project.subtitle) {
       setSubtitle(project.subtitle)
     }
   }, [project?.subtitle]);
 
   useEffect(() => {
-    if (project?.description) {
+    if (project && project.description) {
       setDescription(project.description)
     }
   }, [project?.description]);
 
   useEffect(() => {
-    if (project?.solution) {
+    if (project && project.solution) {
       setSolution(project.solution)
     }
   }, [project?.solution]);
 
   useEffect(() => {
-    if (account.skills) {
+    if (account?.skills) {
       setSkills(account.skills)
     }
-  }, [account.skills]);
+  }, [account?.skills]);
 
   useEffect(() => {
     if (skills && project.process?.development?.skills) {
       setProjectSkills(skills.show(project.process.development.skills))
     }
-  }, [account.skills]);
+  }, [account?.skills]);
 
   useEffect(() => {
-    if (project?.process) {
+    if (project && project.process) {
       setProcess(project.process)
     }
   }, [project?.process]);
 
   useEffect(() => {
-    if (project?.process?.development && projectSkills) {
+    if (project && project.process && project.process.development && projectSkills) {
       project.process.development.setSkills(projectSkills)
       setProcess(project.process)
     }
   }, [project?.process?.development, projectSkills]);
 
   useEffect(() => {
-    if (project?.details) {
+    if (project && project.details) {
       setDetails(project.details)
     }
   }, [project?.details]);
 
   useEffect(() => {
-    if (project?.problem) {
+    if (project && project.problem) {
       setProblem(project.problem)
     }
   }, [project?.problem]);
 
   useEffect(() => {
-    if (project?.owner) {
+    if (project && project.owner) {
       setOwner(project.owner)
     }
   }, [project?.owner]);
 
   useEffect(() => {
-    if (project.query) {
+    if (project && project.query) {
       setQuery(project.query)
     }
-  }, [project.query]);
+  }, [project?.query]);
 
   return (
     <>

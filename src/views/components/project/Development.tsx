@@ -55,7 +55,7 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
       && development.versionsList) {
       setVersions(development.versionsList)
     }
-  }, [development.versionsList]);
+  }, [development?.versionsList]);
 
   useEffect(() => {
     if (solution && solution?.features) {
@@ -69,14 +69,14 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
       && development.contentURL.path === 'Development.md') {
       setContent(development.contentURL)
     }
-  }, [development.contentURL]);
+  }, [development?.contentURL]);
 
   useEffect(() => {
     if (development
       && development.checkList) {
       setCheckList(development.checkList)
     }
-  }, [development.checkList]);
+  }, [development?.checkList]);
 
   useEffect(() => {
     if (projectQuery) {
@@ -89,14 +89,14 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
       && development.skills) {
       setSkills(development.skills)
     }
-  }, [development.skills]);
+  }, [development?.skills]);
 
   useEffect(() => {
     if (development
       && development.repoURL) {
       setRepoURL(development.repoURL)
     }
-  }, [development.repoURL]);
+  }, [development?.repoURL]);
 
   useEffect(() => {
     if (!isAuthenticated) {

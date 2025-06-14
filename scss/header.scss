@@ -3,6 +3,7 @@
 @use './hamburger_menu.scss';
 @use './header_tablet.scss';
 @use './header_desktop.scss';
+@use './title.scss';
 
 header {
   grid-area: Navigation;
