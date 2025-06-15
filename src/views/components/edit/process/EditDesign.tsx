@@ -5,12 +5,12 @@ import { Gallery } from '@/model/Gallery';
 import { CheckList } from '@/model/CheckList';
 import { Color } from '@/model/Color';
 
-import { UpdateCheckList } from '@/views/components/update/components/UpdateCheckList';
-import { UpdateGallery } from '@/views/components/update/components/UpdateGallery';
-
-import { EditColorsList } from '@/views/components/edit/components/EditColorsList';
-
+import { EditGallery } from '../components/gallery/EditGallery';
+import { EditColorsList } from '@/views/components/edit/components/colors/EditColorsList';
+import { EditCheckList } from '@/views/components/edit/components/check_list/EditCheckList';
 import { StatusBar } from '@/views/components/status_bar/StatusBar';
+
+import styles from './EditProcess.module.scss';
 
 interface EditDesignProps {
   project: Project;
@@ -72,14 +72,14 @@ export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
   }
 
   return (
-    <div className='update' id='update_design'>
-      <h2 className="title">design</h2>
+    <div className={styles.edit} id='edit_design'>
+      <h2 className={styles.title}>design</h2>
 
-      <UpdateCheckList location='design' checkList={checkList} />
+      <EditCheckList location='design' checkList={checkList} />
 
       <br />
 
-      <UpdateGallery location='design' gallery={gallery} />
+      <EditGallery location='design' gallery={gallery} />
 
       <br />
 
@@ -87,12 +87,12 @@ export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
 
       <hr />
 
-      <div className="form-item-flex">
-        <label htmlFor="design_content_url">Design Content URL:</label>
-        <input type="text" name='design_content_url' value={content} onChange={handleDesignContentURLChange} />
+      <div className={styles['form-item-flex']}>
+        <label className={styles.label} htmlFor="design_content_url">Design Content URL:</label>
+        <input className={styles.input} type="text" name='design_content_url' value={content} onChange={handleDesignContentURLChange} />
       </div>
 
-      <button onClick={change(project)}>
+      <button className={styles.button} onClick={change(project)}>
         <h3>SAVE DESIGN</h3>
       </button>
 

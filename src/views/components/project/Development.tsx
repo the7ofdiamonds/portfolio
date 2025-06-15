@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { ProjectSkillsComponent } from '@/views/components/project/ProjectSkillsComponent';
+import { SkillsComponent } from '../SkillsComponent';
 import { CheckListComponent } from '@/views/components/CheckListComponent';
 import { Versions } from '@/views/components/project/Versions';
 import { RoadmapComponent } from '@/views/components/project/RoadmapComponent';
@@ -139,7 +139,7 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
 
         {checkList && query && <CheckListComponent checkList={checkList} query={query} />}
 
-        {skills && <ProjectSkillsComponent skills={skills} />}
+        {skills && <SkillsComponent skills={skills} />}
 
         {repoURL && buttonTitle &&
           <button className={styles.repo} onClick={handleSeeCode}>

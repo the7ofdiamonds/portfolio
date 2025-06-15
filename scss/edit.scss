@@ -1,1 +1,12 @@
 @use './section.scss';
+@use './title.scss';
+@use './form.scss';
+@use './input.scss';
+@use './buttons.scss';
+
+.edit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}

@@ -7,6 +7,8 @@ import { Contributor } from '@/model/Contributor';
 
 import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
+import styles from './Edit.module.scss';
+
 interface EditDetailsProps {
   project: Project;
   change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -123,33 +125,33 @@ export const EditDetails: React.FC<EditDetailsProps> = ({ project, change }) => 
 
   return (
     <>
-      <h2 className='title'>Details</h2>
+      <h2 className={styles.title}>Details</h2>
 
-      <form action="" id='update_details'>
-        <div className="form-item-flex">
-          <label htmlFor="privacy">Privacy:</label>
-          <select id="privacy" name='privacy' value={privacy ?? ''} onChange={handleChangeSelect}>
+      <form className={styles.form} action="" id='edit_details'>
+        <div className={styles['form-item-flex']}>
+          <label className={styles.label} htmlFor="privacy">Privacy:</label>
+          <select className={styles.select} id="privacy" name='privacy' value={privacy ?? ''} onChange={handleChangeSelect}>
             <option value={Privacy.Private}>Private</option>
             <option value={Privacy.Public}>Public</option>
           </select>
         </div>
 
-        <div className="form-item-flex">
-          <label htmlFor="client_id">Client ID:</label>
-          <input type="text" id='client_id' name='client_id' value={clientID} onChange={handleChange} />
+        <div className={styles['form-item-flex']}>
+          <label className={styles.label} htmlFor="client_id">Client ID:</label>
+          <input className={styles.input} type="text" id='client_id' name='client_id' value={clientID} onChange={handleChange} />
         </div>
 
-        <div className="form-item-flex">
-          <label htmlFor="content_url">Content URL:</label>
-          <input type="string" id="content_url" name="content_url" value={content} onChange={handleChange} />
+        <div className={styles['form-item-flex']}>
+          <label className={styles.label} htmlFor="content_url">Content URL:</label>
+          <input className={styles.input} type="string" id="content_url" name="content_url" value={content} onChange={handleChange} />
         </div>
 
-        <div className="form-item-flex">
-          <label htmlFor="story">Story URL:</label>
-          <input type="string" id="story" name="story" value={story} onChange={handleChange} />
+        <div className={styles['form-item-flex']}>
+          <label className={styles.label} htmlFor="story">Story URL:</label>
+          <input className={styles.input} type="string" id="story" name="story" value={story} onChange={handleChange} />
         </div>
 
-        <button onClick={change(project)}>
+        <button className={styles.button} onClick={change(project)}>
           <h3>SAVE DETAILS</h3>
         </button>
       </form>

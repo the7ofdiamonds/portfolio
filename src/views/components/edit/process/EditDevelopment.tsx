@@ -15,6 +15,8 @@ import { UpdateGallery } from '@/views/components/update/components/UpdateGaller
 
 import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
+import styles from './EditProcess.module.scss';
+
 interface EditDevelopmentProps {
   project: Project;
   change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -122,8 +124,8 @@ export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, chang
   }
 
   return (
-    <div className='update' id='update_development'>
-      <h2 className="title">development</h2>
+    <div className={styles.edit} id='edit_development'>
+      <h2 className={styles.title}>development</h2>
 
       <UpdateCheckList location='development' checkList={checkList} />
 
@@ -141,17 +143,17 @@ export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, chang
 
       <hr />
 
-      <div className="form-item-flex">
-        <label htmlFor="repo_url">Repo URL:</label>
-        <input type="text" name='repo_url' value={repoURL} onChange={handleRepoURLChange} />
+      <div className={styles['form-item-flex']}>
+        <label className={styles.label} htmlFor="repo_url">Repo URL:</label>
+        <input className={styles.input} type="text" name='repo_url' value={repoURL} onChange={handleRepoURLChange} />
       </div>
 
-      <div className="form-item-flex">
-        <label htmlFor="development_content_url">Development Content URL:</label>
-        <input type="text" name='development_content_url' value={content} onChange={handleDevelopmentContentURLChange} />
+      <div className={styles['form-item-flex']}>
+        <label className={styles.label} htmlFor="development_content_url">Development Content URL:</label>
+        <input className={styles.input} type="text" name='development_content_url' value={content} onChange={handleDevelopmentContentURLChange} />
       </div>
 
-      <button onClick={change(project)}>
+      <button className={styles.button} onClick={change(project)}>
         <h3>SAVE DEVELOPMENT</h3>
       </button>
 

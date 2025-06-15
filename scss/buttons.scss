@@ -1,4 +1,6 @@
-button,
+@use './variables.scss';
+
+.button,
 .search-submit {
   display: flex;
   align-items: center;

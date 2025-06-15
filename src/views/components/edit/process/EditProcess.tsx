@@ -9,6 +9,8 @@ import { EditDelivery } from '@/views/components/edit/process/EditDelivery';
 
 import { StatusBarComponent } from '@/views/components/status_bar/StatusBarComponent';
 
+import styles from './EditProcess.module.scss';
+
 interface EditProcessProps {
     project: Project;
     change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -16,8 +18,8 @@ interface EditProcessProps {
 
 export const EditProcess: React.FC<EditProcessProps> = ({ project, change }) => {
     return (
-        <div className='update' id='update_process'>
-            <h1 className='title'>process</h1>
+        <div className={styles.edit} id='edit_process'>
+            <h1 className={styles.title}>process</h1>
 
             <EditStatus project={project} />
 
@@ -35,7 +37,7 @@ export const EditProcess: React.FC<EditProcessProps> = ({ project, change }) => 
 
             <br />
 
-            <button onClick={change(project)}>
+            <button className={styles.button} onClick={change(project)}>
                 <h3>SAVE PROCESS</h3>
             </button>
 

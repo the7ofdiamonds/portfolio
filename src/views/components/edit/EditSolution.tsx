@@ -1,17 +1,18 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
-import { useAppSelector } from '@/model/hooks';
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
 import { Project } from '@/model/Project';
 import { ProjectSolution } from '@/model/ProjectSolution';
 import { Gallery } from '@/model/Gallery';
 import { Feature } from '@/model/Feature';
 import { ProjectURLs } from '@/model/ProjectURLs';
 
-import { UpdateFeatures } from '@/views/components/update/components/UpdateFeatures';
-import { UpdateProjectURL } from '@/views/components/update/components/UpdateProjectURL';
-import { UpdateGallery } from '@/views/components/update/components/UpdateGallery';
-
+import { EditFeatures } from '@/views/components/edit/components/features/EditFeatures';
+import { EditProjectURL } from '@/views/components/edit/components/project_url/EditProjectURL';
+import { EditGallery } from '@/views/components/edit/components/gallery/EditGallery';
 import { StatusBar } from '@/views/components/status_bar/StatusBar';
+
+import styles from './Edit.module.scss';
 
 interface EditSolutionProps {
   project: Project;
@@ -28,48 +29,48 @@ export const EditSolution: React.FC<EditSolutionProps> = ({ project, change }) =
   const [message, setMessage] = useState<string>('');
   const [messageType, setMessageType] = useState<string>('info');
 
-  useEffect(() => {
-    if (updatedSolutionGallery) {
-      if (project.solution) {
-        project.solution.setGallery(new Gallery(updatedSolutionGallery));
-      } else {
-        const solution = new ProjectSolution();
-        solution.setGallery(new Gallery(updatedSolutionGallery));
-        project.setSolution(solution);
-      }
-    }
-  }, [updatedSolutionGallery]);
+  // useEffect(() => {
+  //   if (updatedSolutionGallery) {
+  //     if (project.solution) {
+  //       project.solution.setGallery(new Gallery(updatedSolutionGallery));
+  //     } else {
+  //       const solution = new ProjectSolution();
+  //       solution.setGallery(new Gallery(updatedSolutionGallery));
+  //       project.setSolution(solution);
+  //     }
+  //   }
+  // }, [updatedSolutionGallery]);
 
-  useEffect(() => {
-    if (updatedFeatures) {
-      if (project.solution) {
-        project.solution.setFeatures(new Set(updatedFeatures.map((feature) => new Feature(feature))));
-      } else {
-        const solution = new ProjectSolution();
-        solution.setFeatures(new Set(updatedFeatures.map((feature) => new Feature(feature))));
-        project.setSolution(solution);
-      }
-    }
-  }, [updatedFeatures]);
+  // useEffect(() => {
+  //   if (updatedFeatures) {
+  //     if (project.solution) {
+  //       project.solution.setFeatures(new Set(updatedFeatures.map((feature) => new Feature(feature))));
+  //     } else {
+  //       const solution = new ProjectSolution();
+  //       solution.setFeatures(new Set(updatedFeatures.map((feature) => new Feature(feature))));
+  //       project.setSolution(solution);
+  //     }
+  //   }
+  // }, [updatedFeatures]);
 
-  useEffect(() => {
-    if (updatedProjectURLs &&
-      (updatedProjectURLs.homepage !== undefined || updatedProjectURLs.ios !== undefined || updatedProjectURLs.android !== undefined)) {
-      const updatedProjectURLsObject = {
-        homepage: { url: updatedProjectURLs.homepage },
-        ios: { url: updatedProjectURLs.ios },
-        android: { url: updatedProjectURLs.android }
-      }
+  // useEffect(() => {
+  //   if (updatedProjectURLs &&
+  //     (updatedProjectURLs.homepage !== undefined || updatedProjectURLs.ios !== undefined || updatedProjectURLs.android !== undefined)) {
+  //     const updatedProjectURLsObject = {
+  //       homepage: { url: updatedProjectURLs.homepage },
+  //       ios: { url: updatedProjectURLs.ios },
+  //       android: { url: updatedProjectURLs.android }
+  //     }
 
-      if (project.solution) {
-        project.solution.setProjectURLs(new ProjectURLs(updatedProjectURLsObject));
-      } else {
-        const solution = new ProjectSolution();
-        solution.setProjectURLs(new ProjectURLs(updatedProjectURLsObject));
-        project.setSolution(solution);
-      }
-    }
-  }, [updatedProjectURLs]);
+  //     if (project.solution) {
+  //       project.solution.setProjectURLs(new ProjectURLs(updatedProjectURLsObject));
+  //     } else {
+  //       const solution = new ProjectSolution();
+  //       solution.setProjectURLs(new ProjectURLs(updatedProjectURLsObject));
+  //       project.setSolution(solution);
+  //     }
+  //   }
+  // }, [updatedProjectURLs]);
 
   const handleSolutionContentURLChange = (e: ChangeEvent<HTMLInputElement>) => {
     try {
@@ -96,27 +97,27 @@ export const EditSolution: React.FC<EditSolutionProps> = ({ project, change }) =
   };
 
   return (
-    <div className='update' id='update_solution'>
-      <h1 className="title">solution</h1>
+    <div className={styles.edit} id='edit_solution'>
+      <h1 className={styles.title}>solution</h1>
 
-      <UpdateGallery location='solution' gallery={project.solution?.gallery} />
-
-      <br />
-
-      <UpdateFeatures features={project.solution?.features} />
+      <EditGallery location='solution' gallery={project.solution?.gallery} />
 
       <br />
 
-      <UpdateProjectURL projectURLs={project.solution?.projectURLs} />
+      <EditFeatures features={project.solution?.features} />
+
+      <br />
+
+      <EditProjectURL projectURLs={project.solution?.projectURLs} />
 
       <hr />
 
-      <div className="form-item-flex">
-        <label htmlFor="solution_content_url">Solution Content URL:</label>
-        <input type="text" id="solution_content_url" value={content} placeholder='URL to the html content' name='solution_content_url' onChange={handleSolutionContentURLChange} />
+      <div className={styles['form-item-flex']}>
+        <label className={styles.label} htmlFor="solution_content_url">Solution Content URL:</label>
+        <input className={styles.input} type="text" id="solution_content_url" value={content} placeholder='URL to the html content' name='solution_content_url' onChange={handleSolutionContentURLChange} />
       </div>
 
-      <button onClick={change(project)}>
+      <button className={styles.button} onClick={change(project)}>
         <h3>SAVE SOLUTION</h3>
       </button>
 

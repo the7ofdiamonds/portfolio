@@ -9,6 +9,8 @@ import { UpdateGallery } from '@/views/components/update/components/UpdateGaller
 
 import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
+import styles from './EditProcess.module.scss';
+
 interface EditDeliveryProps {
   project: Project;
   change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;

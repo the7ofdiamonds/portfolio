@@ -16,6 +16,8 @@ import { EditProblem } from '@/views/components/edit/EditProblem';
 
 import { StatusBarComponent } from '@/views/components/status_bar/StatusBarComponent';
 
+import styles from './Edit.module.scss';
+
 interface EditProjectProps {
     project: Project;
     change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -51,10 +53,11 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => 
 
     return (
         <>
-            <form action="" id="add_project">
-                <div className="form-item-flex">
-                    <label htmlFor="title">Title:</label>
+            <form className={styles.form} action="" id="edit_project">
+                <div className={styles['form-item-flex']}>
+                    <label className={styles.label} htmlFor="title">Title:</label>
                     <input
+                        className={styles.input}
                         type="text"
                         name="title"
                         placeholder="Title"
@@ -63,7 +66,7 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => 
                     />
                 </div>
 
-                <button onClick={change(project)}>
+                <button className={styles.button} onClick={change(project)}>
                     <h3>SAVE TITLE</h3>
                 </button>
             </form>
@@ -86,8 +89,8 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => 
 
             <br />
 
-            <button onClick={change(project)}>
-                <h3 className='title'>SAVE PROJECT</h3>
+            <button className={styles.button} onClick={change(project)}>
+                <h3>SAVE PROJECT</h3>
             </button>
 
             <StatusBarComponent />
