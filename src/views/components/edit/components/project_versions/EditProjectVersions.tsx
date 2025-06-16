@@ -11,11 +11,13 @@ import {
 } from '@/controllers/messageSlice';
 import { updateVersions } from '@/controllers/updateSlice';
 
-interface UpdateProjectVersionsProps {
+import styles from './ProjectVersions.module.scss';
+
+interface EditProjectVersionsProps {
     projectVersions: ProjectVersions;
 }
 
-export const UpdateProjectVersions: React.FC<UpdateProjectVersionsProps> = ({ projectVersions }) => {
+export const EditProjectVersions: React.FC<EditProjectVersionsProps> = ({ projectVersions }) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const [history, setHistory] = useState<Set<string>>(new Set());
@@ -100,19 +102,20 @@ export const UpdateProjectVersions: React.FC<UpdateProjectVersionsProps> = ({ pr
     };
 
     return (
-        <div className='update'>
+        <div className={styles.edit}>
             <h3>Project Versions</h3>
 
-            <form onSubmit={(e) => e.preventDefault()} id='update_gallery_logos'>
+            <form className={styles.form} onSubmit={(e) => e.preventDefault()} id='update_gallery_logos'>
                 {history.size > 0 && (
                     <>
                         <h4>Version History</h4>
 
                         {Array.from(history).map((version: string, index: number) => (
-                            <div className="form-item" key={index}>
+                            <div className={styles['form-item']} key={index}>
 
-                                <div className="form-item-flex">
+                                <div className={styles['form-item-flex']}>
                                     <input
+                                        className={styles.input}
                                         type="text"
                                         placeholder="Versions"
                                         value={version ?? ""}
@@ -131,8 +134,9 @@ export const UpdateProjectVersions: React.FC<UpdateProjectVersionsProps> = ({ pr
 
                 <h4>Update Current Version</h4>
 
-                <div className="form-item-flex">
+                <div className={styles['form-item-flex']}>
                     <input
+                        className={styles.input}
                         type="text"
                         id="current_version"
                         value={currentVersion ?? ''}
@@ -140,14 +144,14 @@ export const UpdateProjectVersions: React.FC<UpdateProjectVersionsProps> = ({ pr
                         name='current_version'
                         onChange={handleCurrentVersionChange}
                     />
-                    <button type='button' onClick={handleUpdateCurrentVersion}>
+                    <button className={styles.button} type='button' onClick={handleUpdateCurrentVersion}>
                         <h3>Update Current Version</h3>
                     </button>
                 </div>
 
                 <br />
 
-                <button type='submit' onClick={handleUpdateVersions}>
+                <button className={styles.button} type='submit' onClick={handleUpdateVersions}>
                     <h3>Update Project Versions</h3>
                 </button>
             </form>

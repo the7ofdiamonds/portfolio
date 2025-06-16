@@ -19,13 +19,13 @@ import { User } from '@/model/User';
 
 import { EditProject } from '@/views/components/edit/EditProject';
 
-import styles from '@/views/components/update/Update.module.scss';
+import styles from '@/views/components/edit/Edit.module.scss';
 
-interface ProjectUpdateProps {
+interface ProjectEditPageProps {
     user: User;
 }
 
-export const ProjectUpdate: React.FC<ProjectUpdateProps> = ({ user }) => {
+export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -173,8 +173,8 @@ export const ProjectUpdate: React.FC<ProjectUpdateProps> = ({ user }) => {
     };
 
     return (
-        <section className={styles['update-project']}>
-            <h1 className={styles.title}>update project</h1>
+        <section className={styles['edit-project']}>
+            <h1 className={styles.title}>edit project</h1>
             <EditProject project={project} change={handleUpdateProject} />
         </section>
     )

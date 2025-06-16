@@ -13,11 +13,13 @@ import { ProjectSkills, ProjectSkillsObject } from '@/model/ProjectSkills';
 import { Framework, Language, ProjectType, Service, Technology, existsInSet } from '@/model/Taxonomy';
 import { Skills } from '@/model/Skills';
 
-interface UpdateSkillsProps {
+import styles from './Skills.module.scss';
+
+interface EditSkillsProps {
   projectSkills: ProjectSkills;
 }
 
-export const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
+export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   // const { projectTypesObject, languagesObject, frameworksObject, technologiesObject } = useSelector(
@@ -140,18 +142,19 @@ export const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => 
   };
 
   return (
-    <div className='update' id='update_skills'>
-      <h3>Update Skills</h3>
+    <div className={styles.edit} id='edit_skills'>
+      <h3>Edit Skills</h3>
 
-      <div className="project-selection form-item">
-        <label htmlFor="options">Choose Project Types:</label>
+      <div className={`${styles['project-selection']} ${styles['form-item']}`}>
+        <label className={styles.label} htmlFor="options">Choose Project Types:</label>
 
         {skills?.types && skills.types.size > 0 &&
           Array.from(skills.types)
             .map((type) => new ProjectType(type))
             .map((type) => (
-              <div className="form-item-flex" key={type.id}>
+              <div className={styles['form-item-flex']} key={type.id}>
                 <input
+                  className={styles.button}
                   type="checkbox"
                   id={`checkbox-${type.id}`}
                   value={type.id}
@@ -159,93 +162,97 @@ export const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => 
 
                   onChange={() => handleProjectTypesCheckboxChange(type)}
                 />
-                <label htmlFor={`checkbox-${type.id}`}>{type.title}</label>
+                <label className={styles.button} htmlFor={`checkbox-${type.id}`}>{type.title}</label>
               </div>
             ))}
       </div>
 
-      <div className="project-selection form-item">
-        <label htmlFor="options">Choose Languages:</label>
+      <div className={`${styles['project-selection']} ${styles['form-item']}`}>
+        <label className={styles.label} htmlFor="options">Choose Languages:</label>
 
         {skills.languages && skills.languages.size > 0 &&
           Array.from(skills.languages)
             .map((lang) => new Language(lang))
             .map((language) => (
-              <div className="form-item-flex" key={language.id}>
+              <div className={styles['form-item-flex']} key={language.id}>
                 <input
+                  className={styles.input}
                   type="checkbox"
                   id={`checkbox-${language.id}`}
                   value={language.id}
                   checked={existsInSet(language, selectedLanguages)}
                   onChange={() => handleLanguagesCheckboxChange(language)}
                 />
-                <label htmlFor={`checkbox-${language.id}`}>{language.title}</label>
+                <label className={styles.label} htmlFor={`checkbox-${language.id}`}>{language.title}</label>
               </div>
             ))}
       </div>
 
-      <div className="project-selection form-item">
-        <label htmlFor="options">Choose Frameworks:</label>
+      <div className={`${styles['project-selection']} ${styles['form-item']}`}>
+        <label className={styles.label} htmlFor="options">Choose Frameworks:</label>
 
         {skills.frameworks && skills.frameworks.size > 0 &&
           Array.from(skills.frameworks)
             .map((framework) => new Framework(framework))
             .map((framework) => (
-              <div className="form-item-flex" key={framework.id}>
+              <div className={styles['form-item-flex']} key={framework.id}>
                 <input
+                  className={styles.input}
                   type="checkbox"
                   id={`checkbox-${framework.id}`}
                   value={framework.id}
                   checked={existsInSet(framework, selectedFrameworks)}
                   onChange={() => handleFrameworksCheckboxChange(framework)}
                 />
-                <label htmlFor={`checkbox-${framework.id}`}>{framework.title}</label>
+                <label className={styles.label} htmlFor={`checkbox-${framework.id}`}>{framework.title}</label>
               </div>
             ))}
       </div>
 
-      <div className="project-selection form-item">
-        <label htmlFor="options">Choose Technologies:</label>
+      <div className={`${styles['project-selection']} ${styles['form-item']}`}>
+        <label className={styles.label} htmlFor="options">Choose Technologies:</label>
 
         {skills.technologies && skills.technologies.size > 0 &&
           Array.from(skills.technologies)
             .map((tech) => new Technology(tech))
             .map((technology) => (
-              <div className="form-item-flex" key={technology.id}>
+              <div className={styles['form-item-flex']} key={technology.id}>
                 <input
+                  className={styles.input}
                   type="checkbox"
                   id={`checkbox-${technology.id}`}
                   value={technology.id}
                   checked={existsInSet(technology, selectedTechnologies)}
                   onChange={() => handleTechnologiesCheckboxChange(technology)}
                 />
-                <label htmlFor={`checkbox-${technology.id}`}>{technology.title}</label>
+                <label className={styles.label} htmlFor={`checkbox-${technology.id}`}>{technology.title}</label>
               </div>
             ))}
       </div>
 
-      <div className="project-selection form-item">
-        <label htmlFor="options">Choose Services:</label>
+      <div className={`${styles['project-selection']} ${styles['form-item']}`}>
+        <label className={styles.label} htmlFor="options">Choose Services:</label>
 
         {skills.services && skills.services.size > 0 &&
           Array.from(skills.services)
             .map((service) => new Service(service))
             .map((service) => (
-              <div className="form-item-flex" key={service.id}>
+              <div className={styles['form-item-flex']} key={service.id}>
                 <input
+                  className={styles.input}
                   type="checkbox"
                   id={`checkbox-${service.id}`}
                   value={service.id}
                   checked={existsInSet(service, selectedServices)}
                   onChange={() => handleServicesCheckboxChange(service)}
                 />
-                <label htmlFor={`checkbox-${service.id}`}>{service.title}</label>
+                <label className={styles.label} htmlFor={`checkbox-${service.id}`}>{service.title}</label>
               </div>
             ))}
       </div>
 
-      <button onClick={handleUpdateSkills}>
-        <h3>Update Skills</h3>
+      <button className={styles.button} onClick={handleUpdateSkills}>
+        <h3>Edit Skills</h3>
       </button>
     </div>
   )

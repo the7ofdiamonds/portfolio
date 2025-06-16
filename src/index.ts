@@ -83,16 +83,16 @@ export * from './utilities/Location';
 export * from './utilities/String';
 export * from './utilities/Validation';
 
-export * from './views/Dashboard';
+export * from './views/DashboardPage';
 export * from './views/LoginPage';
-export * from './views/NotFound';
+export * from './views/NotFoundPage';
 export * from './views/OrganizationPage';
 export * from './views/PortfolioPage';
 export * from './views/ProjectPage';
-export * from './views/ProjectsEditPage';
-export * from './views/ProjectUpdate';
-export * from './views/Search';
-export * from './views/SkillAdd';
+export * from './views/PortfolioEditPage';
+export * from './views/ProjectEditPage';
+export * from './views/SearchPage';
+export * from './views/SkillAddPage';
 
 export * from './views/components/ButtonIconExternal';
 export * from './views/components/CheckListComponent';
@@ -171,24 +171,9 @@ export * from './views/components/task/TaskCheckbox';
 export * from './views/components/task/TaskComponent';
 export * from './views/components/task/TaskDescription';
 
-export * from './views/components/update/UpdateDetails';
-export * from './views/components/update/process/UpdateProcess';
-export * from './views/components/update/process/UpdateDelivery';
-export * from './views/components/update/process/UpdateDesign';
-export * from './views/components/update/process/UpdateDevelopment';
-
-export * from './views/components/update/UpdateSolution';
-export * from './views/components/update/UpdateProblem';
-
-export * from './views/components/update/components/UpdateCheckList';
-export * from './views/components/update/components/UpdateColorsList';
-export * from './views/components/update/components/UpdateFeatures';
-export * from './views/components/update/components/UpdateGallery';
 export * from './views/components/update/components/UpdatePortfolioProject';
-export * from './views/components/update/components/UpdateProjectURL';
 export * from './views/components/update/components/UpdateProjectVersions';
 export * from './views/components/update/components/UpdateSkills';
-export * from './views/components/update/components/UpdateStatus';
 
 export * from './views/components/CheckListComponent';
 export * from './views/components/Colors';
@@ -204,9 +189,3 @@ export * from './views/components/OrganizationsComponent';
 export * from './views/components/ProjectCard';
 export * from './views/components/ProjectSkillsBar';
 export * from './views/components/SkillsComponent';
-
-
-
-
-
-

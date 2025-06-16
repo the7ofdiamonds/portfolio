@@ -55,16 +55,16 @@ export const DashboardPage: React.FC = () => {
             {/* Add info from read me file on use */}
 
             <div className={styles.options}>
-                <button onClick={handleSkillAdd}>
+                <button className={styles.button} onClick={handleSkillAdd}>
                     <h3 className={styles.title}>add skill</h3>
                 </button>
 
-                <button onClick={handleUpdateProject}>
+                <button className={styles.button} onClick={handleUpdateProject}>
                     <h3 className={styles.title}>update projects</h3>
                 </button>
             </div>
 
-            <button onClick={handleLogout}>
+            <button className={styles.button} onClick={handleLogout}>
                 <h3 className={styles.title}>logout</h3>
             </button>
         </section>

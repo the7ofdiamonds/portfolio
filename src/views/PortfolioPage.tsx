@@ -11,11 +11,11 @@ import { setMessage, setMessageType, setShowStatusBar } from '@/controllers/mess
 
 import styles from '@/views/components/portfolio/Portfolio.module.scss';
 
-interface PortfolioProps {
+interface PortfolioPageProps {
   account: Account;
 }
 
-export const PortfolioPage: React.FC<PortfolioProps> = ({ account }) => {
+export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account }) => {
   const dispatch = useAppDispatch();
 
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 
-import { ProjectCard } from '../../ProjectCard';
+import { ProjectCard } from '@/views/components/ProjectCard';
 
 import { Project } from '@/model/Project'
 import { Owner } from '@/model/Owner';
 
-interface UpdatePortfolioProjectProps {
+interface EditPortfolioProjectProps {
     project: Project
 }
 
-export const UpdatePortfolioProject: React.FC<UpdatePortfolioProjectProps> = ({ project }) => {
+export const EditPortfolioProject: React.FC<EditPortfolioProjectProps> = ({ project }) => {
     const [id, setID] = useState<string | null>(null);
     const [owner, setOwner] = useState<Owner | null>(null);
 

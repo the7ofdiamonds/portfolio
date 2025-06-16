@@ -4,8 +4,8 @@ import { Project } from '@/model/Project';
 import { Gallery } from '@/model/Gallery';
 import { CheckList } from '@/model/CheckList';
 
-import { UpdateCheckList } from '@/views/components/update/components/UpdateCheckList';
-import { UpdateGallery } from '@/views/components/update/components/UpdateGallery';
+import { EditCheckList } from '../components/check_list/EditCheckList';
+import { EditGallery } from '../components/gallery/EditGallery';
 
 import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
@@ -60,26 +60,26 @@ export const EditDelivery: React.FC<EditDeliveryProps> = ({ project, change }) =
   };
 
   return (
-    <div className="update" id="update_delivery">
+    <div className={styles.edit} id="edit_delivery">
 
-      <h2 className="title">delivery</h2>
+      <h2 className={styles.title}>delivery</h2>
 
-      <UpdateCheckList location='delivery' checkList={checkList} />
+      <EditCheckList location='delivery' checkList={checkList} />
 
       <br />
 
-      <UpdateGallery location='delivery' gallery={gallery} />
+      <EditGallery location='delivery' gallery={gallery} />
 
       <hr />
 
-      <div className="form-item-flex">
-        <label htmlFor="delivery_content_url">
+      <div className={styles['form-item-flex']}>
+        <label className={styles.label} htmlFor="delivery_content_url">
           Delivery Content URL:
         </label>
-        <input type="text" name='delivery_content_url' value={content} onChange={handleDeliveryContentURLChange} />
+        <input className={styles.input} type="text" name='delivery_content_url' value={content} onChange={handleDeliveryContentURLChange} />
       </div>
 
-      <button onClick={change(project)}>
+      <button className={styles.button} onClick={change(project)}>
         <h3>SAVE DELIVERY</h3>
       </button>
 

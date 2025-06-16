@@ -100,7 +100,7 @@ export const EditProblem: React.FC<EditProblemProps> = ({ project, change }) => 
   };
 
   return (
-    <div className={styles.edit} id="update_problem">
+    <div className={styles.edit} id="edit_problem">
 
       <h2 className={styles.title}>Problem</h2>
 

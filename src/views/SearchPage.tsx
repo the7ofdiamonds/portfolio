@@ -21,7 +21,7 @@ interface SearchProps {
   skills: Skills
 }
 
-export const Search: React.FC<SearchProps> = ({ user, skills }) => {
+export const SearchPage: React.FC<SearchProps> = ({ user, skills }) => {
   const dispatch = useAppDispatch();
 
   const { taxonomy, term } = useParams<string>();

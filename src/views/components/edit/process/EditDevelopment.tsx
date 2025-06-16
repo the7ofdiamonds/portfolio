@@ -8,10 +8,10 @@ import { CheckList } from '@/model/CheckList';
 import { ProjectDevelopment } from '@/model/ProjectDevelopment';
 import { ProjectProcess } from '@/model/ProjectProcess';
 
-import { UpdateCheckList } from '@/views/components/update/components/UpdateCheckList';
-import { UpdateSkills } from '@/views/components/update/components/UpdateSkills';
-import { UpdateProjectVersions } from '@/views/components/update/components/UpdateProjectVersions';
-import { UpdateGallery } from '@/views/components/update/components/UpdateGallery';
+import { EditCheckList } from '../components/check_list/EditCheckList';
+import { EditGallery } from '../components/gallery/EditGallery';
+import { EditSkills } from '../components/skills/EditSkills';
+import { EditProjectVersions } from '../components/project_versions/EditProjectVersions';
 
 import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
@@ -127,19 +127,19 @@ export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, chang
     <div className={styles.edit} id='edit_development'>
       <h2 className={styles.title}>development</h2>
 
-      <UpdateCheckList location='development' checkList={checkList} />
+      <EditCheckList location='development' checkList={checkList} />
 
       <br />
 
-      <UpdateSkills projectSkills={projectSkills} />
+      <EditSkills projectSkills={projectSkills} />
 
       <br />
 
-      <UpdateGallery location='development' gallery={gallery} />
+      <EditGallery location='development' gallery={gallery} />
 
       <br />
 
-      <UpdateProjectVersions projectVersions={projectVersions} />
+      <EditProjectVersions projectVersions={projectVersions} />
 
       <hr />
 

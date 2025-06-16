@@ -13,6 +13,8 @@ import { updateDesignCheckList, updateDevelopmentCheckList, updateDeliveryCheckL
 
 import { v4 as uuidv4 } from 'uuid';
 
+import styles from './CheckList.module.scss';
+
 interface EditCheckListProps {
     location: string;
     checkList: CheckList;
@@ -191,18 +193,19 @@ export const EditCheckList: React.FC<EditCheckListProps> = ({ location, checkLis
     }
 
     return (
-        <details>
+        <details className={styles.details}>
             <summary>{title} Check List</summary>
 
             <br />
 
-            <div className="update">
+            <div className={styles.edit}>
 
                 {selectedTasks.size > 0 ? (Array.from(selectedTasks).map((task) => (
-                    <div className="form-item" key={task.id}>
-                        <div className="form-item-flex">
-                            <label htmlFor={`${task.id}-status`}>Status:</label>
+                    <div className={styles['form-item']} key={task.id}>
+                        <div className={styles['form-item-flex']}>
+                            <label className={styles.label} htmlFor={`${task.id}-status`}>Status:</label>
                             <input
+                                className={styles.input}
                                 type="checkbox"
                                 placeholder="Status"
                                 checked={task.status}
@@ -210,9 +213,10 @@ export const EditCheckList: React.FC<EditCheckListProps> = ({ location, checkLis
                                 onChange={(e) => handleChange(e, task)}
                             />
                         </div>
-                        <div className="form-item-flex">
-                            <label htmlFor={`${task.id}-ID`}>ID:</label>
+                        <div className={styles['form-item-flex']}>
+                            <label className={styles.label} htmlFor={`${task.id}-ID`}>ID:</label>
                             <input
+                                className={styles.input}
                                 type="text"
                                 placeholder="ID"
                                 value={task.id ?? ""}
@@ -220,9 +224,10 @@ export const EditCheckList: React.FC<EditCheckListProps> = ({ location, checkLis
                                 disabled
                             />
                         </div>
-                        <div className="form-item-flex">
-                            <label htmlFor={`${task.id}-details`}>Details:</label>
+                        <div className={styles['form-item-flex']}>
+                            <label className={styles.label} htmlFor={`${task.id}-details`}>Details:</label>
                             <input
+                                className={styles.input}
                                 type="text"
                                 placeholder="Details"
                                 value={task.details ?? ''}
@@ -230,9 +235,10 @@ export const EditCheckList: React.FC<EditCheckListProps> = ({ location, checkLis
                                 onChange={(e) => handleChange(e, task)}
                             />
                         </div>
-                        <div className="form-item-flex">
-                            <label htmlFor={`${task.id}-task`}>Task:</label>
+                        <div className={styles['form-item-flex']}>
+                            <label className={styles.label} htmlFor={`${task.id}-task`}>Task:</label>
                             <input
+                                className={styles.input}
                                 type="text"
                                 placeholder="Task"
                                 value={task.description ?? ''}
@@ -240,9 +246,10 @@ export const EditCheckList: React.FC<EditCheckListProps> = ({ location, checkLis
                                 onChange={(e) => handleChange(e, task)}
                             />
                         </div>
-                        <div className='form-item-flex'>
-                            <label htmlFor={`${task.weight}-weight`}>Weignt:</label>
+                        <div className={styles['form-item-flex']}>
+                            <label className={styles.label} htmlFor={`${task.weight}-weight`}>Weignt:</label>
                             <input
+                                className={styles.input}
                                 type="number"
                                 name={`${task.id}-weight`}
                                 value={task.weight}
@@ -252,28 +259,28 @@ export const EditCheckList: React.FC<EditCheckListProps> = ({ location, checkLis
                     </div>)
                 )) : (<h3>There are no {location} task at this time.</h3>)}
 
-                <form id={`add_task_${location}`} onSubmit={handleAddToCheckList}>
+                <form className={styles.form} id={`add_task_${location}`} onSubmit={handleAddToCheckList}>
                     <hr />
 
                     <h4>Add Task</h4>
 
-                    <div className='form-item'>
-                        <div className='form-item-flex'>
-                            <label htmlFor="status">Status:</label>
-                            <input type="checkbox" name='status' checked={task.status} onChange={handleTaskChange} />
+                    <div className={styles['form-item']}>
+                        <div className={styles['form-item-flex']}>
+                            <label className={styles.label} htmlFor="status">Status:</label>
+                            <input className={styles.input} type="checkbox" name='status' checked={task.status} onChange={handleTaskChange} />
                         </div>
 
-                        <div className='form-item-flex'>
-                            <label htmlFor="description">Description:</label>
-                            <input type="text" name='description' value={task.description ?? ''} onChange={handleTaskChange} />
+                        <div className={styles['form-item-flex']}>
+                            <label className={styles.label} htmlFor="description">Description:</label>
+                            <input className={styles.input} type="text" name='description' value={task.description ?? ''} onChange={handleTaskChange} />
                         </div>
 
-                        <div className='form-item-flex'>
-                            <label htmlFor="weight">Weignt:</label>
-                            <input type="number" name='weight' value={task.weight} onChange={handleTaskChange} />
+                        <div className={styles['form-item-flex']}>
+                            <label className={styles.label} htmlFor="weight">Weignt:</label>
+                            <input className={styles.input} type="number" name='weight' value={task.weight} onChange={handleTaskChange} />
                         </div>
 
-                        <button type="submit">
+                        <button className={styles.button} type="submit">
                             <h3>Add Task</h3>
                         </button>
                     </div>
@@ -281,12 +288,12 @@ export const EditCheckList: React.FC<EditCheckListProps> = ({ location, checkLis
 
                 <hr />
 
-                <div className='form-item-flex'>
-                    <label htmlFor="check_list_title">Check List Title:</label>
-                    <input type="text" value={title} name='check_list_title' onChange={handleCheckListNameChange} />
+                <div className={styles['form-item-flex']}>
+                    <label className={styles.label} htmlFor="check_list_title">Check List Title:</label>
+                    <input className={styles.input} type="text" value={title} name='check_list_title' onChange={handleCheckListNameChange} />
                 </div>
 
-                <button type="button" onClick={handleUpdateTasks}>
+                <button className={styles.button} type="button" onClick={handleUpdateTasks}>
                     <h3>Update Tasks</h3>
                 </button>
             </div>

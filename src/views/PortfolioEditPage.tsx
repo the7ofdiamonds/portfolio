@@ -4,7 +4,7 @@ import { User } from '@/model/User';
 import { Project } from '@/model/Project';
 import { Portfolio } from '@/model/Portfolio';
 
-import { UpdatePortfolioProject } from '@/views/components/update/components/UpdatePortfolioProject';
+import { EditPortfolioProject } from '@/views/components/edit/EditPortfolioProject';
 
 import styles from '@/views/components/edit/Edit.module.scss';
 
@@ -32,7 +32,7 @@ export const PortfolioEditPage: React.FC<PortfolioEditPageProps> = ({ user }) =>
         <section className={styles.section}>
             {projects.size > 0 && (
                 Array.from(projects).map((project, index) => (
-                    <UpdatePortfolioProject key={index} project={project} />
+                    <EditPortfolioProject key={index} project={project} />
                 ))
             )}
         </section>
