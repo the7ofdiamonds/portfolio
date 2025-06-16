@@ -13,13 +13,13 @@ export const EditPortfolioProject: React.FC<EditPortfolioProjectProps> = ({ proj
     const [id, setID] = useState<string | null>(null);
     const [owner, setOwner] = useState<Owner | null>(null);
 
-    useEffect(() => { setID(project.name) }, [project, setID])
+    useEffect(() => { setID(project.id) }, [project])
 
-    useEffect(() => { setOwner(project.owner) }, [project, setOwner])
+    useEffect(() => { setOwner(project.owner) }, [project])
 
     return (
         <>
-            {owner && id && (<a className='project' href={`/#/admin/update/project/${owner.login}/${id}`}>
+            {owner && id && (<a className='project' href={`/dashboard/edit/project/${id}`}>
                 <ProjectCard project={project} />
             </a>)}
         </>

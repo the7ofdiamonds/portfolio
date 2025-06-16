@@ -123,7 +123,12 @@ export * from './views/components/add/AddLanguages';
 export * from './views/components/add/AddProjectTypes';
 export * from './views/components/add/AddTechnologies';
 
+export * from './views/components/edit/EditDetails';
+export * from './views/components/edit/EditPortfolioProject';
+export * from './views/components/edit/EditProblem';
 export * from './views/components/edit/EditProject';
+export * from './views/components/edit/EditSolution';
+export * from './views/components/edit/process/EditProcess';
 
 export * from './views/components/footer/FooterBar';
 export * from './views/components/footer/FooterComponent';
@@ -170,10 +175,6 @@ export * from './views/components/status_bar/StatusBarComponent';
 export * from './views/components/task/TaskCheckbox';
 export * from './views/components/task/TaskComponent';
 export * from './views/components/task/TaskDescription';
-
-export * from './views/components/update/components/UpdatePortfolioProject';
-export * from './views/components/update/components/UpdateProjectVersions';
-export * from './views/components/update/components/UpdateSkills';
 
 export * from './views/components/CheckListComponent';
 export * from './views/components/Colors';
