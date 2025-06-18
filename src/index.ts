@@ -49,6 +49,7 @@ export * from './model/ProjectDelivery';
 export * from './model/ProjectDesign';
 export * from './model/ProjectDetails';
 export * from './model/ProjectDevelopment';
+export * from './model/ProjectOnboarding';
 export * from './model/ProjectProblem';
 export * from './model/ProjectProcess';
 export * from './model/ProjectProgress';
