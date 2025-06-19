@@ -1,9 +1,5 @@
-import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
+import React, { useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '@/model/store';
-
-import { Color, ColorObject } from '@/model/Color';
-import { Colors } from '@/model/Colors';
 
 import {
     setMessage,
@@ -12,21 +8,21 @@ import {
 } from '@/controllers/messageSlice';
 import { updateColors } from '@/controllers/updateSlice';
 
+import type { AppDispatch } from '@/model/store';
+import { Color } from '@/model/Color';
+import { Colors } from '@/model/Colors';
+
 import styles from './Colors.module.scss';
 
 interface EditColorsListProps {
-    colorsObject: Array<ColorObject>;
+    colors: Colors;
+    setVal: (value: Colors) => void
 }
 
-export const EditColorsList: React.FC<EditColorsListProps> = ({ colorsObject }) => {
+export const EditColorsList: React.FC<EditColorsListProps> = ({ colors, setVal }) => {
     const dispatch = useDispatch<AppDispatch>();
 
-    const [colors, setColors] = useState<Colors>(new Colors(colorsObject.map((color) => new Color(color))));
     const [color, setColor] = useState<Color>(new Color());
-
-    useEffect(() => {
-        setColors(new Colors(colorsObject.map((color) => new Color(color))))
-    }, [colorsObject]);
 
     const handleChange = (
         e: ChangeEvent<HTMLInputElement>,
@@ -56,8 +52,8 @@ export const EditColorsList: React.FC<EditColorsListProps> = ({ colorsObject }) 
                     value: colorValue,
                 }) : c
         );
-
-        setColors(new Colors(updatedColors));
+        console.log(updatedColors)
+        setVal(new Colors(updatedColors))
     };
 
     const handleColorChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -86,16 +82,13 @@ export const EditColorsList: React.FC<EditColorsListProps> = ({ colorsObject }) 
         e.preventDefault();
         try {
             if (color.name !== '') {
-                setColors((prevColors) => {
-                    const exists = colors.existsInSet(color);
+                const exists = colors.existsInSet(color);
 
-                    if (!exists) {
-                        prevColors.addColor(color)
-                    }
+                if (!exists) {
+                    colors.addColor(color)
+                }
 
-                    return prevColors;
-                });
-
+                setVal(colors);
                 setColor(new Color());
             } else {
                 throw new Error('Each color requires a name.')

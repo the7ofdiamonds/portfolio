@@ -6,6 +6,7 @@ import { ContentURL, ContentURLObject } from './ContentURL';
 import { Task } from './Task';
 import { Repo } from './Repo';
 import { ProjectDataObject } from './Project';
+import { Colors } from './Colors';
 
 export type ProjectDesignObject = {
   gallery: GalleryObject | null;
@@ -24,19 +25,19 @@ export type ProjectDesignDataObject = {
 export class ProjectDesign extends Model {
   gallery: Gallery | null;
   checkList: CheckList | null;
-  colorsList: Array<Color> | null;
+  colors: Colors | null;
   contentURL: ContentURL | null;
 
-  constructor(data: Record<string, any> | ProjectDesignObject = {}) {
+  constructor(data?: ProjectDesignObject | ProjectDesignObject) {
     super();
 
     this.gallery = data?.gallery ? new Gallery(data.gallery) : null;
     this.checkList = data?.check_list ? new CheckList(data.check_list) : null;
-    this.colorsList =
+    this.colors =
       data?.colors_list &&
       Array.isArray(data.colors_list) &&
       data.colors_list.length > 0
-        ? this.toArrayColor(data.colors_list)
+        ? new Colors(data.colors_list.map((color) => new Color(color)))
         : null;
     this.contentURL = data?.content_url
       ? new ContentURL(data.content_url)
@@ -56,21 +57,11 @@ export class ProjectDesign extends Model {
   }
 
   setColors(colors: Array<Color>) {
-    this.colorsList = colors;
+    this.colors = new Colors(colors);
   }
 
   setContentURL(url: string) {
     this.contentURL = new ContentURL(url);
-  }
-
-  toArrayColor(data: Array<Record<string, any>>) {
-    const colorsList: Array<Color> = [];
-
-    data.forEach((color) => {
-      colorsList.push(new Color(color));
-    });
-
-    return colorsList;
   }
 
   fromRepo(repo: Repo) {
@@ -118,8 +109,8 @@ export class ProjectDesign extends Model {
     return {
       gallery: this.gallery ? this.gallery.toGalleryObject() : null,
       check_list: this.checkList ? this.checkList.toCheckListObject() : null,
-      colors_list: this.colorsList
-        ? this.colorsList.map((color) => color.toColorObject())
+      colors_list: this.colors
+        ? Array.from(this.colors.list).map((color) => color.toColorObject())
         : null,
       content_url: this.contentURL ? this.contentURL.url : null,
     };
@@ -129,8 +120,8 @@ export class ProjectDesign extends Model {
     return {
       gallery: this.gallery ? this.gallery.toGalleryObject() : null,
       check_list: this.checkList ? this.checkList.toCheckListObject() : null,
-      colors_list: this.colorsList
-        ? this.colorsList.map((color) => color.toColorObject())
+      colors_list: this.colors
+        ? Array.from(this.colors.list).map((color) => color.toColorObject())
         : null,
       content_url: this.contentURL?.url ? this.contentURL.url : null,
     };

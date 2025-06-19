@@ -20,10 +20,9 @@ export * from './controllers/userSlice';
 export * from './model/Account';
 export * from './model/CheckList';
 export * from './model/Color';
-
+export * from './model/Colors';
 export * from './model/Contact';
 export * from './model/ContactMethods';
-
 export * from './model/ContentURL';
 export * from './model/Contributor';
 export * from './model/Contributors';
@@ -130,6 +129,10 @@ export * from './views/components/edit/EditProblem';
 export * from './views/components/edit/EditProject';
 export * from './views/components/edit/EditSolution';
 export * from './views/components/edit/process/EditProcess';
+
+export * from './views/components/edit/components/colors/EditColorsList';
+
+export * from './views/components/edit/components/gallery/EditGallery';
 
 export * from './views/components/footer/FooterBar';
 export * from './views/components/footer/FooterComponent';

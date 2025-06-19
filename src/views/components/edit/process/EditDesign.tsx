@@ -3,12 +3,14 @@ import React, { useEffect, useState, ChangeEvent } from 'react';
 import { Project } from '@/model/Project';
 import { Gallery } from '@/model/Gallery';
 import { CheckList } from '@/model/CheckList';
-import { Color } from '@/model/Color';
 
 import { EditGallery } from '../components/gallery/EditGallery';
 import { EditColorsList } from '@/views/components/edit/components/colors/EditColorsList';
 import { EditCheckList } from '@/views/components/edit/components/check_list/EditCheckList';
 import { StatusBar } from '@/views/components/status_bar/StatusBar';
+
+import { ProjectDesign } from '@/model/ProjectDesign';
+import { Colors } from '@/model/Colors';
 
 import styles from './EditProcess.module.scss';
 
@@ -18,37 +20,44 @@ interface EditDesignProps {
 }
 
 export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
-  const [gallery, setGallery] = useState<Gallery>(new Gallery);
-  const [checkList, setCheckList] = useState<CheckList>(new CheckList);
-  const [colorsList, setColorsList] = useState<Array<Color>>([]);
-  const [content, setContent] = useState<string>('');
+  const [design, setDesign] = useState<ProjectDesign>(project?.process?.design ?? new ProjectDesign);
+  const [gallery, setGallery] = useState<Gallery>(design?.gallery ?? new Gallery);
+  const [checkList, setCheckList] = useState<CheckList>(design?.checkList ?? new CheckList);
+  const [colors, setColors] = useState<Colors>(design?.colors ?? new Colors);
+  const [content, setContent] = useState<string>(design?.contentURL?.url ?? '');
   const [show, setShow] = useState<string>('hide');
   const [message, setMessage] = useState<string>('');
   const [messageType, setMessageType] = useState<string>('info');
 
   useEffect(() => {
-    if (project.process?.design?.gallery) {
+    if (project?.process?.design) {
+      setDesign(project.process.design)
+    }
+  }, [project?.process?.design]);
+
+  useEffect(() => {
+    if (project?.process?.design?.gallery) {
       setGallery(project.process.design.gallery)
     }
-  }, [project.process?.design?.gallery, setGallery]);
+  }, [project?.process?.design?.gallery]);
 
   useEffect(() => {
-    if (project.process?.design?.checkList) {
+    if (project?.process?.design?.checkList) {
       setCheckList(project.process.design.checkList)
     }
-  }, [project.process?.design?.checkList]);
+  }, [project?.process?.design?.checkList]);
 
   useEffect(() => {
-    if (project.process?.design?.colorsList) {
-      setColorsList(project.process.design.colorsList)
+    if (project?.process?.design?.colors) {
+      setColors(project.process.design.colors)
     }
-  }, [project.process?.design?.colorsList]);
+  }, [project?.process?.design?.colors]);
 
   useEffect(() => {
-    if (project.process?.design?.contentURL?.url) {
+    if (project?.process?.design?.contentURL?.url) {
       setContent(project.process.design.contentURL.url)
     }
-  }, [project.process?.design?.contentURL]);
+  }, [project?.process?.design?.contentURL]);
 
   const handleDesignContentURLChange = (e: ChangeEvent<HTMLInputElement>) => {
     try {
@@ -58,9 +67,8 @@ export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
 
       if (name === 'design_content_url') {
         setContent(value);
-        if (project.process && project.process.design) {
-          project.process.design.setContentURL(value)
-        }
+        design.setContentURL(value)
+        setDesign(design)
       }
     } catch (error) {
       const err = error as Error;
@@ -79,11 +87,11 @@ export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
 
       <br />
 
-      <EditGallery location='design' gallery={gallery} />
+      <EditGallery location='design' gallery={gallery} setVal={setGallery}/>
 
       <br />
 
-      <EditColorsList colorsObject={colorsList} />
+      <EditColorsList colors={colors} setVal={setColors} />
 
       <hr />
 

@@ -11,53 +11,71 @@ export type GalleryObject = {
 };
 
 export class Gallery extends Model {
-  logos: Array<Image> | null;
-  icons: Array<Image> | null;
-  animations: Array<Image> | null;
-  umlDiagrams: Array<Image> | null;
-  screenshots: Array<Image> | null;
-  previews: Array<Image> | null;
-  images: Array<Image> | null;
+  logos: Array<Image>;
+  icons: Array<Image>;
+  animations: Array<Image>;
+  umlDiagrams: Array<Image>;
+  screenshots: Array<Image>;
+  previews: Array<Image>;
+  images: Array<Image>;
 
-  constructor(data: Record<string, any> | GalleryObject = {}) {
+  constructor(data?: GalleryObject | Partial<GalleryObject>) {
     super();
 
     this.logos = Array.isArray(data?.logos)
       ? this.toArrayImage(data.logos)
-      : null;
+      : [];
     this.icons = Array.isArray(data?.icons)
       ? this.toArrayImage(data.icons)
-      : null;
+      : [];
     this.animations = Array.isArray(data?.animations)
       ? this.toArrayImage(data.animations)
-      : null;
+      : [];
     this.umlDiagrams = Array.isArray(data?.uml_diagrams)
       ? this.toArrayImage(data.uml_diagrams)
-      : null;
+      : [];
     this.screenshots = Array.isArray(data?.screenshots)
       ? this.toArrayImage(data.screenshots)
-      : null;
+      : [];
     this.previews = Array.isArray(data?.previews)
       ? this.toArrayImage(data.previews)
-      : null;
+      : [];
     this.images = [
-      ...(this.logos ?? []),
-      ...(this.icons ?? []),
-      ...(this.animations ?? []),
-      ...(this.umlDiagrams ?? []),
-      ...(this.screenshots ?? []),
-      ...(this.previews ?? []),
+      ...this.logos,
+      ...this.icons,
+      ...this.animations,
+      ...this.umlDiagrams,
+      ...this.screenshots,
+      ...this.previews,
     ];
   }
 
-  toArrayImage(data: Array<Record<string, any>>) {
-    const images: Array<Image> = [];
+  setLogos(logos: Array<Image>) {
+    this.logos = logos;
+  }
 
-    data.forEach((image) => {
-      images.push(new Image(image));
-    });
+  setIcons(icons: Array<Image>) {
+    this.icons = icons;
+  }
 
-    return images;
+  setAnimations(animations: Array<Image>) {
+    this.animations = animations;
+  }
+
+  setUmlDiagrams(umlDiagrams: Array<Image>) {
+    this.umlDiagrams = umlDiagrams;
+  }
+
+  setScreenshots(screenshots: Array<Image>) {
+    this.screenshots = screenshots;
+  }
+
+  setPreviews(previews: Array<Image>) {
+    this.previews = previews;
+  }
+
+  toArrayImage(data: Array<ImageObject>) {
+    return data.map((image) => new Image(image));
   }
 
   toObject(): Record<string, any> {

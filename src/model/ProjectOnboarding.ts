@@ -1,6 +1,6 @@
 import { Color, ColorObject } from './Color';
 import { ContactMethods, ContactMethodsObject } from './ContactMethods';
-import { Image, ImageObject } from './Image';
+import { Gallery, GalleryObject } from './Gallery';
 
 export type ProjectOnboardingObject = {
   id: string | null;
@@ -12,7 +12,7 @@ export type ProjectOnboardingObject = {
   hosting: string | null;
   satisfied: boolean | null;
   signage: string | null;
-  logos: Array<ImageObject> | null;
+  images: GalleryObject | null;
   colors: Array<ColorObject> | null;
   plan: string | null;
 };
@@ -27,11 +27,13 @@ export class ProjectOnboarding {
   satisfied: boolean;
   signage: string | null;
   contacts: ContactMethods | null;
-  logos: Set<Image> | null;
+  images: Gallery | null;
   colors: Set<Color> | null;
   plan: string | null;
 
-  constructor(data?: ProjectOnboardingObject) {
+  constructor(
+    data?: ProjectOnboardingObject | Partial<ProjectOnboardingObject>
+  ) {
     this.id = data?.id ? data.id : null;
     this.clientID = data?.client_id ? data.client_id : null;
     this.projectTitle = data?.project_title ? data.project_title : null;
@@ -41,9 +43,7 @@ export class ProjectOnboarding {
     this.satisfied = data?.satisfied ? data.satisfied : false;
     this.signage = data?.signage ? data.signage : null;
     this.contacts = data?.contacts ? new ContactMethods(data.contacts) : null;
-    this.logos = data?.logos
-      ? new Set(data.logos.map((logo) => new Image(logo)))
-      : null;
+    this.images = data?.images ? new Gallery(data.images) : new Gallery();
     this.colors = data?.colors
       ? new Set(data.colors.map((color) => new Color(color)))
       : null;
@@ -86,8 +86,8 @@ export class ProjectOnboarding {
     this.signage = signage;
   }
 
-  setLogos(logos: Set<Image>) {
-    this.logos = logos;
+  setImages(images: Gallery) {
+    this.images = images;
   }
 
   setColors(colors: Set<Color>) {
@@ -109,9 +109,10 @@ export class ProjectOnboarding {
       hosting: this.hosting,
       satisfied: this.satisfied,
       signage: this.signage,
-      logos: this.logos
-        ? Array.from(this.logos).map((logo) => logo.toImageObject())
-        : null,
+      images:
+        this.images?.images && this.images.images.length > 0
+          ? this.images.toGalleryObject()
+          : null,
       colors: this.colors
         ? Array.from(this.colors).map((color) => color.toColorObject())
         : null,
