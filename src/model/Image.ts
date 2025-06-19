@@ -13,7 +13,7 @@ export class Image extends Model {
   url: string;
   className: string;
 
-  constructor(data: Record<string, any> | ImageObject = {}) {
+  constructor(data?: Partial<ImageObject> | ImageObject) {
     super();
 
     this.id = data?.id || '';

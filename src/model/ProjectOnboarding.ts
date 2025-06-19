@@ -8,11 +8,10 @@ export type ProjectOnboardingObject = {
   project_title: string | null;
   deadline: string | null;
   location: string | null;
-  website: string | null;
+  contacts: ContactMethodsObject | null;
   hosting: string | null;
-  satisfied: string | null;
+  satisfied: boolean | null;
   signage: string | null;
-  social_networks: ContactMethodsObject | null;
   logos: Array<ImageObject> | null;
   colors: Array<ColorObject> | null;
   plan: string | null;
@@ -24,11 +23,10 @@ export class ProjectOnboarding {
   projectTitle: string | null;
   deadline: string | null;
   location: string | null;
-  website: string | null;
   hosting: string | null;
-  satisfied: string | null;
+  satisfied: boolean;
   signage: string | null;
-  socialNetworks: ContactMethods | null;
+  contacts: ContactMethods | null;
   logos: Set<Image> | null;
   colors: Set<Color> | null;
   plan: string | null;
@@ -39,13 +37,10 @@ export class ProjectOnboarding {
     this.projectTitle = data?.project_title ? data.project_title : null;
     this.deadline = data?.deadline ? data.deadline : null;
     this.location = data?.location ? data.location : null;
-    this.website = data?.website ? data.website : null;
     this.hosting = data?.hosting ? data.hosting : null;
-    this.satisfied = data?.satisfied ? data.satisfied : null;
+    this.satisfied = data?.satisfied ? data.satisfied : false;
     this.signage = data?.signage ? data.signage : null;
-    this.socialNetworks = data?.social_networks
-      ? new ContactMethods(data.social_networks)
-      : null;
+    this.contacts = data?.contacts ? new ContactMethods(data.contacts) : null;
     this.logos = data?.logos
       ? new Set(data.logos.map((logo) => new Image(logo)))
       : null;
@@ -55,6 +50,54 @@ export class ProjectOnboarding {
     this.plan = data?.plan ? data.plan : null;
   }
 
+  setID(id: string) {
+    this.id = id;
+  }
+
+  setClientID(clientID: string) {
+    this.clientID = clientID;
+  }
+
+  setProjectTitle(title: string) {
+    this.projectTitle = title;
+  }
+
+  setDeadline(deadline: string) {
+    this.deadline = deadline;
+  }
+
+  setLocation(location: string) {
+    this.location = location;
+  }
+
+  setContacts(contacts: ContactMethods) {
+    this.contacts = contacts;
+  }
+
+  setHosting(hosting: string) {
+    this.hosting = hosting;
+  }
+
+  setSatisfied(satisfied: boolean) {
+    this.satisfied = satisfied;
+  }
+
+  setSignage(signage: string) {
+    this.signage = signage;
+  }
+
+  setLogos(logos: Set<Image>) {
+    this.logos = logos;
+  }
+
+  setColors(colors: Set<Color>) {
+    this.colors = colors;
+  }
+
+  setPlans(plans: string) {
+    this.plan = this.plan;
+  }
+
   toProjectOnboardingObject(): ProjectOnboardingObject {
     return {
       id: this.id,
@@ -62,13 +105,10 @@ export class ProjectOnboarding {
       project_title: this.projectTitle,
       deadline: this.deadline,
       location: this.location,
-      website: this.website,
+      contacts: this.contacts ? this.contacts.toContactMethodsObject() : null,
       hosting: this.hosting,
       satisfied: this.satisfied,
       signage: this.signage,
-      social_networks: this.socialNetworks
-        ? this.socialNetworks.toContactMethodsObject()
-        : null,
       logos: this.logos
         ? Array.from(this.logos).map((logo) => logo.toImageObject())
         : null,

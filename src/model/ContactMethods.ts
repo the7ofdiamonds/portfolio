@@ -1,6 +1,5 @@
 import { Model } from './Model';
 import { Contact, ContactObject } from './Contact';
-import { Image } from './Image';
 
 export interface ContactMethodsObject {
   hacker_rank: ContactObject | null;
@@ -15,230 +14,150 @@ export interface ContactMethodsObject {
 }
 
 export class ContactMethods extends Model {
-  hackerRank: Contact | null;
-  linkedin: Contact | null;
-  x: Contact | null;
-  instagram: Contact | null;
-  github: Contact | null;
-  youtube: Contact | null;
-  website: Contact | null;
-  email: Contact | null;
-  phone: Contact | null;
+  hackerRank: Contact;
+  linkedin: Contact;
+  x: Contact;
+  instagram: Contact;
+  github: Contact;
+  youtube: Contact;
+  website: Contact;
+  email: Contact;
+  phone: Contact;
 
   constructor(data?: ContactMethodsObject) {
     super();
 
-    this.hackerRank = data?.hacker_rank ? new Contact(data?.hacker_rank) : null;
-    this.linkedin = data?.linked_in ? new Contact(data?.linked_in) : null;
-    this.x = data?.x ? new Contact(data?.x) : null;
-    this.instagram = data?.instagram ? new Contact(data?.instagram) : null;
-    this.github = data?.github ? new Contact(data?.github) : null;
-    this.youtube = data?.youtube ? new Contact(data?.youtube) : null;
-    this.website = data?.website ? new Contact(data?.website) : null;
-    this.email = data?.email ? new Contact(data?.email) : null;
-    this.phone = data?.phone ? new Contact(data?.phone) : null;
+    this.hackerRank = data?.hacker_rank
+      ? new Contact(data?.hacker_rank)
+      : this.setContact({
+          id: 'hackerrank',
+          title: 'Hacker Rank',
+          type: 'url',
+          url: '',
+        });
+    this.linkedin = data?.linked_in
+      ? new Contact(data?.linked_in)
+      : this.setContact({
+          id: 'linkedin',
+          title: 'LinkedIn',
+          type: 'url',
+          url: '',
+        });
+    this.x = data?.x
+      ? new Contact(data?.x)
+      : this.setContact({
+          id: 'x',
+          title: 'X',
+          type: 'url',
+          url: '',
+        });
+    this.instagram = data?.instagram
+      ? new Contact(data?.instagram)
+      : this.setContact({
+          id: 'instagram',
+          title: 'Instagram',
+          type: 'url',
+          url: '',
+        });
+    this.github = data?.github
+      ? new Contact(data?.github)
+      : this.setContact({
+          id: 'github',
+          title: 'GitHub',
+          type: 'url',
+          url: '',
+        });
+    this.youtube = data?.youtube
+      ? new Contact(data?.youtube)
+      : this.setContact({
+          id: 'youtube',
+          title: 'YouTube',
+          type: 'url',
+          url: '',
+        });
+    this.website = data?.website
+      ? new Contact(data?.website)
+      : this.setContact({
+          id: 'website',
+          title: 'Website',
+          type: 'url',
+          url: '',
+        });
+    this.email = data?.email
+      ? new Contact(data?.email)
+      : this.setContact({
+          id: 'email',
+          title: 'Email',
+          type: 'email',
+          value: '',
+        });
+    this.phone = data?.phone
+      ? new Contact(data?.phone)
+      : this.setContact({
+          id: 'phone',
+          title: 'Phone',
+          type: 'tel',
+          value: '',
+        });
   }
 
-  setContact(data: Record<string, any>) {
-    const id = data?.id ?? '';
-    const title = data?.title ?? '';
-    const url = data?.url ?? '';
-    const image = data?.image
-      ? new Image(data.image)
-      : new Image({
-          url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9oOKlwAAAABJRU5ErkJggg==',
-        });
-    const value = data?.value ?? '';
-
-    const contactObject: ContactObject = {
-      id: id,
-      title: title,
-      url: url,
-      image: image.toImageObject(),
-      value: value,
+  setContact(data: Partial<ContactObject>) {
+    const contactObject: Partial<ContactObject> = {
+      id: data?.id ?? '',
+      title: data?.title ?? '',
+      url: data?.url ?? '',
+      value: data?.value ?? '',
+      type: data?.type ?? 'text',
+      class_name: data?.class_name ?? '',
+      img_src: data?.img_src ?? '',
     };
 
     return new Contact(contactObject);
   }
 
   setContactHackerRank(url: string) {
-    const id = 'hackerrank';
-    const title = 'Hacker Rank';
-    const className = 'fa-brands fa-hackerrank';
-    const image = new Image({
-      id: id,
-      title: title,
-      class_name: className,
-      url: '',
-    }).toObject();
-
-    this.hackerRank = this.setContact({
-      id: id,
-      title: title,
-      image: image,
-      url: url,
-      value: '',
-    });
+    this.hackerRank.setURL(url);
+    this.hackerRank.setClassName('fa-brands fa-hackerrank');
   }
 
   setContactLinkedIn(url: string) {
-    const id = 'linkedIn';
-    const title = 'LinkedIn';
-    const className = 'fa fa-linkedin fa-fw';
-    const image = new Image({
-      id: id,
-      title: title,
-      class_name: className,
-      url: '',
-    }).toObject();
-
-    this.linkedin = this.setContact({
-      id: id,
-      title: title,
-      image: image,
-      url: url,
-      value: '',
-    });
+    this.linkedin.setURL(url);
+    this.linkedin.setClassName('fa fa-linkedin fa-fw');
   }
 
   setContactX(url: string) {
-    const id = 'x';
-    const title = 'X';
-    const className = 'fa-brands fa-x-twitter';
-    const image = new Image({
-      id: id,
-      title: title,
-      class_name: className,
-      url: '',
-    }).toObject();
-
-    this.x = this.setContact({
-      id: id,
-      title: title,
-      image: image,
-      url: url,
-      value: '',
-    });
+    this.x.setURL(url);
+    this.x.setClassName('fa-brands fa-x-twitter');
   }
 
   setContactInstagram(url: string) {
-    const id = 'instagram';
-    const title = 'Instagram';
-    const className = 'fa fa-instagram fa-fw';
-    const image = new Image({
-      id: id,
-      title: title,
-      class_name: className,
-      url: '',
-    }).toObject();
-
-    this.instagram = this.setContact({
-      id: id,
-      title: title,
-      image: image,
-      url: url,
-      value: '',
-    });
+    this.instagram.setURL(url);
+    this.instagram.setClassName('fa fa-instagram fa-fw');
   }
 
   setContactGitHub(url: string) {
-    const id = 'gitHub';
-    const title = 'GitHub';
-    const className = 'fa fa-github fa-fw';
-    const image = new Image({
-      id: id,
-      title: title,
-      class_name: className,
-      url: '',
-    }).toObject();
-
-    this.github = this.setContact({
-      id: id,
-      title: title,
-      image: image,
-      url: url,
-      value: '',
-    });
+    this.github.setURL(url);
+    this.github.setClassName('fa fa-github fa-fw');
   }
 
   setContactYoutube(url: string) {
-    const id = 'youtube';
-    const title = 'YouTube';
-    const className = 'fa-brands fa-youtube';
-    const image = new Image({
-      id: id,
-      title: title,
-      class_name: className,
-      url: '',
-    }).toObject();
-
-    this.youtube = this.setContact({
-      id: id,
-      title: title,
-      image: image,
-      url: url,
-      value: '',
-    });
+    this.youtube.setURL(url);
+    this.youtube.setClassName('fa-brands fa-youtube');
   }
 
-  setContactWebsite(value: string) {
-    const id = 'website';
-    const title = 'Website';
-    const className = 'fa-solid fa-globe';
-    const image = new Image({
-      id: id,
-      title: title,
-      class_name: className,
-      url: '',
-    }).toObject();
-
-    this.website = this.setContact({
-      id: id,
-      title: title,
-      image: image,
-      url: '',
-      value: value,
-    });
+  setContactWebsite(url: string) {
+    this.website.setURL(url);
+    this.website.setClassName('fa-solid fa-globe');
   }
 
   setContactEmail(value: string) {
-    const id = 'email';
-    const title = 'Email';
-    const className = 'fa fa-envelope fa-fw';
-    const image = new Image({
-      id: id,
-      title: title,
-      class_name: className,
-      url: '',
-    }).toObject();
-
-    this.email = this.setContact({
-      id: id,
-      title: title,
-      image: image,
-      url: '',
-      value: value,
-    });
+    this.email.setValue(value);
+    this.email.setClassName('fa fa-envelope fa-fw');
   }
 
   setContactPhone(value: string) {
-    const id = 'phone';
-    const title = 'Phone';
-    const className = 'fa-solid fa-phone';
-    const image = new Image({
-      id: id,
-      title: title,
-      class_name: className,
-      url: '',
-    }).toObject();
-
-    this.phone = this.setContact({
-      id: id,
-      title: title,
-      image: image,
-      url: '',
-      value: value,
-    });
+    this.phone.setValue(value);
+    this.phone.setClassName('fa-solid fa-phone');
   }
 
   fromGitHub(data: Array<Record<string, any>>) {
@@ -283,15 +202,33 @@ export class ContactMethods extends Model {
 
   toContactMethodsObject(): ContactMethodsObject {
     return {
-      hacker_rank: this.hackerRank ? this.hackerRank.toContactObject() : null,
-      linked_in: this.linkedin ? this.linkedin.toContactObject() : null,
-      x: this.x ? this.x.toContactObject() : null,
-      instagram: this.instagram ? this.instagram.toContactObject() : null,
-      github: this.github ? this.github.toContactObject() : null,
-      youtube: this.youtube ? this.youtube.toContactObject() : null,
-      website: this.website ? this.website.toContactObject() : null,
-      email: this.email ? this.email.toContactObject() : null,
-      phone: this.phone ? this.phone.toContactObject() : null,
+      hacker_rank:
+        this.hackerRank && this.hackerRank.url
+          ? this.hackerRank.toContactObject()
+          : null,
+      linked_in:
+        this.linkedin && this.linkedin.url
+          ? this.linkedin.toContactObject()
+          : null,
+      x: this.x && this.x.url ? this.x.toContactObject() : null,
+      instagram:
+        this.instagram && this.instagram.url
+          ? this.instagram.toContactObject()
+          : null,
+      github:
+        this.github && this.github.url ? this.github.toContactObject() : null,
+      youtube:
+        this.youtube && this.youtube.url
+          ? this.youtube.toContactObject()
+          : null,
+      website:
+        this.website && this.website.url
+          ? this.website.toContactObject()
+          : null,
+      email:
+        this.email && this.email.value ? this.email.toContactObject() : null,
+      phone:
+        this.phone && this.phone.value ? this.phone.toContactObject() : null,
     };
   }
 }
