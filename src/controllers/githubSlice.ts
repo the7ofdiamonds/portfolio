@@ -464,8 +464,11 @@ export const getRepoDetails = createAsyncThunk(
             getIssues(repo.apiURL)
           );
 
-          if (getIssues.fulfilled.match(issuesResponse) && issuesResponse.payload) {
-            const issues = new Issues(issuesResponse.payload)
+          if (
+            getIssues.fulfilled.match(issuesResponse) &&
+            issuesResponse.payload
+          ) {
+            const issues = new Issues(issuesResponse.payload);
             repo.setIssues(issues);
           }
         }
@@ -735,8 +738,14 @@ export const getUserAccount = createAsyncThunk(
             ? user.contactMethods
             : (user.contactMethods = new ContactMethods());
           user.contactMethods.fromGitHub(contactsResponse.payload);
-          user.contactMethods.setContactWebsite({ url: user.website });
-          user.contactMethods.setContactEmail({ value: user.email });
+
+          if (user.website) {
+            user.contactMethods.setContactWebsite(user.website);
+          }
+
+          if (user.email) {
+            user.contactMethods.setContactEmail(user.email);
+          }
         }
 
         return user.toUserObject();

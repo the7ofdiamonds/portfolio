@@ -1,21 +1,16 @@
 export * from './ProtectedRoute';
 export * from './services/Config';
 
-export * from './controllers/aboutSlice';
 export * from './controllers/accountSlice';
 export * from './controllers/addSlice';
 export * from './controllers/authSlice';
-export * from './controllers/contactSlice';
-export * from './controllers/contentSlice';
 export * from './controllers/databaseSlice';
 export * from './controllers/githubSlice';
-export * from './controllers/messageSlice';
 export * from './controllers/organizationSlice';
+export * from './controllers/skillsSlice';
 export * from './controllers/portfolioSlice';
 export * from './controllers/projectSlice';
-export * from './controllers/taxonomiesSlice';
 export * from './controllers/updateSlice';
-export * from './controllers/userSlice';
 
 export * from './model/Account';
 export * from './model/CheckList';
@@ -34,7 +29,6 @@ export * from './model/FeaturesRoadmap';
 export * from './model/Gallery';
 export * from './model/GitHubRepoQuery';
 export * from './model/hooks';
-export * from './model/Image';
 export * from './model/Issue';
 export * from './model/Issues';
 export * from './model/Model';
@@ -89,34 +83,17 @@ export * from './views/NotFoundPage';
 export * from './views/OrganizationPage';
 export * from './views/PortfolioPage';
 export * from './views/ProjectPage';
+export * from './views/ProjectUpdatePage';
 export * from './views/PortfolioEditPage';
 export * from './views/ProjectEditPage';
 export * from './views/SearchPage';
 export * from './views/SkillAddPage';
 
-export * from './views/components/ButtonIconExternal';
-export * from './views/components/CheckListComponent';
-export * from './views/components/Colors';
-export * from './views/components/ContactBar';
-export * from './views/components/DescriptionComponent';
-export * from './views/components/DocumentComponent';
-export * from './views/components/GalleryComponent';
-export * from './views/components/IconComponent';
-export * from './views/components/ImageComponent';
-export * from './views/components/LoadingComponent';
-export * from './views/components/LoginComponent';
-export * from './views/components/Modal';
-export * from './views/components/OrganizationsComponent';
-export * from './views/components/ProjectCard';
+
+export * from './views/components/project_card/ProjectCard';
 
 export * from './views/components/project/ProjectDescription';
-export * from './views/components/ProjectSkillsBar';
-
-export * from './views/components/SkillsComponent';
-
-export * from './views/components/StoryComponent';
-export * from './views/components/TaxList';
-export * from './views/components/TaxListIcon';
+export * from './views/components/project_skills_bar/ProjectSkillsBar';
 
 export * from './views/components/add/AddFrameworks';
 export * from './views/components/add/AddLanguages';
@@ -180,17 +157,5 @@ export * from './views/components/task/TaskCheckbox';
 export * from './views/components/task/TaskComponent';
 export * from './views/components/task/TaskDescription';
 
-export * from './views/components/CheckListComponent';
-export * from './views/components/Colors';
-export * from './views/components/ContactBar';
-export * from './views/components/DescriptionComponent';
-export * from './views/components/DocumentComponent';
-export * from './views/components/GalleryComponent';
-export * from './views/components/IconComponent';
-export * from './views/components/ImageComponent';
-export * from './views/components/LoadingComponent';
-export * from './views/components/Modal';
-export * from './views/components/OrganizationsComponent';
-export * from './views/components/ProjectCard';
-export * from './views/components/ProjectSkillsBar';
-export * from './views/components/SkillsComponent';
+export * from './views/components/project_card/ProjectCard';
+export * from './views/components/project_skills_bar/ProjectSkillsBar';

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import TaxListIcon from '../TaxListIcon';
+import { TaxListIcon } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectSkills } from '@/model/ProjectSkills';
 

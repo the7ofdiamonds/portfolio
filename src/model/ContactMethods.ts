@@ -1,4 +1,3 @@
-import { Model } from './Model';
 import { Contact, ContactObject } from './Contact';
 
 export interface ContactMethodsObject {
@@ -13,7 +12,7 @@ export interface ContactMethodsObject {
   phone: ContactObject | null;
 }
 
-export class ContactMethods extends Model {
+export class ContactMethods {
   hackerRank: Contact;
   linkedin: Contact;
   x: Contact;
@@ -25,8 +24,6 @@ export class ContactMethods extends Model {
   phone: Contact;
 
   constructor(data?: ContactMethodsObject) {
-    super();
-
     this.hackerRank = data?.hacker_rank
       ? new Contact(data?.hacker_rank)
       : this.setContact({

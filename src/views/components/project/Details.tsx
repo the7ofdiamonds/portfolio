@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+import { ContentComponent } from '@the7ofdiamonds/ui-ux';
+
 import { ProjectTeamComponent } from '@/views/components/project/ProjectTeam';
-import { ContentComponent } from '@/views/components/content/ContentComponent';
 
 import { Project } from '@/model/Project';
 import { Contributor } from '@/model/Contributor';

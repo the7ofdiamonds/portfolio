@@ -92,52 +92,52 @@ export type AddSkillResponse = {
   status_code: string | null;
 };
 
-export const addSkill = createAsyncThunk<AddSkillResponse, Taxonomy>(
-  'add/addSkill',
-  async (taxonomy: Taxonomy) => {
-    try {
-      const api = getAPI();
+// export const addSkill = createAsyncThunk<AddSkillResponse, Taxonomy>(
+//   'add/addSkill',
+//   async (taxonomy: Taxonomy) => {
+//     try {
+//       const api = getAPI();
 
-      if (!api) {
-        throw new Error('API is not initialized');
-      }
+//       if (!api) {
+//         throw new Error('API is not initialized');
+//       }
 
-      if (!taxonomy.path) {
-        throw new Error('Skill type is required.');
-      }
+//       if (!taxonomy.path) {
+//         throw new Error('Skill type is required.');
+//       }
 
-      const headers: SecureHeaders = await addSecureHeaders();
+//       const headers: SecureHeaders = await addSecureHeaders();
 
-      if (headers.errorMessage) {
-        return headers;
-      }
+//       if (headers.errorMessage) {
+//         return headers;
+//       }
 
-      const response = await fetch(`${api}/taxonomies/skills`, {
-        method: 'POST',
-        headers:
-          headers instanceof SecureHeaders
-            ? new Headers(headers.toObject())
-            : {},
-        body: JSON.stringify(taxonomy.toObject()),
-      });
+//       const response = await fetch(`${api}/taxonomies/skills`, {
+//         method: 'POST',
+//         headers:
+//           headers instanceof SecureHeaders
+//             ? new Headers(headers.toObject())
+//             : {},
+//         body: JSON.stringify(taxonomy.toObject()),
+//       });
 
-      const text = response ? await response.text() : null;
+//       const text = response ? await response.text() : null;
 
-      if (text) {
-        const data = JSON.parse(text);
+//       if (text) {
+//         const data = JSON.parse(text);
 
-        return data;
-      }
+//         return data;
+//       }
 
-      return null;
-    } catch (error) {
-      const err = error as Error;
+//       return null;
+//     } catch (error) {
+//       const err = error as Error;
 
-      console.error(err);
-      throw new Error(err.message);
-    }
-  }
-);
+//       console.error(err);
+//       throw new Error(err.message);
+//     }
+//   }
+// );
 
 const addSliceOptions: CreateSliceOptions<AddState> = {
   name: 'add',
@@ -150,20 +150,13 @@ const addSliceOptions: CreateSliceOptions<AddState> = {
         state.projectID = action.payload.id;
         state.addSuccessMessage = action.payload.success_message;
       })
-      .addMatcher(isAnyOf(addSkill.fulfilled), (state, action) => {
-        state.addLoading = false;
-        state.addSuccessMessage = action.payload.success_message;
-        state.taxType = action.payload.type;
-        state.addErrorMessage = action.payload.error_message;
-        state.addStatusCode = action.payload.status_code;
-      })
-      .addMatcher(isAnyOf(addProject.pending, addSkill.pending), (state) => {
+      .addMatcher(isAnyOf(addProject.pending), (state) => {
         state.addLoading = true;
         state.addError = null;
         state.addErrorMessage = '';
       })
       .addMatcher(
-        isAnyOf(addProject.rejected, addSkill.rejected),
+        isAnyOf(addProject.rejected),
         (state, action) => {
           state.addLoading = false;
           state.addError = (action.error as Error) || null;

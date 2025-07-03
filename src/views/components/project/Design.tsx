@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { CheckListComponent } from '@/views/components/CheckListComponent';
-import { ColorsComponent } from '@/views/components/Colors';
-
-import { GalleryComponent } from '@/views/components/GalleryComponent';
-import { ContentComponent } from '@/views/components/content/ContentComponent';
+import {
+  CheckListComponent,
+  ColorsComponent,
+  ContentComponent,
+  GalleryComponent
+} from '@the7ofdiamonds/ui-ux';
 
 import { ContentURL } from '@/model/ContentURL';
 import { Color } from '@/model/Color';

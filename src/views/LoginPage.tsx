@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import { getAuthorization } from '@/services/Config';
+import { LoginComponent } from '@the7ofdiamonds/gateway';
 
-import { LoginComponent } from './components/LoginComponent';
+import { Section, Main } from '@the7ofdiamonds/ui-ux';
+
+import { getAuthorization } from '@/services/Config';
 
 import { setIsAdmin, setIsAuthenticated } from '@/controllers/authSlice';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
+import { useAppSelector } from '@/model/hooks';
 
 export const LoginPage: React.FC = () => {
     const navigate = useNavigate();
@@ -36,13 +38,13 @@ export const LoginPage: React.FC = () => {
         if (isAuthenticated && isAdmin) {
             navigate('/admin/dashboard');
         }
-    }, [navigate, isAuthenticated, isAdmin]);
+    }, [isAuthenticated, isAdmin]);
 
     return (
-        <section className='login'>
-            <main>
+        <Section>
+            <Main>
                 <LoginComponent />
-            </main>
-        </section>
+            </Main>
+        </Section>
     )
 }

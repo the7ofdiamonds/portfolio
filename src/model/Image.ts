@@ -1,5 +1,3 @@
-import { Model } from './Model';
-
 export type ImageObject = {
   id: string;
   title: string;
@@ -7,27 +5,17 @@ export type ImageObject = {
   class_name: string;
 };
 
-export class Image extends Model {
+export class Image {
   id: string;
   title: string;
   url: string;
   className: string;
 
-  constructor(data?: Partial<ImageObject> | ImageObject) {
-    super();
-
+  constructor(data: Record<string, any> | ImageObject = {}) {
     this.id = data?.id || '';
     this.title = data?.title || '';
     this.url = data?.url || '';
     this.className = data?.class_name || '';
-  }
-
-  setID(id: string) {
-    this.id = id;
-  }
-
-  setTitle(title: string) {
-    this.title = title;
   }
 
   setURL(url: string) {

@@ -185,21 +185,17 @@ export class User extends Account {
     this.reposURL = data?.repos_url;
     this.login = data?.login;
 
-    data?.html_url && this.contactMethods
-      ? this.contactMethods.setContactGitHub({ url: data?.html_url })
-      : (this.contactMethods = new ContactMethods());
+    if (data?.html_url || data?.email) {
+      this.contactMethods = new ContactMethods();
 
-    data?.html_url
-      ? this.contactMethods.setContactGitHub({ url: data?.html_url })
-      : null;
+      if (data?.html_url) {
+        this.contactMethods.setContactGitHub(data.html_url);
+      }
 
-    data?.email && this.contactMethods
-      ? this.contactMethods.setContactEmail({ value: data?.email })
-      : (this.contactMethods = new ContactMethods());
-
-    data?.email
-      ? this.contactMethods.setContactEmail({ value: data?.email })
-      : null;
+      if (data?.email) {
+        this.contactMethods.setContactEmail(data.email);
+      }
+    }
   }
 
   fromDB(data: Record<string, any>) {

@@ -1,5 +1,4 @@
-import { Model } from './Model';
-import { Image, ImageObject } from './Image';
+import { Image, ImageObject } from '@the7ofdiamonds/ui-ux';
 
 export interface ContactObject {
   id: string;
@@ -12,7 +11,7 @@ export interface ContactObject {
   img_src: string | null;
 }
 
-export class Contact extends Model {
+export class Contact {
   id: string;
   title: string;
   url: string;
@@ -23,8 +22,6 @@ export class Contact extends Model {
   imgSrc: string;
 
   constructor(data: ContactObject | Partial<ContactObject>) {
-    super();
-
     this.id = data?.id ? data.id : '';
     this.title = data?.title ? data.title : '';
     this.url = data?.url ? data.url : '';

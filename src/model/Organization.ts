@@ -64,15 +64,23 @@ export class Organization extends Account {
     this.location = data?.location ? data.location : null;
     this.email = data?.email ? data.email : null;
     this.url = data?.url ? data?.url : null;
-    this.contactMethods = data?.contact_methods
-      ? new ContactMethods(data.contact_methods)
-      : null;
-    this.contactMethods
-      ? this.contactMethods.setContactEmail({ value: this.email })
-      : null;
-    this.contactMethods
-      ? this.contactMethods.setContactWebsite({ url: this.blog })
-      : null;
+
+    if (data?.contact_methods || this.email || this.blog) {
+      this.contactMethods = new ContactMethods();
+
+      if (data?.contact_methods) {
+        this.contactMethods = new ContactMethods(data.contact_methods);
+      }
+
+      if (this.email) {
+        this.contactMethods.setContactEmail(this.email);
+      }
+
+      if (this.blog) {
+        this.contactMethods.setContactWebsite(this.blog);
+      }
+    }
+
     this.reposURL = data?.repos_url ? data?.repos_url : null;
     this.repos = data?.repos ? new Repos(data.repos) : null;
     this.repoQueries = data?.repo_queries

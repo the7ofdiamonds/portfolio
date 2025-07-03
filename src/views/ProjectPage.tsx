@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { LoadingComponent } from './components/LoadingComponent';
+import { LoadingComponent } from '@the7ofdiamonds/ui-ux';
 import { ProjectComponent } from './components/project/ProjectComponent';
 
 import { StatusBarComponent } from '@/views/components/status_bar/StatusBarComponent';
@@ -99,7 +99,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ account }) => {
 
   if (githubLoading || projectLoading) {
     return <section className='loading'>
-      <LoadingComponent />
+      <LoadingComponent page={title ?? ''}/>
     </section>;
   }
 

@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import { User } from '@/model/User';
+import { Button } from '@the7ofdiamonds/ui-ux';
 
 import { logout } from '@/controllers/authSlice';
 import { setMessage, setMessageType, setShowStatusBar } from '@/controllers/messageSlice';
 
 import { checkHeaders } from '@/utilities/Headers';
 
+import { User } from '@/model/User';
 import { useAppDispatch } from '@/model/hooks';
 
 import styles from '@/views/components/dashboard/Dashboard.module.scss';
@@ -52,21 +53,13 @@ export const DashboardPage: React.FC = () => {
         <section className={styles.section}>
             <h2 className={styles.title}>Dashboard</h2>
 
-            {/* Add info from read me file on use */}
-
             <div className={styles.options}>
-                <button className={styles.button} onClick={handleSkillAdd}>
-                    <h3 className={styles.title}>add skill</h3>
-                </button>
+                <Button title={'add skill'} action={handleSkillAdd} />
 
-                <button className={styles.button} onClick={handleUpdateProject}>
-                    <h3 className={styles.title}>update projects</h3>
-                </button>
+                <Button title={'update projects'} action={handleUpdateProject} />
             </div>
 
-            <button className={styles.button} onClick={handleLogout}>
-                <h3 className={styles.title}>logout</h3>
-            </button>
+            <Button title={'logout'} action={handleLogout} />
         </section>
     )
 }

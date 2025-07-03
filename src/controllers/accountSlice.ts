@@ -137,6 +137,4 @@ const accountSliceOptions: CreateSliceOptions<AccountState> = {
   },
 };
 
-const accountSlice = createSlice(accountSliceOptions);
-
-export default accountSlice;
+export const accountSlice = createSlice(accountSliceOptions);

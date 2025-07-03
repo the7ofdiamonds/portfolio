@@ -1,10 +1,28 @@
-import { ContactMethods, ContactMethodsObject } from './ContactMethods';
-import { GitHubRepoQuery, GitHubRepoQueryObject } from './GitHubRepoQuery';
-import { OrganizationGQL, OrganizationObject } from './Organization';
-import { Portfolio, PortfolioObject } from './Portfolio';
-import { RepoObject, RepositoryGQL } from './Repo';
-import { Repos } from './Repos';
-import { Skills, SkillsObject } from './Skills';
+import {
+  ContactMethods,
+  ContactMethodsObject,
+} from '@/model/ContactMethods';
+import {
+  GitHubRepoQuery,
+  GitHubRepoQueryObject,
+} from '@/model/GitHubRepoQuery';
+import {
+  OrganizationGQL,
+  OrganizationObject,
+} from '@/model/Organization';
+import {
+  Portfolio,
+  PortfolioObject,
+} from '@/model/Portfolio';
+import {
+  RepoObject,
+  RepositoryGQL,
+} from '@/model/Repo';
+import { Repos } from '@/model/Repos';
+import {
+  Skills,
+  SkillsObject,
+} from '@/model/Skills';
 
 export type AccountGQLResponse = {
   viewer: {
@@ -50,16 +68,16 @@ export class Account {
   avatarURL: string | null;
   name: string | null;
   email: string | null;
-  contactMethods: ContactMethods | null;
+  contactMethods: ContactMethods | null = null;
   reposURL: string | null;
   repos: Repos | null;
-  public repoQueries: Array<GitHubRepoQuery>;
+  repoQueries: Array<GitHubRepoQuery>;
   url: string | null;
   location: string | null;
   skills: Skills;
   portfolio: Portfolio | null;
 
-  constructor(data?: AccountObject | Partial<OrganizationObject>) {
+  constructor(data?: AccountObject | Partial<AccountObject>) {
     this.id = data?.id ? data.id : null;
     this.createdAt = data?.created_at ? data.created_at : null;
     this.updatedAt = data?.updated_at ? data.updated_at : null;
@@ -72,9 +90,19 @@ export class Account {
     this.contactMethods = data?.contact_methods
       ? new ContactMethods(data?.contact_methods)
       : null;
-    this.contactMethods
-      ? this.contactMethods.setContactEmail({ value: this.email })
-      : null;
+
+    if (this.email || data?.contact_methods) {
+      this.contactMethods = new ContactMethods();
+
+      if (data?.contact_methods) {
+        this.contactMethods = new ContactMethods(data.contact_methods);
+      }
+
+      if (this.email) {
+        this.contactMethods.setContactEmail(this.email);
+      }
+    }
+
     this.reposURL = data?.repos_url ? data.repos_url : null;
     this.repos = data?.repos ? new Repos(data.repos) : null;
     this.repoQueries = data?.repo_queries

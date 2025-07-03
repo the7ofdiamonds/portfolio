@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+import { GalleryComponent } from '@the7ofdiamonds/ui-ux';
+
 import FeaturesComponent from '@/views/components/project/Features';
 import ProjectURLsComponent from '@/views/components/project/ProjectURLsComponent';
-
-import { GalleryComponent } from '@/views/components/GalleryComponent';
 
 import { ContentComponent } from '@/views/components/content/ContentComponent';
 

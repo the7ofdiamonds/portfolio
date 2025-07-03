@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-import { IconComponent } from '../IconComponent';
+import { IconComponent } from '@the7ofdiamonds/ui-ux';
 
 import { Taxonomy } from '@/model/Taxonomy';
 import { Skills } from '@/model/Skills';

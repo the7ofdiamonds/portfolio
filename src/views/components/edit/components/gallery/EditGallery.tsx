@@ -33,33 +33,45 @@ export const EditGallery: React.FC<EditGalleryProps> = ({ location, gallery, set
     const [previews, setPreviews] = useState<Array<Image>>(gallery?.previews ?? []);
 
     useEffect(() => {
-        gallery.setLogos(logos)
-        setVal(gallery)
+        if (gallery && setVal) {
+            gallery.setLogos(logos)
+            setVal(gallery)
+        }
     }, [logos]);
 
     useEffect(() => {
-        gallery.setIcons(icons)
-        setVal(gallery)
+        if (gallery && setVal) {
+            gallery.setIcons(icons)
+            setVal(gallery)
+        }
     }, [icons]);
 
     useEffect(() => {
-        gallery.setAnimations(animations)
-        setVal(gallery)
+        if (gallery && setVal) {
+            gallery.setAnimations(animations)
+            setVal(gallery)
+        }
     }, [animations]);
 
     useEffect(() => {
-        gallery.setUmlDiagrams(umlDiagrams)
-        setVal(gallery)
+        if (gallery && setVal) {
+            gallery.setUmlDiagrams(umlDiagrams)
+            setVal(gallery)
+        }
     }, [umlDiagrams]);
 
     useEffect(() => {
-        gallery.setScreenshots(screenshots)
-        setVal(gallery)
+        if (gallery && setVal) {
+            gallery.setScreenshots(screenshots)
+            setVal(gallery)
+        }
     }, [screenshots]);
 
     useEffect(() => {
-        gallery.setPreviews(previews)
-        setVal(gallery)
+        if (gallery && setVal) {
+            gallery.setPreviews(previews)
+            setVal(gallery)
+        }
     }, [previews]);
 
     const handleUpdateGallery = async (e: MouseEvent<HTMLButtonElement>) => {

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-import { SkillsComponent } from '../SkillsComponent';
-import { CheckListComponent } from '@/views/components/CheckListComponent';
+import {
+  CheckListComponent,
+  ContentComponent,
+  ImageComponent,
+  StatusBar
+} from '@the7ofdiamonds/ui-ux';
+
+import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
 import { Versions } from '@/views/components/project/Versions';
 import { RoadmapComponent } from '@/views/components/project/RoadmapComponent';
-import { ContentComponent } from '@/views/components/content/ContentComponent';
-
-import { ImageComponent } from '../ImageComponent';
-
-import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 import {
   signInWithGitHubPopup

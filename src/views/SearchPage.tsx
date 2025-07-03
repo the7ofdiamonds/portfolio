@@ -10,7 +10,7 @@ import { Project } from '@/model/Project';
 import { getPortfolioDetails } from '@/controllers/portfolioSlice';
 
 import { ProjectsComponent } from '@/views/components/portfolio/ProjectsComponent';
-import { SkillsComponent } from '@/views/components/SkillsComponent';
+import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
 
 import { HeaderTaxonomyComponent } from '@/views/components/header/HeaderTaxonomyComponent';
 

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { OrganizationComponent } from '@/views/components/organization/OrganizationComponent';
 import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
 
-import { ContactBar } from '@/views/components/ContactBar';
+import { ContactBar } from '@the7ofdiamonds/communications'; 
 
 import { getOrganization } from '@/controllers/organizationSlice';
 

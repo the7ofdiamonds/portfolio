@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { Taxonomy } from '@/model/Taxonomy'
+import { IconComponent } from '@the7ofdiamonds/ui-ux'
 
-import { IconComponent } from '@/views/components/IconComponent'
+import { Taxonomy } from '@/model/Taxonomy'
 
 import styles from './Header.module.scss';
 

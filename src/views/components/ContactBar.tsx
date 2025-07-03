@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import { ImageComponent } from '@/views/components/ImageComponent';
+import ImageComponent from './ImageComponent';
 
 import { ContactMethods } from '@/model/ContactMethods'
 import { Contact } from '@/model/Contact';
-
-import styles from './ContactBar.module.scss';
 
 interface ContactBarProps {
     contactMethods: ContactMethods;
@@ -80,7 +78,7 @@ export const ContactBar: React.FC<ContactBarProps> = ({ contactMethods, location
     const mailTo = email && email.value ? `mailto:${email.value}` : null;
     const callNow = phone && phone.value ? `tel:+${phone.value}` : null;
 
-    return (<div className={styles['contact-bar']}>
+    return (<div className="contact-bar">
         {mailTo && email && email.image &&
             <a href={mailTo} target="_blank">
                 <ImageComponent image={email.image} />

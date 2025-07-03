@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ProjectCard } from '../ProjectCard';
+import { ProjectCard } from '../project_card/ProjectCard';
 
 import { Project } from '@/model/Project';
 
