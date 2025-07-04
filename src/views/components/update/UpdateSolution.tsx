@@ -2,12 +2,12 @@ import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import type { AppDispatch, RootState } from '@/model/store';
-import Project, { ProjectObject } from '@/model/Project';
+import { Project, ProjectObject } from '@/model/Project';
 import { ProjectSolutionObject } from '@/model/ProjectSolution';
-import Gallery from '@/model/Gallery';
-import Feature from '@/model/Feature';
-import ProjectURLs from '@/model/ProjectURLs';
-import ContentURL from '@/model/ContentURL';
+import { Gallery } from '@/model/Gallery';
+import { Feature } from '@/model/Feature';
+import { ProjectURLs } from '@/model/ProjectURLs';
+import { ContentURL } from '@/model/ContentURL';
 
 import { updateProject } from '@/controllers/updateSlice';
 import {

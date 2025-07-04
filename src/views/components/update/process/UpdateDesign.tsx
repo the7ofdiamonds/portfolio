@@ -1,13 +1,9 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent, SetStateAction } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import type { AppDispatch, RootState } from '../../../../model/store';
-import ProjectDesign, { ProjectDesignObject } from '../../../../model/ProjectDesign';
-import Project, { ProjectObject } from '@/model/Project';
-import Gallery from '@/model/Gallery';
-import CheckList from '@/model/CheckList';
-import Color from '@/model/Color';
-import ContentURL, { ContentURLObject } from '@/model/ContentURL';
+import UpdateCheckList from '../components/UpdateCheckList';
+import UpdateGallery from '../components/UpdateGallery';
+import UpdateColorsList from '../components/UpdateColorsList';
 
 import {
   setMessage,
@@ -16,19 +12,23 @@ import {
 } from '@/controllers/messageSlice';
 import { updateProject } from '@/controllers/updateSlice';
 
-import UpdateCheckList from '../components/UpdateCheckList';
-import UpdateGallery from '../components/UpdateGallery';
-import UpdateColorsList from '../components/UpdateColorsList';
+import { ProjectDesign, ProjectDesignObject } from '../../../../model/ProjectDesign';
+import { Project, ProjectObject } from '@/model/Project';
+import { Gallery } from '@/model/Gallery';
+import { CheckList } from '@/model/CheckList';
+import { Color } from '@/model/Color';
+import { ContentURL, ContentURLObject } from '@/model/ContentURL';
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 interface UpdateDesignProps {
   project: Project;
 }
 
 const UpdateDesign: React.FC<UpdateDesignProps> = ({ project }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
-  const { updatedDesignGallery, updatedDesignCheckList, updatedColors } = useSelector(
-    (state: RootState) => state.update
+  const { updatedDesignGallery, updatedDesignCheckList, updatedColors } = useAppSelector(
+    (state) => state.update
   );
 
   const [projectObject, setProjectObject] = useState<ProjectObject>(project.toProjectObject());

@@ -1,28 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import { authSlice } from '@the7ofdiamonds/gateway';
+
 import { aboutSlice } from '@/controllers/aboutSlice.js';
-import contactSlice from '@/controllers/contactSlice.js';
-import contentSlice from '@/controllers/contentSlice.js';
+import { accountSlice } from '@/controllers/accountSlice.js';
+import { addSlice } from '@/controllers/addSlice.js';
+import { databaseSlice } from '@/controllers/databaseSlice.js';
+import { githubSlice } from '@/controllers/githubSlice.js';
+import { organizationSlice } from '@/controllers/organizationSlice.js';
 import { portfolioSlice } from '@/controllers/portfolioSlice.js';
 import { projectSlice } from '@/controllers/projectSlice.js';
-import { githubSlice } from '@/controllers/githubSlice.js';
 import { skillsSlice } from '@/controllers/skillsSlice.js';
-import { userSlice } from '@/controllers/userSlice.js';
-import { addSlice } from '@/controllers/addSlice.js';
-import { messageSlice } from '@/controllers/messageSlice.js';
 import { updateSlice } from '@/controllers/updateSlice.js';
-import { authSlice } from '@/controllers/authSlice.js';
-import databaseSlice from '@/controllers/databaseSlice.js';
-import { organizationSlice } from '@/controllers/organizationSlice.js';
-import accountSlice from '@/controllers/accountSlice.js';
+import { userSlice } from '@/controllers/userSlice.js';
 
 export const store = configureStore({
   reducer: {
     about: aboutSlice.reducer,
     add: addSlice.reducer,
-    contact: contactSlice.reducer,
-    content: contentSlice.reducer,
-    message: messageSlice.reducer,
     portfolio: portfolioSlice.reducer,
     project: projectSlice.reducer,
     github: githubSlice.reducer,

@@ -21,6 +21,7 @@ const rollupConfig: RollupOptions = {
       'react-redux': 'ReactRedux',
     },
     preserveModules: true,
+    preserveModulesRoot: 'src',
     exports: 'named',
     compact: false,
   },

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import type { RootState } from '@/model/store';
-import ProjectStatus, { ProjectStatusObject } from '@/model/ProjectStatus';
-import Project from '@/model/Project';
-import CheckList from '@/model/CheckList';
+import { ProjectStatus, ProjectStatusObject } from '@/model/ProjectStatus';
+import { Project } from '@/model/Project';
+import { CheckList } from '@/model/CheckList';
 
-import ProjectProgress from '@/model/ProjectProgress';
-import ProjectCheckList from '@/model/ProjectCheckList';
+import { ProjectProgress } from '@/model/ProjectProgress';
+import { ProjectCheckList } from '@/model/ProjectCheckList';
 
 import Status from '../../project/Status';
 
@@ -87,7 +87,7 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ project }) => {
 
     return (
         <>
-            {project.process && project.process.status && <Status project={project} />}
+            {project.process && project.process.status && <Status status={project.process.status} />}
         </>
     )
 }

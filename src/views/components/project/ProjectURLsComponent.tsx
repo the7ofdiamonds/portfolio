@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import ButtonIconExternal from "../ButtonIconExternal";
+import { ButtonImage } from "@the7ofdiamonds/ui-ux";
 
 import { ProjectURLs } from "@/model/ProjectURLs";
 import { ProjectURL } from "@/model/ProjectURL";

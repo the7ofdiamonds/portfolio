@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { LoadingComponent } from '@/views/components/LoadingComponent';
-import { SkillsComponent } from '@/views/components/SkillsComponent';
+import { LoadingComponent } from '@the7ofdiamonds/ui-ux';
+import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
 
 import { ProjectsComponent } from '@/views/components/portfolio/ProjectsComponent';
 

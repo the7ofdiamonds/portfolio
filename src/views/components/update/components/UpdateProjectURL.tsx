@@ -9,7 +9,7 @@ import {
 } from '@/controllers/messageSlice';
 
 import type { AppDispatch } from '@/model/store';
-import ProjectURLs from '@/model/ProjectURLs';
+import { ProjectURLs } from '@/model/ProjectURLs';
 
 interface UpdateProjectURLProps {
     projectURLs: ProjectURLs | undefined | null;

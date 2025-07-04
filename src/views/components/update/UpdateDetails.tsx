@@ -1,27 +1,27 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent, SetStateAction } from 'react';
 import { useDispatch } from 'react-redux';
 
-import type { AppDispatch } from '@/model/store';
-import Project, { ProjectObject } from '@/model/Project';
-import { ProjectDetailsObject } from '@/model/ProjectDetails';
-import { Privacy, privacyFromString } from '@/model/enum/Enums';
-import ContentURL from '@/model/ContentURL';
-
 import {
   setMessage,
   setMessageType,
   setShowStatusBar,
 } from '@/controllers/messageSlice';
 import { updateProject } from '@/controllers/updateSlice';
+
+import { Project, ProjectObject } from '@/model/Project';
+import { ProjectDetailsObject } from '@/model/ProjectDetails';
+import { Privacy, privacyFromString } from '@/model/enum/Enums';
+import { ContentURL } from '@/model/ContentURL';
 import { UserObject } from '@/model/User';
-import Contributor, { ContributorObject } from '@/model/Contributor';
+import { Contributor, ContributorObject } from '@/model/Contributor';
+import { useAppDispatch } from '@/model/hooks';
 
 interface UpdateDetailsProps {
   project: Project;
 }
 
 const UpdateDetails: React.FC<UpdateDetailsProps> = ({ project }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const [projectObject, setProjectObject] = useState<ProjectObject>(project.toProjectObject());
 
@@ -92,7 +92,7 @@ const UpdateDetails: React.FC<UpdateDetailsProps> = ({ project }) => {
         content: content ? content.url : null,
         team_list: team,
         story: story ? story.url : null,
-        repo_size: 0   
+        repo_size: 0
       };
 
       const updatedProjectObject: ProjectObject = {

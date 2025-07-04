@@ -2,7 +2,7 @@ import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/model/store';
 
-import Gallery, { GalleryObject } from '@/model/Gallery'
+import { Gallery,GalleryObject } from '@/model/Gallery'
 import { ImageObject } from '@/model/Image';
 
 import {

@@ -14,20 +14,21 @@ import {
 } from '@/controllers/taxonomiesSlice';
 import { updateProjectSkills } from '@/controllers/updateSlice';
 
-import type { AppDispatch, RootState } from '@/model/store';
-import ProjectSkills, { ProjectSkillsObject } from '@/model/ProjectSkills';
+import { ProjectSkills, ProjectSkillsObject } from '@/model/ProjectSkills';
 import { Framework, Language, ProjectType, Service, Technology, existsInSet } from '@/model/Taxonomy';
-import Skills from '@/model/Skills';
+import { Skills } from '@/model/Skills';
+
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 interface UpdateSkillsProps {
   projectSkills: ProjectSkills;
 }
 
 const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
-  const { projectTypesObject, languagesObject, frameworksObject, technologiesObject } = useSelector(
-    (state: RootState) => state.taxonomies
+  const { projectTypesObject, languagesObject, frameworksObject, technologiesObject } = useAppSelector(
+    (state) => state.skills
   );
 
   const [selectedProjectTypes, setSelectedProjectTypes] = useState<Set<ProjectType>>(projectSkills.types ?? new Set());

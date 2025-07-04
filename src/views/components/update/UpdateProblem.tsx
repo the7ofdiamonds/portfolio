@@ -1,6 +1,8 @@
 import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import UpdateGallery from './components/UpdateGallery';
+
 import {
   setMessage,
   setMessageType,
@@ -9,12 +11,9 @@ import {
 import { updateProject } from '@/controllers/updateSlice';
 
 import type { AppDispatch, RootState } from '@/model/store';
-import Gallery from '@/model/Gallery';
-import Project, { ProjectObject } from '@/model/Project';
-import DocumentURL, { DocumentURLObject } from '@/model/DocumentURL';
-
-import UpdateGallery from './components/UpdateGallery';
-import ContentURL from '@/model/ContentURL';
+import {Gallery} from '@/model/Gallery';
+import { Project,ProjectObject } from '@/model/Project';
+import { DocumentURL, DocumentURLObject } from '@/model/DocumentURL';
 
 interface UpdateProblemProps {
   project: Project;

@@ -2,7 +2,7 @@ import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/model/store';
 
-import Color, { ColorObject, existsInSet } from '@/model/Color';
+import { Color,ColorObject } from '@/model/Color';
 
 import {
     setMessage,
@@ -82,7 +82,6 @@ const UpdateColorsList: React.FC<UpdateColorsListProps> = ({ colorsObject }) => 
         try {
             if (color.name !== '') {
                 setColors((prevColors) => {
-                    const exists = existsInSet(color, colors);
                     return exists ? new Set(Array.from(prevColors).filter((c) => c.id !== color.id)) : prevColors.add(color);
                 });
 

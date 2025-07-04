@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { GalleryComponent } from '@/views/components/GalleryComponent';
-
-import { ContentComponent } from '@/views/components/content/ContentComponent';
-
-import { DocumentComponent } from '@/views/components/DocumentComponent';
+import {
+  GalleryComponent,
+  ContentComponent,
+  DocumentComponent
+} from '@the7ofdiamonds/ui-ux';
 
 import { Project } from '@/model/Project';
 import { ContentURL } from '@/model/ContentURL';

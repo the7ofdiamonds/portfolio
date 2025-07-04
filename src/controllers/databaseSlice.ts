@@ -203,6 +203,4 @@ const databaseSliceOptions: CreateSliceOptions<DatabaseState> = {
   },
 };
 
-const databaseSlice = createSlice(databaseSliceOptions);
-
-export default databaseSlice;
+export const databaseSlice = createSlice(databaseSliceOptions);

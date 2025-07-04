@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import ImageComponent from './ImageComponent';
+import { ImageComponent } from '@the7ofdiamonds/ui-ux';
 
 import { ContactMethods } from '@/model/ContactMethods'
 import { Contact } from '@/model/Contact';

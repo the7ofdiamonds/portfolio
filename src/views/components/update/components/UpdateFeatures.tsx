@@ -9,8 +9,8 @@ import {
 import { updateFeatures } from '@/controllers/updateSlice';
 
 import type { AppDispatch } from '@/model/store';
-import Feature, { FeatureObject } from '@/model/Feature';
-import Version from '@/model/Version';
+import { Feature, FeatureObject } from '@/model/Feature';
+import { Version } from '@/model/Version';
 
 interface UpdateFeaturesProps {
     features: Set<Feature> | undefined | null;

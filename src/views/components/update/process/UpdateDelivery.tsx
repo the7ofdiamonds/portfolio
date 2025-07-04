@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import type { AppDispatch, RootState } from '@/model/store';
 import { ProjectDeliveryObject } from '@/model/ProjectDelivery';
-import Project, { ProjectObject } from '@/model/Project';
-import Gallery from '@/model/Gallery';
-import CheckList from '@/model/CheckList';
-import ContentURL from '@/model/ContentURL';
+import { Project, ProjectObject } from '@/model/Project';
+import { Gallery } from '@/model/Gallery';
+import { CheckList } from '@/model/CheckList';
+import { ContentURL } from '@/model/ContentURL';
 
 import {
   setMessage,
