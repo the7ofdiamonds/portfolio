@@ -89,12 +89,6 @@ export * from './views/ProjectEditPage';
 export * from './views/SearchPage';
 export * from './views/SkillAddPage';
 
-export * from './views/components/project_card/ProjectCard';
-
-export * from './views/components/project/ProjectDescription';
-
-export * from './views/components/project_skills_bar/ProjectSkillsBar';
-
 export * from './views/components/add/AddFrameworks';
 export * from './views/components/add/AddLanguages';
 export * from './views/components/add/AddProjectTypes';
@@ -129,10 +123,13 @@ export * from './views/components/member/MemberPic';
 
 export * from './views/components/organization/OrganizationComponent';
 
+export * from './views/components/organizations/OrganizationsComponent';
+
 export * from './views/components/portfolio/PortfolioComponent';
 export * from './views/components/portfolio/PortfolioProject';
 export * from './views/components/portfolio/ProjectsComponent';
 
+export * from './views/components/project/ProjectDescription';
 export * from './views/components/project/Delivery';
 export * from './views/components/project/Design';
 export * from './views/components/project/Details';
@@ -150,14 +147,30 @@ export * from './views/components/project/TheProcess';
 export * from './views/components/project/TheSolution';
 export * from './views/components/project/Versions';
 
+export * from './views/components/project_card/ProjectCard';
+
+export * from './views/components/project_skills_bar/ProjectSkillsBar';
+
 export * from './views/components/skills/SkillsComponent';
 
 export * from './views/components/status_bar/StatusBar';
 export * from './views/components/status_bar/StatusBarComponent';
 
-export * from './views/components/task/TaskCheckbox';
-export * from './views/components/task/TaskComponent';
-export * from './views/components/task/TaskDescription';
+export * from './views/components/update/components/UpdateCheckList';
+export * from './views/components/update/components/UpdateColorsList';
+export * from './views/components/update/components/UpdateFeatures';
+export * from './views/components/update/components/UpdateGallery';
+export * from './views/components/update/components/UpdatePortfolioProject';
+export * from './views/components/update/components/UpdateProjectURL';
+export * from './views/components/update/components/UpdateProjectVersions';
+export * from './views/components/update/components/UpdateSkills';
+export * from './views/components/update/components/UpdateStatus';
 
-export * from './views/components/project_card/ProjectCard';
-export * from './views/components/project_skills_bar/ProjectSkillsBar';
+export * from './views/components/update/process/UpdateDelivery';
+export * from './views/components/update/process/UpdateDesign';
+export * from './views/components/update/process/UpdateDevelopment';
+export * from './views/components/update/process/UpdateProcess';
+
+export * from './views/components/update/UpdateDetails';
+export * from './views/components/update/UpdateProblem';
+export * from './views/components/update/UpdateSolution';
