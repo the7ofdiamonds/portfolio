@@ -89,10 +89,10 @@ export * from './views/ProjectEditPage';
 export * from './views/SearchPage';
 export * from './views/SkillAddPage';
 
-
 export * from './views/components/project_card/ProjectCard';
 
 export * from './views/components/project/ProjectDescription';
+
 export * from './views/components/project_skills_bar/ProjectSkillsBar';
 
 export * from './views/components/add/AddFrameworks';
@@ -149,6 +149,8 @@ export * from './views/components/project/TheProblem';
 export * from './views/components/project/TheProcess';
 export * from './views/components/project/TheSolution';
 export * from './views/components/project/Versions';
+
+export * from './views/components/skills/SkillsComponent';
 
 export * from './views/components/status_bar/StatusBar';
 export * from './views/components/status_bar/StatusBarComponent';
