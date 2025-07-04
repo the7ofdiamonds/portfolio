@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DescriptionComponent } from '../DescriptionComponent';
+import { DescriptionComponent } from '../description/DescriptionComponent';
 
 import { Project } from '@/model/Project';
 

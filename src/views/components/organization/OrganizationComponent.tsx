@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Organization } from '@/model/Organization'
 
-import { DescriptionComponent } from '@/views/components/DescriptionComponent';
+import { DescriptionComponent } from '@/views/components/description/DescriptionComponent';
 
 import styles from './Organization.module.scss';
 

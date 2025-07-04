@@ -3,7 +3,7 @@ import React from 'react'
 import { Organizations } from '@/model/Organizations';
 import { Organization } from '@/model/Organization';
 
-import { DescriptionComponent } from './DescriptionComponent';
+import { DescriptionComponent } from '@/views/components/description/DescriptionComponent';
 
 import styles from './Organizations.module.scss';
 
