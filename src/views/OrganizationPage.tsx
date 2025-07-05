@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { Section } from '@the7ofdiamonds/ui-ux';
+
 import { OrganizationComponent } from '@/views/components/organization/OrganizationComponent';
 import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
 
-import { ContactBar } from '@the7ofdiamonds/communications'; 
+import { ContactBar } from '@the7ofdiamonds/communications';
 
 import { getOrganization } from '@/controllers/organizationSlice';
 
@@ -62,7 +64,7 @@ export const OrganizationPage: React.FC = () => {
     }, [organization?.skills]);
 
     return (
-        <section className={styles.section} id='top'>
+        <Section>
             <>
                 {organization && <OrganizationComponent organization={organization} />}
 
@@ -70,6 +72,6 @@ export const OrganizationPage: React.FC = () => {
 
                 {organization && <PortfolioComponent portfolio={portfolio} skills={skills} />}
             </>
-        </section>
+        </Section>
     )
 }

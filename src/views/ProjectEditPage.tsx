@@ -1,6 +1,8 @@
 import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+import { Section } from '@the7ofdiamonds/ui-ux';
+
 import { updateProject } from '@/controllers/updateSlice';
 import {
     setMessage,
@@ -173,9 +175,9 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
     };
 
     return (
-        <section className={styles['edit-project']}>
+        <Section>
             <h1 className={styles.title}>edit project</h1>
             <EditProject project={project} change={handleUpdateProject} />
-        </section>
+        </Section>
     )
 }

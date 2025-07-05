@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { Section } from '@the7ofdiamonds/ui-ux';
+
 import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
@@ -70,10 +72,8 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account }) => {
   }, [account.skills]);
 
   return (
-    <section className={styles.section}>
-      <>
+    <Section>
         <PortfolioComponent portfolio={portfolio} skills={skills} />
-      </>
-    </section>
+    </Section>
   );
 }

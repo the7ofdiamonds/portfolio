@@ -1,15 +1,15 @@
 import React from 'react';
 
+import { Section } from '@the7ofdiamonds/ui-ux';
+
 import { AddFrameworks } from '@/views/components/add/AddFrameworks';
 import { AddLanguages } from '@/views/components/add/AddLanguages';
 import { AddProjectTypes } from '@/views/components/add/AddProjectTypes';
 import { AddTechnologies } from '@/views/components/add/AddTechnologies';
 
-import styles from '@/views/components/add/Add.module.scss';
-
 export const SkillAddPage: React.FC = () => {
   return (
-    <section className={styles.section}>
+    <Section>
       <>
         <AddLanguages />
 
@@ -19,6 +19,6 @@ export const SkillAddPage: React.FC = () => {
 
         <AddTechnologies />
       </>
-    </section>
+    </Section>
   );
 }

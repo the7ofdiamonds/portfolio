@@ -11,6 +11,7 @@ export * from './controllers/skillsSlice';
 export * from './controllers/portfolioSlice';
 export * from './controllers/projectSlice';
 export * from './controllers/updateSlice';
+export * from './controllers/userSlice';
 
 export * from './model/Account';
 export * from './model/CheckList';

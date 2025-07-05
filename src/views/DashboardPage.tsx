@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import { Button } from '@the7ofdiamonds/ui-ux';
+import { Section, Button } from '@the7ofdiamonds/ui-ux';
 
 import { logout } from '@/controllers/authSlice';
 import { setMessage, setMessageType, setShowStatusBar } from '@/controllers/messageSlice';
@@ -50,7 +50,7 @@ export const DashboardPage: React.FC = () => {
     };
 
     return (
-        <section className={styles.section}>
+        <Section>
             <h2 className={styles.title}>Dashboard</h2>
 
             <div className={styles.options}>
@@ -60,6 +60,6 @@ export const DashboardPage: React.FC = () => {
             </div>
 
             <Button title={'logout'} action={handleLogout} />
-        </section>
+        </Section>
     )
 }

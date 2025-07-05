@@ -1,6 +1,6 @@
 {
   "name": "@the7ofdiamonds/github-portfolio",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Use GitHub API to create portfolio website with repositories.",
   "author": "@the7ofdiamonds",
   "license": "ISC",
@@ -30,9 +30,8 @@
     "tsc:dev": "tsc --watch",
     "sync": "browser-sync start --config browsersync.config.js",
     "vite": "vite -c vite.config.ts",
-    "build": "vite:build",
+    "build": "vite build",
     "preview": "vite preview --port 8080",
-    "vite:build": "vite build",
     "update-dev": "git push gitport development",
     "update-prod": "git push gitport",
     "refactor": "./refactor.sh && npm run update-prod",

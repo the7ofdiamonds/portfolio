@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
-import { Portfolio } from '@/model/Portfolio';
-import { Skills } from '@/model/Skills';
-import { User } from '@/model/User';
-import { Project } from '@/model/Project';
-
-import { getPortfolioDetails } from '@/controllers/portfolioSlice';
-
 import { ProjectsComponent } from '@/views/components/portfolio/ProjectsComponent';
 import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
 
 import { HeaderTaxonomyComponent } from '@/views/components/header/HeaderTaxonomyComponent';
+
+import { getPortfolioDetails } from '@/controllers/portfolioSlice';
+
+import { Portfolio } from '@/model/Portfolio';
+import { Skills } from '@/model/Skills';
+import { User } from '@/model/User';
+import { Project } from '@/model/Project';
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 import styles from '@/views/components/search/Search.module.scss';
 

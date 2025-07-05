@@ -1,8 +1,7 @@
 import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 
-import { StatusBar } from '@the7ofdiamonds/ui-ux';
+import { Section,StatusBar } from '@the7ofdiamonds/ui-ux';
 
 import { updateProject } from '@/controllers/updateSlice';
 import {
@@ -23,25 +22,26 @@ import { Portfolio } from '@/model/Portfolio';
 import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
 import { RepoURL } from '@/model/RepoURL';
 import { User } from '@/model/User';
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 interface ProjectUpdateProps {
     user: User;
 }
 
 export const ProjectUpdatePage: React.FC<ProjectUpdateProps> = ({ user }) => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const { login, projectID } = useParams();
 
-    const { projectLoading, projectLoadingMessage, projectErrorMessage, projectObject } = useSelector(
+    const { projectLoading, projectLoadingMessage, projectErrorMessage, projectObject } = useAppSelector(
         (state: RootState) => state.project
     );
-    const { portfolioObject } = useSelector(
-        (state: RootState) => state.portfolio
+    const { portfolioObject } = useAppSelector(
+        (state) => state.portfolio
     );
-    const { updateLoading, updateLoadingMessage, updateErrorMessage, updateSuccessMessage, updateStatusCode } = useSelector(
-        (state: RootState) => state.update
+    const { updateLoading, updateLoadingMessage, updateErrorMessage, updateSuccessMessage, updateStatusCode } = useAppSelector(
+        (state) => state.update
     );
 
     const [portfolio, setPortfolio] = useState<Portfolio | null>(user.portfolio);
@@ -201,9 +201,8 @@ export const ProjectUpdatePage: React.FC<ProjectUpdateProps> = ({ user }) => {
             setShowStatusBar('show');
         }
     };
-    console.log(project)
     return (
-        <section className='update-project'>
+        <Section>
             <h1 className='title'>update project</h1>
 
             <form action="" id="add_project">
@@ -246,6 +245,6 @@ export const ProjectUpdatePage: React.FC<ProjectUpdateProps> = ({ user }) => {
             </button>
 
             <StatusBar show={'hide'} messageType={messageType} message={message} />
-        </section>
+        </Section>
     )
 }

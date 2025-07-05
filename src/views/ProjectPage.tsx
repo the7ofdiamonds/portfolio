@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { Section } from '@the7ofdiamonds/ui-ux';
+
 import { LoadingComponent } from '@the7ofdiamonds/ui-ux';
 import { ProjectComponent } from './components/project/ProjectComponent';
 
@@ -99,7 +101,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ account }) => {
 
   if (githubLoading || projectLoading) {
     return <section className='loading'>
-      <LoadingComponent page={title ?? ''}/>
+      <LoadingComponent page={title ?? ''} />
     </section>;
   }
 
@@ -112,12 +114,10 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ account }) => {
   }
 
   return (
-    <section className={styles.section}>
-      <>
-        {project &&
-          <ProjectComponent account={account} project={project} />
-        }
-      </>
-    </section>
+    <Section>
+      {project &&
+        <ProjectComponent account={account} project={project} />
+      }
+    </Section>
   );
 }

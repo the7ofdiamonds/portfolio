@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { Section } from '@the7ofdiamonds/ui-ux';
+
 import { User } from '@/model/User';
 import { Project } from '@/model/Project';
 import { Portfolio } from '@/model/Portfolio';
@@ -29,12 +31,12 @@ export const PortfolioEditPage: React.FC<PortfolioEditPageProps> = ({ user }) =>
     }, [portfolio]);
 
     return (
-        <section className={styles.section}>
+        <Section>
             {projects.size > 0 && (
                 Array.from(projects).map((project, index) => (
                     <EditPortfolioProject key={index} project={project} />
                 ))
             )}
-        </section>
+        </Section>
     )
 }
