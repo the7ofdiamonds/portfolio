@@ -1,5 +1,12 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 
+import { StatusBar } from '@the7ofdiamonds/ui-ux';
+
+import { EditCheckList } from '../components/check_list/EditCheckList';
+import { EditGallery } from '../components/gallery/EditGallery';
+import { EditSkills } from '../components/skills/EditSkills';
+import { EditProjectVersions } from '../components/project_versions/EditProjectVersions';
+
 import { ProjectVersions } from '@/model/ProjectVersions';
 import { Project } from '@/model/Project';
 import { ProjectSkills } from '@/model/ProjectSkills';
@@ -7,13 +14,6 @@ import { Gallery } from '@/model/Gallery';
 import { CheckList } from '@/model/CheckList';
 import { ProjectDevelopment } from '@/model/ProjectDevelopment';
 import { ProjectProcess } from '@/model/ProjectProcess';
-
-import { EditCheckList } from '../components/check_list/EditCheckList';
-import { EditGallery } from '../components/gallery/EditGallery';
-import { EditSkills } from '../components/skills/EditSkills';
-import { EditProjectVersions } from '../components/project_versions/EditProjectVersions';
-
-import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 import styles from './EditProcess.module.scss';
 
@@ -29,9 +29,9 @@ export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, chang
   const [repoURL, setRepoURL] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [projectVersions, setProjectVersions] = useState<ProjectVersions>(new ProjectVersions);
-  const [show, setShow] = useState<string>('hide');
+  const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>('');
-  const [messageType, setMessageType] = useState<string>('info');
+  const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
 
   useEffect(() => {
     if (project.process?.development?.gallery) {
@@ -135,7 +135,9 @@ export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, chang
 
       <br />
 
-      <EditGallery location='development' gallery={gallery} />
+      <EditGallery location='development' gallery={gallery} setVal={function (value: Gallery): void {
+        throw new Error('Function not implemented.');
+      }} />
 
       <br />
 

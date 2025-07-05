@@ -1,13 +1,13 @@
 import React from 'react'
 
-import { Project } from '@/model/Project';
+import { StatusBar } from '@the7ofdiamonds/ui-ux';
 
 import { EditStatus } from '@/views/components/edit/process/EditStatus';
 import { EditDesign } from '@/views/components/edit/process/EditDesign';
 import { EditDevelopment } from '@/views/components/edit/process/EditDevelopment';
 import { EditDelivery } from '@/views/components/edit/process/EditDelivery';
 
-import { StatusBarComponent } from '@/views/components/status_bar/StatusBarComponent';
+import { Project } from '@/model/Project';
 
 import styles from './EditProcess.module.scss';
 
@@ -41,7 +41,7 @@ export const EditProcess: React.FC<EditProcessProps> = ({ project, change }) => 
                 <h3>SAVE PROCESS</h3>
             </button>
 
-            <StatusBarComponent />
+            <StatusBar show={'show'} messageType={''} message={''} />
         </div>
     )
 }

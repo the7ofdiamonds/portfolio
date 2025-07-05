@@ -1,6 +1,7 @@
+import { Taxonomy } from '@the7ofdiamonds/ui-ux';
 import { Model } from './Model';
+
 import {
-   Taxonomy,
   Framework,
   Language,
   ProjectType,
@@ -101,7 +102,7 @@ export class Skills extends Model {
     return map.has(skill.id);
   }
 
-  filter(taxonomy: string, term: string) {
+  filter(taxonomy: string, term: string): Taxonomy {
     if (taxonomy === 'project-types' && this.types) {
       for (const type of this.types) {
         if (type.id === term) {

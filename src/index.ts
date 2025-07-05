@@ -106,22 +106,6 @@ export * from './views/components/edit/components/colors/EditColorsList';
 
 export * from './views/components/edit/components/gallery/EditGallery';
 
-export * from './views/components/footer/FooterBar';
-export * from './views/components/footer/FooterComponent';
-
-export * from './views/components/header/HeaderComponent';
-export * from './views/components/header/HeaderOrganizationComponent';
-export * from './views/components/header/HeaderTaxonomyComponent';
-
-export * from './views/components/member/MemberBio';
-export * from './views/components/member/MemberCard';
-export * from './views/components/member/MemberComponent';
-export * from './views/components/member/MemberContact';
-export * from './views/components/member/MemberInfoComponent';
-export * from './views/components/member/MemberKnowledgeComponent';
-export * from './views/components/member/MemberNavigationComponent';
-export * from './views/components/member/MemberPic';
-
 export * from './views/components/organization/OrganizationComponent';
 
 export * from './views/components/organizations/OrganizationsComponent';
@@ -153,9 +137,6 @@ export * from './views/components/project_card/ProjectCard';
 export * from './views/components/project_skills_bar/ProjectSkillsBar';
 
 export * from './views/components/skills/SkillsComponent';
-
-export * from './views/components/status_bar/StatusBar';
-export * from './views/components/status_bar/StatusBarComponent';
 
 export * from './views/components/update/components/UpdateCheckList';
 export * from './views/components/update/components/UpdateColorsList';

@@ -1,12 +1,12 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
-import { useAppSelector } from '@/model/hooks';
+import { StatusBar } from '@the7ofdiamonds/ui-ux';
+
+import { EditGallery } from '@/views/components/edit/components/gallery/EditGallery';
+
 import { Gallery } from '@/model/Gallery';
 import { Project } from '@/model/Project';
 import { ProjectProblem } from '@/model/ProjectProblem';
-
-import { EditGallery } from '@/views/components/edit/components/gallery/EditGallery';
-import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 import styles from './Edit.module.scss';
 
@@ -23,9 +23,9 @@ export const EditProblem: React.FC<EditProblemProps> = ({ project, change }) => 
   const [gallery, setGallery] = useState<Gallery>(new Gallery);
   const [contentURL, setContentURL] = useState<string>('');
   const [whitepaperURL, setWhitepaperURL] = useState<string>('');
-  const [show, setShow] = useState<string>('hide');
+  const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>('');
-  const [messageType, setMessageType] = useState<string>('info');
+  const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
 
   useEffect(() => {
     if (project.problem?.gallery) {
@@ -104,7 +104,9 @@ export const EditProblem: React.FC<EditProblemProps> = ({ project, change }) => 
 
       <h2 className={styles.title}>Problem</h2>
 
-      <EditGallery location='problem' gallery={gallery} />
+      <EditGallery location='problem' gallery={gallery} setVal={function (value: Gallery): void {
+        throw new Error('Function not implemented.');
+      }} />
 
       <hr />
 

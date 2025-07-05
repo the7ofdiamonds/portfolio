@@ -1,23 +1,20 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
+import { Taxonomy, StatusBar,Image } from '@the7ofdiamonds/ui-ux';
 
 import { addSkill } from '@/controllers/skillsSlice';
 
-import type { AppDispatch, RootState } from '@/model/store';
-import { Image } from '@/model/Image';
-import { Taxonomy } from '@/model/Taxonomy';
-
-import { StatusBar } from '@/views/components/status_bar/StatusBar';
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 export interface AddTaxonomyProps {
   taxonomy: Taxonomy;
 };
 
 export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const { skillsLoading, skillsStatusCode, skillsSuccessMessage, skillsErrorMessage, taxType } =
-    useSelector((state: RootState) => state.skills);
+    useAppSelector((state) => state.skills);
 
   const [id, setID] = useState('');
   const [title, setTitle] = useState('');

@@ -1,13 +1,13 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
+import { StatusBar } from '@the7ofdiamonds/ui-ux';
+
+import { EditCheckList } from '@/views/components/edit/components/check_list/EditCheckList';
+import { EditGallery } from '@/views/components/edit/components/gallery/EditGallery';
+
 import { Project } from '@/model/Project';
 import { Gallery } from '@/model/Gallery';
 import { CheckList } from '@/model/CheckList';
-
-import { EditCheckList } from '../components/check_list/EditCheckList';
-import { EditGallery } from '../components/gallery/EditGallery';
-
-import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 import styles from './EditProcess.module.scss';
 
@@ -20,9 +20,9 @@ export const EditDelivery: React.FC<EditDeliveryProps> = ({ project, change }) =
   const [gallery, setGallery] = useState<Gallery>(new Gallery);
   const [checkList, setCheckList] = useState<CheckList>(new CheckList);
   const [content, setContent] = useState<string>('');
-  const [show, setShow] = useState<string>('hide');
+  const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>('');
-  const [messageType, setMessageType] = useState<string>('info');
+  const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
 
   useEffect(() => {
     if (project.process?.delivery?.gallery) {
@@ -68,7 +68,9 @@ export const EditDelivery: React.FC<EditDeliveryProps> = ({ project, change }) =
 
       <br />
 
-      <EditGallery location='delivery' gallery={gallery} />
+      <EditGallery location='delivery' gallery={gallery} setVal={function (value: Gallery): void {
+        throw new Error('Function not implemented.');
+      } } />
 
       <hr />
 

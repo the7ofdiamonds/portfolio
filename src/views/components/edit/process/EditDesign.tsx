@@ -1,5 +1,7 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
+import { StatusBar } from '@the7ofdiamonds/ui-ux';
+
 import { Project } from '@/model/Project';
 import { Gallery } from '@/model/Gallery';
 import { CheckList } from '@/model/CheckList';
@@ -7,7 +9,6 @@ import { CheckList } from '@/model/CheckList';
 import { EditGallery } from '../components/gallery/EditGallery';
 import { EditColorsList } from '@/views/components/edit/components/colors/EditColorsList';
 import { EditCheckList } from '@/views/components/edit/components/check_list/EditCheckList';
-import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 import { ProjectDesign } from '@/model/ProjectDesign';
 import { Colors } from '@/model/Colors';
@@ -25,9 +26,9 @@ export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
   const [checkList, setCheckList] = useState<CheckList>(design?.checkList ?? new CheckList);
   const [colors, setColors] = useState<Colors>(design?.colors ?? new Colors);
   const [content, setContent] = useState<string>(design?.contentURL?.url ?? '');
-  const [show, setShow] = useState<string>('hide');
+  const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>('');
-  const [messageType, setMessageType] = useState<string>('info');
+  const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
 
   useEffect(() => {
     if (project?.process?.design) {
@@ -87,7 +88,7 @@ export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
 
       <br />
 
-      <EditGallery location='design' gallery={gallery} setVal={setGallery}/>
+      <EditGallery location='design' gallery={gallery} setVal={setGallery} />
 
       <br />
 

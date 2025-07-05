@@ -23,7 +23,7 @@ export type OrganizationResponseGQL = {
   organization: OrganizationGQL;
 };
 
-export type OrganizationObject = AccountObject & {
+export interface OrganizationObject extends AccountObject {
   id: string | null;
   created_at: string | null;
   updated_at: string | null;
@@ -41,7 +41,7 @@ export type OrganizationObject = AccountObject & {
   repos: Array<RepoObject> | null;
   repo_queries: Array<GitHubRepoQueryObject> | null;
   portfolio: PortfolioObject | null;
-};
+}
 
 export class Organization extends Account {
   type: string = 'Organization';
@@ -49,7 +49,7 @@ export class Organization extends Account {
   description: string | null;
   blog: string | null;
 
-  constructor(data?: OrganizationObject) {
+  constructor(data?: OrganizationObject | Partial<OrganizationObject>) {
     super(data);
 
     this.id = data?.id ? data.id : null;

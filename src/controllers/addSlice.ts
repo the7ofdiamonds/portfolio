@@ -5,10 +5,11 @@ import {
   CreateSliceOptions,
 } from '@reduxjs/toolkit';
 
+import { Taxonomy } from '@the7ofdiamonds/ui-ux';
+
 import { getAPI } from '@/services/Config';
 
 import { Project } from '@/model/Project';
-import { Taxonomy } from '@/model/Taxonomy';
 import { addSecureHeaders } from '@/utilities/Headers';
 import { SecureHeaders } from '@/model/SecureHeaders';
 

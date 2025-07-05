@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Section } from '@the7ofdiamonds/ui-ux';
+import { LoadingComponent, Section, Main, StatusBar } from '@the7ofdiamonds/ui-ux';
 
-import { LoadingComponent } from '@the7ofdiamonds/ui-ux';
 import { ProjectComponent } from './components/project/ProjectComponent';
 
-import { StatusBarComponent } from '@/views/components/status_bar/StatusBarComponent';
-
-import { setMessage, setMessageType, setShowStatusBar } from '../controllers/messageSlice';
 import { getProject } from '@/controllers/projectSlice';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 import { Project } from '@/model/Project';
 import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
 import { Account } from '@/model/Account';
-
-import styles from '../views/components/project/Project.module.scss';
 
 interface ProjectPageProps {
   account: Account;
@@ -37,6 +31,9 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ account }) => {
   const [repoQuery, setRepoQuery] = useState<GitHubRepoQuery | null>(null);
   const [project, setProject] = useState<Project | null>(null);
   const [title, setTitle] = useState<string | null>(null);
+  const [message, setMessage] = useState<string>('');
+  const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
+  const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -77,40 +74,40 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ account }) => {
 
   useEffect(() => {
     if (githubErrorMessage) {
-      dispatch(setMessageType('error'));
-      dispatch(setMessage(githubErrorMessage));
-      dispatch(setShowStatusBar(true));
+      setMessageType('error');
+      setMessage(githubErrorMessage);
+      setShowStatusBar('show');
     }
   }, [githubErrorMessage]);
 
   useEffect(() => {
     if (projectErrorMessage) {
-      dispatch(setMessageType('error'));
-      dispatch(setMessage(projectErrorMessage));
-      dispatch(setShowStatusBar(true));
+      setMessageType('error');
+      setMessage(projectErrorMessage);
+      setShowStatusBar('show');
     }
   }, [projectErrorMessage]);
 
   useEffect(() => {
     if (title && (githubLoading || projectLoading)) {
-      dispatch(setMessageType('caution'));
-      dispatch(setMessage(`Now Loading ${title}`));
-      dispatch(setShowStatusBar(true));
+      setMessageType('caution');
+      setMessage(`Now Loading ${title}`);
+      setShowStatusBar('show');
     }
   }, [githubLoading, projectLoading, title]);
 
   if (githubLoading || projectLoading) {
-    return <section className='loading'>
+    return <Section>
       <LoadingComponent page={title ?? ''} />
-    </section>;
+    </Section>;
   }
 
   if (githubErrorMessage || projectErrorMessage) {
-    return <section className='error-page'>
-      <main>
-        <StatusBarComponent />
-      </main>
-    </section>;
+    return <Section>
+      <Main>
+        <StatusBar show={showStatusBar} messageType={messageType} message={message} />
+      </Main>
+    </Section>;
   }
 
   return (

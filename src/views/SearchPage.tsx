@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { HeaderTaxonomyComponent } from '@the7ofdiamonds/ui-ux';
+
 import { ProjectsComponent } from '@/views/components/portfolio/ProjectsComponent';
 import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
-
-import { HeaderTaxonomyComponent } from '@/views/components/header/HeaderTaxonomyComponent';
 
 import { getPortfolioDetails } from '@/controllers/portfolioSlice';
 
@@ -72,7 +72,7 @@ export const SearchPage: React.FC<SearchProps> = ({ user, skills }) => {
   return (
     <section className={styles.section} id="top">
       <>
-        {taxonomy && term && <HeaderTaxonomyComponent skill={skills.filter(taxonomy, term)} />}
+        {taxonomy && term && <HeaderTaxonomyComponent skill={skills.filter(taxonomy, term)}  />}
 
         {portfolio &&
           projects &&

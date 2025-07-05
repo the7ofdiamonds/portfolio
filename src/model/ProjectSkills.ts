@@ -1,6 +1,7 @@
+import { Taxonomy } from '@the7ofdiamonds/ui-ux';
+
 import { Skills } from './Skills';
 import {
-  Taxonomy,
   existsInSet,
   Framework,
   Language,

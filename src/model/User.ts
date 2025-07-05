@@ -10,7 +10,7 @@ import { Portfolio } from '@/model/Portfolio';
 
 import { UserResponse } from '@/controllers/githubSlice';
 
-export type UserObject = AccountObject & {
+export interface UserObject extends AccountObject {
   title: string | null;
   bio: string | null;
   website: string | null;
@@ -19,7 +19,7 @@ export type UserObject = AccountObject & {
   resume: string | null;
   organizations_url: string | null;
   organizations: Array<OrganizationObject> | null;
-};
+}
 
 export type UserGQL = {
   id: string;
@@ -52,7 +52,7 @@ export class User extends Account {
   organizationsURL: string | null;
   organizations: Organizations | null;
 
-  constructor(data?: UserObject) {
+  constructor(data?: UserObject | Partial<UserObject>) {
     super(data);
 
     this.id = data?.id ? data.id : this.getID();

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DescriptionComponent } from '../description/DescriptionComponent';
+import { DescriptionComponent } from '@the7ofdiamonds/ui-ux';
 
 import { Project } from '@/model/Project';
 

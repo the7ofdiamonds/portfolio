@@ -1,3 +1,5 @@
+import { Taxonomy } from '@the7ofdiamonds/ui-ux';
+
 import { Model } from './Model';
 
 import { snakeCaseToPath } from '../utilities/String';
@@ -13,96 +15,96 @@ export type TaxonomyObject = {
   usage: number;
 };
 
-export class Taxonomy extends Model {
-  id: string;
-  type: string;
-  title: string;
-  description: string;
-  path: string;
-  image: Image | null;
-  usage: number;
+// export class Taxonomy extends Model {
+//   id: string;
+//   type: string;
+//   title: string;
+//   description: string;
+//   path: string;
+//   image: Image | null;
+//   usage: number;
 
-  constructor(data: Record<string, any> | TaxonomyObject = {}) {
-    super();
+//   constructor(data: Record<string, any> | TaxonomyObject = {}) {
+//     super();
 
-    this.id = data?.id ? data.id : '';
-    this.type = data?.type ? data.type : '';
-    this.title = data?.title ? data.title : '';
-    this.description = data?.description ? data.description : '';
-    this.path = data?.path
-      ? snakeCaseToPath(data.path)
-      : snakeCaseToPath(this.type);
-    this.usage = data?.usage ? data.usage : '';
-    this.image = data?.image
-      ? new Image({
-          id: data?.image?.id,
-          title: data?.image?.title,
-          url: data?.image?.url,
-          class_name: data?.image?.class_name,
-        })
-      : null;
-  }
+//     this.id = data?.id ? data.id : '';
+//     this.type = data?.type ? data.type : '';
+//     this.title = data?.title ? data.title : '';
+//     this.description = data?.description ? data.description : '';
+//     this.path = data?.path
+//       ? snakeCaseToPath(data.path)
+//       : snakeCaseToPath(this.type);
+//     this.usage = data?.usage ? data.usage : '';
+//     this.image = data?.image
+//       ? new Image({
+//           id: data?.image?.id,
+//           title: data?.image?.title,
+//           url: data?.image?.url,
+//           class_name: data?.image?.class_name,
+//         })
+//       : null;
+//   }
 
-  setID(id: string) {
-    this.id = id;
-  }
+//   setID(id: string) {
+//     this.id = id;
+//   }
 
-  setTitle(title: string) {
-    this.title = title;
-  }
+//   setTitle(title: string) {
+//     this.title = title;
+//   }
 
-  setDescription(description: string) {
-    this.description = description;
-  }
+//   setDescription(description: string) {
+//     this.description = description;
+//   }
 
-  setPath(path: string) {
-    this.path = path;
-  }
+//   setPath(path: string) {
+//     this.path = path;
+//   }
 
-  setImage(image: Image) {
-    this.image = image;
-  }
+//   setImage(image: Image) {
+//     this.image = image;
+//   }
 
-  setUsage(usage: number) {
-    this.usage = usage;
-  }
+//   setUsage(usage: number) {
+//     this.usage = usage;
+//   }
 
-  isValid(): boolean {
-    if (this.id == '') {
-      throw new Error('ID is not valid');
-    }
+//   isValid(): boolean {
+//     if (this.id == '') {
+//       throw new Error('ID is not valid');
+//     }
 
-    if (this.type == '') {
-      throw new Error('Type is not valid');
-    }
+//     if (this.type == '') {
+//       throw new Error('Type is not valid');
+//     }
 
-    if (this.title == '') {
-      throw new Error('Title is not valid');
-    }
+//     if (this.title == '') {
+//       throw new Error('Title is not valid');
+//     }
 
-    if (this.path == '') {
-      throw new Error('Path is not valid');
-    }
+//     if (this.path == '') {
+//       throw new Error('Path is not valid');
+//     }
 
-    return true;
-  }
+//     return true;
+//   }
 
-  toObject() {
-    return super.toObject();
-  }
+//   toObject() {
+//     return super.toObject();
+//   }
 
-  toTaxonomyObject(): TaxonomyObject {
-    return {
-      id: this.id,
-      type: this.type,
-      title: this.title,
-      description: this.description,
-      path: this.path,
-      image: this.image ? this.image.toImageObject() : null,
-      usage: this.usage,
-    };
-  }
-}
+//   toTaxonomyObject(): TaxonomyObject {
+//     return {
+//       id: this.id,
+//       type: this.type,
+//       title: this.title,
+//       description: this.description,
+//       path: this.path,
+//       image: this.image ? this.image.toImageObject() : null,
+//       usage: this.usage,
+//     };
+//   }
+// }
 
 export type ProjectTypeObject = TaxonomyObject;
 

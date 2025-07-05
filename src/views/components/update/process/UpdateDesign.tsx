@@ -51,8 +51,10 @@ const UpdateDesign: React.FC<UpdateDesignProps> = ({ project }) => {
   }, [project.process?.design?.checkList, setCheckList]);
 
   useEffect(() => {
-    setColorsList(project.process?.design?.colorsList ?? [])
-  }, [project.process?.design?.colorsList, setColorsList]);
+    if (project.process?.design?.colors?.list && project.process?.design?.colors?.list.size > 0) {
+      setColorsList(Array.from(project.process?.design?.colors.list))
+    }
+  }, [project.process?.design?.colors?.list]);
 
   useEffect(() => {
     setContent(project.process?.design?.contentURL ?? null)

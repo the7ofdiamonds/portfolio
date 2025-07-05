@@ -1,11 +1,11 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
+import { StatusBar } from '@the7ofdiamonds/ui-ux';
+
 import { Project } from '@/model/Project';
 import { ProjectDetails } from '@/model/ProjectDetails';
 import { Privacy, privacyFromString } from '@/model/enum/Enums';
 import { Contributor } from '@/model/Contributor';
-
-import { StatusBar } from '@/views/components/status_bar/StatusBar';
 
 import styles from './Edit.module.scss';
 
@@ -20,7 +20,7 @@ export const EditDetails: React.FC<EditDetailsProps> = ({ project, change }) => 
   const [content, setContent] = useState<string>('');
   const [team, setTeam] = useState<Array<Contributor>>([]);
   const [story, setStory] = useState<string>('');
-  const [show, setShow] = useState<string>('hide');
+  const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>('');
   const [messageType, setMessageType] = useState<string>('info');
 

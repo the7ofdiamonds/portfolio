@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Member from '../member/MemberCard';
+// import {user} from '@the7ofdiamonds/communications'
 
 import { Contributor } from '@/model/Contributor';
 import { Account } from '@/model/Account';
@@ -19,11 +19,11 @@ export const ProjectTeamComponent: React.FC<TeamProps> = ({ account, projectTeam
         <div className={styles['project-team']}>
           <h4 className="title">Project Team</h4>
 
-          <div className={styles['project-team-list']}>
+          {/* <div className={styles['project-team-list']}>
             {projectTeam.map((team_member, index) => (
               <Member key={index} account={account} member={team_member} />
             ))}
-          </div>
+          </div> */}
         </div>
       )}
     </>

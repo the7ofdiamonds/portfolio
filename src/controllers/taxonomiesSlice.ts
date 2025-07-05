@@ -17,10 +17,11 @@ import {
   DocumentSnapshot,
 } from 'firebase/firestore';
 
+import { Taxonomy } from '@the7ofdiamonds/ui-ux';
+
 import { getDB } from '@/Config';
 
 import {
-  Taxonomy,
   Framework,
   Language,
   ProjectType,
@@ -469,19 +470,19 @@ const taxonomiesSliceOptions: CreateSliceOptions<TaxonomiesState> = {
       const serializeSkills = (skills: Record<string, any>): SkillsObject => {
         return {
           types: skills.types.map((item: Record<string, any>) =>
-            new ProjectType(item).toObject()
+            new ProjectType(item).toTaxonomyObject()
           ),
           languages: skills.languages.map((item: Record<string, any>) =>
-            new Language(item).toObject()
+            new Language(item).toTaxonomyObject()
           ),
           frameworks: skills.frameworks.map((item: Record<string, any>) =>
-            new Framework(item).toObject()
+            new Framework(item).toTaxonomyObject()
           ),
           technologies: skills.technologies.map((item: Record<string, any>) =>
-            new Technology(item).toObject()
+            new Technology(item).toTaxonomyObject()
           ),
           services: skills.services.map((item: Record<string, any>) =>
-            new Service(item).toObject()
+            new Service(item).toTaxonomyObject()
           ),
         };
       };

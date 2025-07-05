@@ -1,16 +1,17 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
+import { StatusBar } from '@the7ofdiamonds/ui-ux';
+
+import { EditFeatures } from '@/views/components/edit/components/features/EditFeatures';
+import { EditProjectURL } from '@/views/components/edit/components/project_url/EditProjectURL';
+import { EditGallery } from '@/views/components/edit/components/gallery/EditGallery';
+
 import { Project } from '@/model/Project';
 import { ProjectSolution } from '@/model/ProjectSolution';
 import { Gallery } from '@/model/Gallery';
 import { Feature } from '@/model/Feature';
 import { ProjectURLs } from '@/model/ProjectURLs';
-
-import { EditFeatures } from '@/views/components/edit/components/features/EditFeatures';
-import { EditProjectURL } from '@/views/components/edit/components/project_url/EditProjectURL';
-import { EditGallery } from '@/views/components/edit/components/gallery/EditGallery';
-import { StatusBar } from '@/views/components/status_bar/StatusBar';
+import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 import styles from './Edit.module.scss';
 
@@ -25,9 +26,9 @@ export const EditSolution: React.FC<EditSolutionProps> = ({ project, change }) =
   );
 
   const [content, setContent] = useState<string>('');
-  const [show, setShow] = useState<string>('hide');
+  const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>('');
-  const [messageType, setMessageType] = useState<string>('info');
+  const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
 
   // useEffect(() => {
   //   if (updatedSolutionGallery) {
@@ -100,7 +101,9 @@ export const EditSolution: React.FC<EditSolutionProps> = ({ project, change }) =
     <div className={styles.edit} id='edit_solution'>
       <h1 className={styles.title}>solution</h1>
 
-      <EditGallery location='solution' gallery={project.solution?.gallery} />
+      <EditGallery location='solution' gallery={project.solution?.gallery ?? new Gallery} setVal={function (value: Gallery): void {
+        throw new Error('Function not implemented.');
+      } } />
 
       <br />
 

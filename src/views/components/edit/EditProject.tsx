@@ -1,20 +1,13 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
-import { useAppDispatch } from '@/model/hooks';
-import { Project } from '@/model/Project';
-
-import {
-    setMessage,
-    setMessageType,
-    setShowStatusBar,
-} from '@/controllers/messageSlice';
+import { StatusBar } from '@the7ofdiamonds/ui-ux';
 
 import { EditDetails } from '@/views/components/edit/EditDetails';
 import { EditProcess } from '@/views/components/edit/process/EditProcess';
 import { EditSolution } from '@/views/components/edit/EditSolution';
 import { EditProblem } from '@/views/components/edit/EditProblem';
 
-import { StatusBarComponent } from '@/views/components/status_bar/StatusBarComponent';
+import { Project } from '@/model/Project';
 
 import styles from './Edit.module.scss';
 
@@ -24,9 +17,10 @@ interface EditProjectProps {
 }
 
 export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => {
-    const dispatch = useAppDispatch();
-
     const [title, setTitle] = useState<string>('');
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<'info' | 'error' | 'success'>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
         if (project && project.title) {
@@ -45,9 +39,9 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => 
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     };
 
@@ -93,7 +87,7 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => 
                 <h3>SAVE PROJECT</h3>
             </button>
 
-            <StatusBarComponent />
+            <StatusBar show={showStatusBar} messageType={messageType} message={message} />
         </>
     )
 }
