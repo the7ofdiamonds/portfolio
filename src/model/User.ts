@@ -1,24 +1,31 @@
-import { Account, AccountObject } from './Account';
+import {
+  User as UserCommunications,
+  UserObject as UserObjectcommunications,
+} from '@the7ofdiamonds/communications';
+
 import { ContactMethods } from '@/model/ContactMethods';
 import { Organizations, OrganizationsGQL } from '@/model/Organizations';
 import { Repos } from '@/model/Repos';
-import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
+import {
+  GitHubRepoQuery,
+  GitHubRepoQueryObject,
+} from '@/model/GitHubRepoQuery';
 import { Repo, RepoObject, RepositoryGQL } from '@/model/Repo';
 import { OrganizationObject } from './Organization';
 import { ContentURL } from '@/model/ContentURL';
-import { Portfolio } from '@/model/Portfolio';
+import { Portfolio, PortfolioObject } from '@/model/Portfolio';
 
 import { UserResponse } from '@/controllers/githubSlice';
+import { Skills, SkillsObject } from './Skills';
 
-export interface UserObject extends AccountObject {
-  title: string | null;
-  bio: string | null;
-  website: string | null;
-  story: string | null;
-  phone: string | null;
-  resume: string | null;
+export interface UserObject extends UserObjectcommunications {
   organizations_url: string | null;
   organizations: Array<OrganizationObject> | null;
+  repos_url: string | null;
+  repos: Array<RepoObject> | null;
+  repo_queries: Array<GitHubRepoQueryObject> | null;
+  portfolio: PortfolioObject | null;
+  skills: SkillsObject | null;
 }
 
 export type UserGQL = {
@@ -41,33 +48,18 @@ export type UserGQLResponse = {
   viewer: UserGQL;
 };
 
-export class User extends Account {
-  type: string = 'User';
-  title: string | null;
-  bio: string | null;
-  website: string | null;
-  story: ContentURL | null;
-  phone: string | null;
-  resume: string | null;
+export class User extends UserCommunications {
   organizationsURL: string | null;
   organizations: Organizations | null;
+  reposURL: string | null;
+  repos: Repos | null;
+  repoQueries: Array<GitHubRepoQuery> | null;
+  portfolio: Portfolio | null;
+  skills: Skills | null;
 
   constructor(data?: UserObject | Partial<UserObject>) {
     super(data);
 
-    this.id = data?.id ? data.id : this.getID();
-    this.login = data?.login ? data?.login : null;
-    this.avatarURL = data?.avatar_url ? data?.avatar_url : null;
-    this.name = data?.name ? data.name : null;
-    this.title = data?.title ? data.title : null;
-    this.bio = data?.bio ? data.bio : null;
-    this.email = data?.email ? data?.email : null;
-    this.phone = data?.phone ? data?.phone : null;
-    this.resume = data?.resume ? data?.resume : null;
-    this.website = data?.website ? data?.website : null;
-    this.contactMethods = data?.contact_methods
-      ? new ContactMethods(data.contact_methods)
-      : null;
     this.organizationsURL = data?.organizations_url
       ? data.organizations_url
       : null;
@@ -79,10 +71,8 @@ export class User extends Account {
     this.repoQueries = data?.repo_queries
       ? this.getRepoQueries(data.repo_queries)
       : [];
-    this.story =
-      data?.story && typeof data.story === 'string'
-        ? new ContentURL(data.story)
-        : null;
+    this.portfolio = data?.portfolio ? new Portfolio(data.portfolio) : null;
+    this.skills = data?.skills ? new Skills(data.skills) : new Skills();
   }
 
   setID(id: string) {
@@ -240,10 +230,6 @@ export class User extends Account {
     this.repoQueries = repoQueries;
   }
 
-  setStory(url: string) {
-    this.story = new ContentURL(url);
-  }
-
   fromJson(json: Record<string, any>) {
     this.id = '0';
     this.login = json.contact_methods.login || null;
@@ -274,7 +260,7 @@ export class User extends Account {
       phone: this.phone,
       resume: this.resume,
       website: this.website,
-      story: this.story ? this.story.url : null,
+      story: this.story ? this.story : null,
       url: this.url,
       contact_methods: this.contactMethods
         ? this.contactMethods.toContactMethodsObject()
@@ -295,8 +281,8 @@ export class User extends Account {
               .filter((repoQuery) => repoQuery.owner && repoQuery.repo)
               .map((repoQuery) => repoQuery.toGitHubRepoQueryObject())
           : null,
-      skills: this.skills ? this.skills.toSkillsObject() : null,
       portfolio: this.portfolio ? this.portfolio.toPortfolioObject() : null,
+      skills: this.skills ? this.skills.toSkillsObject() : null,
     };
   }
 }

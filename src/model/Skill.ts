@@ -1,98 +1,39 @@
-import { Image, ImageObject } from './Image';
+import { SkillObject, Skill } from '@the7ofdiamonds/communications';
 
-import { snakeCaseToPath } from '../utilities/String';
-
-export type SkillObject = {
-  id: string;
-  type: string;
-  title: string | null;
-  description: string | null;
-  path: string | null;
-  image: ImageObject | null;
-  usage: number | null;
-};
-
-export class Skill {
-  id: string;
-  type: string;
-  title: string | null;
-  description: string | null;
-  path: string | null;
-  image: Image | null;
-  usage: number | null;
-
-  constructor(data: Record<string, any> | SkillObject = {}) {
-    this.id = data?.id ? data.id : '';
-    this.type = data?.type ? data.type : '';
-    this.title = data?.title ? data.title : '';
-    this.description = data?.description ? data.description : '';
-    this.path = data?.path
-      ? snakeCaseToPath(data.path)
-      : snakeCaseToPath(this.type);
-    this.usage = data?.usage ? data.usage : '';
-    this.image = data?.image
-      ? new Image({
-          id: data?.image?.id,
-          title: data?.image?.title,
-          url: data?.image?.url,
-          class_name: data?.image?.class_name,
-        })
-      : null;
+export class ProjectType extends Skill {
+  constructor(data?: SkillObject | Partial<SkillObject>) {
+    super({ ...data, path: 'project-types' });
   }
+}
 
-  setID(id: string) {
-    this.id = id;
+export class Language extends Skill {
+  readonly path: string = 'languages';
+
+  constructor(data?: SkillObject | Partial<SkillObject>) {
+    super({ ...data, path: 'languages' });
   }
+}
 
-  setTitle(title: string) {
-    this.title = title;
+export class Framework extends Skill {
+  readonly path: string = 'frameworks';
+
+  constructor(data?: SkillObject | Partial<SkillObject>) {
+    super({ ...data, path: 'frameworks' });
   }
+}
 
-  setDescription(description: string) {
-    this.description = description;
+export class Technology extends Skill {
+  readonly path: string = 'technologies';
+
+  constructor(data?: SkillObject | Partial<SkillObject>) {
+    super({ ...data, path: 'technologies' });
   }
+}
 
-  setPath(path: string) {
-    this.path = path;
-  }
+export class Service extends Skill {
+  readonly path: string = 'services';
 
-  setImage(image: Image) {
-    this.image = image;
-  }
-
-  setUsage(usage: number) {
-    this.usage = usage;
-  }
-
-  isValid(): boolean {
-    if (this.id == '') {
-      throw new Error('ID is not valid');
-    }
-
-    if (this.type == '') {
-      throw new Error('Type is not valid');
-    }
-
-    if (this.title == '') {
-      throw new Error('Title is not valid');
-    }
-
-    if (this.path == '') {
-      throw new Error('Path is not valid');
-    }
-
-    return true;
-  }
-
-  toSkillObject(): SkillObject {
-    return {
-      id: this.id,
-      type: this.type,
-      title: this.title,
-      description: this.description,
-      path: this.path,
-      image: this.image ? this.image.toImageObject() : null,
-      usage: this.usage,
-    };
+  constructor(data?: SkillObject | Partial<SkillObject>) {
+    super({ ...data, path: 'services' });
   }
 }

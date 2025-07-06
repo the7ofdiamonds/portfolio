@@ -5,8 +5,9 @@ import {
   isAnyOf,
 } from '@reduxjs/toolkit';
 
+import { Skill, SkillObject } from '@the7ofdiamonds/communications';
+
 import { Taxonomy } from '@/model/Taxonomy';
-import { Skill, SkillObject } from '@/model/Skill';
 import { Skills, SkillsObject } from '@/model/Skills';
 import { SecureHeaders } from '@/model/SecureHeaders';
 

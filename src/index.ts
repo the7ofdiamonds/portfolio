@@ -65,11 +65,11 @@ export * from './model/RepoSize';
 export * from './model/RepoURL';
 export * from './model/Roadmap';
 export * from './model/SecureHeaders';
+export * from './model/Skill';
 export * from './model/Skills';
 export * from './model/store';
 export * from './model/SubIssueSummary';
 export * from './model/Task';
-export * from './model/Taxonomy';
 export * from './model/User';
 export * from './model/Version';
 
