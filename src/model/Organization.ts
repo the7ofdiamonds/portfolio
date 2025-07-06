@@ -123,7 +123,7 @@ export class Organization extends Account {
     return repos.collection.map((repo) => {
       return {
         ...repo.toObject(),
-        skills: repo.skills ? repo.skills.toObject() : null,
+        skills: repo.skills ? repo.skills.toSkillsObject() : null,
         contents: {
           solution:
             repo.contents && repo.contents.solution
@@ -170,7 +170,7 @@ export class Organization extends Account {
     return repos.collection.map((repo) => {
       return {
         ...repo.toObject(),
-        skills: repo.skills ? repo.skills.toObject() : null,
+        skills: repo.skills ? repo.skills.toSkillsObject() : null,
         contents: {
           solution:
             repo.contents && repo.contents.solution

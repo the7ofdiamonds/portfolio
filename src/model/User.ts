@@ -1,6 +1,7 @@
 import {
+  SkillsObject,
   User as UserCommunications,
-  UserObject as UserObjectcommunications,
+  UserObject as UserObjectCommunications,
 } from '@the7ofdiamonds/communications';
 
 import { ContactMethods } from '@/model/ContactMethods';
@@ -12,13 +13,12 @@ import {
 } from '@/model/GitHubRepoQuery';
 import { Repo, RepoObject, RepositoryGQL } from '@/model/Repo';
 import { OrganizationObject } from './Organization';
-import { ContentURL } from '@/model/ContentURL';
 import { Portfolio, PortfolioObject } from '@/model/Portfolio';
 
 import { UserResponse } from '@/controllers/githubSlice';
-import { Skills, SkillsObject } from './Skills';
+import { Skills } from './Skills';
 
-export interface UserObject extends UserObjectcommunications {
+export type UserObject = Omit<UserObjectCommunications, 'type'> & {
   organizations_url: string | null;
   organizations: Array<OrganizationObject> | null;
   repos_url: string | null;
@@ -26,7 +26,7 @@ export interface UserObject extends UserObjectcommunications {
   repo_queries: Array<GitHubRepoQueryObject> | null;
   portfolio: PortfolioObject | null;
   skills: SkillsObject | null;
-}
+};
 
 export type UserGQL = {
   id: string;
@@ -117,6 +117,10 @@ export class User extends UserCommunications {
   getOrganizations(organizations: Array<OrganizationObject>) {
     const orgs = new Organizations(organizations);
     return orgs.list.map((org) => org.toOrganizationObject());
+  }
+
+  setSkills(skills: Skills) {
+    this.skills = skills;
   }
 
   fromGitHubGraphQL(user: UserGQL) {
