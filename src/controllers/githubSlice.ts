@@ -722,7 +722,7 @@ export const getUserAccount = createAsyncThunk(
           getRepoDetailsList.fulfilled.match(repoResponse) &&
           repoResponse.payload
         ) {
-          user.setRepos(repoResponse.payload);
+          user.setRepos(new Repos(repoResponse.payload));
         }
 
         const contactsResponse = user.id

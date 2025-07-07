@@ -1,4 +1,5 @@
 import {
+  ContactMethodsObject,
   SkillsObject,
   User as UserCommunications,
   UserObject as UserObjectCommunications,
@@ -17,16 +18,8 @@ import { Portfolio, PortfolioObject } from '@/model/Portfolio';
 
 import { UserResponse } from '@/controllers/githubSlice';
 import { Skills } from './Skills';
-
-export type UserObject = Omit<UserObjectCommunications, 'type'> & {
-  organizations_url: string | null;
-  organizations: Array<OrganizationObject> | null;
-  repos_url: string | null;
-  repos: Array<RepoObject> | null;
-  repo_queries: Array<GitHubRepoQueryObject> | null;
-  portfolio: PortfolioObject | null;
-  skills: SkillsObject | null;
-};
+import { Account, AccountObject, iAccount } from './Account';
+import { RepoURL } from './RepoURL';
 
 export type UserGQL = {
   id: string;
@@ -48,14 +41,16 @@ export type UserGQLResponse = {
   viewer: UserGQL;
 };
 
-export class User extends UserCommunications {
+export type UserObject = Omit<UserObjectCommunications, 'type'> & AccountObject;
+
+export class User extends UserCommunications implements iAccount {
   organizationsURL: string | null;
   organizations: Organizations | null;
   reposURL: string | null;
   repos: Repos | null;
-  repoQueries: Array<GitHubRepoQuery> | null;
+  repoQueries: Array<GitHubRepoQuery>;
   portfolio: Portfolio | null;
-  skills: Skills | null;
+  skills: Skills;
 
   constructor(data?: UserObject | Partial<UserObject>) {
     super(data);
@@ -73,54 +68,6 @@ export class User extends UserCommunications {
       : [];
     this.portfolio = data?.portfolio ? new Portfolio(data.portfolio) : null;
     this.skills = data?.skills ? new Skills(data.skills) : new Skills();
-  }
-
-  setID(id: string) {
-    this.id = id;
-  }
-
-  getID() {
-    if (this.url) {
-      const path = new URL(this.url);
-      const pathname = path.pathname.split('/');
-      return pathname[1];
-    }
-
-    return null;
-  }
-
-  setName(name: string) {
-    this.name = name;
-  }
-
-  setTitle(title: string) {
-    this.title = title;
-  }
-
-  setAvatarURL(url: string) {
-    this.avatarURL = url;
-  }
-
-  setRepos(data: Array<RepoObject>) {
-    this.repos = new Repos(data);
-  }
-
-  getRepos(data: Array<RepoObject>) {
-    const repos = new Repos(data);
-    return repos.collection.map((repo) => repo.toObject());
-  }
-
-  setOrganizations(organizations: Array<OrganizationObject>) {
-    this.organizations = new Organizations(organizations);
-  }
-
-  getOrganizations(organizations: Array<OrganizationObject>) {
-    const orgs = new Organizations(organizations);
-    return orgs.list.map((org) => org.toOrganizationObject());
-  }
-
-  setSkills(skills: Skills) {
-    this.skills = skills;
   }
 
   fromGitHubGraphQL(user: UserGQL) {
@@ -203,7 +150,41 @@ export class User extends UserCommunications {
     }
   }
 
-  getRepoQueries(data: Array<Record<string, any>>) {
+  fromJson(json: Record<string, any>) {
+    this.id = '0';
+    this.login = json.contact_methods.login || null;
+    this.avatarURL = json.avatar_url || null;
+    this.name = json.name || null;
+    this.title = json.title || null;
+    this.email = json.contact_methods.email.value || null;
+    this.phone = json.contact_methods.phone.value || null;
+    this.resume = json.resume || null;
+    this.website = json.website || null;
+    this.contactMethods = json.contact_methods
+      ? new ContactMethods(json.contact_methods)
+      : null;
+  }
+
+  setOrganizationsURL() {}
+
+  setOrganizations(organizations: Array<OrganizationObject>) {
+    this.organizations = new Organizations(organizations);
+  }
+
+  setReposURL(url: string) {
+    this.reposURL = url;
+  }
+
+  setRepos(repos: Repos) {
+    this.repos = repos;
+  }
+
+  getRepos(data: Array<RepoObject>) {
+    const repos = new Repos(data);
+    return repos.collection.map((repo) => repo.toObject());
+  }
+
+  getRepoQueries(data: Array<Record<string, any>>): Array<GitHubRepoQuery> {
     let repoQueries: Array<GitHubRepoQuery> = [];
 
     if (Array.isArray(data) && data.length > 0) {
@@ -234,19 +215,12 @@ export class User extends UserCommunications {
     this.repoQueries = repoQueries;
   }
 
-  fromJson(json: Record<string, any>) {
-    this.id = '0';
-    this.login = json.contact_methods.login || null;
-    this.avatarURL = json.avatar_url || null;
-    this.name = json.name || null;
-    this.title = json.title || null;
-    this.email = json.contact_methods.email.value || null;
-    this.phone = json.contact_methods.phone.value || null;
-    this.resume = json.resume || null;
-    this.website = json.website || null;
-    this.contactMethods = json.contact_methods
-      ? new ContactMethods(json.contact_methods)
-      : null;
+  setPortfolio(portfolio: Portfolio) {
+    this.portfolio = portfolio;
+  }
+
+  setSkills(skills: Skills) {
+    this.skills = skills;
   }
 
   toUserObject(): UserObject {
