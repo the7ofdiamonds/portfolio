@@ -1,6 +1,8 @@
 import { SkillObject, Skill } from '@the7ofdiamonds/communications';
 
-export class ProjectType extends Skill {
+export class ProjectType extends Skill {  
+  readonly path: string = 'project-types';
+
   constructor(data?: SkillObject | Partial<SkillObject>) {
     super({ ...data, path: 'project-types' });
   }
