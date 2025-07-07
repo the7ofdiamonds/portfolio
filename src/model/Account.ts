@@ -17,6 +17,7 @@ import { Repo, RepoObject, RepositoryGQL } from '@/model/Repo';
 import { Repos } from '@/model/Repos';
 import { Skills } from '@/model/Skills';
 import { Organizations } from './Organizations';
+import { UserGQL } from './User';
 
 export type AccountGQL = {
   id: string;
@@ -56,7 +57,7 @@ export interface iAccount {
   repoQueries: Array<GitHubRepoQuery>;
   skills: Skills;
   portfolio: Portfolio | null;
-  fromGitHubGraphQL: (data: any) => void;
+  fromGitHubGraphQL: (data: AccountGQL) => void;
   fromGitHub: (data: any) => void;
   fromDB: (data: Record<string, any>) => void;
   fromJson: (data: Record<string, any>) => void;

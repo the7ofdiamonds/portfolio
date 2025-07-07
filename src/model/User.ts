@@ -18,7 +18,7 @@ import { Portfolio, PortfolioObject } from '@/model/Portfolio';
 
 import { UserResponse } from '@/controllers/githubSlice';
 import { Skills } from './Skills';
-import { Account, AccountObject, iAccount } from './Account';
+import { Account, AccountGQL, AccountObject, iAccount } from './Account';
 import { RepoURL } from './RepoURL';
 
 export type UserGQL = {
@@ -70,7 +70,7 @@ export class User extends UserCommunications implements iAccount {
     this.skills = data?.skills ? new Skills(data.skills) : new Skills();
   }
 
-  fromGitHubGraphQL(user: UserGQL) {
+  fromGitHubGraphQL(user: AccountGQL) {
     this.id = user.id;
     this.avatarURL = user.avatarUrl;
     this.name = user.name;
@@ -83,7 +83,7 @@ export class User extends UserCommunications implements iAccount {
       user.organizations.nodes.length > 0
     ) {
       const orgs = new Organizations();
-      orgs.fromGitHubGraphQL(user.organizations.nodes);
+      orgs.fromGitHubGraphQL(user.organizations);
       this.organizations = orgs;
     }
 
