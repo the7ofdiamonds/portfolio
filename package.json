@@ -42,7 +42,7 @@
     "@octokit/types": "^13.6.2",
     "@reduxjs/toolkit": "^1.9.5",
     "@rollup/plugin-commonjs": "^28.0.3",
-    "@the7ofdiamonds/communications": "^0.0.13",
+    "@the7ofdiamonds/communications": "^0.0.14",
     "@the7ofdiamonds/gateway": "0.0.4",
     "@the7ofdiamonds/ui-ux": "1.0.5",
     "browser-sync": "^3.0.3",
