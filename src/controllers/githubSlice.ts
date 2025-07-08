@@ -31,6 +31,7 @@ import { RepoAPIURL } from '@/model/RepoAPIURL';
 import { IssueGQL } from '@/model/Issue';
 import { Issues, IssuesObject } from '@/model/Issues';
 import { Contributors, ContributorsObject } from '@/model/Contributors';
+import { AccountGQLResponse } from '@/model/Account';
 
 type OctokitResponse<T = any, S = number> = {
   data: T;
@@ -280,26 +281,29 @@ type RepoFileResponse = GetResponseTypeFromEndpointMethod<
 
 export type GitHubRepoFile = RepoFileResponse['data'];
 
-export const getRepoFile = async (query: RepoContentQuery) => {
-  try {
-    const octokit = getInstance();
+export const getRepoFile = createAsyncThunk(
+  'github/getRepoFile',
+  async (query: RepoContentQuery) => {
+    try {
+      const octokit = getInstance();
 
-    const { owner, repo, path, branch } = query;
+      const { owner, repo, path, branch } = query;
 
-    const response: OctokitResponse = await octokit.repos.getContent({
-      owner: owner,
-      repo: repo,
-      path: path,
-      ref: branch,
-    });
+      const response: OctokitResponse = await octokit.repos.getContent({
+        owner: owner,
+        repo: repo,
+        path: path,
+        ref: branch,
+      });
 
-    return atob(response.data.content);
-  } catch (error) {
-    const err = error as Error;
-    console.error(err);
-    throw new Error(err.message);
+      return atob(response.data.content);
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      throw new Error(err.message);
+    }
   }
-};
+);
 
 type IssuesGQL = {
   repository: {
@@ -625,7 +629,7 @@ export const getAuthenticatedAccount = createAsyncThunk(
 
       const headers = getHeaders();
 
-      const account: User | null = await graphql<UserGQLResponse>(query, {
+      const account: User | null = await graphql<AccountGQLResponse>(query, {
         headers: headers,
       }).then((data) => {
         if (data.viewer.__typename === 'User') {

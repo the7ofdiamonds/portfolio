@@ -90,9 +90,9 @@
     "firebase": "^10.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "@the7ofdiamonds/communications": "^0.0.14",
+    "@the7ofdiamonds/communications": "^0.0.15",
     "@the7ofdiamonds/gateway": "0.0.4",
-    "@the7ofdiamonds/ui-ux": "1.0.10"
+    "@the7ofdiamonds/ui-ux": "1.0.11"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.9.5"
