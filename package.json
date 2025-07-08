@@ -1,6 +1,6 @@
 {
   "name": "@the7ofdiamonds/github-portfolio",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Use GitHub API to create portfolio website with repositories.",
   "author": "@the7ofdiamonds",
   "license": "ISC",
@@ -92,7 +92,7 @@
     "react-dom": "^18.0.0",
     "@the7ofdiamonds/communications": "^0.0.14",
     "@the7ofdiamonds/gateway": "0.0.4",
-    "@the7ofdiamonds/ui-ux": "1.0.9"
+    "@the7ofdiamonds/ui-ux": "1.0.10"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.9.5"
