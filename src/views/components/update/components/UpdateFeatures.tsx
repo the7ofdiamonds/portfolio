@@ -1,11 +1,6 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import {
-    setMessage,
-    setMessageType,
-    setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateFeatures } from '@/controllers/updateSlice';
 
 import type { AppDispatch } from '@/model/store';
@@ -21,6 +16,10 @@ const UpdateFeatures: React.FC<UpdateFeaturesProps> = ({ features }) => {
 
     const [featuresObject, setFeaturesObject] = useState<Array<FeatureObject> | null>(null);
     const [feature, setFeature] = useState<Feature>(new Feature());
+
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
         if (features) {
@@ -77,9 +76,9 @@ const UpdateFeatures: React.FC<UpdateFeaturesProps> = ({ features }) => {
             setFeature(new Feature());
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     };
 
@@ -94,9 +93,9 @@ const UpdateFeatures: React.FC<UpdateFeaturesProps> = ({ features }) => {
             dispatch(updateFeatures(new Set(featuresObject.map((featureObject) => new Feature(featureObject)))));
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     };
 

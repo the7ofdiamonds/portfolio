@@ -5,11 +5,6 @@ import UpdateCheckList from '../components/UpdateCheckList';
 import UpdateGallery from '../components/UpdateGallery';
 import UpdateColorsList from '../components/UpdateColorsList';
 
-import {
-  setMessage,
-  setMessageType,
-  setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateProject } from '@/controllers/updateSlice';
 
 import { ProjectDesign, ProjectDesignObject } from '../../../../model/ProjectDesign';
@@ -37,6 +32,10 @@ const UpdateDesign: React.FC<UpdateDesignProps> = ({ project }) => {
   const [checkList, setCheckList] = useState<CheckList>(new CheckList);
   const [colorsList, setColorsList] = useState<Array<Color>>([]);
   const [content, setContent] = useState<ContentURL | null>(null);
+
+  const [message, setMessage] = useState<string>('');
+  const [messageType, setMessageType] = useState<string>('info');
+  const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
   useEffect(() => {
     setProjectObject(project.toProjectObject())
@@ -121,9 +120,9 @@ const UpdateDesign: React.FC<UpdateDesignProps> = ({ project }) => {
       dispatch(updateProject(new Project(updatedProjectObject)));
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessageType('error'));
-      dispatch(setMessage(err.message));
-      dispatch(setShowStatusBar(Date.now()));
+      setMessageType('error');
+      setMessage(err.message);
+      setShowStatusBar('show');
     }
   };
 

@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react'
 
-import { Image } from '@/model/Image';
+import { Image } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Images.module.scss';
 
@@ -12,7 +12,7 @@ interface EditImagesProps {
 }
 
 const EditImages: React.FC<EditImagesProps> = ({ plural, singular, images, setVal }) => {
-    const [newImage, setNewImage] = useState<Image>(new Image);
+    const [newImage, setNewImage] = useState<Image>(new Image({ id: '', title: '', url: '', class_name: '' }));
 
     const handleNewLogo = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -131,11 +131,11 @@ const EditImages: React.FC<EditImagesProps> = ({ plural, singular, images, setVa
 
             <div className={styles['form-item']}>
                 <input className={styles.input}
-                    type="text" name="title" placeholder="Title" value={newImage.title} onChange={handleNewLogo} />
+                    type="text" name="title" placeholder="Title" value={newImage.title ?? ''} onChange={handleNewLogo} />
                 <input className={styles.input}
-                    type="text" name="url" placeholder="URL" value={newImage.url} onChange={handleNewLogo} />
+                    type="text" name="url" placeholder="URL" value={newImage.url ?? ''} onChange={handleNewLogo} />
                 <input className={styles.input}
-                    type="text" name="class_name" placeholder="Class Name" value={newImage.className} onChange={handleNewLogo} />
+                    type="text" name="class_name" placeholder="Class Name" value={newImage.className ?? ''} onChange={handleNewLogo} />
                 <button className={styles.button} type="submit" onClick={handleAddNewImage}><h3>{`Add ${singular}`}</h3></button>
             </div>
         </form>

@@ -27,7 +27,7 @@ export const PortfolioComponent: React.FC<PortfolioComponentProps> = ({ portfoli
 
           <SkillsComponent skills={skills} />
         </main>
-      ) : <LoadingComponent />}
+      ) : <LoadingComponent page={''} />}
     </>
   );
 }

@@ -1,14 +1,10 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
+
 import type { AppDispatch } from '@/model/store';
 import { Task, TaskObject } from '@/model/Task';
 import { CheckList, CheckListObject } from '@/model/CheckList';
 
-import {
-    setMessage,
-    setMessageType,
-    setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateDesignCheckList, updateDevelopmentCheckList, updateDeliveryCheckList } from '@/controllers/updateSlice';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -27,6 +23,10 @@ const UpdateCheckList: React.FC<UpdateCheckListProps> = ({ location, checkList }
     const [tasks, setTasks] = useState<Set<Task>>(checkList.tasks);
     const [task, setTask] = useState<Task>(new Task());
     const [selectedTasks, setSelectedTasks] = useState<Set<Task>>(Array.isArray(checkListObject.tasks) && checkListObject.tasks.length > 0 ? new Set(checkListObject.tasks.map((task) => new Task(task))) : new Set());
+
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
         setCheckListObject(checkList.toCheckListObject());
@@ -161,9 +161,9 @@ const UpdateCheckList: React.FC<UpdateCheckListProps> = ({ location, checkList }
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     };
 
@@ -184,9 +184,9 @@ const UpdateCheckList: React.FC<UpdateCheckListProps> = ({ location, checkList }
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     }
 

@@ -13,7 +13,7 @@ import { RoadmapComponent } from '@/views/components/project/RoadmapComponent';
 
 import {
   signInWithGitHubPopup
-} from '@/controllers/authSlice';
+} from '@the7ofdiamonds/gateway';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 import { Image } from '@/model/Image';

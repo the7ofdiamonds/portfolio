@@ -10,11 +10,6 @@ import { ProjectURLs } from '@/model/ProjectURLs';
 import { ContentURL } from '@/model/ContentURL';
 
 import { updateProject } from '@/controllers/updateSlice';
-import {
-  setMessage,
-  setMessageType,
-  setShowStatusBar,
-} from '@/controllers/messageSlice';
 
 import UpdateFeatures from './components/UpdateFeatures';
 import UpdateProjectURL from './components/UpdateProjectURL';
@@ -35,6 +30,10 @@ const UpdateSolution: React.FC<UpdateSolutionProps> = ({ project }) => {
   const [features, setFeatures] = useState<Set<Feature>>(new Set);
   const [content, setContent] = useState<ContentURL | null>(null);
   const [projectURLs, setProjectURLs] = useState<ProjectURLs>(new ProjectURLs);
+
+  const [message, setMessage] = useState<string>('');
+      const [messageType, setMessageType] = useState<string>('info');
+      const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
   useEffect(() => {
     setGallery(project.solution?.gallery ?? new Gallery);
@@ -84,8 +83,8 @@ const UpdateSolution: React.FC<UpdateSolutionProps> = ({ project }) => {
       }
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessage(err.message));
-      dispatch(setMessageType('error'));
+      setMessage(err.message);
+      setMessageType('error');
     }
   };
 
@@ -108,9 +107,9 @@ const UpdateSolution: React.FC<UpdateSolutionProps> = ({ project }) => {
       dispatch(updateProject(new Project(updatedProject)));
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessageType('error'));
-      dispatch(setMessage(err.message));
-      dispatch(setShowStatusBar(Date.now()));
+      setMessageType('error');
+      setMessage(err.message);
+      setShowStatusBar('show');
     }
   };
 

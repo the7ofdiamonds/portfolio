@@ -1,11 +1,5 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent, SetStateAction } from 'react';
-import { useDispatch } from 'react-redux';
 
-import {
-  setMessage,
-  setMessageType,
-  setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateProject } from '@/controllers/updateSlice';
 
 import { Project, ProjectObject } from '@/model/Project';
@@ -31,6 +25,10 @@ const UpdateDetails: React.FC<UpdateDetailsProps> = ({ project }) => {
   const [team, setTeam] = useState<Array<ContributorObject>>([]);
   const [story, setStory] = useState<ContentURL | null>(null);
 
+  const [message, setMessage] = useState<string>('');
+  const [messageType, setMessageType] = useState<string>('info');
+  const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
+
   useEffect(() => {
     setProjectObject(project.toProjectObject())
   }, [project, setProjectObject]);
@@ -54,8 +52,8 @@ const UpdateDetails: React.FC<UpdateDetailsProps> = ({ project }) => {
       }
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessage(err.message));
-      dispatch(setMessageType('error'));
+      setMessage(err.message);
+      setMessageType('error');
     }
   };
 
@@ -77,8 +75,8 @@ const UpdateDetails: React.FC<UpdateDetailsProps> = ({ project }) => {
       }
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessage(err.message));
-      dispatch(setMessageType('error'));
+      setMessage(err.message);
+      setMessageType('error');
     }
   };
 
@@ -103,9 +101,9 @@ const UpdateDetails: React.FC<UpdateDetailsProps> = ({ project }) => {
       dispatch(updateProject(new Project(updatedProjectObject)));
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessageType('error'));
-      dispatch(setMessage(err.message));
-      dispatch(setShowStatusBar(Date.now()));
+      setMessageType('error');
+      setMessage(err.message);
+      setShowStatusBar('show');
     }
   };
 

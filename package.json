@@ -1,6 +1,6 @@
 {
   "name": "@the7ofdiamonds/github-portfolio",
-  "version": "1.0.16",
+  "version": "1.0.19",
   "description": "Use GitHub API to create portfolio website with repositories.",
   "author": "@the7ofdiamonds",
   "license": "ISC",
@@ -35,7 +35,8 @@
     "update-dev": "git push gitport development",
     "update-prod": "git push gitport",
     "refactor": "./refactor.sh && npm run update-prod",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish": "npm run build && npm publish"
   },
   "dependencies": {
     "@octokit/rest": "^21.0.2",

@@ -459,7 +459,7 @@ export const updateSkills = createAsyncThunk(
   'update/updateSkills',
   async (skills: Skills) => {
     try {
-      return skills.toObject();
+      return skills.toSkillsObject();
     } catch (error) {
       const err = error as Error;
       console.error(err);
@@ -472,7 +472,7 @@ export const updateProjectSkills = createAsyncThunk(
   'update/updateProjectSkills',
   async (skills: ProjectSkills) => {
     try {
-      return skills.toObject();
+      return skills.toSkillsObject();
     } catch (error) {
       const err = error as Error;
       console.error(err);

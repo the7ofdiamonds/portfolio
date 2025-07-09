@@ -8,11 +8,6 @@ import { Gallery } from '@/model/Gallery';
 import { CheckList } from '@/model/CheckList';
 import { ContentURL } from '@/model/ContentURL';
 
-import {
-  setMessage,
-  setMessageType,
-  setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateProject } from '@/controllers/updateSlice';
 
 import UpdateGallery from '../components/UpdateGallery';
@@ -32,6 +27,10 @@ const UpdateDelivery: React.FC<UpdateDeliveryProps> = ({ project }) => {
   const [gallery, setGallery] = useState<Gallery>(new Gallery);
   const [checkList, setCheckList] = useState<CheckList>(new CheckList);
   const [content, setContent] = useState<ContentURL | null>(null);
+
+  const [message, setMessage] = useState<string>('');
+  const [messageType, setMessageType] = useState<string>('info');
+  const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
   useEffect(() => { setProjectObject(project.toProjectObject()) }, [project, setProjectObject]);
 
@@ -70,8 +69,8 @@ const UpdateDelivery: React.FC<UpdateDeliveryProps> = ({ project }) => {
       }
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessage(err.message));
-      dispatch(setMessageType('error'));
+      setMessage(err.message);
+      setMessageType('error');
     }
   };
 
@@ -98,9 +97,9 @@ const UpdateDelivery: React.FC<UpdateDeliveryProps> = ({ project }) => {
       dispatch(updateProject(new Project(updatedProjectObject)));
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessageType('error'));
-      dispatch(setMessage(err.message));
-      dispatch(setShowStatusBar(Date.now()));
+      setMessageType('error');
+      setMessage(err.message);
+      setShowStatusBar('show');
     }
   };
 

@@ -4,11 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Section } from '@the7ofdiamonds/ui-ux';
 
 import { updateProject } from '@/controllers/updateSlice';
-import {
-    setMessage,
-    setMessageType,
-    setShowStatusBar,
-} from '@/controllers/messageSlice';
+
 import { getProject } from '@/controllers/projectSlice';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
@@ -52,6 +48,10 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
     const [project, setProject] = useState<Project>(new Project());
 
     const [title, setTitle] = useState<string>(projectID ?? '');
+
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
         if (login) {
@@ -100,41 +100,41 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
 
     useEffect(() => {
         if (projectLoading && projectLoadingMessage) {
-            dispatch(setMessage(projectLoadingMessage));
-            dispatch(setMessageType('info'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(projectLoadingMessage);
+            setMessageType('info');
+            setShowStatusBar('show');
         }
     }, [projectLoading, projectLoadingMessage]);
 
     useEffect(() => {
         if (projectErrorMessage) {
-            dispatch(setMessage(projectErrorMessage));
-            dispatch(setMessageType('info'));
-            dispatch(setShowStatusBar(Date.now));
+            setMessage(projectErrorMessage);
+            setMessageType('info');
+            setShowStatusBar('show');
         }
     }, [projectErrorMessage]);
 
     useEffect(() => {
         if (updateLoading && updateLoadingMessage) {
-            dispatch(setMessage(updateLoadingMessage));
-            dispatch(setMessageType('info'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(updateLoadingMessage);
+            setMessageType('info');
+            setShowStatusBar('show');
         }
     }, [updateLoading, updateLoadingMessage]);
 
     useEffect(() => {
         if (updateErrorMessage) {
-            dispatch(setMessage(updateErrorMessage));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(updateErrorMessage);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     }, [updateErrorMessage]);
 
     useEffect(() => {
         if (updateSuccessMessage) {
-            dispatch(setMessage(updateSuccessMessage));
-            dispatch(setMessageType('success'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(updateSuccessMessage);
+            setMessageType('success');
+            setShowStatusBar('show');
         }
     }, [updateSuccessMessage]);
 
@@ -168,9 +168,9 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
                 });
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessageType('error'));
-            dispatch(setMessage(err.message));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessageType('error');
+            setMessage(err.message);
+            setShowStatusBar('show');
         }
     };
 

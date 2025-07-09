@@ -1,11 +1,6 @@
 import React, { useState, MouseEvent, useEffect, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  setMessage,
-  setMessageType,
-  setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateProject } from '@/controllers/updateSlice';
 
 import UpdateCheckList from '../components/UpdateCheckList';
@@ -17,12 +12,12 @@ import type { AppDispatch, RootState } from '@/model/store';
 import { ProjectDevelopmentObject } from '@/model/ProjectDevelopment';
 import { ProjectVersions, ProjectVersionsObject } from '@/model/ProjectVersions';
 import { Project, ProjectObject } from '@/model/Project';
-import {ProjectSkills} from '@/model/ProjectSkills';
-import {Gallery} from '@/model/Gallery';
-import {CheckList} from '@/model/CheckList';
-import {ContentURL} from '@/model/ContentURL';
+import { ProjectSkills } from '@/model/ProjectSkills';
+import { Gallery } from '@/model/Gallery';
+import { CheckList } from '@/model/CheckList';
+import { ContentURL } from '@/model/ContentURL';
 
-import {RepoURL} from '@/model/RepoURL';
+import { RepoURL } from '@/model/RepoURL';
 
 interface UpdateDevelopmentProps {
   project: Project;
@@ -43,6 +38,10 @@ const UpdateDevelopment: React.FC<UpdateDevelopmentProps> = ({ project }) => {
   const [repoURL, setRepoURL] = useState<RepoURL | null>(null);
   const [content, setContent] = useState<ContentURL | null>(null);
   const [projectVersions, setProjectVersions] = useState<ProjectVersions>(new ProjectVersions);
+
+  const [message, setMessage] = useState<string>('');
+  const [messageType, setMessageType] = useState<string>('info');
+  const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
   useEffect(() => {
     setProjectObject(project.toProjectObject())
@@ -148,9 +147,9 @@ const UpdateDevelopment: React.FC<UpdateDevelopmentProps> = ({ project }) => {
       dispatch(updateProject(new Project(updatedProject)));
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessageType('error'));
-      dispatch(setMessage(err.message));
-      dispatch(setShowStatusBar(Date.now()));
+      setMessageType('error');
+      setMessage(err.message);
+      setShowStatusBar('show');
     }
   };
 

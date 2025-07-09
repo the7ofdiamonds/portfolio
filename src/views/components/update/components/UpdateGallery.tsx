@@ -2,14 +2,9 @@ import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/model/store';
 
-import { Gallery,GalleryObject } from '@/model/Gallery'
+import { Gallery, GalleryObject } from '@/model/Gallery'
 import { ImageObject } from '@/model/Image';
 
-import {
-    setMessage,
-    setMessageType,
-    setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateDeliveryGallery, updateDesignGallery, updateDevelopmentGallery, updateProblemGallery, updateSolutionGallery } from '@/controllers/updateSlice';
 
 interface UpdateGalleryProps {
@@ -35,6 +30,10 @@ const UpdateGallery: React.FC<UpdateGalleryProps> = ({ location, gallery }) => {
     const [newUmlDiagram, setNewUmlDiagram] = useState<ImageObject>({ id: '', title: '', url: '', class_name: '' });
     const [newScreenshot, setNewScreenshot] = useState<ImageObject>({ id: '', title: '', url: '', class_name: '' });
     const [newPreview, setNewPreview] = useState<ImageObject>({ id: '', title: '', url: '', class_name: '' });
+
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
         if (gallery) {
@@ -176,9 +175,9 @@ const UpdateGallery: React.FC<UpdateGalleryProps> = ({ location, gallery }) => {
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     };
 

@@ -1,18 +1,13 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import {
-    setMessage,
-    setMessageType,
-    setShowStatusBar,
-} from '@/controllers/messageSlice';
+import { Gallery, GalleryObject, Image } from '@the7ofdiamonds/ui-ux';
+
 import { updateDeliveryGallery, updateDesignGallery, updateDevelopmentGallery, updateProblemGallery, updateSolutionGallery } from '@/controllers/updateSlice';
 
 import EditImages from '../images/EditImages';
 
 import type { AppDispatch } from '@/model/store';
-import { Gallery, GalleryObject } from '@/model/Gallery'
-import { Image } from '@/model/Image';
 
 import styles from './Gallery.module.scss';
 
@@ -31,6 +26,10 @@ export const EditGallery: React.FC<EditGalleryProps> = ({ location, gallery, set
     const [umlDiagrams, setUmlDiagrams] = useState<Array<Image>>(gallery?.umlDiagrams ?? []);
     const [screenshots, setScreenshots] = useState<Array<Image>>(gallery?.screenshots ?? []);
     const [previews, setPreviews] = useState<Array<Image>>(gallery?.previews ?? []);
+
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
         if (gallery && setVal) {
@@ -108,9 +107,9 @@ export const EditGallery: React.FC<EditGalleryProps> = ({ location, gallery, set
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     };
 

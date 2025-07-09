@@ -4,11 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '@/model/store';
 import { ProjectVersions, ProjectVersionsObject } from '@/model/ProjectVersions'
 
-import {
-    setMessage,
-    setMessageType,
-    setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateVersions } from '@/controllers/updateSlice';
 
 import styles from './ProjectVersions.module.scss';
@@ -23,6 +18,10 @@ export const EditProjectVersions: React.FC<EditProjectVersionsProps> = ({ projec
     const [history, setHistory] = useState<Set<string>>(new Set());
     const [currentVersion, setCurrentVersion] = useState<string>('1.0.0');
     const [future, setFuture] = useState<Set<string>>(new Set());
+
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
         if (projectVersions.history) {
@@ -47,8 +46,8 @@ export const EditProjectVersions: React.FC<EditProjectVersionsProps> = ({ projec
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
+            setMessage(err.message);
+            setMessageType('error');
         }
     };
 
@@ -65,8 +64,8 @@ export const EditProjectVersions: React.FC<EditProjectVersionsProps> = ({ projec
             setHistory(new Set(updatedPreviousVersions));
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
+            setMessage(err.message);
+            setMessageType('error');
         }
     };
 
@@ -80,8 +79,8 @@ export const EditProjectVersions: React.FC<EditProjectVersionsProps> = ({ projec
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
+            setMessage(err.message);
+            setMessageType('error');
         }
     };
 
@@ -96,8 +95,8 @@ export const EditProjectVersions: React.FC<EditProjectVersionsProps> = ({ projec
             dispatch(updateVersions(new ProjectVersions(updatedProjectVersions)));
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
+            setMessage(err.message);
+            setMessageType('error');
         }
     };
 

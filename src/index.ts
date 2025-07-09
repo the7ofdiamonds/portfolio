@@ -1,9 +1,5 @@
-export * from './ProtectedRoute';
-export * from './services/Config';
-
 export * from './controllers/accountSlice';
 export * from './controllers/addSlice';
-export * from './controllers/authSlice';
 export * from './controllers/databaseSlice';
 export * from './controllers/githubSlice';
 export * from './controllers/organizationSlice';
@@ -73,13 +69,14 @@ export * from './model/Task';
 export * from './model/User';
 export * from './model/Version';
 
+export * from './services/Config';
+
 export * from './utilities/Headers';
 export * from './utilities/Location';
 export * from './utilities/String';
 export * from './utilities/Validation';
 
 export * from './views/DashboardPage';
-export * from './views/LoginPage';
 export * from './views/NotFoundPage';
 export * from './views/OrganizationPage';
 export * from './views/PortfolioPage';

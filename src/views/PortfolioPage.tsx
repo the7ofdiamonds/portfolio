@@ -9,8 +9,6 @@ import { Account } from '@/model/Account';
 import { Portfolio } from '@/model/Portfolio';
 import { Skills } from '@/model/Skills';
 
-import { setMessage, setMessageType, setShowStatusBar } from '@/controllers/messageSlice';
-
 import styles from '@/views/components/portfolio/Portfolio.module.scss';
 
 interface PortfolioPageProps {
@@ -22,6 +20,10 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account }) => {
 
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
   const [skills, setSkills] = useState<Skills | null>(null);
+
+  const [message, setMessage] = useState<string>('');
+  const [messageType, setMessageType] = useState<string>('info');
+  const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
   const {
     portfolioLoading,
@@ -35,23 +37,23 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account }) => {
 
   useEffect(() => {
     if (portfolioLoading) {
-      dispatch(setMessage('Now Loading Portfolio'));
-      dispatch(setShowStatusBar('show'));
+      setMessage('Now Loading Portfolio');
+      setShowStatusBar('show');
     }
   }, [portfolioLoading]);
 
   useEffect(() => {
     if (portfolioLoading) {
-      dispatch(setMessageType('info'));
-      dispatch(setMessage('Now Loading Portfolio'));
+      setMessageType('info');
+      setMessage('Now Loading Portfolio');
     }
   }, [portfolioLoading]);
 
   useEffect(() => {
     if (portfolioErrorMessage) {
-      dispatch(setMessage(portfolioErrorMessage));
-      dispatch(setMessageType('error'));
-      dispatch(setShowStatusBar(Date.now()));
+      setMessage(portfolioErrorMessage);
+      setMessageType('error');
+      setShowStatusBar('show');
     }
   }, [portfolioErrorMessage]);
 
@@ -73,7 +75,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account }) => {
 
   return (
     <Section>
-        <PortfolioComponent portfolio={portfolio} skills={skills} />
+      <PortfolioComponent portfolio={portfolio} skills={skills} />
     </Section>
   );
 }

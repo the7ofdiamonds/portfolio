@@ -39,11 +39,11 @@ const ProjectURLsComponent: React.FC<ProjectURLsProps> = ({ projectUrls }) => {
   return (
     <>{hasContent && (
       <div className={styles['project-urls']}>
-        {homepage && <ButtonIconExternal buttonProps={homepage} />}
+        {homepage && <ButtonImage buttonProps={homepage} />}
 
-        {ios && <ButtonIconExternal buttonProps={ios} />}
+        {ios && <ButtonImage buttonProps={ios} />}
 
-        {android && <ButtonIconExternal buttonProps={android} />}
+        {android && <ButtonImage buttonProps={android} />}
       </div>)}
     </>
   );

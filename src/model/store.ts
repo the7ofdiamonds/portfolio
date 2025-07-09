@@ -2,7 +2,6 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { authSlice } from '@the7ofdiamonds/gateway';
 
-import { aboutSlice } from '@/controllers/aboutSlice.js';
 import { accountSlice } from '@/controllers/accountSlice.js';
 import { addSlice } from '@/controllers/addSlice.js';
 import { databaseSlice } from '@/controllers/databaseSlice.js';
@@ -16,7 +15,6 @@ import { userSlice } from '@/controllers/userSlice.js';
 
 export const store = configureStore({
   reducer: {
-    about: aboutSlice.reducer,
     add: addSlice.reducer,
     portfolio: portfolioSlice.reducer,
     project: projectSlice.reducer,

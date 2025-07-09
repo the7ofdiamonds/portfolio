@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import { Section, Button } from '@the7ofdiamonds/ui-ux';
 
-import { logout } from '@/controllers/authSlice';
-import { setMessage, setMessageType, setShowStatusBar } from '@/controllers/messageSlice';
+import { logout } from '@the7ofdiamonds/gateway';
 
 import { checkHeaders } from '@/utilities/Headers';
 
@@ -20,6 +19,10 @@ import styles from '@/views/components/dashboard/Dashboard.module.scss';
 export const DashboardPage: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
         if (!checkHeaders()) {
@@ -43,9 +46,9 @@ export const DashboardPage: React.FC = () => {
         } catch (error) {
             const err = error as Error;
 
-            dispatch(setMessage(`Logout error: ${err.message}`));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(true));
+            setMessage(`Logout error: ${err.message}`);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     };
 

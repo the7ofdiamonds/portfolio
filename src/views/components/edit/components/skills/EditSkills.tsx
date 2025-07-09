@@ -1,11 +1,6 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  setMessage,
-  setMessageType,
-  setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateProjectSkills } from '@/controllers/updateSlice';
 
 import type { AppDispatch, RootState } from '@/model/store';
@@ -33,6 +28,10 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
   const [selectedServices, setSelectedServices] = useState<Set<Service>>(projectSkills.services ?? new Set());
 
   const [skills, setSkills] = useState<Skills>(new Skills());
+
+  const [message, setMessage] = useState<string>('');
+  const [messageType, setMessageType] = useState<string>('info');
+  const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
   // useEffect(() => {
   //   dispatch(getProjectTypes());
@@ -135,9 +134,9 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
       dispatch(updateProjectSkills(new ProjectSkills(updatedSkills)));
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessageType('error'));
-      dispatch(setMessage(err.message));
-      dispatch(setShowStatusBar(Date.now()));
+      setMessageType('error');
+      setMessage(err.message);
+      setShowStatusBar('show');
     }
   };
 
@@ -157,7 +156,7 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
                   className={styles.button}
                   type="checkbox"
                   id={`checkbox-${type.id}`}
-                  value={type.id}
+                  value={type.id ?? ''}
                   checked={existsInSet(type, selectedProjectTypes)}
 
                   onChange={() => handleProjectTypesCheckboxChange(type)}
@@ -179,7 +178,7 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
                   className={styles.input}
                   type="checkbox"
                   id={`checkbox-${language.id}`}
-                  value={language.id}
+                  value={language.id ?? ''}
                   checked={existsInSet(language, selectedLanguages)}
                   onChange={() => handleLanguagesCheckboxChange(language)}
                 />
@@ -200,7 +199,7 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
                   className={styles.input}
                   type="checkbox"
                   id={`checkbox-${framework.id}`}
-                  value={framework.id}
+                  value={framework.id ?? ''}
                   checked={existsInSet(framework, selectedFrameworks)}
                   onChange={() => handleFrameworksCheckboxChange(framework)}
                 />
@@ -221,7 +220,7 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
                   className={styles.input}
                   type="checkbox"
                   id={`checkbox-${technology.id}`}
-                  value={technology.id}
+                  value={technology.id ?? ''}
                   checked={existsInSet(technology, selectedTechnologies)}
                   onChange={() => handleTechnologiesCheckboxChange(technology)}
                 />
@@ -242,7 +241,7 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
                   className={styles.input}
                   type="checkbox"
                   id={`checkbox-${service.id}`}
-                  value={service.id}
+                  value={service.id ?? ''}
                   checked={existsInSet(service, selectedServices)}
                   onChange={() => handleServicesCheckboxChange(service)}
                 />

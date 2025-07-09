@@ -2,11 +2,6 @@ import React, { useEffect, useState, ChangeEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { updateProjectURLs } from '@/controllers/updateSlice';
-import {
-    setMessage,
-    setMessageType,
-    setShowStatusBar,
-} from '@/controllers/messageSlice';
 
 import type { AppDispatch } from '@/model/store';
 import { ProjectURLs } from '@/model/ProjectURLs';
@@ -28,6 +23,10 @@ export const EditProjectURL: React.FC<EditProjectURLProps> = ({ projectURLs }) =
     const [homepageURL, setHomepageURL] = useState<string | null>(null);
     const [iosURL, setIosURL] = useState<string | null>(null);
     const [androidURL, setAndroidURL] = useState<string | null>(null);
+
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
         if (projectURLs?.homepage) {
@@ -58,8 +57,8 @@ export const EditProjectURL: React.FC<EditProjectURLProps> = ({ projectURLs }) =
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
+            setMessage(err.message);
+            setMessageType('error');
         }
     };
 
@@ -74,8 +73,8 @@ export const EditProjectURL: React.FC<EditProjectURLProps> = ({ projectURLs }) =
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
+            setMessage(err.message);
+            setMessageType('error');
         }
     };
 
@@ -90,8 +89,8 @@ export const EditProjectURL: React.FC<EditProjectURLProps> = ({ projectURLs }) =
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
+            setMessage(err.message);
+            setMessageType('error');
         }
     };
 

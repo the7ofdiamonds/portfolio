@@ -4,11 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '@/model/store';
 import { ProjectVersions, ProjectVersionsObject } from '@/model/ProjectVersions'
 
-import {
-    setMessage,
-    setMessageType,
-    setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateVersions } from '@/controllers/updateSlice';
 
 interface UpdateProjectVersionsProps {
@@ -21,6 +16,10 @@ const UpdateProjectVersions: React.FC<UpdateProjectVersionsProps> = ({ projectVe
     const [history, setHistory] = useState<Set<string>>(new Set());
     const [currentVersion, setCurrentVersion] = useState<string>('1.0.0');
     const [future, setFuture] = useState<Set<string>>(new Set());
+
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
         if (projectVersions.history) {
@@ -45,8 +44,8 @@ const UpdateProjectVersions: React.FC<UpdateProjectVersionsProps> = ({ projectVe
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
+            setMessage(err.message);
+            setMessageType('error');
         }
     };
 
@@ -63,8 +62,8 @@ const UpdateProjectVersions: React.FC<UpdateProjectVersionsProps> = ({ projectVe
             setHistory(new Set(updatedPreviousVersions));
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
+            setMessage(err.message);
+            setMessageType('error');
         }
     };
 
@@ -72,14 +71,14 @@ const UpdateProjectVersions: React.FC<UpdateProjectVersionsProps> = ({ projectVe
         try {
 
             if (!history.has(currentVersion)) {
-                let updatedPreviousVersion = [ currentVersion, ...history];
+                let updatedPreviousVersion = [currentVersion, ...history];
 
                 setHistory(new Set(updatedPreviousVersion));
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
+            setMessage(err.message);
+            setMessageType('error');
         }
     };
 
@@ -94,8 +93,8 @@ const UpdateProjectVersions: React.FC<UpdateProjectVersionsProps> = ({ projectVe
             dispatch(updateVersions(new ProjectVersions(updatedProjectVersions)));
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
+            setMessage(err.message);
+            setMessageType('error');
         }
     };
 

@@ -72,7 +72,7 @@ export const SearchPage: React.FC<SearchProps> = ({ user, skills }) => {
   return (
     <section className={styles.section} id="top">
       <>
-        {taxonomy && term && <HeaderTaxonomyComponent skill={skills.filter(taxonomy, term)}  />}
+        {taxonomy && term && <HeaderTaxonomyComponent skill={skills.filter(term)}  />}
 
         {portfolio &&
           projects &&

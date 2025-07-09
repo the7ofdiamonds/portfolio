@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { IconComponent } from '@the7ofdiamonds/ui-ux';
 
-import { Taxonomy } from '@/model/Taxonomy';
+import { Taxonomy } from '@the7ofdiamonds/ui-ux';
 
 import styles from './ProjectSkillsBar.module.scss';
 

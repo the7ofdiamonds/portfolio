@@ -6,10 +6,10 @@ import {
   ContentComponent,
   GalleryComponent
 } from '@the7ofdiamonds/ui-ux';
+import { Image } from '@the7ofdiamonds/ui-ux';
 
 import { ContentURL } from '@/model/ContentURL';
 import { Color } from '@/model/Color';
-import { Image } from '@/model/Image';
 import { CheckList } from '@/model/CheckList';
 import { ProjectQuery } from '@/model/ProjectQuery';
 import { ProjectDesign } from '@/model/ProjectDesign';
@@ -32,10 +32,10 @@ export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
   const [query, setQuery] = useState<ProjectQuery | null>(null);
 
   useEffect(() => {
-    if (design && design.colorsList && design.colorsList.length > 0) {
-      setColors(design.colorsList)
+    if (design && design.colors && design.colors.list.size > 0) {
+      setColors(Array.from(design.colors.list))
     }
-  }, [design.colorsList]);
+  }, [design.colors]);
 
   useEffect(() => {
     if (design

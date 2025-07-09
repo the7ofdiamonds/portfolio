@@ -1,4 +1,4 @@
-import { Env } from '@/Env';
+import { Env } from '@/services/Env';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { Auth, getAuth } from 'firebase/auth';
 
@@ -125,7 +125,6 @@ export const getToken = () => {
 export const setEnvVariables = (env: ImportMetaEnv) => {
   try {
     const envVars = new Env(env);
-      console.log(envVars);
 
     return setConfig(envVars.toConfigObject());
   } catch (error) {

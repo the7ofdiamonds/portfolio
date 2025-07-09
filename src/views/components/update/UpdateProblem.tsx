@@ -3,16 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import UpdateGallery from './components/UpdateGallery';
 
-import {
-  setMessage,
-  setMessageType,
-  setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateProject } from '@/controllers/updateSlice';
 
 import type { AppDispatch, RootState } from '@/model/store';
-import {Gallery} from '@/model/Gallery';
-import { Project,ProjectObject } from '@/model/Project';
+import { Gallery } from '@/model/Gallery';
+import { Project, ProjectObject } from '@/model/Project';
 import { DocumentURL, DocumentURLObject } from '@/model/DocumentURL';
 
 interface UpdateProblemProps {
@@ -30,6 +25,10 @@ const UpdateProblem: React.FC<UpdateProblemProps> = ({ project }) => {
   const [gallery, setGallery] = useState<Gallery | null>(null);
   const [contentURL, setContentURL] = useState<string | null>(null);
   const [whitepaperURL, setWhitepaperURL] = useState<string | null>(null);
+
+  const [message, setMessage] = useState<string>('');
+  const [messageType, setMessageType] = useState<string>('info');
+  const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
   useEffect(() => {
     setProjectObject(project.toProjectObject());
@@ -64,8 +63,8 @@ const UpdateProblem: React.FC<UpdateProblemProps> = ({ project }) => {
       }
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessage(err.message));
-      dispatch(setMessageType('error'));
+      setMessage(err.message);
+      setMessageType('error');
     }
   };
 
@@ -80,8 +79,8 @@ const UpdateProblem: React.FC<UpdateProblemProps> = ({ project }) => {
       }
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessage(err.message));
-      dispatch(setMessageType('error'));
+      setMessage(err.message);
+      setMessageType('error');
     }
   };
 
@@ -94,16 +93,33 @@ const UpdateProblem: React.FC<UpdateProblemProps> = ({ project }) => {
         problem: {
           gallery: gallery ? gallery.toGalleryObject() : null,
           content_url: contentURL ? contentURL : null,
-          whitepaper_url: whitepaperURL ? whitepaperURL : null
+          whitepaper_url: whitepaperURL ? whitepaperURL : null,
+          id: null,
+          project_id: null,
+          client_id: null,
+          summary: null,
+          summary_url: null,
+          customers_impacted: null,
+          problem_affected: null,
+          challenges: null,
+          affected_operations: null,
+          change_event: null,
+          factors_contributed: null,
+          patterns_trends: null,
+          first_notice_date: null,
+          recurring_issue: null,
+          tried_solutions: null,
+          tried_solutions_results: null,
+          ideal_resolution: null
         },
       };
 
       dispatch(updateProject(new Project(updatedProjectObject)));
     } catch (error) {
       const err = error as Error;
-      dispatch(setMessage(err.message));
-      dispatch(setMessageType('error'));
-      dispatch(setShowStatusBar(Date.now()));
+      setMessage(err.message);
+      setMessageType('error');
+      setShowStatusBar('show');
     }
   };
 

@@ -1,17 +1,8 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  setMessage,
-  setMessageType,
-  setShowStatusBar,
-} from '@/controllers/messageSlice';
-import {
-  getProjectTypes,
-  getLanguages,
-  getFrameworks,
-  getTechnologies
-} from '@/controllers/taxonomiesSlice';
+  getSkills,
+} from '@/controllers/skillsSlice';
 import { updateProjectSkills } from '@/controllers/updateSlice';
 
 import { ProjectSkills, ProjectSkillsObject } from '@/model/ProjectSkills';
@@ -21,7 +12,7 @@ import { Skills } from '@/model/Skills';
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 interface UpdateSkillsProps {
-  projectSkills: ProjectSkills;
+  projectSkills: Skills;
 }
 
 const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
@@ -40,19 +31,7 @@ const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
   const [skills, setSkills] = useState<Skills>(new Skills());
 
   useEffect(() => {
-    dispatch(getProjectTypes());
-  }, []);
-
-  useEffect(() => {
-    dispatch(getLanguages());
-  }, []);
-
-  useEffect(() => {
-    dispatch(getFrameworks());
-  }, []);
-
-  useEffect(() => {
-    dispatch(getTechnologies());
+    dispatch(getSkills());
   }, []);
 
   useEffect(() => {

@@ -1,11 +1,6 @@
 import React, { useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import {
-    setMessage,
-    setMessageType,
-    setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateColors } from '@/controllers/updateSlice';
 
 import type { AppDispatch } from '@/model/store';
@@ -23,6 +18,10 @@ export const EditColorsList: React.FC<EditColorsListProps> = ({ colors, setVal }
     const dispatch = useDispatch<AppDispatch>();
 
     const [color, setColor] = useState<Color>(new Color());
+
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     const handleChange = (
         e: ChangeEvent<HTMLInputElement>,
@@ -95,9 +94,9 @@ export const EditColorsList: React.FC<EditColorsListProps> = ({ colors, setVal }
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     };
 
@@ -108,9 +107,9 @@ export const EditColorsList: React.FC<EditColorsListProps> = ({ colors, setVal }
             dispatch(updateColors(Array.from(colors.list)));
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     }
 

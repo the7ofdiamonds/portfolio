@@ -1,13 +1,10 @@
 import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { Section,StatusBar } from '@the7ofdiamonds/ui-ux';
+import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
 
 import { updateProject } from '@/controllers/updateSlice';
-import {
 
-    setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { getProject } from '@/controllers/projectSlice';
 
 import UpdateDetails from './components/update/UpdateDetails';
@@ -56,6 +53,7 @@ export const ProjectUpdatePage: React.FC<ProjectUpdateProps> = ({ user }) => {
 
     const [message, setMessage] = useState<string>('');
     const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar,setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
         if (login) {
@@ -122,7 +120,7 @@ export const ProjectUpdatePage: React.FC<ProjectUpdateProps> = ({ user }) => {
         if (updateLoading && updateLoadingMessage) {
             setMessage(updateLoadingMessage);
             setMessageType('info');
-            setShowStatusBar(Date.now());
+            setShowStatusBar('show');
         }
     }, [updateLoading, updateLoadingMessage]);
 
@@ -130,7 +128,7 @@ export const ProjectUpdatePage: React.FC<ProjectUpdateProps> = ({ user }) => {
         if (updateErrorMessage) {
             setMessage(updateErrorMessage);
             setMessageType('error');
-            setShowStatusBar(Date.now());
+            setShowStatusBar('show');
         }
     }, [updateErrorMessage]);
 
@@ -138,7 +136,7 @@ export const ProjectUpdatePage: React.FC<ProjectUpdateProps> = ({ user }) => {
         if (updateSuccessMessage) {
             setMessage(updateSuccessMessage);
             setMessageType('success');
-            setShowStatusBar(Date.now());
+            setShowStatusBar('show');
         }
     }, [updateSuccessMessage]);
 
@@ -244,7 +242,7 @@ export const ProjectUpdatePage: React.FC<ProjectUpdateProps> = ({ user }) => {
                 <h3 className='title'>Update Project</h3>
             </button>
 
-            <StatusBar show={'hide'} messageType={messageType} message={message} />
+            <StatusBar show={showStatusBar} messageType={messageType} message={message} />
         </Section>
     )
 }

@@ -10,15 +10,13 @@ import { AddTechnologies } from '@/views/components/add/AddTechnologies';
 export const SkillAddPage: React.FC = () => {
   return (
     <Section>
-      <>
-        <AddLanguages />
+      <AddLanguages />
 
-        <AddFrameworks />
+      <AddFrameworks />
 
-        <AddProjectTypes />
+      <AddProjectTypes />
 
-        <AddTechnologies />
-      </>
+      <AddTechnologies />
     </Section>
   );
 }

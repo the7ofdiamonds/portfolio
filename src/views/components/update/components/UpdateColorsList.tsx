@@ -2,13 +2,8 @@ import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/model/store';
 
-import { Color,ColorObject } from '@/model/Color';
+import { Color, ColorObject } from '@/model/Color';
 
-import {
-    setMessage,
-    setMessageType,
-    setShowStatusBar,
-} from '@/controllers/messageSlice';
 import { updateColors } from '@/controllers/updateSlice';
 
 interface UpdateColorsListProps {
@@ -20,6 +15,10 @@ const UpdateColorsList: React.FC<UpdateColorsListProps> = ({ colorsObject }) => 
 
     const [colors, setColors] = useState<Set<Color>>(new Set(colorsObject.map((color) => new Color(color))));
     const [color, setColor] = useState<Color>(new Color());
+
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => { setColors(new Set(colorsObject.map((color) => new Color(color)))) }, [colorsObject, setColors]);
 
@@ -91,9 +90,9 @@ const UpdateColorsList: React.FC<UpdateColorsListProps> = ({ colorsObject }) => 
             }
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     };
 
@@ -104,9 +103,9 @@ const UpdateColorsList: React.FC<UpdateColorsListProps> = ({ colorsObject }) => 
             dispatch(updateColors(Array.from(colors)));
         } catch (error) {
             const err = error as Error;
-            dispatch(setMessage(err.message));
-            dispatch(setMessageType('error'));
-            dispatch(setShowStatusBar(Date.now()));
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
     }
 
