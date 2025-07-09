@@ -12,7 +12,7 @@ import { Versions } from '@/views/components/project/Versions';
 import { RoadmapComponent } from '@/views/components/project/RoadmapComponent';
 
 import {
-  signInWithGitHubPopup
+  loginWithPopUp
 } from '@the7ofdiamonds/gateway';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
@@ -119,7 +119,7 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
     if (isAuthenticated && repoURL && repoURL.url) {
       window.open(repoURL.url, '_blank');
     } else {
-      dispatch(signInWithGitHubPopup());
+      // dispatch(loginWithPopUp());
     }
   };
 
