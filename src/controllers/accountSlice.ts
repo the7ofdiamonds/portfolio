@@ -5,11 +5,11 @@ import {
   CreateSliceOptions,
 } from '@reduxjs/toolkit';
 
+import { User } from '@the7ofdiamonds/ui-ux';
+
 import { getAuthenticatedUserAccount } from '@/controllers/userSlice';
 // import { getSkills } from '@/controllers/taxonomiesSlice';
 // import { getPortfolio } from '@/controllers/portfolioSlice';
-
-import { User } from '@/model/User';
 
 export interface AccountState {
   accountLoading: boolean;

@@ -11,9 +11,7 @@ import { ContactBar } from '@the7ofdiamonds/communications';
 import { getOrganization } from '@/controllers/organizationSlice';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
-import { Organization } from '@/model/Organization';
-import { Portfolio } from '@/model/Portfolio';
-import { Skills } from '@/model/Skills';
+import { Organization, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
 
 import styles from '@/views/components/organization/Organization.module.scss';
 

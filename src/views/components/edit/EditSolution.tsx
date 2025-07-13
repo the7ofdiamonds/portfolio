@@ -1,16 +1,12 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
+import { Feature, Gallery, Project, ProjectSolution, ProjectURLs } from '@the7ofdiamonds/ui-ux';
 
 import { EditFeatures } from '@/views/components/edit/components/features/EditFeatures';
 import { EditProjectURL } from '@/views/components/edit/components/project_url/EditProjectURL';
 import { EditGallery } from '@/views/components/edit/components/gallery/EditGallery';
 
-import { Project } from '@/model/Project';
-import { ProjectSolution } from '@/model/ProjectSolution';
-import { Gallery } from '@/model/Gallery';
-import { Feature } from '@/model/Feature';
-import { ProjectURLs } from '@/model/ProjectURLs';
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 import styles from './Edit.module.scss';
@@ -103,7 +99,7 @@ export const EditSolution: React.FC<EditSolutionProps> = ({ project, change }) =
 
       <EditGallery location='solution' gallery={project.solution?.gallery ?? new Gallery} setVal={function (value: Gallery): void {
         throw new Error('Function not implemented.');
-      } } />
+      }} />
 
       <br />
 

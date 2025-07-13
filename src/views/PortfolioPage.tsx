@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { Section } from '@the7ofdiamonds/ui-ux';
+import { Organization, Section, User,Account, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
 
 import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
-import { Account } from '@/model/Account';
-import { Portfolio } from '@/model/Portfolio';
-import { Skills } from '@/model/Skills';
 
 import styles from '@/views/components/portfolio/Portfolio.module.scss';
 
@@ -20,6 +17,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account }) => {
 
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
   const [skills, setSkills] = useState<Skills | null>(null);
+  const [title, setTitle] = useState<string>(`Portfolio`);
 
   const [message, setMessage] = useState<string>('');
   const [messageType, setMessageType] = useState<string>('info');
@@ -58,8 +56,20 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account }) => {
   }, [portfolioErrorMessage]);
 
   useEffect(() => {
-    document.title = `Portfolio - ${account.name}`;
-  }, []);
+    if (account instanceof User) {
+      setTitle(`Portfolio - ${account.firstName} ${account.lastName}`)
+    }
+  }, [account]);
+
+  useEffect(() => {
+    if (account instanceof Organization) {
+      setTitle(`Portfolio - ${account.name}`)
+    }
+  }, [account]);
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
 
   useEffect(() => {
     if (account.portfolio && account.portfolio.projects && account.portfolio.projects.size > 0) {

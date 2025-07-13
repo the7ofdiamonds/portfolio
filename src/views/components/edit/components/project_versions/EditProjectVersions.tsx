@@ -1,10 +1,11 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import type { AppDispatch, RootState } from '@/model/store';
-import { ProjectVersions, ProjectVersionsObject } from '@/model/ProjectVersions'
+import { ProjectVersions, ProjectVersionsObject } from '@the7ofdiamonds/ui-ux'
 
 import { updateVersions } from '@/controllers/updateSlice';
+
+import type { AppDispatch, RootState } from '@/model/store';
 
 import styles from './ProjectVersions.module.scss';
 

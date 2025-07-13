@@ -6,26 +6,32 @@ import {
   ImageComponent,
   StatusBar
 } from '@the7ofdiamonds/ui-ux';
+import {
+  CheckList,
+  ContentURL,
+  FeaturesRoadmap,
+  Image,
+  ProjectDevelopment,
+  ProjectQuery,
+  ProjectSkills,
+  ProjectSolution,
+  ProjectVersions,
+  RepoContentQuery,
+  RepoURL
+} from '@the7ofdiamonds/ui-ux';
 
 import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
 import { Versions } from '@/views/components/project/Versions';
 import { RoadmapComponent } from '@/views/components/project/RoadmapComponent';
 
+import { getRepoFile } from '@/controllers/githubSlice';
 import {
   loginWithPopUp
 } from '@the7ofdiamonds/gateway';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
-import { Image } from '@/model/Image';
-import { RepoURL } from '@/model/RepoURL';
-import { FeaturesRoadmap } from '@/model/FeaturesRoadmap';
-import { ContentURL } from '@/model/ContentURL';
-import { ProjectVersions } from '@/model/ProjectVersions';
-import { CheckList } from '@/model/CheckList';
-import { ProjectSkills } from '@/model/ProjectSkills';
-import { ProjectQuery } from '@/model/ProjectQuery';
-import { ProjectDevelopment } from '@/model/ProjectDevelopment';
-import { ProjectSolution } from '@/model/ProjectSolution';
+
+
 
 import styles from './Project.module.scss';
 
@@ -136,7 +142,7 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
         {featuresRoadmap && <RoadmapComponent roadmap={featuresRoadmap} />}
 
         {content &&
-          <ContentComponent title={''} content={content} />}
+          <ContentComponent title={null} query={new RepoContentQuery()} getFile={getRepoFile} dispatch={dispatch} />}
 
         {checkList && query && <CheckListComponent checkList={checkList} query={query} />}
 

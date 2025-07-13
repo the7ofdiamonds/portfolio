@@ -1,13 +1,17 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import {
+  ContentURL,
+  Feature,
+  Gallery,
+  Project,
+  ProjectObject,
+  ProjectSolutionObject,
+  ProjectURLs
+} from '@the7ofdiamonds/ui-ux';
+
 import type { AppDispatch, RootState } from '@/model/store';
-import { Project, ProjectObject } from '@/model/Project';
-import { ProjectSolutionObject } from '@/model/ProjectSolution';
-import { Gallery } from '@/model/Gallery';
-import { Feature } from '@/model/Feature';
-import { ProjectURLs } from '@/model/ProjectURLs';
-import { ContentURL } from '@/model/ContentURL';
 
 import { updateProject } from '@/controllers/updateSlice';
 
@@ -32,8 +36,8 @@ const UpdateSolution: React.FC<UpdateSolutionProps> = ({ project }) => {
   const [projectURLs, setProjectURLs] = useState<ProjectURLs>(new ProjectURLs);
 
   const [message, setMessage] = useState<string>('');
-      const [messageType, setMessageType] = useState<string>('info');
-      const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
+  const [messageType, setMessageType] = useState<string>('info');
+  const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
   useEffect(() => {
     setGallery(project.solution?.gallery ?? new Gallery);

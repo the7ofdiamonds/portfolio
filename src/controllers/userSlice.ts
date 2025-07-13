@@ -5,13 +5,13 @@ import {
   CreateSliceOptions,
 } from '@reduxjs/toolkit';
 
+import { UserObject, User } from '@the7ofdiamonds/ui-ux';
+
 import {
   getAuthenticatedAccount,
   getUserAccount,
 } from '@/controllers/githubSlice';
 import { getUserData } from '@/controllers/databaseSlice';
-
-import { UserObject, User } from '@/model/User';
 
 export interface UserState {
   userLoading: boolean;

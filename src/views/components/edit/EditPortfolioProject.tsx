@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
-import { ProjectCard } from '@/views/components/project_card/ProjectCard';
+import { Owner, Project } from '@the7ofdiamonds/ui-ux'
 
-import { Project } from '@/model/Project'
-import { Owner } from '@/model/Owner';
+import { ProjectCard } from '@/views/components/project_card/ProjectCard';
 
 interface EditPortfolioProjectProps {
     project: Project

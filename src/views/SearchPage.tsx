@@ -2,16 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { HeaderTaxonomyComponent } from '@the7ofdiamonds/ui-ux';
+import { Portfolio, Project, Skills, User } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectsComponent } from '@/views/components/portfolio/ProjectsComponent';
 import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
 
 import { getPortfolioDetails } from '@/controllers/portfolioSlice';
 
-import { Portfolio } from '@/model/Portfolio';
-import { Skills } from '@/model/Skills';
-import { User } from '@/model/User';
-import { Project } from '@/model/Project';
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 import styles from '@/views/components/search/Search.module.scss';
@@ -72,7 +69,7 @@ export const SearchPage: React.FC<SearchProps> = ({ user, skills }) => {
   return (
     <section className={styles.section} id="top">
       <>
-        {taxonomy && term && <HeaderTaxonomyComponent skill={skills.filter(term)}  />}
+        {taxonomy && term && <HeaderTaxonomyComponent skill={skills.filter(term)} />}
 
         {portfolio &&
           projects &&

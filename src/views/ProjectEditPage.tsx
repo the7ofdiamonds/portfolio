@@ -8,12 +8,8 @@ import { updateProject } from '@/controllers/updateSlice';
 import { getProject } from '@/controllers/projectSlice';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
-import { Project } from '@/model/Project';
-import { Owner } from '@/model/Owner';
-import { Portfolio } from '@/model/Portfolio';
-import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
-import { RepoURL } from '@/model/RepoURL';
-import { User } from '@/model/User';
+
+import { GitHubRepoQuery, Owner, Project, Portfolio, RepoURL, User } from '@the7ofdiamonds/ui-ux';
 
 import { EditProject } from '@/views/components/edit/EditProject';
 

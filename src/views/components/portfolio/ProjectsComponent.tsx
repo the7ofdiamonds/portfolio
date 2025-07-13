@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Project } from '@/model/Project';
+import { Project } from '@the7ofdiamonds/ui-ux';
 
 import PortfolioProject from './PortfolioProject';
 

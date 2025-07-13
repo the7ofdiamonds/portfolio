@@ -5,16 +5,14 @@ import {
   isAnyOf,
 } from '@reduxjs/toolkit';
 
-import { Taxonomy } from '@the7ofdiamonds/ui-ux';
-
 import {
+  Taxonomy,
+  SecureHeaders,
   Skill,
   SkillObject,
   Skills,
   SkillsObject,
-} from '@the7ofdiamonds/communications';
-
-import { SecureHeaders } from '@/model/SecureHeaders';
+} from '@the7ofdiamonds/ui-ux';
 
 import { addSecureHeaders } from '@/utilities/Headers';
 

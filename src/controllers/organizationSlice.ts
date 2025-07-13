@@ -5,10 +5,10 @@ import {
   CreateSliceOptions,
 } from '@reduxjs/toolkit';
 
+import { Organization, OrganizationObject } from '@the7ofdiamonds/ui-ux';
+
 import { getOrganizationDetails } from '@/controllers/githubSlice';
 import { getOrganizationData } from '@/controllers/databaseSlice';
-
-import { Organization, OrganizationObject } from '@/model/Organization';
 
 export interface OrganizationState {
   organizationLoading: boolean;

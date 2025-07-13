@@ -1,7 +1,6 @@
-import { getLocation } from './Location';
+import { Coordinates, SecureHeaders } from '@the7ofdiamonds/ui-ux';
 
-import { Coordinates } from '@/model/Coordinates';
-import { SecureHeaders } from '@/model/SecureHeaders';
+import { getLocation } from './Location';
 
 export const addHeaders = async () => {
   const headers = new Headers();

@@ -1,13 +1,10 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
+import { CheckList, Gallery, Project } from '@the7ofdiamonds/ui-ux';
 
 import { EditCheckList } from '@/views/components/edit/components/check_list/EditCheckList';
 import { EditGallery } from '@/views/components/edit/components/gallery/EditGallery';
-
-import { Project } from '@/model/Project';
-import { Gallery } from '@/model/Gallery';
-import { CheckList } from '@/model/CheckList';
 
 import styles from './EditProcess.module.scss';
 
@@ -70,7 +67,7 @@ export const EditDelivery: React.FC<EditDeliveryProps> = ({ project, change }) =
 
       <EditGallery location='delivery' gallery={gallery} setVal={function (value: Gallery): void {
         throw new Error('Function not implemented.');
-      } } />
+      }} />
 
       <hr />
 

@@ -1,4 +1,4 @@
-import { Coordinates } from '@/model/Coordinates';
+import { Coordinates } from '@the7ofdiamonds/ui-ux';
 
 export function getLocation(): Promise<Coordinates> {
   try {

@@ -1,13 +1,19 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent, SetStateAction } from 'react';
 
+import {
+  ContentURL,
+  Contributor,
+  ContributorObject,
+  Project,
+  ProjectObject,
+  ProjectDetailsObject,
+  UserObject
+} from '@the7ofdiamonds/ui-ux';
+
 import { updateProject } from '@/controllers/updateSlice';
 
-import { Project, ProjectObject } from '@/model/Project';
-import { ProjectDetailsObject } from '@/model/ProjectDetails';
 import { Privacy, privacyFromString } from '@/model/enum/Enums';
-import { ContentURL } from '@/model/ContentURL';
-import { UserObject } from '@/model/User';
-import { Contributor, ContributorObject } from '@/model/Contributor';
+
 import { useAppDispatch } from '@/model/hooks';
 
 interface UpdateDetailsProps {

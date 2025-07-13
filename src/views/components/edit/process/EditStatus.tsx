@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-import { ProjectStatus } from '@/model/ProjectStatus';
-import { Project } from '@/model/Project';
-import { CheckList } from '@/model/CheckList';
-
-import { ProjectProgress } from '@/model/ProjectProgress';
-import { ProjectCheckList } from '@/model/ProjectCheckList';
+import {
+    CheckList,
+    Project,
+    ProjectCheckList,
+    ProjectProcess,
+    ProjectProgress,
+    ProjectStatus
+} from '@the7ofdiamonds/ui-ux';
 
 import Status from '@/views/components/project/Status';
-import { ProjectProcess } from '@/model/ProjectProcess';
 
 interface EditStatusProps {
     project: Project;

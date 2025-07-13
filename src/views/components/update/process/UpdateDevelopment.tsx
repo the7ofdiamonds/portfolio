@@ -1,6 +1,19 @@
 import React, { useState, MouseEvent, useEffect, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import {
+  CheckList,
+  ContentURL,
+  Gallery,
+  Project,
+  ProjectObject,
+  ProjectDevelopmentObject,
+  ProjectSkills,
+  ProjectVersions,
+  ProjectVersionsObject,
+  RepoURL
+} from '@the7ofdiamonds/ui-ux';
+
 import { updateProject } from '@/controllers/updateSlice';
 
 import UpdateCheckList from '../components/UpdateCheckList';
@@ -9,15 +22,6 @@ import UpdateProjectVersions from '../components/UpdateProjectVersions';
 import UpdateGallery from '../components/UpdateGallery';
 
 import type { AppDispatch, RootState } from '@/model/store';
-import { ProjectDevelopmentObject } from '@/model/ProjectDevelopment';
-import { ProjectVersions, ProjectVersionsObject } from '@/model/ProjectVersions';
-import { Project, ProjectObject } from '@/model/Project';
-import { ProjectSkills } from '@/model/ProjectSkills';
-import { Gallery } from '@/model/Gallery';
-import { CheckList } from '@/model/CheckList';
-import { ContentURL } from '@/model/ContentURL';
-
-import { RepoURL } from '@/model/RepoURL';
 
 interface UpdateDevelopmentProps {
   project: Project;

@@ -1,11 +1,9 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
+import { Contributor, Project, ProjectDetails } from '@the7ofdiamonds/ui-ux';
 
-import { Project } from '@/model/Project';
-import { ProjectDetails } from '@/model/ProjectDetails';
 import { Privacy, privacyFromString } from '@/model/enum/Enums';
-import { Contributor } from '@/model/Contributor';
 
 import styles from './Edit.module.scss';
 

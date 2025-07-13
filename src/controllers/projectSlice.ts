@@ -1,11 +1,14 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
+import {
+  GitHubRepoQuery,
+  Project,
+  ProjectObject,
+  Repo,
+} from '@the7ofdiamonds/ui-ux';
+
 import { getRepoDetails } from './githubSlice';
 import { getProjectData } from './databaseSlice';
-
-import { Repo } from '@/model/Repo';
-import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
-import { Project, ProjectObject } from '@/model/Project';
 
 export interface ProjectState {
   projectLoading: boolean;

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 import { LoadingComponent } from '@the7ofdiamonds/ui-ux';
+import { Portfolio, Project, Skills } from '@the7ofdiamonds/ui-ux';
+
 import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
 
 import { ProjectsComponent } from '@/views/components/portfolio/ProjectsComponent';
-
-import { Portfolio } from '@/model/Portfolio';
-import { Project } from '@/model/Project';
-import { Skills } from '@/model/Skills';
 
 import styles from './Portfolio.module.scss';
 

@@ -22,7 +22,7 @@ export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
   const [path, setPath] = useState('');
   const [url, setUrl] = useState('');
   const [className, setClassName] = useState('');
-  const [show, setShow] = useState('show');
+  const [show, setShow] = useState<'hide'|'show'>('hide');
   const [messageType, setMessageType] = useState('');
   const [message, setMessage] = useState(`Add ${taxonomy.type} to your skill set.`);
 

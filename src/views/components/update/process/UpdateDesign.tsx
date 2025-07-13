@@ -1,5 +1,16 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent, SetStateAction } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
+import {
+  CheckList,
+  Color,
+  ContentURL,
+  ContentURLObject,
+  Gallery,
+  Project,
+  ProjectObject,
+  ProjectDesign,
+  ProjectDesignObject
+} from '@the7ofdiamonds/ui-ux';
 
 import UpdateCheckList from '../components/UpdateCheckList';
 import UpdateGallery from '../components/UpdateGallery';
@@ -7,12 +18,6 @@ import UpdateColorsList from '../components/UpdateColorsList';
 
 import { updateProject } from '@/controllers/updateSlice';
 
-import { ProjectDesign, ProjectDesignObject } from '../../../../model/ProjectDesign';
-import { Project, ProjectObject } from '@/model/Project';
-import { Gallery } from '@/model/Gallery';
-import { CheckList } from '@/model/CheckList';
-import { Color } from '@/model/Color';
-import { ContentURL, ContentURLObject } from '@/model/ContentURL';
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 interface UpdateDesignProps {

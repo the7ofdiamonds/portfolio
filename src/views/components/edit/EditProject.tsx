@@ -1,13 +1,12 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
+import { Project } from '@the7ofdiamonds/ui-ux';
 
 import { EditDetails } from '@/views/components/edit/EditDetails';
 import { EditProcess } from '@/views/components/edit/process/EditProcess';
 import { EditSolution } from '@/views/components/edit/EditSolution';
 import { EditProblem } from '@/views/components/edit/EditProblem';
-
-import { Project } from '@/model/Project';
 
 import styles from './Edit.module.scss';
 

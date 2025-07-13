@@ -5,12 +5,18 @@ import {
   ContentComponent,
   GalleryComponent
 } from '@the7ofdiamonds/ui-ux';
+import {
+  CheckList,
+  ContentURL,
+  Gallery,
+  ProjectDelivery,
+  ProjectQuery,
+  RepoContentQuery
+} from '@the7ofdiamonds/ui-ux';
 
-import { ContentURL } from '@/model/ContentURL';
-import { Gallery } from '@/model/Gallery';
-import { CheckList } from '@/model/CheckList';
-import { ProjectQuery } from '@/model/ProjectQuery';
-import { ProjectDelivery } from '@/model/ProjectDelivery';
+import { getRepoFile } from '@/controllers/githubSlice';
+
+import { useAppDispatch } from '@/model/hooks';
 
 import styles from './Project.module.scss';
 
@@ -20,10 +26,14 @@ interface DeliveryProps {
 }
 
 export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) => {
+  const dispatch = useAppDispatch();
+
   const [gallery, setGallery] = useState<Gallery | null>(null);
   const [content, setContent] = useState<ContentURL | null>(null);
   const [checkList, setCheckList] = useState<CheckList | null>(null);
   const [query, setQuery] = useState<ProjectQuery | null>(null);
+
+  const contentQuery = new RepoContentQuery(query?.owner ?? '', query?.repo ?? '', '', '');
 
   useEffect(() => {
     if (delivery && delivery.gallery) {
@@ -58,13 +68,18 @@ export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) =>
       <h3 className={styles.title}>delivery</h3>
 
       {gallery && gallery.images && gallery.images.length > 0 &&
-        <GalleryComponent gallery={gallery.images} title="" />}
+        <GalleryComponent title={''} gallery={gallery.images} />}
 
       {content &&
-        <ContentComponent title={null} content={content} />}
+        <ContentComponent<RepoContentQuery>
+          title={null}
+          query={contentQuery}
+          getFile={getRepoFile}
+          dispatch={dispatch}
+        />}
 
       {checkList && query &&
-        <CheckListComponent checkList={checkList} query={query} />}
+        <CheckListComponent checkList={checkList} />}
     </div>
   )
   );

@@ -1,6 +1,6 @@
 {
   "name": "@the7ofdiamonds/github-portfolio",
-  "version": "1.0.20",
+  "version": "1.0.24",
   "description": "Use GitHub API to create portfolio website with repositories.",
   "author": "@the7ofdiamonds",
   "license": "ISC",
@@ -36,7 +36,8 @@
     "update-prod": "git push gitport",
     "refactor": "./refactor.sh && npm run update-prod",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "npm run build && npm publish"
+    "clean": "rimraf dist",
+    "publish": "npm-run-all build && npm publish"
   },
   "dependencies": {
     "@octokit/rest": "^21.0.2",
@@ -59,10 +60,6 @@
     "node": "^23.8.0",
     "octokit": "5.0.2",
     "path": "^0.12.7",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-redux": "^8.0.0",
-    "react-router-dom": "^6.14.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "source-map-js": "^1.0.2",
     "tslib": "^2.8.1",
@@ -80,6 +77,7 @@
     "child_process": "^1.0.2",
     "firebase-tools": "^13.29.2",
     "npm-run-all": "^4.1.5",
+    "rimraf": "^5.0.10",
     "sass": "^1.89.2",
     "typescript": "^5.7.3",
     "vite": "^5.0.10",
@@ -88,12 +86,14 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "peerDependencies": {
+    "@the7ofdiamonds/communications": "^0.0.27",
+    "@the7ofdiamonds/gateway": "^0.0.5",
+    "@the7ofdiamonds/ui-ux": "^1.0.28",
     "firebase": "^10.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "@the7ofdiamonds/communications": "^0.0.16",
-    "@the7ofdiamonds/gateway": "0.0.4",
-    "@the7ofdiamonds/ui-ux": "1.0.12"
+    "react-redux": "^8.0.0",
+    "react-router-dom": "^6.14.2"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.9.5"

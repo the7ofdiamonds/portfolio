@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Language } from '@/model/Taxonomy';
+import { Language } from '@the7ofdiamonds/ui-ux';
+
 import { AddTaxonomy } from './AddTaxonomy';
 
 export const AddLanguages: React.FC = () => {

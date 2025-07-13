@@ -1,12 +1,13 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { ProjectSkills, ProjectSkillsObject } from '@the7ofdiamonds/ui-ux';
+import { Framework, Language, ProjectType, Service, Technology } from '@the7ofdiamonds/ui-ux';
+import { Skills } from '@the7ofdiamonds/ui-ux';
+
 import { updateProjectSkills } from '@/controllers/updateSlice';
 
 import type { AppDispatch, RootState } from '@/model/store';
-import { ProjectSkills, ProjectSkillsObject } from '@/model/ProjectSkills';
-import { Framework, Language, ProjectType, Service, Technology, existsInSet } from '@/model/Taxonomy';
-import { Skills } from '@/model/Skills';
 
 import styles from './Skills.module.scss';
 

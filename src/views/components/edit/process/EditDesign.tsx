@@ -1,17 +1,11 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
-
-import { Project } from '@/model/Project';
-import { Gallery } from '@/model/Gallery';
-import { CheckList } from '@/model/CheckList';
+import { CheckList,Colors,Gallery,Project,ProjectDesign } from '@the7ofdiamonds/ui-ux';
 
 import { EditGallery } from '../components/gallery/EditGallery';
 import { EditColorsList } from '@/views/components/edit/components/colors/EditColorsList';
 import { EditCheckList } from '@/views/components/edit/components/check_list/EditCheckList';
-
-import { ProjectDesign } from '@/model/ProjectDesign';
-import { Colors } from '@/model/Colors';
 
 import styles from './EditProcess.module.scss';
 

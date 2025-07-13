@@ -1,17 +1,21 @@
 import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import type { AppDispatch, RootState } from '@/model/store';
-import { ProjectDeliveryObject } from '@/model/ProjectDelivery';
-import { Project, ProjectObject } from '@/model/Project';
-import { Gallery } from '@/model/Gallery';
-import { CheckList } from '@/model/CheckList';
-import { ContentURL } from '@/model/ContentURL';
+import {
+  CheckList,
+  ContentURL,
+  Gallery,
+  Project,
+  ProjectDeliveryObject,
+  ProjectObject
+} from '@the7ofdiamonds/ui-ux';
 
 import { updateProject } from '@/controllers/updateSlice';
 
 import UpdateGallery from '../components/UpdateGallery';
 import UpdateCheckList from '../components/UpdateCheckList';
+
+import type { AppDispatch, RootState } from '@/model/store';
 
 interface UpdateDeliveryProps {
   project: Project;

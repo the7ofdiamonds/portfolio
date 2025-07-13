@@ -1,11 +1,15 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
+import {
+    Feature,
+    FeatureObject,
+    Version
+} from '@the7ofdiamonds/ui-ux';
+
 import { updateFeatures } from '@/controllers/updateSlice';
 
 import type { AppDispatch } from '@/model/store';
-import { Feature, FeatureObject } from '@/model/Feature';
-import { Version } from '@/model/Version';
 
 interface UpdateFeaturesProps {
     features: Set<Feature> | undefined | null;

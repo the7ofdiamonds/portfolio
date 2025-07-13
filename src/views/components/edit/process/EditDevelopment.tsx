@@ -1,19 +1,20 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
+import {
+  CheckList,
+  Gallery,
+  Project,
+  ProjectDevelopment,
+  ProjectProcess,
+  ProjectSkills,
+  ProjectVersions
+} from '@the7ofdiamonds/ui-ux';
 
 import { EditCheckList } from '../components/check_list/EditCheckList';
 import { EditGallery } from '../components/gallery/EditGallery';
 import { EditSkills } from '../components/skills/EditSkills';
 import { EditProjectVersions } from '../components/project_versions/EditProjectVersions';
-
-import { ProjectVersions } from '@/model/ProjectVersions';
-import { Project } from '@/model/Project';
-import { ProjectSkills } from '@/model/ProjectSkills';
-import { Gallery } from '@/model/Gallery';
-import { CheckList } from '@/model/CheckList';
-import { ProjectDevelopment } from '@/model/ProjectDevelopment';
-import { ProjectProcess } from '@/model/ProjectProcess';
 
 import styles from './EditProcess.module.scss';
 

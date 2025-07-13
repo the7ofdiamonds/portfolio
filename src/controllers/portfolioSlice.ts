@@ -1,13 +1,17 @@
 import { createSlice, createAsyncThunk, isAnyOf } from '@reduxjs/toolkit';
 
+import {
+  GitHubRepoQuery,
+  Portfolio,
+  PortfolioObject,
+  Project,
+  ProjectObject,
+  Repo,
+  Repos,
+} from '@the7ofdiamonds/ui-ux';
+
 import { getProjectData } from './databaseSlice';
 import { getRepo, getRepoLanguages } from './githubSlice';
-
-import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
-import { Portfolio, PortfolioObject } from '@/model/Portfolio';
-import { Project, ProjectObject } from '@/model/Project';
-import { Repo } from '@/model/Repo';
-import { Repos } from '@/model/Repos';
 
 export interface PortfolioState {
   portfolioLoading: boolean;

@@ -1,8 +1,9 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '@/model/store';
 
-import { Gallery, GalleryObject } from '@/model/Gallery'
+import { Gallery, GalleryObject } from '@the7ofdiamonds/ui-ux';
+
+import type { AppDispatch } from '@/model/store';
 import { ImageObject } from '@/model/Image';
 
 import { updateDeliveryGallery, updateDesignGallery, updateDevelopmentGallery, updateProblemGallery, updateSolutionGallery } from '@/controllers/updateSlice';

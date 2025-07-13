@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ProjectCard } from '../project_card/ProjectCard';
+import { Project } from '@the7ofdiamonds/ui-ux';
 
-import { Project } from '@/model/Project';
+import { ProjectCard } from '../project_card/ProjectCard';
 
 interface PortfolioProjectProps {
     project: Project

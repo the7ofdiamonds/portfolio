@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
-import { GalleryComponent } from '@the7ofdiamonds/ui-ux';
+import { ContentComponent, GalleryComponent } from '@the7ofdiamonds/ui-ux';
+import {
+  ContentURL,
+  Feature,
+  Gallery,
+  Project,
+  ProjectURLs,
+  Version
+} from '@the7ofdiamonds/ui-ux';
 
 import FeaturesComponent from '@/views/components/project/Features';
 import ProjectURLsComponent from '@/views/components/project/ProjectURLsComponent';
-
-import { ContentComponent } from '@/views/components/content/ContentComponent';
-
-import { Project } from '@/model/Project';
-import { Version } from '@/model/Version';
-import { ContentURL } from '@/model/ContentURL';
-import { Feature } from '@/model/Feature';
-import { ProjectURLs } from '@/model/ProjectURLs';
-import { Gallery } from '@/model/Gallery';
 
 import styles from './Project.module.scss';
 

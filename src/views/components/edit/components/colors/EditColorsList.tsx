@@ -1,11 +1,11 @@
 import React, { useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { Color, Colors } from '@the7ofdiamonds/ui-ux';
+
 import { updateColors } from '@/controllers/updateSlice';
 
 import type { AppDispatch } from '@/model/store';
-import { Color } from '@/model/Color';
-import { Colors } from '@/model/Colors';
 
 import styles from './Colors.module.scss';
 

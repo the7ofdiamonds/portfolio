@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { ProjectProgress } from "@/model/ProjectProgress";
-import { ProjectStatus } from "@/model/ProjectStatus";
+import { ProjectProgress, ProjectStatus } from "@the7ofdiamonds/ui-ux";
 
 import styles from './Project.module.scss';
 

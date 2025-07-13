@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import type { RootState } from '@/model/store';
-import { ProjectStatus, ProjectStatusObject } from '@/model/ProjectStatus';
-import { Project } from '@/model/Project';
-import { CheckList } from '@/model/CheckList';
-
-import { ProjectProgress } from '@/model/ProjectProgress';
-import { ProjectCheckList } from '@/model/ProjectCheckList';
+import {
+    CheckList,
+    Project,
+    ProjectCheckList,
+    ProjectProgress,
+    ProjectStatus,
+    ProjectStatusObject
+} from '@the7ofdiamonds/ui-ux';
 
 import Status from '../../project/Status';
+
+import type { RootState } from '@/model/store';
 
 interface UpdateStatusProps {
     project: Project;

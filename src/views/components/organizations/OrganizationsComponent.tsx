@@ -1,9 +1,7 @@
 import React from 'react'
 
 import { DescriptionComponent } from '@the7ofdiamonds/ui-ux';
-
-import { Organizations } from '@/model/Organizations';
-import { Organization } from '@/model/Organization';
+import { Organization, Organizations } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Organizations.module.scss';
 

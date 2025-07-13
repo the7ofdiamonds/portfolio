@@ -1,12 +1,9 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
+import { Gallery, Project, ProjectProblem } from '@the7ofdiamonds/ui-ux';
 
 import { EditGallery } from '@/views/components/edit/components/gallery/EditGallery';
-
-import { Gallery } from '@/model/Gallery';
-import { Project } from '@/model/Project';
-import { ProjectProblem } from '@/model/ProjectProblem';
 
 import styles from './Edit.module.scss';
 

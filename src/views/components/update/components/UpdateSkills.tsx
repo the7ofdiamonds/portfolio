@@ -1,13 +1,13 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
 
+import { ProjectSkills, ProjectSkillsObject } from '@the7ofdiamonds/ui-ux';
+import { Framework, Language, ProjectType, Service, Technology } from '@the7ofdiamonds/ui-ux';
+import { Skills } from '@the7ofdiamonds/ui-ux';
+
 import {
   getSkills,
 } from '@/controllers/skillsSlice';
 import { updateProjectSkills } from '@/controllers/updateSlice';
-
-import { ProjectSkills, ProjectSkillsObject } from '@/model/ProjectSkills';
-import { Framework, Language, ProjectType, Service, Technology, existsInSet } from '@/model/Taxonomy';
-import { Skills } from '@/model/Skills';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 

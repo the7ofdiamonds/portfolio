@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Section } from '@the7ofdiamonds/ui-ux';
-
-import { User } from '@/model/User';
-import { Project } from '@/model/Project';
-import { Portfolio } from '@/model/Portfolio';
+import { Portfolio, Project, User } from '@the7ofdiamonds/ui-ux';
 
 import { EditPortfolioProject } from '@/views/components/edit/EditPortfolioProject';
 

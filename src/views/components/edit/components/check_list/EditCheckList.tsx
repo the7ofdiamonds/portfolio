@@ -1,12 +1,18 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '@/model/store';
-import { Task, TaskObject } from '@/model/Task';
-import { CheckList, CheckListObject } from '@/model/CheckList';
+
+import { v4 as uuidv4 } from 'uuid';
+
+import {
+    CheckList,
+    CheckListObject,
+    Task,
+    TaskObject
+} from '@the7ofdiamonds/ui-ux';
 
 import { updateDesignCheckList, updateDevelopmentCheckList, updateDeliveryCheckList } from '@/controllers/updateSlice';
 
-import { v4 as uuidv4 } from 'uuid';
+import type { AppDispatch } from '@/model/store';
 
 import styles from './CheckList.module.scss';
 

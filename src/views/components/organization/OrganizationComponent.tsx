@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { DescriptionComponent } from '@the7ofdiamonds/ui-ux';
-
-import { Organization } from '@/model/Organization'
+import { Organization } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Organization.module.scss';
 

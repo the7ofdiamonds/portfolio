@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { LoadingComponent, Section, Main, StatusBar } from '@the7ofdiamonds/ui-ux';
+import { Account, GitHubRepoQuery, Project } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectComponent } from './components/project/ProjectComponent';
 
 import { getProject } from '@/controllers/projectSlice';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
-import { Project } from '@/model/Project';
-import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
-import { Account } from '@/model/Account';
 
 interface ProjectPageProps {
   account: Account;

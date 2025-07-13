@@ -1,14 +1,19 @@
 import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import {
+  DocumentURL,
+  DocumentURLObject,
+  Gallery,
+  Project,
+  ProjectObject
+} from '@the7ofdiamonds/ui-ux';
+
 import UpdateGallery from './components/UpdateGallery';
 
 import { updateProject } from '@/controllers/updateSlice';
 
 import type { AppDispatch, RootState } from '@/model/store';
-import { Gallery } from '@/model/Gallery';
-import { Project, ProjectObject } from '@/model/Project';
-import { DocumentURL, DocumentURLObject } from '@/model/DocumentURL';
 
 interface UpdateProblemProps {
   project: Project;

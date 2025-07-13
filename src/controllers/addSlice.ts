@@ -5,13 +5,11 @@ import {
   CreateSliceOptions,
 } from '@reduxjs/toolkit';
 
-import { Taxonomy } from '@the7ofdiamonds/ui-ux';
+import { Taxonomy, Project, SecureHeaders } from '@the7ofdiamonds/ui-ux';
 
 import { getAPI } from '@/services/Config';
 
-import { Project } from '@/model/Project';
 import { addSecureHeaders } from '@/utilities/Headers';
-import { SecureHeaders } from '@/model/SecureHeaders';
 
 export interface AddState {
   addLoading: boolean;
@@ -156,14 +154,11 @@ const addSliceOptions: CreateSliceOptions<AddState> = {
         state.addError = null;
         state.addErrorMessage = '';
       })
-      .addMatcher(
-        isAnyOf(addProject.rejected),
-        (state, action) => {
-          state.addLoading = false;
-          state.addError = (action.error as Error) || null;
-          state.addErrorMessage = action.error.message || '';
-        }
-      );
+      .addMatcher(isAnyOf(addProject.rejected), (state, action) => {
+        state.addLoading = false;
+        state.addError = (action.error as Error) || null;
+        state.addErrorMessage = action.error.message || '';
+      });
   },
 };
 

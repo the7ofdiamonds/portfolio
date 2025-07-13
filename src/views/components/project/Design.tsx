@@ -6,13 +6,7 @@ import {
   ContentComponent,
   GalleryComponent
 } from '@the7ofdiamonds/ui-ux';
-import { Image } from '@the7ofdiamonds/ui-ux';
-
-import { ContentURL } from '@/model/ContentURL';
-import { Color } from '@/model/Color';
-import { CheckList } from '@/model/CheckList';
-import { ProjectQuery } from '@/model/ProjectQuery';
-import { ProjectDesign } from '@/model/ProjectDesign';
+import { CheckList, Color, ContentURL, Image, ProjectDesign, ProjectQuery } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
 

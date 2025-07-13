@@ -15,23 +15,29 @@ import {
 } from '@octokit/types';
 import { RequestError } from '@octokit/request-error';
 
-import { RepoContent } from '@/model/RepoContent';
-import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
-import { RepoContentQuery } from '@/model/RepoContentQuery';
 import {
+  RepoContent,
+  GitHubRepoQuery,
+  RepoContentQuery,
   Organization,
   OrganizationObject,
   OrganizationResponseGQL,
-} from '@/model/Organization';
-import { Repo, RepoObject } from '@/model/Repo';
-import { UserGQLResponse, UserObject, User } from '@/model/User';
-import { Repos } from '@/model/Repos';
-import { ContactMethods } from '@/model/ContactMethods';
-import { RepoAPIURL } from '@/model/RepoAPIURL';
-import { IssueGQL } from '@/model/Issue';
-import { Issues, IssuesObject } from '@/model/Issues';
-import { Contributors, ContributorsObject } from '@/model/Contributors';
-import { AccountGQLResponse } from '@/model/Account';
+  Repo,
+  RepoObject,
+  UserObject,
+  User,
+  Repos,
+  ContactMethods,
+  RepoAPIURL,
+  IssueGQL,
+  Issues,
+  IssuesObject,
+  Contributors,
+  ContributorsObject,
+  AccountGQLResponse,
+  Skills,
+  ProjectSkills,
+} from '@the7ofdiamonds/ui-ux';
 
 type OctokitResponse<T = any, S = number> = {
   data: T;
@@ -129,8 +135,9 @@ export const getRepo = createAsyncThunk(
         });
 
         if (repoResponse.status === 200) {
+          const githubRepo: GitHubRepo = repoResponse.data;
           const repo = new Repo();
-          repo.fromGitHub(repoResponse.data);
+          repo.fromGitHub(githubRepo);
           return repo.toRepoObject();
         }
 
@@ -172,7 +179,7 @@ export const getRepoContents = createAsyncThunk(
 
       if (Array.isArray(repoContents.data) && repoContents.data.length > 0) {
         repoContents.data.forEach((content) => {
-          contents.push(new RepoContent(content).toObject());
+          contents.push(new RepoContent(content).toRepoContentObject());
         });
       }
 
@@ -437,7 +444,9 @@ export const getRepoDetails = createAsyncThunk(
           getRepoLanguages.fulfilled.match(langResponse) &&
           langResponse.payload
         ) {
-          repo.languagesFromGithub(langResponse.payload);
+          const skills = new ProjectSkills();
+          skills.languagesFromGithub(langResponse.payload);
+          repo.setSkills(skills);
         }
 
         const contentsResponse = await thunkAPI.dispatch(
@@ -533,8 +542,7 @@ export const getRepoDetailsList = createAsyncThunk(
             repoDetailsList.push(repoDetailsResponse.payload);
           }
         }
-        const repos1 = new Repos();
-        repos1.fromGitHubAuthenticatedUser(repos);
+
         return repoDetailsList.map((repo) => new Repo(repo).toRepoObject());
       }
 
@@ -642,8 +650,8 @@ export const getAuthenticatedAccount = createAsyncThunk(
       });
 
       const contactsResponse =
-        account && account.login
-          ? await thunkAPI.dispatch(getSocialAccounts(account.login))
+        account && account.username
+          ? await thunkAPI.dispatch(getSocialAccounts(account.username))
           : null;
 
       if (
@@ -657,9 +665,9 @@ export const getAuthenticatedAccount = createAsyncThunk(
       }
 
       const contentsResponse =
-        account && account.login
+        account && account.username
           ? await thunkAPI.dispatch(
-              getRepoContents(new GitHubRepoQuery(account.login, account.login))
+              getRepoContents(new GitHubRepoQuery(account.username, account.username))
             )
           : null;
 

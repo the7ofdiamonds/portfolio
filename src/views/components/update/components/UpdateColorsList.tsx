@@ -1,10 +1,11 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '@/model/store';
 
-import { Color, ColorObject } from '@/model/Color';
+import { Color, ColorObject } from '@the7ofdiamonds/ui-ux';
 
 import { updateColors } from '@/controllers/updateSlice';
+
+import type { AppDispatch } from '@/model/store';
 
 interface UpdateColorsListProps {
     colorsObject: Array<ColorObject>;

@@ -1,7 +1,17 @@
 import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
+import {
+    Section,
+    StatusBar,
+    GitHubRepoQuery,
+    Owner,
+    Portfolio,
+    Project,
+    ProjectObject,
+    RepoURL,
+    User
+} from '@the7ofdiamonds/ui-ux';
 
 import { updateProject } from '@/controllers/updateSlice';
 
@@ -13,12 +23,6 @@ import UpdateSolution from './components/update/UpdateSolution';
 import UpdateProblem from './components/update/UpdateProblem';
 
 import type { AppDispatch, RootState } from '@/model/store';
-import { Project, ProjectObject } from '@/model/Project';
-import { Owner } from '@/model/Owner';
-import { Portfolio } from '@/model/Portfolio';
-import { GitHubRepoQuery } from '@/model/GitHubRepoQuery';
-import { RepoURL } from '@/model/RepoURL';
-import { User } from '@/model/User';
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 interface ProjectUpdateProps {
@@ -53,7 +57,7 @@ export const ProjectUpdatePage: React.FC<ProjectUpdateProps> = ({ user }) => {
 
     const [message, setMessage] = useState<string>('');
     const [messageType, setMessageType] = useState<string>('info');
-    const [showStatusBar,setShowStatusBar] = useState<'show' | 'hide'>('hide');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
         if (login) {

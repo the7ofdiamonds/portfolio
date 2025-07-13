@@ -1,10 +1,11 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { ProjectURLs } from '@the7ofdiamonds/ui-ux';
+
 import { updateProjectURLs } from '@/controllers/updateSlice';
 
 import type { AppDispatch } from '@/model/store';
-import { ProjectURLs } from '@/model/ProjectURLs';
 
 import styles from './ProjectURL.module.scss';
 

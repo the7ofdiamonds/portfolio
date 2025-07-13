@@ -27,7 +27,6 @@ export default defineConfig({
       fileName: (format, name) => `${name}.${format === 'es' ? 'js' : format}`,
     },
     rollupOptions: rollupOptions,
-    watch: {},
     minify: false,
   },
   resolve: {

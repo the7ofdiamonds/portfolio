@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import { Section, Button } from '@the7ofdiamonds/ui-ux';
+import { User } from '@the7ofdiamonds/ui-ux';
 
 import { logout } from '@the7ofdiamonds/gateway';
 
 import { checkHeaders } from '@/utilities/Headers';
 
-import { User } from '@/model/User';
 import { useAppDispatch } from '@/model/hooks';
 
 import styles from '@/views/components/dashboard/Dashboard.module.scss';

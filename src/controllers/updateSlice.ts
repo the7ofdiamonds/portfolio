@@ -5,22 +5,28 @@ import {
   CreateSliceOptions,
 } from '@reduxjs/toolkit';
 
+import {
+  CheckList,
+  CheckListObject,
+  Color,
+  ColorObject,
+  Gallery,
+  GalleryObject,
+  Feature,
+  FeatureObject,
+  Project,
+  ProjectDelivery,
+  ProjectSkills,
+  ProjectURLsDataObject,
+  ProjectVersions,
+  SecureHeaders,
+  Skills,
+  TaskObject,
+} from '@the7ofdiamonds/ui-ux';
+
 import { getAPI } from '@/services/Config';
 
-import { SecureHeaders } from '@/model/SecureHeaders';
-import { Gallery, GalleryObject } from '@/model/Gallery';
-import { Project } from '@/model/Project';
-
 import { addSecureHeaders } from '@/utilities/Headers';
-import { Skills } from '@/model/Skills';
-import { ProjectSkills } from '@/model/ProjectSkills';
-import { TaskObject } from '@/model/Task';
-import { ProjectVersions } from '@/model/ProjectVersions';
-import { ProjectURLsDataObject } from '@/model/ProjectURLs';
-import { CheckList, CheckListObject } from '@/model/CheckList';
-import { Feature, FeatureObject } from '@/model/Feature';
-import { Color, ColorObject } from '@/model/Color';
-import { ProjectDelivery } from '@/model/ProjectDelivery';
 
 export interface UpdateState {
   updateLoading: boolean;
@@ -472,7 +478,7 @@ export const updateProjectSkills = createAsyncThunk(
   'update/updateProjectSkills',
   async (skills: ProjectSkills) => {
     try {
-      return skills.toSkillsObject();
+      return skills.toProjectSkillsObject();
     } catch (error) {
       const err = error as Error;
       console.error(err);
@@ -498,7 +504,7 @@ export const updateVersions = createAsyncThunk(
   'update/updateVersions',
   async (versions: ProjectVersions) => {
     try {
-      return versions.toObject();
+      return versions.toProjectVersionsObject();
     } catch (error) {
       const err = error as Error;
       console.error(err);
