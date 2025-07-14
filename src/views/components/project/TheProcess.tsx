@@ -6,13 +6,15 @@ import { Design } from '@/views/components/project/Design';
 import { Development } from '@/views/components/project/Development';
 import { Delivery } from '@/views/components/project/Delivery';
 
-import { ProjectStatus } from '@/model/ProjectStatus';
-import { ProjectDesign } from '@/model/ProjectDesign';
-import { ProjectDevelopment } from '@/model/ProjectDevelopment';
-import { ProjectDelivery } from '@/model/ProjectDelivery';
-import { Project } from '@/model/Project';
-import { ProjectQuery } from '@/model/ProjectQuery';
-import { ProjectSolution } from '@/model/ProjectSolution';
+import {
+  Project,
+  ProjectDelivery,
+  ProjectDesign,
+  ProjectDevelopment,
+  ProjectQuery,
+  ProjectSolution,
+  ProjectStatus
+} from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
 

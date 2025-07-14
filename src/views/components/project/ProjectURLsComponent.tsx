@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { ButtonImage } from "@the7ofdiamonds/ui-ux";
-
-import { ProjectURLs } from "@/model/ProjectURLs";
-import { ProjectURL } from "@/model/ProjectURL";
+import { ProjectURL, ProjectURLs } from "@the7ofdiamonds/ui-ux";
 
 import styles from './Project.module.scss';
 
@@ -39,11 +37,17 @@ const ProjectURLsComponent: React.FC<ProjectURLsProps> = ({ projectUrls }) => {
   return (
     <>{hasContent && (
       <div className={styles['project-urls']}>
-        {homepage && <ButtonImage buttonProps={homepage} />}
+        {homepage && <ButtonImage action={function (): void {
+          throw new Error("Function not implemented.");
+        } } image={undefined} name={""} url={""}/>}
 
-        {ios && <ButtonImage buttonProps={ios} />}
+        {ios && <ButtonImage action={function (): void {
+          throw new Error("Function not implemented.");
+        } } image={undefined} name={""} url={""} />}
 
-        {android && <ButtonImage buttonProps={android} />}
+        {android && <ButtonImage action={function (): void {
+          throw new Error("Function not implemented.");
+        } } image={undefined} name={""} url={""} />}
       </div>)}
     </>
   );

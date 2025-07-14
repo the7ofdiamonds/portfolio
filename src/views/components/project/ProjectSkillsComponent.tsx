@@ -1,8 +1,6 @@
 import React from 'react'
 
-import { TaxListIcon, Taxonomy } from '@the7ofdiamonds/ui-ux';
-
-import { ProjectSkills } from '@/model/ProjectSkills';
+import { ProjectSkills, TaxListIcon, Taxonomy } from '@the7ofdiamonds/ui-ux';
 
 import styles from './ProjectSkills.module.scss';
 
@@ -22,23 +20,23 @@ export const ProjectSkillsComponent: React.FC<ProjectSkillsComponentProps> = ({ 
 
                     {skills.types && skills.types.size > 0 && <TaxListIcon taxonomiesSet={skills.types} taxonomiesTitle={'Project Types'} handleClick={function (taxonomy: Taxonomy): void {
                         throw new Error('Function not implemented.');
-                    } } />}
+                    }} />}
 
                     {skills.languages && skills.languages.size > 0 && <TaxListIcon taxonomiesSet={skills.languages} taxonomiesTitle={'Languages'} handleClick={function (taxonomy: Taxonomy): void {
                         throw new Error('Function not implemented.');
-                    } } />}
+                    }} />}
 
                     {skills.frameworks && skills.frameworks.size > 0 && <TaxListIcon taxonomiesSet={skills.frameworks} taxonomiesTitle={'Frameworks'} handleClick={function (taxonomy: Taxonomy): void {
                         throw new Error('Function not implemented.');
-                    } } />}
+                    }} />}
 
                     {skills.technologies && skills.technologies.size > 0 && <TaxListIcon taxonomiesSet={skills.technologies} taxonomiesTitle={'Technologies'} handleClick={function (taxonomy: Taxonomy): void {
                         throw new Error('Function not implemented.');
-                    } } />}
+                    }} />}
 
                     {skills.services && skills.services.size > 0 && <TaxListIcon taxonomiesSet={skills.services} taxonomiesTitle={'Services'} handleClick={function (taxonomy: Taxonomy): void {
                         throw new Error('Function not implemented.');
-                    } } />}
+                    }} />}
                 </div>}
         </>
     )

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { ContentComponent, GalleryComponent } from '@the7ofdiamonds/ui-ux';
+import { ContentComponent, GalleryComponent, RepoContentQuery } from '@the7ofdiamonds/ui-ux';
 import {
-  ContentURL,
   Feature,
   Gallery,
   Project,
@@ -14,14 +13,18 @@ import FeaturesComponent from '@/views/components/project/Features';
 import ProjectURLsComponent from '@/views/components/project/ProjectURLsComponent';
 
 import styles from './Project.module.scss';
+import { getRepoFile } from '@/controllers/githubSlice';
+import { useAppDispatch } from '@/model/hooks';
 
 interface SolutionProps {
   project: Project
 }
 
 export const TheSolution: React.FC<SolutionProps> = ({ project }) => {
+  const dispatch = useAppDispatch();
+
   const [gallery, setGallery] = useState<Gallery | null>(null);
-  const [content, setContent] = useState<ContentURL | null>(null);
+  const [query, setQuery] = useState<RepoContentQuery | null>(null);
   const [projectURLs, setProjectURLs] = useState<ProjectURLs | null>(null);
   const [features, setFeatures] = useState<Set<Feature> | null>(null);
   const [version, setVersion] = useState<Version | null>(null);
@@ -35,10 +38,10 @@ export const TheSolution: React.FC<SolutionProps> = ({ project }) => {
   }, [project?.solution?.gallery]);
 
   useEffect(() => {
-    if (project?.solution && project.solution.contentURL && project.solution.contentURL.path === 'TheSolution.md') {
-      setContent(project.solution.contentURL)
+    if (project.query && project.query.owner && project.query.repo) {
+      setQuery(new RepoContentQuery(project.query.owner, project.query.repo, '', ''))
     }
-  }, [project?.solution?.contentURL]);
+  }, [project.query]);
 
   useEffect(() => {
     if (project.solution && project.solution.projectURLs) {
@@ -60,7 +63,7 @@ export const TheSolution: React.FC<SolutionProps> = ({ project }) => {
     }
   }, [project?.process?.development?.versionsList?.current]);
 
-  const hasContent = gallery || content || projectURLs || features || version;
+  const hasContent = gallery || query || projectURLs || features || version;
 
   return (
     <>
@@ -71,8 +74,8 @@ export const TheSolution: React.FC<SolutionProps> = ({ project }) => {
           {gallery && gallery.images && gallery.images.length > 0 &&
             <GalleryComponent gallery={gallery.images} title='' />}
 
-          {content &&
-            <ContentComponent title={null} content={content} />}
+          {query &&
+            <ContentComponent title={null} query={query} getFile={getRepoFile} dispatch={dispatch} />}
 
           {projectURLs &&
             <ProjectURLsComponent projectUrls={projectURLs} />}

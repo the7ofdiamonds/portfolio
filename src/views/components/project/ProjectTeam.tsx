@@ -2,8 +2,7 @@ import React from 'react';
 
 // import {user} from '@the7ofdiamonds/communications'
 
-import { Contributor } from '@/model/Contributor';
-import { Account } from '@/model/Account';
+import { Account, Contributor } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
 

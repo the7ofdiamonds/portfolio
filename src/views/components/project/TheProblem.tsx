@@ -3,22 +3,26 @@ import React, { useEffect, useState } from 'react';
 import {
   GalleryComponent,
   ContentComponent,
-  DocumentComponent
+  DocumentComponent,
+  ProjectQuery,
+  RepoContentQuery
 } from '@the7ofdiamonds/ui-ux';
 
-import { Project } from '@/model/Project';
-import { ContentURL } from '@/model/ContentURL';
-import { Gallery } from '@/model/Gallery';
-import { DocumentURL } from '@/model/DocumentURL';
+import { ContentURL, DocumentURL, Gallery, Project } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
+import { getRepoFile } from '@/controllers/githubSlice';
+import { useAppDispatch } from '@/model/hooks';
 
 interface ProblemProps {
   project: Project;
 }
 
 export const TheProblem: React.FC<ProblemProps> = ({ project }) => {
+  const dispatch = useAppDispatch();
+  
   const [gallery, setGallery] = useState<Gallery | null>(null);
+  const [query, setQuery] = useState<RepoContentQuery | null>(null);
   const [content, setContent] = useState<ContentURL | null>(null);
   const [whitepaperURL, setWhitepaperURL] = useState<DocumentURL | null>(null);
 
@@ -29,6 +33,12 @@ export const TheProblem: React.FC<ProblemProps> = ({ project }) => {
       setGallery(project.problem.gallery)
     }
   }, [project?.problem?.gallery]);
+
+  useEffect(() => {
+    if (project.query && project.query.owner && project.query.repo) {
+      setQuery(new RepoContentQuery(project.query.owner, project.query.repo, '', ''))
+    }
+  }, [project.query]);
 
   useEffect(() => {
     if (project?.problem && project.problem.contentURL && project.problem.contentURL.path === 'TheProblem.md') {
@@ -53,10 +63,10 @@ export const TheProblem: React.FC<ProblemProps> = ({ project }) => {
 
             {gallery && gallery.images && < GalleryComponent title={'Problem'} gallery={gallery.images} />}
 
-            {content && <ContentComponent title='' content={content} />}
+            {query && <ContentComponent<RepoContentQuery> title={null} query={query} getFile={getRepoFile} dispatch={dispatch} />}
           </div>
 
-          {whitepaperURL && <DocumentComponent documentURL={whitepaperURL} />}
+          {whitepaperURL && whitepaperURL.url && <DocumentComponent documentURL={whitepaperURL.url} />}
         </>
       }
     </>

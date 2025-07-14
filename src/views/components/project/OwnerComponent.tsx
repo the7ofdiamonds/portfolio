@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Project } from '@/model/Project';
+import { Project } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
 

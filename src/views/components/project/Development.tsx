@@ -31,8 +31,6 @@ import {
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
-
-
 import styles from './Project.module.scss';
 
 interface DevelopmentProps {
@@ -125,7 +123,7 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
     if (isAuthenticated && repoURL && repoURL.url) {
       window.open(repoURL.url, '_blank');
     } else {
-      // dispatch(loginWithPopUp());
+      dispatch(loginWithPopUp());
     }
   };
 
@@ -141,10 +139,10 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
 
         {featuresRoadmap && <RoadmapComponent roadmap={featuresRoadmap} />}
 
-        {content &&
-          <ContentComponent title={null} query={new RepoContentQuery()} getFile={getRepoFile} dispatch={dispatch} />}
+        {query &&
+          <ContentComponent title={null} query={new RepoContentQuery(query.owner, query.repo,'','')} getFile={getRepoFile} dispatch={dispatch} />}
 
-        {checkList && query && <CheckListComponent checkList={checkList} query={query} />}
+        {checkList && query && <CheckListComponent checkList={checkList}  />}
 
         {skills && <SkillsComponent skills={skills} />}
 

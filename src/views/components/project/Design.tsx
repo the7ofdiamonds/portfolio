@@ -112,10 +112,10 @@ export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
             <GalleryComponent title={'uml diagrams'} gallery={umlDiagrams} />}
 
           {content &&
-            <ContentComponent title={null} content={content} />}
+            <ContentComponent title={null} query={} getFile={undefined} dispatch={dispatch} />}
 
           {checkList && query &&
-            <CheckListComponent checkList={checkList} query={query} />}
+            <CheckListComponent checkList={design.checkList} />}
         </div>
       }
     </>

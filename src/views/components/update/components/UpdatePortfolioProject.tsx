@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { ProjectCard } from '@/views/components/project_card/ProjectCard';
 
-import { Project } from '@/model/Project'
-import { Owner } from '@/model/Owner';
+import { Owner, Project } from '@the7ofdiamonds/ui-ux'
 
 interface UpdatePortfolioProjectProps {
     project: Project

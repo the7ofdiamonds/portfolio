@@ -1,8 +1,7 @@
 import React from 'react';
 
 import { DescriptionComponent } from '@the7ofdiamonds/ui-ux';
-
-import { Project } from '@/model/Project';
+import { Project } from '@the7ofdiamonds/ui-ux';
 
 import styles from './ProjectCard.module.scss';
 

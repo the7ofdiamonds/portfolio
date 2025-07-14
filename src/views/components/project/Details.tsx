@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
 
-import { ContentComponent } from '@the7ofdiamonds/ui-ux';
+import { ContentComponent, RepoContentQuery } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectTeamComponent } from '@/views/components/project/ProjectTeam';
 
-import { Project } from '@/model/Project';
-import { Contributor } from '@/model/Contributor';
-import { RepoSize } from '@/model/RepoSize';
-import { ContentURL } from '@/model/ContentURL';
-import { Account } from '@/model/Account';
+import {
+  Account,
+  ContentURL,
+  Contributor,
+  Project,
+  RepoSize
+} from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
+import { useAppDispatch } from '@/model/hooks';
+import { getRepoFile } from '@/controllers/githubSlice';
 
 interface ProjectDetailsProps {
   account: Account;
@@ -18,9 +22,11 @@ interface ProjectDetailsProps {
 }
 
 export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account, project }) => {
+  const dispatch = useAppDispatch();
+
   const [privacy, setPrivacy] = useState<string>('public');
   const [repoSize, setRepoSize] = useState<RepoSize | null>(null);
-  const [content, setContent] = useState<ContentURL | null>(null);
+  const [query, setQuery] = useState<RepoContentQuery | null>(null);
   const [contributors, setContributors] = useState<Array<Contributor> | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
@@ -44,10 +50,10 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
   }, [project]);
 
   useEffect(() => {
-    if (project.details && project.details.content) {
-      setContent(project.details.content)
+    if (project.query && project.query.owner && project.query.repo) {
+      setQuery(new RepoContentQuery(project.query.owner, project.query.repo, '', ''))
     }
-  }, [project]);
+  }, [project.query]);
 
   useEffect(() => {
     if (project.details && project.details.teamList && project.details.teamList.length > 0) {
@@ -56,9 +62,9 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
   }, [project]);
 
   const hasContent = project && project.details &&
-    (content || contributors || repoSize);
+    (query || contributors || repoSize);
 
-  const showContent = content && (privacy === 'public' || (privacy === 'private' && isAuthenticated));
+  const showContent = query && (privacy === 'public' || (privacy === 'private' && isAuthenticated));
 
   return (
     <>
@@ -74,7 +80,7 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
             </h5>}
 
           {showContent ?
-            <ContentComponent title={null} content={content} /> :
+            <ContentComponent title={null} query={query} getFile={getRepoFile} dispatch={dispatch} /> :
             <h5>This project is private login to see the details.</h5>}
 
           {contributors &&

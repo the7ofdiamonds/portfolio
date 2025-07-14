@@ -165,7 +165,7 @@ const UpdateDevelopment: React.FC<UpdateDevelopmentProps> = ({ project }) => {
 
       <br />
 
-      <UpdateSkills projectSkills={projectSkills} />
+      <UpdateSkills projectSkills={new Skills} />
 
       <br />
 

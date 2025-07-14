@@ -1,10 +1,9 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Gallery, GalleryObject } from '@the7ofdiamonds/ui-ux';
+import { Gallery, GalleryObject, ImageObject } from '@the7ofdiamonds/ui-ux';
 
 import type { AppDispatch } from '@/model/store';
-import { ImageObject } from '@/model/Image';
 
 import { updateDeliveryGallery, updateDesignGallery, updateDevelopmentGallery, updateProblemGallery, updateSolutionGallery } from '@/controllers/updateSlice';
 
@@ -250,9 +249,9 @@ const UpdateGallery: React.FC<UpdateGalleryProps> = ({ location, gallery }) => {
                     <h4>Add New Logo</h4>
 
                     <div className='form-item'>
-                        <input type="text" name="title" placeholder="Title" value={newLogo.title} onChange={handleNewLogo} />
-                        <input type="text" name="url" placeholder="URL" value={newLogo.url} onChange={handleNewLogo} />
-                        <input type="text" name="class_name" placeholder="Class Name" value={newLogo.class_name} onChange={handleNewLogo} />
+                        <input type="text" name="title" placeholder="Title" value={newLogo.title ?? ''} onChange={handleNewLogo} />
+                        <input type="text" name="url" placeholder="URL" value={newLogo.url ?? ''} onChange={handleNewLogo} />
+                        <input type="text" name="class_name" placeholder="Class Name" value={newLogo.class_name ?? ''} onChange={handleNewLogo} />
                         <button type="submit" onClick={handleAddNewLogo}><h3>Add Logo</h3></button>
                     </div>
                 </form>
@@ -320,9 +319,9 @@ const UpdateGallery: React.FC<UpdateGalleryProps> = ({ location, gallery }) => {
                     <h4>Add New Icon</h4>
 
                     <div className='form-item'>
-                        <input type="text" name="title" placeholder="Title" value={newIcon.title} onChange={handleNewIcon} />
-                        <input type="text" name="url" placeholder="URL" value={newIcon.url} onChange={handleNewIcon} />
-                        <input type="text" name="class_name" placeholder="Class Name" value={newIcon.class_name} onChange={handleNewIcon} />
+                        <input type="text" name="title" placeholder="Title" value={newIcon.title ?? ''} onChange={handleNewIcon} />
+                        <input type="text" name="url" placeholder="URL" value={newIcon.url ?? ''} onChange={handleNewIcon} />
+                        <input type="text" name="class_name" placeholder="Class Name" value={newIcon.class_name ?? ''} onChange={handleNewIcon} />
                         <button type="button" onClick={handleAddNewIcon}><h3>Add Icon</h3></button>
                     </div>
                 </form>
@@ -390,9 +389,9 @@ const UpdateGallery: React.FC<UpdateGalleryProps> = ({ location, gallery }) => {
                     <h4>Add New Animation</h4>
 
                     <div className='form-item'>
-                        <input type="text" name="title" placeholder="Title" value={newAnimation.title} onChange={handleNewAnimation} />
-                        <input type="text" name="url" placeholder="URL" value={newAnimation.url} onChange={handleNewAnimation} />
-                        <input type="text" name="class_name" placeholder="Class Name" value={newAnimation.class_name} onChange={handleNewAnimation} />
+                        <input type="text" name="title" placeholder="Title" value={newAnimation.title ?? ''} onChange={handleNewAnimation} />
+                        <input type="text" name="url" placeholder="URL" value={newAnimation.url ?? ''} onChange={handleNewAnimation} />
+                        <input type="text" name="class_name" placeholder="Class Name" value={newAnimation.class_name ?? ''} onChange={handleNewAnimation} />
                         <button type="button" onClick={handleAddNewAnimation}><h3>Add Animation</h3></button>
                     </div>
                 </form>
@@ -460,9 +459,9 @@ const UpdateGallery: React.FC<UpdateGalleryProps> = ({ location, gallery }) => {
                     <h4>Add New UML Diagram</h4>
 
                     <div className='form-item'>
-                        <input type="text" name="title" placeholder="Title" value={newUmlDiagram.title} onChange={handleNewUmlDiagram} />
-                        <input type="text" name="url" placeholder="URL" value={newUmlDiagram.url} onChange={handleNewUmlDiagram} />
-                        <input type="text" name="class_name" placeholder="Class Name" value={newUmlDiagram.class_name} onChange={handleNewUmlDiagram} />
+                        <input type="text" name="title" placeholder="Title" value={newUmlDiagram.title ?? ''} onChange={handleNewUmlDiagram} />
+                        <input type="text" name="url" placeholder="URL" value={newUmlDiagram.url ?? ''} onChange={handleNewUmlDiagram} />
+                        <input type="text" name="class_name" placeholder="Class Name" value={newUmlDiagram.class_name ?? ''} onChange={handleNewUmlDiagram} />
                         <button type="button" onClick={handleAddNewUmlDiagram}><h3>Add UML Diagram</h3></button>
                     </div>
                 </form>
@@ -530,9 +529,9 @@ const UpdateGallery: React.FC<UpdateGalleryProps> = ({ location, gallery }) => {
                     <h4>Add New Screenshot</h4>
 
                     <div className='form-item'>
-                        <input type="text" name="title" placeholder="Title" value={newScreenshot.title} onChange={handleNewScreenshot} />
-                        <input type="text" name="url" placeholder="URL" value={newScreenshot.url} onChange={handleNewScreenshot} />
-                        <input type="text" name="class_name" placeholder="Class Name" value={newScreenshot.class_name} onChange={handleNewScreenshot} />
+                        <input type="text" name="title" placeholder="Title" value={newScreenshot.title ?? ''} onChange={handleNewScreenshot} />
+                        <input type="text" name="url" placeholder="URL" value={newScreenshot.url ?? ''} onChange={handleNewScreenshot} />
+                        <input type="text" name="class_name" placeholder="Class Name" value={newScreenshot.class_name ?? ''} onChange={handleNewScreenshot} />
                         <button type="button" onClick={handleAddNewScreenshot}><h3>Add Screenshot</h3></button>
                     </div>
                 </form>
@@ -600,9 +599,9 @@ const UpdateGallery: React.FC<UpdateGalleryProps> = ({ location, gallery }) => {
                     <h4>Add New Preview</h4>
 
                     <div className='form-item'>
-                        <input type="text" name="title" placeholder="Title" value={newScreenshot.title} onChange={handleNewPreview} />
-                        <input type="text" name="url" placeholder="URL" value={newScreenshot.url} onChange={handleNewPreview} />
-                        <input type="text" name="class_name" placeholder="Class Name" value={newScreenshot.class_name} onChange={handleNewPreview} />
+                        <input type="text" name="title" placeholder="Title" value={newScreenshot.title ?? ''} onChange={handleNewPreview} />
+                        <input type="text" name="url" placeholder="URL" value={newScreenshot.url ?? ''} onChange={handleNewPreview} />
+                        <input type="text" name="class_name" placeholder="Class Name" value={newScreenshot.class_name ?? ''} onChange={handleNewPreview} />
                         <button type="button" onClick={handleAddNewPreview}><h3>Add Preview</h3></button>
                     </div>
                 </form>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { FeaturesRoadmap } from '@/model/FeaturesRoadmap';
+import { FeaturesRoadmap } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
 

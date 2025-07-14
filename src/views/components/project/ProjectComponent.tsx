@@ -7,16 +7,18 @@ import { TheProcess } from '@/views/components/project/TheProcess';
 import { TheProblem } from '@/views/components/project/TheProblem';
 import { OwnerComponent } from '@/views/components/project/OwnerComponent';
 
-import { Project } from '@/model/Project';
-import { Account } from '@/model/Account';
-import { ProjectSolution } from '@/model/ProjectSolution';
-import { ProjectProcess } from '@/model/ProjectProcess';
-import { ProjectDetails } from '@/model/ProjectDetails';
-import { ProjectProblem } from '@/model/ProjectProblem';
-import { Owner } from '@/model/Owner';
-import { Skills } from '@/model/Skills';
-import { ProjectSkills } from '@/model/ProjectSkills';
-import { ProjectQuery } from '@/model/ProjectQuery';
+import {
+  Account,
+  Owner,
+  Project,
+  ProjectDetails,
+  ProjectProblem,
+  ProjectProcess,
+  ProjectSkills,
+  ProjectSolution,
+  ProjectQuery,
+  Skills
+} from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
 
@@ -71,7 +73,7 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
 
   useEffect(() => {
     if (skills && project.process?.development?.skills) {
-      setProjectSkills(skills.show(project.process.development.skills))
+      setProjectSkills(skills.filter(project.process.development.skills))
     }
   }, [account?.skills]);
 

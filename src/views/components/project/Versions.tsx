@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ProjectVersions } from '@/model/ProjectVersions';
+import { ProjectVersions } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
 

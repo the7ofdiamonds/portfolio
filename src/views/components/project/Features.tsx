@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Feature } from '@/model/Feature';
-import { Version } from '@/model/Version';
+import { Feature, Version } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
 
