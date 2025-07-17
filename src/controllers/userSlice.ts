@@ -123,7 +123,7 @@ export const getUser = createAsyncThunk(
   }
 );
 
-const userSliceOptions: CreateSliceOptions<UserState> = {
+const userSliceOptions: CreateSliceOptions = {
   name: 'user',
   initialState: initialState,
   reducers: {},

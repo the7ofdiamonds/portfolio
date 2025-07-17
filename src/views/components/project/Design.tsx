@@ -4,11 +4,14 @@ import {
   CheckListComponent,
   ColorsComponent,
   ContentComponent,
-  GalleryComponent
+  GalleryComponent,
+  RepoContentQuery
 } from '@the7ofdiamonds/ui-ux';
-import { CheckList, Color, ContentURL, Image, ProjectDesign, ProjectQuery } from '@the7ofdiamonds/ui-ux';
+import { CheckList, Color, Image, ProjectDesign, ProjectQuery } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
+import { getRepoFile } from '@/controllers/githubSlice';
+import { useAppDispatch } from '@/model/hooks';
 
 interface DesignProps {
   design: ProjectDesign;
@@ -16,28 +19,21 @@ interface DesignProps {
 }
 
 export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
+  const dispatch = useAppDispatch();
+
   const [colors, setColors] = useState<Array<Color> | null>(null);
   const [logos, setLogos] = useState<Array<Image> | null>(null);
   const [icons, setIcons] = useState<Array<Image> | null>(null);
   const [animations, setAnimations] = useState<Array<Image> | null>(null);
   const [umlDiagrams, setUmlDiagrams] = useState<Array<Image> | null>(null);
-  const [content, setContent] = useState<ContentURL | null>(null);
+  const [repoContentQuery, setRepoContentQuery] = useState<RepoContentQuery | null>(null);
   const [checkList, setCheckList] = useState<CheckList | null>(null);
-  const [query, setQuery] = useState<ProjectQuery | null>(null);
 
   useEffect(() => {
     if (design && design.colors && design.colors.list.size > 0) {
       setColors(Array.from(design.colors.list))
     }
   }, [design.colors]);
-
-  useEffect(() => {
-    if (design
-      && design.contentURL
-      && design.contentURL.path === 'Design.md') {
-      setContent(design.contentURL)
-    }
-  }, [design.contentURL]);
 
   useEffect(() => {
     if (design
@@ -76,19 +72,19 @@ export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
   }, [design?.gallery?.umlDiagrams]);
 
   useEffect(() => {
+    if (projectQuery && projectQuery.owner && projectQuery.repo) {
+      setRepoContentQuery(new RepoContentQuery(projectQuery.owner, projectQuery.repo, 'Design.md', ''))
+    }
+  }, [projectQuery]);
+
+  useEffect(() => {
     if (design
       && design.checkList) {
       setCheckList(design.checkList)
     }
   }, [design.checkList]);
 
-  useEffect(() => {
-    if (projectQuery) {
-      setQuery(projectQuery)
-    }
-  }, [projectQuery]);
-
-  const hasContent = colors || logos || icons || animations || umlDiagrams || content || (checkList && query);
+  const hasContent = colors || logos || icons || animations || umlDiagrams || repoContentQuery || checkList;
 
   return (
     <>
@@ -111,10 +107,10 @@ export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
           {umlDiagrams &&
             <GalleryComponent title={'uml diagrams'} gallery={umlDiagrams} />}
 
-          {content &&
-            <ContentComponent title={null} query={} getFile={undefined} dispatch={dispatch} />}
+          {repoContentQuery &&
+            <ContentComponent<RepoContentQuery> title={null} query={repoContentQuery} getFile={getRepoFile} dispatch={dispatch} />}
 
-          {checkList && query &&
+          {checkList &&
             <CheckListComponent checkList={design.checkList} />}
         </div>
       }

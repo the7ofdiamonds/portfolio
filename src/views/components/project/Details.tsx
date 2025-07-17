@@ -6,7 +6,6 @@ import { ProjectTeamComponent } from '@/views/components/project/ProjectTeam';
 
 import {
   Account,
-  ContentURL,
   Contributor,
   Project,
   RepoSize
@@ -26,7 +25,7 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
 
   const [privacy, setPrivacy] = useState<string>('public');
   const [repoSize, setRepoSize] = useState<RepoSize | null>(null);
-  const [query, setQuery] = useState<RepoContentQuery | null>(null);
+  const [repoContentQuery, setRepoContentQuery] = useState<RepoContentQuery | null>(null);
   const [contributors, setContributors] = useState<Array<Contributor> | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
@@ -51,7 +50,7 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
 
   useEffect(() => {
     if (project.query && project.query.owner && project.query.repo) {
-      setQuery(new RepoContentQuery(project.query.owner, project.query.repo, '', ''))
+      setRepoContentQuery(new RepoContentQuery(project.query.owner, project.query.repo, 'Details.md', ''))
     }
   }, [project.query]);
 
@@ -62,9 +61,9 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
   }, [project]);
 
   const hasContent = project && project.details &&
-    (query || contributors || repoSize);
+    (repoContentQuery || contributors || repoSize);
 
-  const showContent = query && (privacy === 'public' || (privacy === 'private' && isAuthenticated));
+  const showContent = repoContentQuery && (privacy === 'public' || (privacy === 'private' && isAuthenticated));
 
   return (
     <>
@@ -80,7 +79,7 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
             </h5>}
 
           {showContent ?
-            <ContentComponent title={null} query={query} getFile={getRepoFile} dispatch={dispatch} /> :
+            <ContentComponent<RepoContentQuery> title={null} query={repoContentQuery} getFile={getRepoFile} dispatch={dispatch} /> :
             <h5>This project is private login to see the details.</h5>}
 
           {contributors &&

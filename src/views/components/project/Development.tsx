@@ -26,6 +26,7 @@ import { RoadmapComponent } from '@/views/components/project/RoadmapComponent';
 
 import { getRepoFile } from '@/controllers/githubSlice';
 import {
+  githubAuthProvider,
   loginWithPopUp
 } from '@the7ofdiamonds/gateway';
 
@@ -123,8 +124,7 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
     if (isAuthenticated && repoURL && repoURL.url) {
       window.open(repoURL.url, '_blank');
     } else {
-      dispatch(loginWithPopUp());
-    }
+        dispatch(loginWithPopUp(githubAuthProvider));    }
   };
 
   const hasContent = versions || featuresRoadmap || content || (checkList && query) || skills;
@@ -140,9 +140,9 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
         {featuresRoadmap && <RoadmapComponent roadmap={featuresRoadmap} />}
 
         {query &&
-          <ContentComponent title={null} query={new RepoContentQuery(query.owner, query.repo,'','')} getFile={getRepoFile} dispatch={dispatch} />}
+          <ContentComponent title={null} query={new RepoContentQuery(query.owner, query.repo, '', '')} getFile={getRepoFile} dispatch={dispatch} />}
 
-        {checkList && query && <CheckListComponent checkList={checkList}  />}
+        {checkList && query && <CheckListComponent checkList={checkList} />}
 
         {skills && <SkillsComponent skills={skills} />}
 

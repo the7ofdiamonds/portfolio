@@ -22,6 +22,7 @@ import {
   SecureHeaders,
   Skills,
   TaskObject,
+  ProjectSkillsObject,
 } from '@the7ofdiamonds/ui-ux';
 
 import { getAPI } from '@/services/Config';
@@ -44,7 +45,7 @@ export interface UpdateState {
   updatedDeliveryGallery: GalleryObject | null;
   updatedProblemGallery: GalleryObject | null;
   updatedSkills: Record<string, any> | null;
-  updatedProjectSkills: Record<string, any> | null;
+  updatedProjectSkills: ProjectSkillsObject | null;
   updatedCheckList: Array<Record<string, any>> | null;
   updatedVersionsList: Record<string, any> | null;
   updatedProjectURLs: ProjectURLsDataObject | null;

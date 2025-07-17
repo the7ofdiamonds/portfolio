@@ -1,17 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { authSlice } from '@the7ofdiamonds/gateway';
+import { accountSlice, authSlice } from '@the7ofdiamonds/gateway';
 
-import { accountSlice } from '@/controllers/accountSlice.js';
-import { addSlice } from '@/controllers/addSlice.js';
-import { databaseSlice } from '@/controllers/databaseSlice.js';
-import { githubSlice } from '@/controllers/githubSlice.js';
-import { organizationSlice } from '@/controllers/organizationSlice.js';
-import { portfolioSlice } from '@/controllers/portfolioSlice.js';
-import { projectSlice } from '@/controllers/projectSlice.js';
-import { skillsSlice } from '@/controllers/skillsSlice.js';
-import { updateSlice } from '@/controllers/updateSlice.js';
-import { userSlice } from '@/controllers/userSlice.js';
+import { addSlice } from '@/controllers/addSlice';
+import { databaseSlice } from '@/controllers/databaseSlice';
+import { githubSlice } from '@/controllers/githubSlice';
+import { organizationSlice } from '@/controllers/organizationSlice';
+import { portfolioSlice } from '@/controllers/portfolioSlice';
+import { projectSlice } from '@/controllers/projectSlice';
+import { skillsSlice } from '@/controllers/skillsSlice';
+import { updateSlice } from '@/controllers/updateSlice';
+import { userSlice } from '@/controllers/userSlice';
 
 export const store = configureStore({
   reducer: {

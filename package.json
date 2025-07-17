@@ -1,6 +1,6 @@
 {
   "name": "@the7ofdiamonds/github-portfolio",
-  "version": "1.0.24",
+  "version": "1.0.26",
   "description": "Use GitHub API to create portfolio website with repositories.",
   "author": "@the7ofdiamonds",
   "license": "ISC",
@@ -11,6 +11,7 @@
       "types": "./dist/types/index.d.ts"
     }
   },
+  "types": "./dist/types/index.d.ts",
   "files": [
     "dist"
   ],
@@ -36,8 +37,7 @@
     "update-prod": "git push gitport",
     "refactor": "./refactor.sh && npm run update-prod",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rimraf dist",
-    "publish": "npm-run-all build && npm publish"
+    "clean": "rimraf dist node_modules package-lock.json"
   },
   "dependencies": {
     "@octokit/rest": "^21.0.2",
@@ -86,9 +86,9 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "peerDependencies": {
-    "@the7ofdiamonds/communications": "^0.0.27",
-    "@the7ofdiamonds/gateway": "^0.0.5",
-    "@the7ofdiamonds/ui-ux": "^1.0.28",
+    "@the7ofdiamonds/communications": "0.0.29",
+    "@the7ofdiamonds/ui-ux": "1.0.30",
+    "@the7ofdiamonds/gateway": "0.0.15",
     "firebase": "^10.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

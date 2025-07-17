@@ -7,7 +7,8 @@ import {
     CheckList,
     CheckListObject,
     Task,
-    TaskObject
+    TaskObject,
+    Tasks
 } from '@the7ofdiamonds/ui-ux';
 
 import { updateDesignCheckList, updateDevelopmentCheckList, updateDeliveryCheckList } from '@/controllers/updateSlice';
@@ -25,7 +26,7 @@ const UpdateCheckList: React.FC<UpdateCheckListProps> = ({ location, checkList }
     const [checkListObject, setCheckListObject] = useState<CheckListObject>(checkList.toCheckListObject());
 
     const [title, setTitle] = useState<string>(checkList.title ?? '');
-    const [tasks, setTasks] = useState<Set<Task>>(checkList.tasks);
+    const [tasks, setTasks] = useState<Tasks>(new Tasks());
     const [task, setTask] = useState<Task>(new Task());
     const [selectedTasks, setSelectedTasks] = useState<Set<Task>>(Array.isArray(checkListObject.tasks) && checkListObject.tasks.length > 0 ? new Set(checkListObject.tasks.map((task) => new Task(task))) : new Set());
 
@@ -44,8 +45,13 @@ const UpdateCheckList: React.FC<UpdateCheckListProps> = ({ location, checkList }
     }, [title, setTitle]);
 
     useEffect(() => {
-        setSelectedTasks(new Set(checkListObject.tasks.map((task) => new Task(task))));
-    }, [checkListObject, setSelectedTasks]);
+        if (checkListObject &&
+            checkListObject.tasks &&
+            checkListObject.tasks.list &&
+            checkListObject.tasks.list.length > 0) {
+            setSelectedTasks(new Set(checkListObject.tasks.list.map((task) => new Task(task))));
+        }
+    }, [checkListObject]);
 
     useEffect(() => {
         setSelectedTasks(selectedTasks);
@@ -97,7 +103,8 @@ const UpdateCheckList: React.FC<UpdateCheckListProps> = ({ location, checkList }
         );
 
         setSelectedTasks(new Set(updatedTasks));
-        checkList.addTasks(new Set(updatedTasks));
+        checkList.tasks.addTasks(updatedTasks);
+        checkList.addTasks(updatedTasks);
         setCheckListObject(checkList.toCheckListObject())
     };
 
@@ -151,15 +158,16 @@ const UpdateCheckList: React.FC<UpdateCheckListProps> = ({ location, checkList }
     const handleAddToCheckList = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
+            if (tasks.existsInSet(task)) {
+                throw new Error('This task already exists.')
+            }
 
             if (task.description !== '') {
-                setTasks((prevTasks) => {
-                    const exists = existsInSet(task, tasks);
-                    return exists ? new Set(Array.from(prevTasks).filter((t) => t.id !== task.id)) : prevTasks.add(task);
-                });
+
+                setTasks(tasks);
                 checkList.addTasks(tasks)
                 setCheckListObject(checkList.toCheckListObject())
-                setSelectedTasks(checkList.tasks)
+                setSelectedTasks(checkList.tasks.list && checkList.tasks?.list ? checkList.tasks?.list : new Set)
                 setTask(new Task());
             } else {
                 throw new Error('A description is required')

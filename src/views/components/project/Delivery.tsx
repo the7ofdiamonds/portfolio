@@ -7,7 +7,6 @@ import {
 } from '@the7ofdiamonds/ui-ux';
 import {
   CheckList,
-  ContentURL,
   Gallery,
   ProjectDelivery,
   ProjectQuery,
@@ -29,11 +28,8 @@ export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) =>
   const dispatch = useAppDispatch();
 
   const [gallery, setGallery] = useState<Gallery | null>(null);
-  const [content, setContent] = useState<ContentURL | null>(null);
+  const [repoContentQuery, setRepoContentQuery] = useState<RepoContentQuery | null>(null);
   const [checkList, setCheckList] = useState<CheckList | null>(null);
-  const [query, setQuery] = useState<ProjectQuery | null>(null);
-
-  const contentQuery = new RepoContentQuery(query?.owner ?? '', query?.repo ?? '', '', '');
 
   useEffect(() => {
     if (delivery && delivery.gallery) {
@@ -42,12 +38,10 @@ export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) =>
   }, [delivery.gallery]);
 
   useEffect(() => {
-    if (delivery
-      && delivery.contentURL
-      && delivery.contentURL.path === 'Delivery.md') {
-      setContent(delivery.contentURL)
+    if (projectQuery && projectQuery.owner && projectQuery.repo) {
+      setRepoContentQuery(new RepoContentQuery(projectQuery.owner, projectQuery.repo, 'Delivery.md', ''))
     }
-  }, [delivery.contentURL]);
+  }, [projectQuery]);
 
   useEffect(() => {
     if (delivery && delivery.checkList) {
@@ -55,13 +49,7 @@ export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) =>
     }
   }, [delivery.checkList]);
 
-  useEffect(() => {
-    if (projectQuery) {
-      setQuery(projectQuery)
-    }
-  }, [projectQuery]);
-
-  const hasContent = gallery || content || (checkList && query);
+  const hasContent = gallery || repoContentQuery || checkList;
 
   return (hasContent && (
     <div className={styles['project-process-delivery']} id="project_process_delivery">
@@ -70,15 +58,15 @@ export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) =>
       {gallery && gallery.images && gallery.images.length > 0 &&
         <GalleryComponent title={''} gallery={gallery.images} />}
 
-      {content &&
+      {repoContentQuery &&
         <ContentComponent<RepoContentQuery>
           title={null}
-          query={contentQuery}
+          query={repoContentQuery}
           getFile={getRepoFile}
           dispatch={dispatch}
         />}
 
-      {checkList && query &&
+      {checkList &&
         <CheckListComponent checkList={checkList} />}
     </div>
   )

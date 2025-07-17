@@ -1,6 +1,6 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
 
-import { ProjectSkills, ProjectSkillsObject } from '@the7ofdiamonds/ui-ux';
+import { ProjectSkillObject,ProjectSkills, ProjectSkillsObject } from '@the7ofdiamonds/ui-ux';
 import { Framework, Language, ProjectType, Service, Technology } from '@the7ofdiamonds/ui-ux';
 import { Skills } from '@the7ofdiamonds/ui-ux';
 
@@ -12,27 +12,18 @@ import { updateProjectSkills } from '@/controllers/updateSlice';
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 interface UpdateSkillsProps {
-  projectSkills: Skills;
+  skills: Skills;
+  projectSkills: ProjectSkills;
 }
 
-const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
+const UpdateSkills: React.FC<UpdateSkillsProps> = ({ skills, projectSkills }) => {
   const dispatch = useAppDispatch();
-
-  const { projectTypesObject, languagesObject, frameworksObject, technologiesObject } = useAppSelector(
-    (state) => state.skills
-  );
 
   const [selectedProjectTypes, setSelectedProjectTypes] = useState<Set<ProjectType>>(projectSkills.types ?? new Set());
   const [selectedLanguages, setSelectedLanguages] = useState<Set<Language>>(projectSkills.languages ?? new Set());
   const [selectedFrameworks, setSelectedFrameworks] = useState<Set<Framework>>(projectSkills.frameworks ?? new Set());
   const [selectedTechnologies, setSelectedTechnologies] = useState<Set<Technology>>(projectSkills.technologies ?? new Set());
   const [selectedServices, setSelectedServices] = useState<Set<Service>>(projectSkills.services ?? new Set());
-
-  const [skills, setSkills] = useState<Skills>(new Skills());
-
-  useEffect(() => {
-    dispatch(getSkills());
-  }, []);
 
   useEffect(() => {
     if (projectSkills.types) {
@@ -73,6 +64,7 @@ const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
   };
 
   const handleLanguagesCheckboxChange = (language: Language) => {
+    skills.existsInSet()
     setSelectedLanguages((prevLangs) => {
       const updatedSelection = new Set(prevLangs);
       const exists = existsInSet(language, selectedLanguages);
@@ -81,6 +73,7 @@ const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
   };
 
   const handleFrameworksCheckboxChange = (framework: Framework) => {
+
     setSelectedFrameworks((prevFrameworks) => {
       const updatedSelection = new Set(prevFrameworks);
       const exists = existsInSet(framework, selectedFrameworks);
@@ -108,14 +101,17 @@ const UpdateSkills: React.FC<UpdateSkillsProps> = ({ projectSkills }) => {
     e.preventDefault();
 
     try {
-      const updatedSkills: ProjectSkillsObject = {
-        types: selectedProjectTypes.size > 0 ? Array.from(selectedProjectTypes).map((type) => type.toProjectTypeObject()) : [],
+      const list: ProjectSkillsObject = {
+        [types: selectedProjectTypes.size > 0 ? Array.from(selectedProjectTypes).map((type) => type.toProjectTypeObject()) : [],
         languages: selectedLanguages.size > 0 ? Array.from(selectedLanguages).map((language) => language.toLanguageObject()) : [],
         frameworks: selectedFrameworks.size > 0 ? Array.from(selectedFrameworks).map((framework) => framework.toFrameworkObject()) : [],
         technologies: selectedTechnologies.size > 0 ? Array.from(selectedTechnologies).map((technology) => technology.toTechnologyObject()) : [],
-        services: selectedServices.size > 0 ? Array.from(selectedServices).map((service) => service.toServiceObject()) : []
+        services: selectedServices.size > 0 ? Array.from(selectedServices).map((service) => service.toServiceObject()) : []]
       };
 
+      const updatedSkills: ProjectSkillsObject = {
+        list: list
+      };
       dispatch(updateProjectSkills(new ProjectSkills(updatedSkills)));
     } catch (error) {
       const err = error as Error;

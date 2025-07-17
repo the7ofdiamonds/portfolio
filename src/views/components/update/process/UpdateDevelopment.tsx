@@ -11,7 +11,8 @@ import {
   ProjectSkills,
   ProjectVersions,
   ProjectVersionsObject,
-  RepoURL
+  RepoURL,
+  Skills
 } from '@the7ofdiamonds/ui-ux';
 
 import { updateProject } from '@/controllers/updateSlice';
@@ -165,7 +166,7 @@ const UpdateDevelopment: React.FC<UpdateDevelopmentProps> = ({ project }) => {
 
       <br />
 
-      <UpdateSkills projectSkills={new Skills} />
+      <UpdateSkills skills={new Skills} projectSkills={projectSkills} />
 
       <br />
 
