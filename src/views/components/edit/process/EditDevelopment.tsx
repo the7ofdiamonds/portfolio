@@ -24,15 +24,23 @@ interface EditDevelopmentProps {
 }
 
 export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, change }) => {
+  const [development, setDevelopment] = useState<ProjectDevelopment>(new ProjectDevelopment)
   const [gallery, setGallery] = useState<Gallery>(new Gallery);
   const [checkList, setCheckList] = useState<CheckList>(new CheckList);
   const [projectSkills, setProjectSkills] = useState<ProjectSkills>(new ProjectSkills);
   const [repoURL, setRepoURL] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [projectVersions, setProjectVersions] = useState<ProjectVersions>(new ProjectVersions);
+
   const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>('');
   const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
+
+  useEffect(() => {
+    if (project.process?.development) {
+      setDevelopment(project.process.development)
+    }
+  }, [project?.process?.development])
 
   useEffect(() => {
     if (project.process?.development?.gallery) {
@@ -124,25 +132,38 @@ export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, chang
     }
   }
 
+  const saveDevelopment = () => {
+    if (!project.process) {
+      project.process = new ProjectProcess();
+    }
+
+    development.setGallery(gallery)
+    development.setCheckList(checkList)
+    development.setSkills(projectSkills)
+    development.setRepoURL(repoURL)
+    development.setContentURL(content)
+    development.setVersionsList(projectVersions)
+    project.process.setDevelopment(development)
+    change(project)
+  }
+
   return (
     <div className={styles.edit} id='edit_development'>
       <h2 className={styles.title}>development</h2>
 
-      <EditCheckList location='development' checkList={checkList} />
+      <EditCheckList location='development' checkList={checkList} setCheckList={setCheckList} />
 
       <br />
 
-      <EditSkills projectSkills={projectSkills} />
+      <EditSkills projectSkills={projectSkills} setProjectSkills={setProjectSkills} />
 
       <br />
 
-      <EditGallery location='development' gallery={gallery} setVal={function (value: Gallery): void {
-        throw new Error('Function not implemented.');
-      }} />
+      <EditGallery location='development' gallery={gallery} setVal={setGallery} />
 
       <br />
 
-      <EditProjectVersions projectVersions={projectVersions} />
+      <EditProjectVersions projectVersions={projectVersions} setProjectVersions={setProjectVersions} />
 
       <hr />
 
@@ -156,7 +177,7 @@ export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, chang
         <input className={styles.input} type="text" name='development_content_url' value={content} onChange={handleDevelopmentContentURLChange} />
       </div>
 
-      <button className={styles.button} onClick={change(project)}>
+      <button className={styles.button} onClick={saveDevelopment}>
         <h3>SAVE DEVELOPMENT</h3>
       </button>
 

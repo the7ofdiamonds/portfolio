@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
-import { StatusBar } from '@the7ofdiamonds/ui-ux';
+import { ProjectDelivery, ProjectProcess, StatusBar } from '@the7ofdiamonds/ui-ux';
 import { CheckList, Gallery, Project } from '@the7ofdiamonds/ui-ux';
 
 import { EditCheckList } from '@/views/components/edit/components/check_list/EditCheckList';
@@ -14,12 +14,20 @@ interface EditDeliveryProps {
 }
 
 export const EditDelivery: React.FC<EditDeliveryProps> = ({ project, change }) => {
+  const [delivery, setDelivery] = useState<ProjectDelivery>(new ProjectDelivery)
   const [gallery, setGallery] = useState<Gallery>(new Gallery);
   const [checkList, setCheckList] = useState<CheckList>(new CheckList);
   const [content, setContent] = useState<string>('');
+
   const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>('');
   const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
+
+  useEffect(() => {
+    if (project.process?.delivery) {
+      setDelivery(project.process.delivery);
+    }
+  }, [project.process?.delivery]);
 
   useEffect(() => {
     if (project.process?.delivery?.gallery) {
@@ -56,18 +64,28 @@ export const EditDelivery: React.FC<EditDeliveryProps> = ({ project, change }) =
     }
   };
 
+  const saveDelivery = () => {
+    if (!project.process) {
+      project.process = new ProjectProcess();
+    }
+
+    delivery.setGallery(gallery)
+    delivery.setCheckList(checkList)
+    delivery.setContentURL(content)
+    project.process.setDelivery(delivery)
+    change(project)
+  }
+
   return (
     <div className={styles.edit} id="edit_delivery">
 
       <h2 className={styles.title}>delivery</h2>
 
-      <EditCheckList location='delivery' checkList={checkList} />
+      <EditCheckList location='delivery' checkList={checkList} setCheckList={setCheckList} />
 
       <br />
 
-      <EditGallery location='delivery' gallery={gallery} setVal={function (value: Gallery): void {
-        throw new Error('Function not implemented.');
-      }} />
+      <EditGallery location='delivery' gallery={gallery} setVal={setGallery} />
 
       <hr />
 
@@ -78,7 +96,7 @@ export const EditDelivery: React.FC<EditDeliveryProps> = ({ project, change }) =
         <input className={styles.input} type="text" name='delivery_content_url' value={content} onChange={handleDeliveryContentURLChange} />
       </div>
 
-      <button className={styles.button} onClick={change(project)}>
+      <button className={styles.button} onClick={saveDelivery}>
         <h3>SAVE DELIVERY</h3>
       </button>
 

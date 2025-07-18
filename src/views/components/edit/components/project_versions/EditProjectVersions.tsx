@@ -1,21 +1,18 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ProjectVersions, ProjectVersionsObject } from '@the7ofdiamonds/ui-ux'
+import { ProjectVersions } from '@the7ofdiamonds/ui-ux'
 
-import { updateVersions } from '@/controllers/updateSlice';
-
-import type { AppDispatch, RootState } from '@/model/store';
+import { useAppDispatch } from '@/model/hooks';
 
 import styles from './ProjectVersions.module.scss';
 
 interface EditProjectVersionsProps {
     projectVersions: ProjectVersions;
+    setProjectVersions: (projectVersions: ProjectVersions) => void
 }
 
-export const EditProjectVersions: React.FC<EditProjectVersionsProps> = ({ projectVersions }) => {
-    const dispatch = useDispatch<AppDispatch>();
-
+export const EditProjectVersions: React.FC<EditProjectVersionsProps> = ({ projectVersions, setProjectVersions }) => {
     const [history, setHistory] = useState<Set<string>>(new Set());
     const [currentVersion, setCurrentVersion] = useState<string>('1.0.0');
     const [future, setFuture] = useState<Set<string>>(new Set());
@@ -87,13 +84,10 @@ export const EditProjectVersions: React.FC<EditProjectVersionsProps> = ({ projec
 
     const handleUpdateVersions = () => {
         try {
-            const updatedProjectVersions: ProjectVersionsObject = {
-                history: Array.from(history),
-                current: currentVersion,
-                future: Array.from(future)
-            };
-
-            dispatch(updateVersions(new ProjectVersions(updatedProjectVersions)));
+            projectVersions.setHistory(history)
+            projectVersions.setCurrent(currentVersion)
+            projectVersions.setFuture(future)
+            setProjectVersions(projectVersions)
         } catch (error) {
             const err = error as Error;
             setMessage(err.message);

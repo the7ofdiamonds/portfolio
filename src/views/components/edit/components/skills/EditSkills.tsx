@@ -13,9 +13,10 @@ import styles from './Skills.module.scss';
 
 interface EditSkillsProps {
   projectSkills: ProjectSkills;
+  setProjectSkills: (projectSkills: ProjectSkills) => void
 }
 
-export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
+export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills, setProjectSkills }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   // const { projectTypesObject, languagesObject, frameworksObject, technologiesObject } = useSelector(
@@ -34,105 +35,81 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
   const [messageType, setMessageType] = useState<string>('info');
   const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
-  // useEffect(() => {
-  //   dispatch(getProjectTypes());
-  // }, []);
-
-  // useEffect(() => {
-  //   dispatch(getLanguages());
-  // }, []);
-
-  // useEffect(() => {
-  //   dispatch(getFrameworks());
-  // }, []);
-
-  // useEffect(() => {
-  //   dispatch(getTechnologies());
-  // }, []);
-
   useEffect(() => {
     if (projectSkills.types) {
       setSelectedProjectTypes(projectSkills.types);
     }
-  }, [projectSkills.types, setSelectedProjectTypes]);
+  }, [projectSkills.types]);
 
   useEffect(() => {
     if (projectSkills.languages) {
       setSelectedLanguages(projectSkills.languages);
     }
-  }, [projectSkills.languages, setSelectedLanguages]);
+  }, [projectSkills.languages]);
 
   useEffect(() => {
     if (projectSkills.frameworks) {
       setSelectedFrameworks(projectSkills.frameworks);
     }
-  }, [projectSkills.frameworks, setSelectedFrameworks]);
+  }, [projectSkills.frameworks]);
 
   useEffect(() => {
     if (projectSkills.technologies) {
       setSelectedTechnologies(projectSkills.technologies);
     }
-  }, [projectSkills.technologies, setSelectedTechnologies]);
+  }, [projectSkills.technologies]);
 
   useEffect(() => {
     if (projectSkills.services) {
       setSelectedServices(projectSkills.services);
     }
-  }, [projectSkills.services, setSelectedServices]);
+  }, [projectSkills.services]);
 
   const handleProjectTypesCheckboxChange = (type: ProjectType) => {
-    setSelectedProjectTypes((prevTypes) => {
-      const updatedSelection = new Set(prevTypes);
-      const exists = existsInSet(type, selectedProjectTypes);
-      return exists ? new Set(Array.from(updatedSelection).filter((t) => t.id !== type.id)) : updatedSelection.add(type);
-    });
+    if (!projectSkills.existsInSet(projectSkills.types, type)) {
+      projectSkills.types.add(type)
+      setSelectedProjectTypes(projectSkills.types)
+    }
   };
 
   const handleLanguagesCheckboxChange = (language: Language) => {
-    setSelectedLanguages((prevLangs) => {
-      const updatedSelection = new Set(prevLangs);
-      const exists = existsInSet(language, selectedLanguages);
-      return exists ? new Set(Array.from(updatedSelection).filter((t) => t.id !== language.id)) : updatedSelection.add(language)
-    });
+    if (!projectSkills.existsInSet(projectSkills.languages, language)) {
+      projectSkills.languages.add(language)
+      setSelectedLanguages(projectSkills.languages)
+    }
   };
 
   const handleFrameworksCheckboxChange = (framework: Framework) => {
-    setSelectedFrameworks((prevFrameworks) => {
-      const updatedSelection = new Set(prevFrameworks);
-      const exists = existsInSet(framework, selectedFrameworks);
-      return exists ? new Set(Array.from(updatedSelection).filter((t) => t.id !== framework.id)) : updatedSelection.add(framework)
-    });
+    if (!projectSkills.existsInSet(projectSkills.frameworks, framework)) {
+      projectSkills.frameworks.add(framework)
+      setSelectedFrameworks(projectSkills.frameworks)
+    }
   };
 
   const handleTechnologiesCheckboxChange = (technology: Technology) => {
-    setSelectedTechnologies((prevTechnologies) => {
-      const updatedSelection = new Set(prevTechnologies);
-      const exists = existsInSet(technology, selectedTechnologies);
-      return exists ? new Set(Array.from(updatedSelection).filter((t) => t.id !== technology.id)) : updatedSelection.add(technology)
-    });
+    if (!projectSkills.existsInSet(projectSkills.technologies, technology)) {
+      projectSkills.technologies.add(technology)
+      setSelectedTechnologies(projectSkills.technologies)
+    }
   };
 
   const handleServicesCheckboxChange = (service: Service) => {
-    setSelectedServices((prevServices) => {
-      const updatedSelection = new Set(prevServices);
-      const exists = existsInSet(service, selectedServices);
-      return exists ? new Set(Array.from(updatedSelection).filter((t) => t.id !== service.id)) : updatedSelection.add(service)
-    });
+    if (!projectSkills.existsInSet(projectSkills.services, service)) {
+      projectSkills.services.add(service)
+      setSelectedServices(projectSkills.services)
+    }
   };
 
   const handleUpdateSkills = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     try {
-      const updatedSkills: ProjectSkillsObject = {
-        types: selectedProjectTypes.size > 0 ? Array.from(selectedProjectTypes).map((type) => type.toProjectTypeObject()) : [],
-        languages: selectedLanguages.size > 0 ? Array.from(selectedLanguages).map((language) => language.toLanguageObject()) : [],
-        frameworks: selectedFrameworks.size > 0 ? Array.from(selectedFrameworks).map((framework) => framework.toFrameworkObject()) : [],
-        technologies: selectedTechnologies.size > 0 ? Array.from(selectedTechnologies).map((technology) => technology.toTechnologyObject()) : [],
-        services: selectedServices.size > 0 ? Array.from(selectedServices).map((service) => service.toServiceObject()) : []
-      };
-
-      dispatch(updateProjectSkills(new ProjectSkills(updatedSkills)));
+      projectSkills.setProjectTypes(selectedProjectTypes)
+      projectSkills.setLanguages(selectedLanguages)
+      projectSkills.setFrameworks(selectedFrameworks)
+      projectSkills.setTechnologies(selectedTechnologies)
+      projectSkills.setServices(selectedServices)
+      setProjectSkills(projectSkills)
     } catch (error) {
       const err = error as Error;
       setMessageType('error');
@@ -158,7 +135,7 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
                   type="checkbox"
                   id={`checkbox-${type.id}`}
                   value={type.id ?? ''}
-                  checked={existsInSet(type, selectedProjectTypes)}
+                  checked={projectSkills.existsInSet(selectedProjectTypes, type)}
 
                   onChange={() => handleProjectTypesCheckboxChange(type)}
                 />
@@ -180,7 +157,7 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
                   type="checkbox"
                   id={`checkbox-${language.id}`}
                   value={language.id ?? ''}
-                  checked={existsInSet(language, selectedLanguages)}
+                  checked={projectSkills.existsInSet(selectedLanguages, language)}
                   onChange={() => handleLanguagesCheckboxChange(language)}
                 />
                 <label className={styles.label} htmlFor={`checkbox-${language.id}`}>{language.title}</label>
@@ -201,7 +178,7 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
                   type="checkbox"
                   id={`checkbox-${framework.id}`}
                   value={framework.id ?? ''}
-                  checked={existsInSet(framework, selectedFrameworks)}
+                  checked={projectSkills.existsInSet(selectedFrameworks, framework)}
                   onChange={() => handleFrameworksCheckboxChange(framework)}
                 />
                 <label className={styles.label} htmlFor={`checkbox-${framework.id}`}>{framework.title}</label>
@@ -222,7 +199,7 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
                   type="checkbox"
                   id={`checkbox-${technology.id}`}
                   value={technology.id ?? ''}
-                  checked={existsInSet(technology, selectedTechnologies)}
+                  checked={projectSkills.existsInSet(selectedTechnologies, technology)}
                   onChange={() => handleTechnologiesCheckboxChange(technology)}
                 />
                 <label className={styles.label} htmlFor={`checkbox-${technology.id}`}>{technology.title}</label>
@@ -243,7 +220,7 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills }) => {
                   type="checkbox"
                   id={`checkbox-${service.id}`}
                   value={service.id ?? ''}
-                  checked={existsInSet(service, selectedServices)}
+                  checked={projectSkills.existsInSet(selectedServices, service)}
                   onChange={() => handleServicesCheckboxChange(service)}
                 />
                 <label className={styles.label} htmlFor={`checkbox-${service.id}`}>{service.title}</label>

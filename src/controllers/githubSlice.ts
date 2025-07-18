@@ -88,7 +88,7 @@ const initialState: GithubState = {
   issues: null,
 };
 
-const octokit = new Octokit();
+const octokit: Octokit = new Octokit();
 
 type SocialAccountsResponse = GetResponseTypeFromEndpointMethod<
   typeof octokit.rest.users.listSocialAccountsForUser
@@ -667,7 +667,9 @@ export const getAuthenticatedAccount = createAsyncThunk(
       const contentsResponse =
         account && account.username
           ? await thunkAPI.dispatch(
-              getRepoContents(new GitHubRepoQuery(account.username, account.username))
+              getRepoContents(
+                new GitHubRepoQuery(account.username, account.username)
+              )
             )
           : null;
 

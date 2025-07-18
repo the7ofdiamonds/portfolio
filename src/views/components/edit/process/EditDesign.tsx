@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
-import { StatusBar } from '@the7ofdiamonds/ui-ux';
-import { CheckList,Colors,Gallery,Project,ProjectDesign } from '@the7ofdiamonds/ui-ux';
+import { ProjectProcess, StatusBar } from '@the7ofdiamonds/ui-ux';
+import { CheckList, Colors, Gallery, Project, ProjectDesign } from '@the7ofdiamonds/ui-ux';
 
 import { EditGallery } from '../components/gallery/EditGallery';
 import { EditColorsList } from '@/views/components/edit/components/colors/EditColorsList';
@@ -15,11 +15,12 @@ interface EditDesignProps {
 }
 
 export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
-  const [design, setDesign] = useState<ProjectDesign>(project?.process?.design ?? new ProjectDesign);
-  const [gallery, setGallery] = useState<Gallery>(design?.gallery ?? new Gallery);
-  const [checkList, setCheckList] = useState<CheckList>(design?.checkList ?? new CheckList);
-  const [colors, setColors] = useState<Colors>(design?.colors ?? new Colors);
-  const [content, setContent] = useState<string>(design?.contentURL?.url ?? '');
+  const [design, setDesign] = useState<ProjectDesign>(new ProjectDesign);
+  const [gallery, setGallery] = useState<Gallery>(new Gallery);
+  const [checkList, setCheckList] = useState<CheckList>(new CheckList);
+  const [colors, setColors] = useState<Colors>(new Colors);
+  const [content, setContent] = useState<string>('');
+
   const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>('');
   const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
@@ -74,11 +75,24 @@ export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
     }
   }
 
+  const saveProjectDesign = () => {
+    if (!project.process) {
+      project.process = new ProjectProcess();
+    }
+
+    design.setGallery(gallery)
+    design.setCheckList(checkList)
+    design.setColors(colors)
+    design.setContentURL(content)
+    project.process.setDesign(design)
+    change(project)
+  }
+
   return (
     <div className={styles.edit} id='edit_design'>
       <h2 className={styles.title}>design</h2>
 
-      <EditCheckList location='design' checkList={checkList} />
+      <EditCheckList location='design' checkList={checkList} setCheckList={setCheckList}/>
 
       <br />
 
@@ -86,7 +100,7 @@ export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
 
       <br />
 
-      <EditColorsList colors={colors} setVal={setColors} />
+      <EditColorsList colors={colors} setColors={setColors}/>
 
       <hr />
 
@@ -95,7 +109,7 @@ export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
         <input className={styles.input} type="text" name='design_content_url' value={content} onChange={handleDesignContentURLChange} />
       </div>
 
-      <button className={styles.button} onClick={change(project)}>
+      <button className={styles.button} onClick={saveProjectDesign}>
         <h3>SAVE DESIGN</h3>
       </button>
 

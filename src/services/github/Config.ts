@@ -10,7 +10,7 @@ export const getHeaders = () => {
   };
 };
 
-export const getInstance = () => {
+export const getInstance = (): Octokit => {
   if (!instance) {
     const token = getToken();
     instance = new Octokit({

@@ -1,27 +1,32 @@
-import React, { useState, ChangeEvent, MouseEvent } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 
-import { Color, Colors } from '@the7ofdiamonds/ui-ux';
+import { Color, ColorObject, Colors } from '@the7ofdiamonds/ui-ux';
 
 import { updateColors } from '@/controllers/updateSlice';
 
-import type { AppDispatch } from '@/model/store';
+import { useAppDispatch } from '@/model/hooks';
 
 import styles from './Colors.module.scss';
 
 interface EditColorsListProps {
     colors: Colors;
-    setVal: (value: Colors) => void
+    setColors: (colors: Colors) => void
 }
 
-export const EditColorsList: React.FC<EditColorsListProps> = ({ colors, setVal }) => {
-    const dispatch = useDispatch<AppDispatch>();
+export const EditColorsList: React.FC<EditColorsListProps> = ({ colors }) => {
+    const dispatch = useAppDispatch();
 
+    const [colorsList, setColorsList] = useState<Set<Color>>(new Set)
     const [color, setColor] = useState<Color>(new Color());
 
     const [message, setMessage] = useState<string>('');
     const [messageType, setMessageType] = useState<string>('info');
     const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
+
+    useEffect(() => {
+        if (colors && colors.list.size > 0)
+            setColorsList(colors.list)
+    }, [colors.list]);
 
     const handleChange = (
         e: ChangeEvent<HTMLInputElement>,
@@ -29,65 +34,48 @@ export const EditColorsList: React.FC<EditColorsListProps> = ({ colors, setVal }
     ) => {
         const { name, value } = e.target;
 
-        let ColorName = color.name;
+        let colorName = color.name;
         let colorValue = color.value;
 
         const nameRegex = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}-color_name$/;
         const valueRegex = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}-color_value$/;
 
         if (nameRegex.test(name)) {
-            ColorName = value;
+            colorName = value;
         }
 
         if (valueRegex.test(name)) {
             colorValue = value;
         }
 
-        const updatedColors = Array.from(colors.list).map((c) =>
-            c.id === color.id ?
-                new Color({
-                    id: color.id,
-                    name: ColorName,
-                    value: colorValue,
-                }) : c
-        );
-        console.log(updatedColors)
-        setVal(new Colors(updatedColors))
+        color.setID(color.id)
+        color.setName(colorName)
+        color.setValue(colorValue)
     };
 
     const handleColorChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value, checked } = e.target;
+        const { name, value } = e.target;
 
         let id = color.id !== '' ? color.id : crypto.randomUUID();
         let colorName = color.name;
         let colorValue = color.value;
 
         if (name === 'color_name') {
-            colorName = value;
+            color.setName(value);
         }
 
         if (name === 'color_value') {
-            colorValue = value;
+            color.setValue(value);
         }
 
-        setColor(new Color({
-            id: id,
-            name: colorName,
-            value: colorValue
-        }));
+        setColor(color);
     }
 
     const handleAddColor = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         try {
-            if (color.name !== '') {
-                const exists = colors.existsInSet(color);
-
-                if (!exists) {
-                    colors.addColor(color)
-                }
-
-                setVal(colors);
+            if (color.name !== '' && !colors.existsInSet(color)) {
+                colors.addColor(color)
                 setColor(new Color());
             } else {
                 throw new Error('Each color requires a name.')
@@ -114,28 +102,28 @@ export const EditColorsList: React.FC<EditColorsListProps> = ({ colors, setVal }
     }
 
     return (
-        <div className={styles.edit}>
+        <div className="update">
             {colors.list.size > 0 ? (
-                <div className={styles.colors}>
-                    <h5 className={styles.title}>Colors ({colors.list.size})</h5>
-                    <div className={styles['color-row']}>
+                <div className="colors">
+                    <h5 className="title">Colors ({colors.list.size})</h5>
+                    <div className="color-row">
                         {Array.from(colors.list).map((color) => (
-                            <div className={styles['form-item']} key={color.id}>
-                                <div className={styles.color} >
+                            <div className='form-item' key={color.id}>
+                                <div className="color" >
                                     <span
-                                        className={styles['color-square']}
+                                        className="color-square"
                                         style={{ backgroundColor: color.value }}></span>
                                     <h5>{color.value}</h5>
                                 </div>
 
-                                <div className={styles['form-item-flex']}>
-                                    <label className={styles.label} htmlFor={`${color.id}_color_name`}>Name:</label>
-                                    <input className={styles.input} type="text" name={`${color.id}_color_name`} value={color.name} onChange={(e) => handleChange(e, color)} />
+                                <div className='form-item-flex'>
+                                    <label htmlFor={`${color.id}_color_name`}>Name:</label>
+                                    <input type="text" name={`${color.id}_color_name`} value={color.name} onChange={(e) => handleChange(e, color)} />
                                 </div>
 
-                                <div className={styles['form-item-flex']}>
-                                    <label className={styles.label} htmlFor={`${color.id}_color_value`}>Color:</label>
-                                    <input className={styles.input} type="color" name={`${color.id}_color_value`} value={color.value} onChange={(e) => handleChange(e, color)} />
+                                <div className='form-item-flex'>
+                                    <label htmlFor={`${color.id}_color_value`}>Color:</label>
+                                    <input type="color" name={`${color.id}_color_value`} value={color.value} onChange={(e) => handleChange(e, color)} />
                                 </div>
                             </div>
                         ))}
@@ -145,30 +133,30 @@ export const EditColorsList: React.FC<EditColorsListProps> = ({ colors, setVal }
                 ''
             )}
 
-            <form className={styles.form} action="">
+            <form action="">
                 <hr />
 
                 <h4>Add Color</h4>
-                <div className={styles['form-item']}>
+                <div className='form-item'>
 
-                    <div className={styles.color}>
+                    <div className="color">
                         <span
-                            className={styles['color-square']}
+                            className="color-square"
                             style={{ backgroundColor: color.value }}></span>
                         <h5>{color.value}</h5>
                     </div>
 
-                    <div className={styles['form-item-flex']}>
-                        <label className={styles.label} htmlFor="color_name">Name:</label>
-                        <input className={styles.input} type="text" name='color_name' value={color.name} onChange={handleColorChange} />
+                    <div className='form-item-flex'>
+                        <label htmlFor="color_name">Name:</label>
+                        <input type="text" name='color_name' value={color.name} onChange={handleColorChange} />
                     </div>
 
-                    <div className={styles['form-item-flex']}>
-                        <label className={styles.label} htmlFor="color_value">Color:</label>
-                        <input className={styles.input} type="color" name='color_value' value={color.value} onChange={handleColorChange} />
+                    <div className='form-item-flex'>
+                        <label htmlFor="color_value">Color:</label>
+                        <input type="color" name='color_value' value={color.value} onChange={handleColorChange} />
                     </div>
 
-                    <button className={styles.button} type="submit" onClick={handleAddColor}>
+                    <button type="submit" onClick={handleAddColor}>
                         <h3>Add Color</h3>
                     </button>
                 </div>
@@ -176,7 +164,7 @@ export const EditColorsList: React.FC<EditColorsListProps> = ({ colors, setVal }
 
             <br />
 
-            <button className={styles.button} type="button" onClick={handleUpdateColors}><h3>Update Colors</h3></button>
+            <button type="button" onClick={handleUpdateColors}><h3>Update Colors</h3></button>
         </div>
     )
 }
