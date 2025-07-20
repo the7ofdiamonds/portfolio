@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Section } from '@the7ofdiamonds/ui-ux';
+import { ContactBar } from '@the7ofdiamonds/communications';
 
 import { OrganizationComponent } from '@/views/components/organization/OrganizationComponent';
 import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
-
-import { ContactBar } from '@the7ofdiamonds/communications';
 
 import { getOrganization } from '@/controllers/organizationSlice';
 
