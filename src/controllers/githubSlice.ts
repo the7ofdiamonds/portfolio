@@ -641,6 +641,7 @@ export const getAuthenticatedAccount = createAsyncThunk(
         headers: headers,
       }).then((data) => {
         if (data.viewer.__typename === 'User') {
+          console.log(data.viewer)
           const user = new User();
           user.fromGitHubGraphQL(data.viewer);
           return user;
