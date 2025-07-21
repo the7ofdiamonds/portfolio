@@ -1,9 +1,10 @@
 {
   "name": "@the7ofdiamonds/github-portfolio",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "Use GitHub API to create portfolio website with repositories.",
   "author": "@the7ofdiamonds",
   "license": "ISC",
+  "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -11,7 +12,6 @@
       "types": "./dist/types/index.d.ts"
     }
   },
-  "types": "./dist/types/index.d.ts",
   "main": "dist/index.js",
   "files": ["dist"],
   "repository": {
@@ -43,8 +43,8 @@
     "@octokit/types": "^13.6.2",
     "@reduxjs/toolkit": "^1.9.5",
     "@rollup/plugin-commonjs": "^28.0.3",
-    "@the7ofdiamonds/communications": "^0.0.38",
-    "@the7ofdiamonds/ui-ux": "^1.0.37",
+    "@the7ofdiamonds/communications": "^0.0.39",
+    "@the7ofdiamonds/ui-ux": "^1.0.38",
     "@the7ofdiamonds/gateway": "^0.0.23",
     "buffer": "^6.0.3",
     "cors": "^2.8.5",
