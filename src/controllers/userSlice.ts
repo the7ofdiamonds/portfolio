@@ -63,17 +63,17 @@ export const getAuthenticatedUserAccount = createAsyncThunk(
       ) {
         const user = new User(userResponse.payload);
 
-        const databaseResponse = user.id
-          ? await thunkAPI.dispatch(getUserData(user.id))
-          : null;
+        // const databaseResponse = user.id
+        //   ? await thunkAPI.dispatch(getUserData(user.id))
+        //   : null;
 
-        if (
-          databaseResponse &&
-          getUserData.fulfilled.match(databaseResponse) &&
-          databaseResponse.payload?.data
-        ) {
-          user.fromDB(databaseResponse.payload.data);
-        }
+        // if (
+        //   databaseResponse &&
+        //   getUserData.fulfilled.match(databaseResponse) &&
+        //   databaseResponse.payload?.data
+        // ) {
+        //   user.fromDB(databaseResponse.payload.data);
+        // }
 
         return user.toUserObject();
       }

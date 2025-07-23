@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { LoadingComponent } from '@the7ofdiamonds/ui-ux';
-import { Portfolio, Project, Skills } from '@the7ofdiamonds/ui-ux';
+import { Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
 
 import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
 
@@ -15,17 +15,20 @@ interface PortfolioComponentProps {
 }
 
 export const PortfolioComponent: React.FC<PortfolioComponentProps> = ({ portfolio, skills }) => {
+
   return (
-    <>
-      {portfolio && portfolio.projects.size > 0 ? (
-        <main className={styles.main}>
-          <h1 className="title">portfolio</h1>
+    <main className={styles.main}>
+      <>
+        {portfolio && portfolio.projects.size > 0 ? (
+          <>
+            <h1 className="title">portfolio</h1>
 
-          <ProjectsComponent projects={portfolio.projects} />
+            <ProjectsComponent projects={portfolio.projects} />
+          </>
+        ) : <LoadingComponent page={''} />}
+        <SkillsComponent skills={skills} />
+      </>
+    </main>
 
-          <SkillsComponent skills={skills} />
-        </main>
-      ) : <LoadingComponent page={''} />}
-    </>
   );
 }
