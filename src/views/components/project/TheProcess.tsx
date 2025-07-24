@@ -13,7 +13,8 @@ import {
   ProjectDevelopment,
   ProjectQuery,
   ProjectSolution,
-  ProjectStatus
+  ProjectStatus,
+  Skills
 } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
@@ -21,9 +22,10 @@ import styles from './Project.module.scss';
 interface ProcessProps {
   project: Project;
   projectQuery: ProjectQuery | null;
+  skills: Skills | null;
 }
 
-export const TheProcess: React.FC<ProcessProps> = ({ project, projectQuery }) => {
+export const TheProcess: React.FC<ProcessProps> = ({ project, projectQuery, skills }) => {
   const [solution, setSolution] = useState<ProjectSolution | null>(null);
   const [status, setStatus] = useState<ProjectStatus | null>(null);
   const [design, setDesign] = useState<ProjectDesign | null>(null);
@@ -86,7 +88,7 @@ export const TheProcess: React.FC<ProcessProps> = ({ project, projectQuery }) =>
 
           {design && <Design design={design} projectQuery={query} />}
 
-          {development && <Development solution={solution} development={development} projectQuery={query} />}
+          {development && <Development solution={solution} development={development} projectQuery={query} skills={skills} />}
 
           {delivery && <Delivery delivery={delivery} projectQuery={query} />}
         </div>

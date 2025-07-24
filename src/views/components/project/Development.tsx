@@ -4,6 +4,7 @@ import {
   CheckListComponent,
   ContentComponent,
   ImageComponent,
+  Skills,
   StatusBar
 } from '@the7ofdiamonds/ui-ux';
 import {
@@ -20,7 +21,6 @@ import {
   RepoURL
 } from '@the7ofdiamonds/ui-ux';
 
-import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
 import { Versions } from '@/views/components/project/Versions';
 import { RoadmapComponent } from '@/views/components/project/RoadmapComponent';
 
@@ -33,14 +33,16 @@ import {
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 import styles from './Project.module.scss';
+import { ProjectSkillsComponent } from './ProjectSkillsComponent';
 
 interface DevelopmentProps {
   solution: ProjectSolution | null;
   development: ProjectDevelopment;
   projectQuery: ProjectQuery | null;
+  skills: Skills | null;
 }
 
-export const Development: React.FC<DevelopmentProps> = ({ solution, development, projectQuery }) => {
+export const Development: React.FC<DevelopmentProps> = ({ solution, development, projectQuery, skills }) => {
   const dispatch = useAppDispatch();
 
   const [versions, setVersions] = useState<ProjectVersions | null>(null);
@@ -48,7 +50,7 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
   const [content, setContent] = useState<ContentURL | null>(null);
   const [checkList, setCheckList] = useState<CheckList | null>(null);
   const [query, setQuery] = useState<ProjectQuery | null>(null);
-  const [skills, setSkills] = useState<ProjectSkills | null>(null);
+  const [projectSkills, setProjectSkills] = useState<ProjectSkills | null>(null);
   const [repoURL, setRepoURL] = useState<RepoURL | null>(null);
   const [buttonTitle, setButtonTitle] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<string | null>(null);
@@ -93,7 +95,7 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
   useEffect(() => {
     if (development
       && development.skills) {
-      setSkills(development.skills)
+      setProjectSkills(development.skills)
     }
   }, [development?.skills]);
 
@@ -124,7 +126,8 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
     if (isAuthenticated && repoURL && repoURL.url) {
       window.open(repoURL.url, '_blank');
     } else {
-        dispatch(loginWithPopUp(githubAuthProvider));    }
+      dispatch(loginWithPopUp(githubAuthProvider));
+    }
   };
 
   const hasContent = versions || featuresRoadmap || content || (checkList && query) || skills;
@@ -140,11 +143,11 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
         {featuresRoadmap && <RoadmapComponent roadmap={featuresRoadmap} />}
 
         {query &&
-          <ContentComponent title={null} query={new RepoContentQuery(query.owner, query.repo, '', '')} getFile={getRepoFile} dispatch={dispatch} />}
+          <ContentComponent<RepoContentQuery> title={null} query={new RepoContentQuery(query.owner, query.repo, 'Development.md', '')} getFile={getRepoFile} dispatch={dispatch} />}
 
         {checkList && query && <CheckListComponent checkList={checkList} />}
 
-        {skills && <SkillsComponent skills={skills} />}
+        {projectSkills && skills && <ProjectSkillsComponent projectSkills={projectSkills} skills={skills} />}
 
         {repoURL && buttonTitle &&
           <button className={styles.repo} onClick={handleSeeCode}>

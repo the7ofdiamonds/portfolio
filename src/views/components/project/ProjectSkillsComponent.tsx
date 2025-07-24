@@ -1,43 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { ProjectSkills, TaxListIcon, Taxonomy } from '@the7ofdiamonds/ui-ux';
+import { ProjectSkills, Skills } from '@the7ofdiamonds/ui-ux';
 
-import styles from './ProjectSkills.module.scss';
+import { SkillsComponent } from '../skills/SkillsComponent';
 
 interface ProjectSkillsComponentProps {
-    skills: ProjectSkills;
+    skills: Skills;
+    projectSkills: ProjectSkills;
 }
 
-export const ProjectSkillsComponent: React.FC<ProjectSkillsComponentProps> = ({ skills }) => {
+export const ProjectSkillsComponent: React.FC<ProjectSkillsComponentProps> = ({ skills, projectSkills }) => {
+    const [skillsUsed, setSkillsUsed] = useState<Skills | null>(null);
 
-    const hasContent = skills?.types || skills?.languages || skills?.frameworks || skills?.technologies || skills?.services;
+    useEffect(() => {
+        if (skills && skills.list.length > 0) {
+            setSkillsUsed(skills.fromProjectSkills(projectSkills));
+        }
+    }, [skills, projectSkills])
 
     return (
-        <>
-            {hasContent &&
-                <div className={styles.skills} id="skills">
-                    <h4 className={styles.title}>skills</h4>
-
-                    {skills.types && skills.types.size > 0 && <TaxListIcon taxonomiesSet={skills.types} taxonomiesTitle={'Project Types'} handleClick={function (taxonomy: Taxonomy): void {
-                        throw new Error('Function not implemented.');
-                    }} />}
-
-                    {skills.languages && skills.languages.size > 0 && <TaxListIcon taxonomiesSet={skills.languages} taxonomiesTitle={'Languages'} handleClick={function (taxonomy: Taxonomy): void {
-                        throw new Error('Function not implemented.');
-                    }} />}
-
-                    {skills.frameworks && skills.frameworks.size > 0 && <TaxListIcon taxonomiesSet={skills.frameworks} taxonomiesTitle={'Frameworks'} handleClick={function (taxonomy: Taxonomy): void {
-                        throw new Error('Function not implemented.');
-                    }} />}
-
-                    {skills.technologies && skills.technologies.size > 0 && <TaxListIcon taxonomiesSet={skills.technologies} taxonomiesTitle={'Technologies'} handleClick={function (taxonomy: Taxonomy): void {
-                        throw new Error('Function not implemented.');
-                    }} />}
-
-                    {skills.services && skills.services.size > 0 && <TaxListIcon taxonomiesSet={skills.services} taxonomiesTitle={'Services'} handleClick={function (taxonomy: Taxonomy): void {
-                        throw new Error('Function not implemented.');
-                    }} />}
-                </div>}
-        </>
+        <SkillsComponent skills={skillsUsed} />
     )
 }

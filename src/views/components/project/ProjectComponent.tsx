@@ -38,7 +38,6 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
   const [owner, setOwner] = useState<Owner | null>(null);
 
   const [skills, setSkills] = useState<Skills | null>(null);
-  const [projectSkills, setProjectSkills] = useState<ProjectSkills | null>(null);
   const [query, setQuery] = useState<ProjectQuery | null>(null);
 
   useEffect(() => {
@@ -72,23 +71,10 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
   }, [account?.skills]);
 
   useEffect(() => {
-    if (skills && project.process?.development?.skills) {
-      setProjectSkills(skills.filter(project.process.development.skills))
-    }
-  }, [account?.skills]);
-
-  useEffect(() => {
     if (project && project.process) {
       setProcess(project.process)
     }
   }, [project?.process]);
-
-  useEffect(() => {
-    if (project && project.process && project.process.development && projectSkills) {
-      project.process.development.setSkills(projectSkills)
-      setProcess(project.process)
-    }
-  }, [project?.process?.development, projectSkills]);
 
   useEffect(() => {
     if (project && project.details) {
@@ -125,7 +111,7 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
 
         {solution && <TheSolution project={project} />}
 
-        {process && <TheProcess project={project} projectQuery={query} />}
+        {process && <TheProcess project={project} projectQuery={query} skills={skills}/>}
 
         {details && <ProjectDetailsComponent account={account} project={project} />}
 

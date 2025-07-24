@@ -37,6 +37,7 @@ import {
   AccountGQLResponse,
   Skills,
   ProjectSkills,
+  GitHubRepoFileResponse,
 } from '@the7ofdiamonds/ui-ux';
 
 type OctokitResponse<T = any, S = number> = {
@@ -288,7 +289,7 @@ type RepoFileResponse = GetResponseTypeFromEndpointMethod<
 
 export type GitHubRepoFile = RepoFileResponse['data'];
 
-export const getRepoFile = createAsyncThunk(
+export const getRepoFile = createAsyncThunk<string | null, RepoContentQuery>(
   'github/getRepoFile',
   async (query: RepoContentQuery) => {
     try {
@@ -303,7 +304,11 @@ export const getRepoFile = createAsyncThunk(
         ref: branch,
       });
 
-      return atob(response.data.content);
+      if (response.data.type === 'file') {
+        return atob(response.data.content);
+      }
+
+      return null;
     } catch (error) {
       const err = error as Error;
       console.error(err);
@@ -446,6 +451,7 @@ export const getRepoDetails = createAsyncThunk(
         ) {
           const skills = new ProjectSkills();
           skills.languagesFromGithub(langResponse.payload);
+
           repo.setSkills(skills);
         }
 
