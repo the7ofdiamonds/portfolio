@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
-import { Organization, Section, User,Account, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
+import { Organization, Section, User, Account, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
 
 import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
-
-import styles from '@/views/components/portfolio/Portfolio.module.scss';
+import { useAppSelector } from '@/model/hooks';
 
 interface PortfolioPageProps {
   account: Account;
+  portfolio: Portfolio | null;
+  skills: Skills | null;
 }
 
-export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account }) => {
-  const dispatch = useAppDispatch();
-
-  const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
-  const [skills, setSkills] = useState<Skills | null>(null);
+export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account, portfolio, skills }) => {
   const [title, setTitle] = useState<string>(`Portfolio`);
 
   const [message, setMessage] = useState<string>('');
@@ -56,13 +52,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account }) => {
   }, [portfolioErrorMessage]);
 
   useEffect(() => {
-    if (account instanceof User) {
-      setTitle(`Portfolio - ${account.firstName} ${account.lastName}`)
-    }
-  }, [account]);
-
-  useEffect(() => {
-    if (account instanceof Organization) {
+    if (account.name) {
       setTitle(`Portfolio - ${account.name}`)
     }
   }, [account]);
@@ -70,18 +60,6 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account }) => {
   useEffect(() => {
     document.title = title;
   }, [title]);
-
-  useEffect(() => {
-    if (account.portfolio && account.portfolio.projects && account.portfolio.projects.size > 0) {
-      setPortfolio(account.portfolio)
-    }
-  }, [account.portfolio]);
-
-  useEffect(() => {
-    if (account.skills && account.skills.count > 0) {
-      setSkills(account.skills)
-    }
-  }, [account.skills]);
 
   return (
     <Section>

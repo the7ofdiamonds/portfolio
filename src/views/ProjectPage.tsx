@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { LoadingComponent, Section, Main, StatusBar } from '@the7ofdiamonds/ui-ux';
-import { Account, GitHubRepoQuery, Project } from '@the7ofdiamonds/ui-ux';
+import { LoadingComponent, Section, Main, StatusBar, Skills } from '@the7ofdiamonds/ui-ux';
+import { Account, GitHubRepoQuery, Portfolio, Project } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectComponent } from './components/project/ProjectComponent';
 
@@ -12,9 +12,11 @@ import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 interface ProjectPageProps {
   account: Account;
+  portfolio: Portfolio | null;
+  skills: Skills | null;
 }
 
-export const ProjectPage: React.FC<ProjectPageProps> = ({ account }) => {
+export const ProjectPage: React.FC<ProjectPageProps> = ({ account, portfolio, skills }) => {
   const dispatch = useAppDispatch();
 
   const { owner, projectID } = useParams<string>();
@@ -38,13 +40,13 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ account }) => {
   }, [projectID]);
 
   useEffect(() => {
-    if (account.portfolio && account.portfolio.projects.size > 0 && projectID) {
-      const selectedProject = account.portfolio.filterProject(projectID);
+    if (portfolio && portfolio.projects.size > 0 && projectID) {
+      const selectedProject = portfolio.filterProject(projectID);
       if (selectedProject) {
         setTitle(selectedProject.title);
       }
     }
-  }, [account?.portfolio?.projects, projectID]);
+  }, [portfolio?.projects, projectID]);
 
   useEffect(() => {
     if (title) {
@@ -111,7 +113,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ account }) => {
   return (
     <Section>
       {project &&
-        <ProjectComponent account={account} project={project} />
+        <ProjectComponent account={account} project={project} skills={skills} />
       }
     </Section>
   );

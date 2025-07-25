@@ -15,7 +15,6 @@ interface PortfolioComponentProps {
 }
 
 export const PortfolioComponent: React.FC<PortfolioComponentProps> = ({ portfolio, skills }) => {
-
   return (
     <main className={styles.main}>
       <>

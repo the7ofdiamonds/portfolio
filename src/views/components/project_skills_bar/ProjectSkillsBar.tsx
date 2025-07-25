@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { IconComponent } from '@the7ofdiamonds/ui-ux';
+import { ImageComponent } from '@the7ofdiamonds/ui-ux';
 
 import { Taxonomy } from '@the7ofdiamonds/ui-ux';
 
@@ -42,7 +42,7 @@ const ProjectSkills: React.FC<ProjectSkillsProp> = ({ skillsSet }) => {
                   key={index}
                   className={styles['skills-button']}
                   onClick={() => handleClick(skill)}>
-                  <IconComponent imageClass={skill.image} />
+                  <ImageComponent image={skill.image} />
                 </button> : <button
                   key={index}
                   className={styles.tag}

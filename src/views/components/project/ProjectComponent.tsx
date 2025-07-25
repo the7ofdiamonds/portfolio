@@ -14,7 +14,6 @@ import {
   ProjectDetails,
   ProjectProblem,
   ProjectProcess,
-  ProjectSkills,
   ProjectSolution,
   ProjectQuery,
   Skills
@@ -24,10 +23,11 @@ import styles from './Project.module.scss';
 
 interface ProjectComponentProps {
   account: Account;
-  project: Project;
+  project: Project | null;
+  skills: Skills | null;
 }
 
-export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, project }) => {
+export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, project, skills }) => {
   const [title, setTitle] = useState<string | null>(null);
   const [subtitle, setSubtitle] = useState<string | null>(null);
   const [description, setDescription] = useState<string | null>(null);
@@ -37,7 +37,6 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
   const [problem, setProblem] = useState<ProjectProblem | null>(null);
   const [owner, setOwner] = useState<Owner | null>(null);
 
-  const [skills, setSkills] = useState<Skills | null>(null);
   const [query, setQuery] = useState<ProjectQuery | null>(null);
 
   useEffect(() => {
@@ -63,12 +62,6 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
       setSolution(project.solution)
     }
   }, [project?.solution]);
-
-  useEffect(() => {
-    if (account?.skills) {
-      setSkills(account.skills)
-    }
-  }, [account?.skills]);
 
   useEffect(() => {
     if (project && project.process) {
@@ -101,24 +94,23 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
   }, [project?.query]);
 
   return (
-    <>
-      <main className={styles.main}>
-        {title && <h1 className={styles.title}>{title}</h1>}
+    project &&
+     <main className={styles.main}>
+      {title && <h1 className={styles.title}>{title}</h1>}
 
-        {subtitle && <h2 className={styles.subtitle}>{subtitle}</h2>}
+      {subtitle && <h2 className={styles.subtitle}>{subtitle}</h2>}
 
-        {description && <ProjectDescription description={description} />}
+      {description && <ProjectDescription description={description} />}
 
-        {solution && <TheSolution project={project} />}
+      {solution && <TheSolution project={project} />}
 
-        {process && <TheProcess project={project} projectQuery={query} skills={skills}/>}
+      {process && <TheProcess project={project} projectQuery={query} skills={skills} />}
 
-        {details && <ProjectDetailsComponent account={account} project={project} />}
+      {details && <ProjectDetailsComponent account={account} project={project} />}
 
-        {problem && <TheProblem project={project} />}
+      {problem && <TheProblem project={project} />}
 
-        {owner && <OwnerComponent project={project} />}
-      </main>
-    </>
+      {owner && <OwnerComponent project={project} />}
+    </main>
   );
 }
