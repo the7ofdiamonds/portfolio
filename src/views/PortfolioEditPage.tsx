@@ -5,8 +5,6 @@ import { Portfolio, Project, User } from '@the7ofdiamonds/ui-ux';
 
 import { EditPortfolioProject } from '@/views/components/edit/EditPortfolioProject';
 
-import styles from '@/views/components/edit/Edit.module.scss';
-
 interface PortfolioEditPageProps {
     user: User;
 }

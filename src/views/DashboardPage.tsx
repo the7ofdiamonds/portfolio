@@ -54,7 +54,7 @@ export const DashboardPage: React.FC = () => {
 
     return (
         <Section>
-            <h2 className={styles.title}>Dashboard</h2>
+            <h2 className='title'>Dashboard</h2>
 
             <div className={styles.options}>
                 <Button title={'add skill'} action={handleSkillAdd} />

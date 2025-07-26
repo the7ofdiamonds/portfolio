@@ -29,7 +29,7 @@ export const OrganizationsComponent: React.FC<OrganizationsComponentProps> = ({ 
     <>
       {Array.isArray(list) && list.length > 0 && (
         <div className={styles.organizations}>
-          <h2 className={styles.title}>
+          <h2 className='title'>
             {list.length === 1
               ? 'Organization'
               : 'Organizations'}

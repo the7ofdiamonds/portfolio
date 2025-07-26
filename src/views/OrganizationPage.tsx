@@ -84,13 +84,11 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ organization
 
     return (
         <Section>
-            <>
-                {org && <OrganizationComponent organization={org} />}
+            {org && <OrganizationComponent organization={org} />}
 
-                {orgContactMethods && <ContactBar contactMethods={orgContactMethods} location='' />}
+            {orgContactMethods && <ContactBar contactMethods={orgContactMethods} location='' />}
 
-                {(portfolio || orgSkills) && <PortfolioComponent portfolio={portfolio} skills={orgSkills} />}
-            </>
+            {(portfolio || orgSkills) && <PortfolioComponent portfolio={portfolio} skills={orgSkills} />}
         </Section>
     )
 }
