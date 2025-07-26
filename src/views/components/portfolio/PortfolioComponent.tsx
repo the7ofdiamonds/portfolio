@@ -17,16 +17,15 @@ interface PortfolioComponentProps {
 export const PortfolioComponent: React.FC<PortfolioComponentProps> = ({ portfolio, skills }) => {
   return (
     <main className={styles.main}>
-      <>
-        {portfolio && portfolio.projects.size > 0 ? (
-          <>
-            <h1 className="title">portfolio</h1>
+      {portfolio && portfolio.projects.size > 0 ? (
+        <>
+          <h1 className="title">portfolio</h1>
 
-            <ProjectsComponent projects={portfolio.projects} />
-          </>
-        ) : <LoadingComponent page={''} />}
-        <SkillsComponent skills={skills} />
-      </>
+          <ProjectsComponent projects={portfolio.projects} />
+        </>
+      ) : <LoadingComponent page={''} />}
+
+      {skills && <SkillsComponent skills={skills} />}
     </main>
 
   );

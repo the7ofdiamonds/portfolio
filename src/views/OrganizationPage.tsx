@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Section } from '@the7ofdiamonds/ui-ux';
+import { ContactMethods, Section } from '@the7ofdiamonds/ui-ux';
 import { ContactBar } from '@the7ofdiamonds/communications';
 
 import { OrganizationComponent } from '@/views/components/organization/OrganizationComponent';
@@ -12,9 +12,12 @@ import { getOrganization } from '@/controllers/organizationSlice';
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 import { Organization, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
 
-import styles from '@/views/components/organization/Organization.module.scss';
+export interface OrganizationPageProps {
+    organization: Organization | null;
+    skills: Skills;
+}
 
-export const OrganizationPage: React.FC = () => {
+export const OrganizationPage: React.FC<OrganizationPageProps> = ({ organization, skills }) => {
     const dispatch = useAppDispatch();
 
     const { login } = useParams<string>();
@@ -22,52 +25,71 @@ export const OrganizationPage: React.FC = () => {
     const { organizationObject } = useAppSelector(
         (state) => state.organization);
 
-    const [organization, setOrganization] = useState<Organization | null>(null);
+    const [org, setOrg] = useState<Organization | null>(null);
+    const [orgContactMethods, setOrgContactMethods] = useState<ContactMethods | null>();
     const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
-    const [skills, setSkills] = useState<Skills | null>(null);
+    const [orgSkills, setOrgSkills] = useState<Skills>(new Skills);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [login]);
 
     useEffect(() => {
+        if (organization?.login === login) {
+            setOrg(organization);
+        }
+    }, [organization?.login]);
+
+    useEffect(() => {
         if (!organizationObject && login) {
             dispatch(getOrganization(login));
         }
-    }, [login, organizationObject]);
+    }, [organization?.login, login, organizationObject]);
 
     useEffect(() => {
         if (organizationObject) {
-            setOrganization(new Organization(organizationObject));
+            setOrg(new Organization(organizationObject));
         }
     }, [organizationObject]);
 
     useEffect(() => {
-        if (organization && organization.name) {
-            document.title = organization.name
+        if (organization?.login === `@${login}` && organization?.contactMethods) {
+            setOrgContactMethods(organization.contactMethods)
         }
     }, [organization]);
 
     useEffect(() => {
-        if (organization && organization.portfolio) {
-            setPortfolio(organization.portfolio)
+        if (org?.name) {
+            document.title = org.name
         }
-    }, [organization?.portfolio]);
+    }, [org]);
 
     useEffect(() => {
-        if (organization && organization.skills) {
-            setSkills(organization.skills)
+        if (org && org.portfolio) {
+            setPortfolio(org.portfolio)
+        }
+    }, [org?.portfolio]);
+
+    useEffect(() => {
+        if (organization && organization.skills && skills) {
+            skills.list.push(...organization.skills.list)
+            skills.getProjectTypesFromList()
+            skills.getLanguagesFromList()
+            skills.getFrameworksFromList()
+            skills.getTechnologiesFromList()
+            skills.getServicesFromList()
+            setOrgSkills(skills)
         }
     }, [organization?.skills]);
 
     return (
         <Section>
             <>
-                {organization && <OrganizationComponent organization={organization} />}
+                {org && <OrganizationComponent organization={org} />}
 
-                {organization && organization.contactMethods && <ContactBar contactMethods={organization.contactMethods} location='' />}
+                {orgContactMethods && <ContactBar contactMethods={orgContactMethods} location='' />}
 
-                {organization && <PortfolioComponent portfolio={portfolio} skills={skills} />}
+                {(portfolio || orgSkills) && <PortfolioComponent portfolio={portfolio} skills={orgSkills} />}
             </>
         </Section>
     )
