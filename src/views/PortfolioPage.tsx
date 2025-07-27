@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { Organization, Section, User, Account, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
+import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
+import { MessageType, StatusBarVisibility, Account, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
 
 import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
 
@@ -15,9 +16,9 @@ interface PortfolioPageProps {
 export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account, portfolio, skills }) => {
   const [title, setTitle] = useState<string>(`Portfolio`);
 
-  const [message, setMessage] = useState<string>('');
-  const [messageType, setMessageType] = useState<string>('info');
-  const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
+  const [message, setMessage] = useState<string | null>(null);
+  const [messageType, setMessageType] = useState<MessageType>('info');
+  const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
 
   const {
     portfolioLoading,
@@ -64,6 +65,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account, portfolio
   return (
     <Section>
       <PortfolioComponent portfolio={portfolio} skills={skills} />
+      {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
     </Section>
   );
 }

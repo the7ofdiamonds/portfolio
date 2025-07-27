@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { HeaderTaxonomyComponent } from '@the7ofdiamonds/ui-ux';
-import { Portfolio, Project, Skills, User } from '@the7ofdiamonds/ui-ux';
+import { Section, StatusBar, HeaderTaxonomyComponent } from '@the7ofdiamonds/ui-ux';
+import { MessageType, StatusBarVisibility, Portfolio, Project, Skills, User } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectsComponent } from '@/views/components/portfolio/ProjectsComponent';
 import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
@@ -10,8 +10,6 @@ import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
 import { getPortfolioDetails } from '@/controllers/portfolioSlice';
 
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
-
-import styles from '@/views/components/search/Search.module.scss';
 
 interface SearchProps {
   user: User;
@@ -23,12 +21,16 @@ export const SearchPage: React.FC<SearchProps> = ({ user, skills }) => {
 
   const { taxonomy, term } = useParams<string>();
 
-  const { portfolioLoading, portfolioErrorMessage, portfolioObject } = useAppSelector(
+  const { portfolioLoading, portfolioLoadingMessage, portfolioErrorMessage, portfolioObject } = useAppSelector(
     (state) => state.portfolio
   );
 
-  const [portfolio, setPortfolio] = useState<Portfolio | null>(user.portfolio);
+  const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
   const [projects, setProjects] = useState<Set<Project>>(new Set);
+
+  const [message, setMessage] = useState<string | null>(null);
+  const [messageType, setMessageType] = useState<MessageType>('info');
+  const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -36,14 +38,12 @@ export const SearchPage: React.FC<SearchProps> = ({ user, skills }) => {
 
   useEffect(() => {
     if (term) {
-      const skill = term.toUpperCase();
-
-      document.title = skill;
+      document.title = term.toUpperCase();
     }
   }, [term]);
 
   useEffect(() => {
-    if (user.repos) {
+    if (!user.portfolio && user.repos) {
       dispatch(getPortfolioDetails(user.repos))
     }
   }, [user?.repos]);
@@ -66,19 +66,41 @@ export const SearchPage: React.FC<SearchProps> = ({ user, skills }) => {
     }
   }, [portfolio, taxonomy, term]);
 
+  useEffect(() => {
+    if (portfolioLoading) {
+      setShowStatusBar('show')
+      setMessage(portfolioLoadingMessage)
+    }
+  }, [portfolioLoading, portfolioLoadingMessage]);
+
+  useEffect(() => {
+    if (portfolioErrorMessage) {
+      setShowStatusBar('show')
+      setMessageType('error')
+      setMessage(portfolioErrorMessage)
+    }
+  }, [portfolioErrorMessage]);
+
+  useEffect(() => {
+    if (!portfolioLoadingMessage && !portfolioErrorMessage) {
+      setMessage(null)
+      setShowStatusBar('hide')
+    }
+  }, [portfolioLoadingMessage, portfolioErrorMessage]);
+
   return (
-    <section className={styles.section} id="top">
-      <>
-        {taxonomy && term && <HeaderTaxonomyComponent skill={skills.filter(term)} />}
+    <Section>
+      {taxonomy && term && <HeaderTaxonomyComponent skill={skills.filter(term)} />}
 
-        {portfolio &&
-          projects &&
-          (taxonomy && term) &&
-          <ProjectsComponent projects={projects} />
-        }
+      {portfolio &&
+        projects &&
+        (taxonomy && term) &&
+        <ProjectsComponent projects={projects} />
+      }
 
-        <SkillsComponent skills={user.skills ?? skills} />
-      </>
-    </section>
+      <SkillsComponent skills={user.skills ?? skills} />
+
+      {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
+    </Section>
   );
 }

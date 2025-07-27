@@ -15,6 +15,7 @@ import { getUserData } from '@/controllers/databaseSlice';
 
 export interface UserState {
   userLoading: boolean;
+  userLoadingMessage: string | null;
   userStatusCode: string;
   userError: Error | null;
   userErrorMessage: string;
@@ -34,6 +35,7 @@ export interface UserState {
 
 const initialState: UserState = {
   userLoading: false,
+  userLoadingMessage: null,
   userStatusCode: '',
   userError: null,
   userErrorMessage: '',
@@ -131,12 +133,14 @@ const userSliceOptions: CreateSliceOptions = {
     builder
       .addCase(getAuthenticatedUserAccount.fulfilled, (state, action) => {
         state.userLoading = false;
+        state.userLoadingMessage = null;
         state.userErrorMessage = '';
         state.userError = null;
         state.authenticatedUserObject = action.payload;
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.userLoading = false;
+        state.userLoadingMessage = null;
         state.userErrorMessage = '';
         state.userError = null;
         state.userObject = action.payload;
@@ -145,6 +149,7 @@ const userSliceOptions: CreateSliceOptions = {
         isAnyOf(getUser.pending, getAuthenticatedUserAccount.pending),
         (state) => {
           state.userLoading = true;
+          state.userLoadingMessage = 'Now Loading User';
           state.userErrorMessage = '';
           state.userError = null;
         }
@@ -153,6 +158,7 @@ const userSliceOptions: CreateSliceOptions = {
         isAnyOf(getUser.rejected, getAuthenticatedUserAccount.rejected),
         (state, action) => {
           state.userLoading = false;
+          state.userLoadingMessage = null;
           state.userErrorMessage = action.error.message || '';
           state.userError = action.error as Error;
         }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { LoadingComponent, Section, Main, StatusBar, Skills } from '@the7ofdiamonds/ui-ux';
-import { Account, GitHubRepoQuery, Portfolio, Project } from '@the7ofdiamonds/ui-ux';
+import { Section, StatusBar, Skills } from '@the7ofdiamonds/ui-ux';
+import { MessageType, StatusBarVisibility, Account, GitHubRepoQuery, Portfolio, Project } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectComponent } from './components/project/ProjectComponent';
 
@@ -31,9 +31,10 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ account, portfolio, sk
   const [repoQuery, setRepoQuery] = useState<GitHubRepoQuery | null>(null);
   const [project, setProject] = useState<Project | null>(null);
   const [title, setTitle] = useState<string | null>(null);
-  const [message, setMessage] = useState<string>('');
-  const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
-  const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
+
+  const [message, setMessage] = useState<string | null>(null);
+  const [messageType, setMessageType] = useState<MessageType>('info');
+  const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -67,6 +68,22 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ account, portfolio, sk
   }, [repoQuery]);
 
   useEffect(() => {
+    if (title && (githubLoading || projectLoading)) {
+      setMessageType('caution');
+      setMessage(`Now Loading Project ${title}`);
+      setShowStatusBar('show');
+    } else {
+      setMessage(null)
+    }
+  }, [githubLoading, projectLoading, title]);
+
+  useEffect(() => {
+    if (!githubLoading && !projectLoading) {
+      setMessage(null)
+    }
+  }, [githubLoading, projectLoading]);
+
+  useEffect(() => {
     if (projectObject) {
       setProject(new Project(projectObject));
     }
@@ -88,33 +105,13 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ account, portfolio, sk
     }
   }, [projectErrorMessage]);
 
-  useEffect(() => {
-    if (title && (githubLoading || projectLoading)) {
-      setMessageType('caution');
-      setMessage(`Now Loading ${title}`);
-      setShowStatusBar('show');
-    }
-  }, [githubLoading, projectLoading, title]);
-
-  if (githubLoading || projectLoading) {
-    return <Section>
-      <LoadingComponent page={title ?? ''} />
-    </Section>;
-  }
-
-  if (githubErrorMessage || projectErrorMessage) {
-    return <Section>
-      <Main>
-        <StatusBar show={showStatusBar} messageType={messageType} message={message} />
-      </Main>
-    </Section>;
-  }
-
   return (
     <Section>
       {project &&
         <ProjectComponent account={account} project={project} skills={skills} />
       }
+
+      {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
     </Section>
   );
 }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import { Section, Button } from '@the7ofdiamonds/ui-ux';
-import { User } from '@the7ofdiamonds/ui-ux';
+import { Section, Button, StatusBar } from '@the7ofdiamonds/ui-ux';
+import { StatusBarVisibility, MessageType } from '@the7ofdiamonds/ui-ux';
 
 import { logout } from '@the7ofdiamonds/gateway';
 
@@ -20,9 +20,9 @@ export const DashboardPage: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const [message, setMessage] = useState<string>('');
-    const [messageType, setMessageType] = useState<string>('info');
-    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
+    const [message, setMessage] = useState<string | null>(null);
+    const [messageType, setMessageType] = useState<MessageType>('info');
+    const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
 
     useEffect(() => {
         if (!checkHeaders()) {
@@ -63,6 +63,8 @@ export const DashboardPage: React.FC = () => {
             </div>
 
             <Button title={'logout'} action={handleLogout} />
+
+            {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
         </Section>
     )
 }

@@ -15,6 +15,7 @@ import { getRepo, getRepoLanguages } from './githubSlice';
 
 export interface PortfolioState {
   portfolioLoading: boolean;
+  portfolioLoadingMessage: string | null;
   portfolioError: Error | null;
   portfolioErrorMessage: string | null;
   portfolioObject: PortfolioObject | null;
@@ -24,6 +25,7 @@ export interface PortfolioState {
 
 const initialState: PortfolioState = {
   portfolioLoading: false,
+  portfolioLoadingMessage: null,
   portfolioError: null,
   portfolioErrorMessage: null,
   portfolioObject: null,

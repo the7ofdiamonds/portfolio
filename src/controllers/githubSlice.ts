@@ -23,7 +23,6 @@ import {
   OrganizationObject,
   OrganizationResponseGQL,
   Repo,
-  RepoObject,
   UserObject,
   User,
   Repos,
@@ -35,6 +34,7 @@ import {
   Contributors,
   ContributorsObject,
   AccountGQLResponse,
+  RepoObject,
   Skills,
   ProjectSkills,
   GitHubRepoFileResponse,
@@ -47,6 +47,7 @@ type OctokitResponse<T = any, S = number> = {
 
 export interface GithubState {
   githubLoading: boolean;
+  githubLoadingMessage: string | null;
   githubStatusCode: number;
   githubError: Error | null;
   githubErrorMessage: string | null;
@@ -55,7 +56,7 @@ export interface GithubState {
   organizationReposObject: Array<RepoObject> | null;
   organizationsObject: Array<OrganizationObject> | null;
   organizationDetailsList: Array<Record<string, any>> | null;
-  // repos: ReposObject | null;
+  repos: Array<RepoObject> | null;
   repoDetailsList: Array<Record<string, any>> | null;
   socialAccounts: SocialAccounts | null;
   repoObject: RepoObject | null;
@@ -69,6 +70,7 @@ export interface GithubState {
 
 const initialState: GithubState = {
   githubLoading: false,
+  githubLoadingMessage: null,
   githubStatusCode: 0,
   githubError: null,
   githubErrorMessage: '',
@@ -77,7 +79,7 @@ const initialState: GithubState = {
   organizationReposObject: null,
   organizationsObject: null,
   organizationDetailsList: null,
-  // repos: null,
+  repos: null,
   repoDetailsList: null,
   socialAccounts: null,
   repoObject: null,
@@ -504,17 +506,17 @@ export const getRepoDetails = createAsyncThunk(
   }
 );
 
-// export const getRepos = createAsyncThunk('github/getRepos', async () => {
-//   try {
-//     const { data } = await octokit.request('/user/repos');
+export const getRepos = createAsyncThunk('github/getRepos', async () => {
+  try {
+    const { data } = await octokit.request('/user/repos');
 
-//     return data;
-//   } catch (error) {
-//     const err = error as Error;
-//     console.error(err);
-//     throw new Error(err.message);
-//   }
-// });
+    return data;
+  } catch (error) {
+    const err = error as Error;
+    console.error(err);
+    throw new Error(err.message);
+  }
+});
 
 export type AuthenticatedUserRepoResponse =
   GetResponseDataTypeFromEndpointMethod<
@@ -780,21 +782,6 @@ export const getUserAccount = createAsyncThunk(
   }
 );
 
-// export const getOrganizations = createAsyncThunk(
-//   'github/getOrganizations',
-//   async () => {
-//     try {
-//       const { data } = await octokit.request('/user/orgs');
-
-//       return data as Array<Record<string, any>>;
-//     } catch (error) {
-//       const err = error as Error;
-//       console.error(err);
-//       throw new Error(err.message);
-//     }
-//   }
-// );
-
 export const getOrganizationAccount = createAsyncThunk(
   'github/getOrganization',
   async (organization: string) => {
@@ -940,56 +927,121 @@ const githubSliceOptions: CreateSliceOptions<GithubState> = {
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(getAuthenticatedAccount.pending, (state, action) => {
+        state.githubLoading = true;
+        state.githubLoadingMessage = 'Now Loading User Data from GitHub';
+        state.githubErrorMessage = '';
+        state.githubError = null;
+      })
+      .addCase(getOrganizationAccount.pending, (state, action) => {
+        state.githubLoading = true;
+        state.githubLoadingMessage =
+          'Now Loading Organization Data from GitHub';
+        state.githubErrorMessage = '';
+        state.githubError = null;
+      })
+      .addCase(getOrganizationDetailsList.pending, (state, action) => {
+        state.githubLoading = true;
+        state.githubLoadingMessage =
+          'Now Loading Organization Data from GitHub';
+        state.githubErrorMessage = '';
+        state.githubError = null;
+      })
+      .addCase(getIssues.pending, (state, action) => {
+        state.githubLoading = true;
+        state.githubLoadingMessage = 'Now Loading Issues from GitHub Repo';
+        state.githubErrorMessage = '';
+        state.githubError = null;
+      })
+      .addCase(getRepo.pending, (state, action) => {
+        state.githubLoading = true;
+        state.githubLoadingMessage = 'Now Loading Repo from GitHub';
+        state.githubErrorMessage = '';
+        state.githubError = null;
+      })
+      .addCase(getRepoContents.pending, (state, action) => {
+        state.githubLoading = true;
+        state.githubLoadingMessage = 'Now Loading Contents from GitHub Repo';
+        state.githubErrorMessage = '';
+        state.githubError = null;
+      })
+      .addCase(getRepoLanguages.pending, (state, action) => {
+        state.githubLoading = true;
+        state.githubLoadingMessage = 'Now Loading Languages from GitHub Repo';
+        state.githubErrorMessage = '';
+        state.githubError = null;
+      })
+      .addCase(getRepoDetailsList.pending, (state, action) => {
+        state.githubLoading = true;
+        state.githubLoadingMessage = 'Now Loading GitHub Repo Details';
+        state.githubErrorMessage = '';
+        state.githubError = null;
+      })
+      .addCase(getRepos.pending, (state, action) => {
+        state.githubLoading = true;
+        state.githubLoadingMessage = 'Now Loading GitHub Repos';
+        state.githubErrorMessage = '';
+        state.githubError = null;
+      })
+      .addCase(getSocialAccounts.pending, (state, action) => {
+        state.githubLoading = true;
+        state.githubLoadingMessage =
+          'Now Loading User Social Accounts from GitHub';
+        state.githubErrorMessage = '';
+        state.githubError = null;
+      })
       .addCase(getAuthenticatedAccount.fulfilled, (state, action) => {
         state.githubLoading = false;
+        state.githubLoadingMessage = null;
         state.githubErrorMessage = '';
         state.githubError = null;
         state.userObject = action.payload;
       })
-      // .addCase(getOrganizations.fulfilled, (state, action) => {
-      //   state.githubLoading = false;
-      //   state.githubErrorMessage = '';
-      //   state.githubError = null;
-      //   state.organizationsObject = action.payload;
-      // })
       .addCase(getOrganizationDetailsList.fulfilled, (state, action) => {
         state.githubLoading = false;
+        state.githubLoadingMessage = null;
         state.githubErrorMessage = '';
         state.githubError = null;
         state.organizationDetailsList = action.payload;
       })
       .addCase(getOrganizationAccount.fulfilled, (state, action) => {
         state.githubLoading = false;
+        state.githubLoadingMessage = null;
         state.githubErrorMessage = '';
         state.githubError = null;
         state.organizationObject = action.payload;
       })
-      // .addCase(getRepos.fulfilled, (state, action) => {
-      //   state.githubLoading = false;
-      //   state.githubErrorMessage = '';
-      //   state.githubError = null;
-      //   state.repos = action.payload;
-      // })
+      .addCase(getRepos.fulfilled, (state, action) => {
+        state.githubLoading = false;
+        state.githubLoadingMessage = null;
+        state.githubErrorMessage = '';
+        state.githubError = null;
+        state.repos = action.payload;
+      })
       .addCase(getRepoDetailsList.fulfilled, (state, action) => {
         state.githubLoading = false;
+        state.githubLoadingMessage = null;
         state.githubErrorMessage = '';
         state.githubError = null;
         state.repoDetailsList = action.payload;
       })
       .addCase(getRepo.fulfilled, (state, action) => {
         state.githubLoading = false;
+        state.githubLoadingMessage = null;
         state.githubErrorMessage = '';
         state.githubError = null;
         state.repoObject = action.payload;
       })
       .addCase(getRepoContents.fulfilled, (state, action) => {
         state.githubLoading = false;
+        state.githubLoadingMessage = null;
         state.githubErrorMessage = '';
         state.githubError = null;
         state.contents = action.payload ?? [];
       })
       .addCase(getRepoLanguages.fulfilled, (state, action) => {
         state.githubLoading = false;
+        state.githubLoadingMessage = null;
         state.githubErrorMessage = '';
         state.githubError = null;
         state.githubStatusCode = 200;
@@ -997,18 +1049,21 @@ const githubSliceOptions: CreateSliceOptions<GithubState> = {
       })
       .addCase(getSocialAccounts.fulfilled, (state, action) => {
         state.githubLoading = false;
+        state.githubLoadingMessage = null;
         state.githubErrorMessage = '';
         state.githubError = null;
         state.socialAccounts = action.payload;
       })
       .addCase(getIssues.fulfilled, (state, action) => {
         state.githubLoading = false;
+        state.githubLoadingMessage = null;
         state.githubErrorMessage = '';
         state.githubError = null;
         state.issues = action.payload;
       })
       .addCase(getRepo.rejected, (state, action) => {
         state.githubLoading = false;
+        state.githubLoadingMessage = null;
         state.githubErrorMessage =
           action.error && action.error.message
             ? action.error.message
@@ -1017,37 +1072,19 @@ const githubSliceOptions: CreateSliceOptions<GithubState> = {
       })
       .addMatcher(
         isAnyOf(
-          getAuthenticatedAccount.pending,
-          // getOrganizations.pending,
-          // getRepos.pending,
-          getRepo.pending,
-          getRepoContents.pending,
-          getRepoLanguages.pending,
-          getRepoDetailsList.pending,
-          getSocialAccounts.pending,
-          getIssues.pending
-        ),
-        (state) => {
-          state.githubLoading = true;
-          state.githubErrorMessage = '';
-          state.githubError = null;
-        }
-      )
-      .addMatcher(
-        isAnyOf(
           getAuthenticatedAccount.rejected,
+          getIssues.rejected,
           getOrganizationAccount.rejected,
-          // getOrganizations.rejected,
-          // getRepos.rejected,
           getRepo.rejected,
           getRepoContents.rejected,
           getRepoLanguages.rejected,
           getRepoDetailsList.rejected,
-          getSocialAccounts.rejected,
-          getIssues.rejected
+          getRepos.rejected,
+          getSocialAccounts.rejected
         ),
         (state, action) => {
           state.githubLoading = false;
+          state.githubLoadingMessage = null;
           state.githubErrorMessage = action.error.message || '';
           state.githubError = action.error as Error;
         }

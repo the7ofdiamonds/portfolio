@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { ContactMethods, Section } from '@the7ofdiamonds/ui-ux';
+import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
+import { MessageType, StatusBarVisibility, ContactMethods } from '@the7ofdiamonds/ui-ux';
 import { ContactBar } from '@the7ofdiamonds/communications';
 
 import { OrganizationComponent } from '@/views/components/organization/OrganizationComponent';
@@ -29,6 +30,10 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ organization
     const [orgContactMethods, setOrgContactMethods] = useState<ContactMethods | null>();
     const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
     const [orgSkills, setOrgSkills] = useState<Skills>(new Skills);
+
+    const [message, setMessage] = useState<string | null>(null);
+    const [messageType, setMessageType] = useState<MessageType>('info');
+    const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -89,6 +94,8 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ organization
             {orgContactMethods && <ContactBar contactMethods={orgContactMethods} location='' />}
 
             {(portfolio || orgSkills) && <PortfolioComponent portfolio={portfolio} skills={orgSkills} />}
+
+            {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
         </Section>
     )
 }

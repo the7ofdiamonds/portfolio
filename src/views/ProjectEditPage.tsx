@@ -1,7 +1,8 @@
 import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { Section } from '@the7ofdiamonds/ui-ux';
+import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
+import { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
 
 import { updateProject } from '@/controllers/updateSlice';
 
@@ -45,9 +46,9 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
 
     const [title, setTitle] = useState<string>(projectID ?? '');
 
-    const [message, setMessage] = useState<string>('');
-    const [messageType, setMessageType] = useState<string>('info');
-    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
+    const [message, setMessage] = useState<string | null>(null);
+    const [messageType, setMessageType] = useState<MessageType>('info');
+    const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
 
     useEffect(() => {
         if (login) {
@@ -174,6 +175,7 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
         <Section>
             <h1 className={styles.title}>edit project</h1>
             <EditProject project={project} change={handleUpdateProject} />
+            {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
         </Section>
     )
 }
