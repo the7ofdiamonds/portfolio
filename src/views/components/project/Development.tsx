@@ -5,7 +5,11 @@ import {
   ContentComponent,
   ImageComponent,
   Skills,
-  StatusBar
+  StatusBar,
+} from '@the7ofdiamonds/ui-ux';
+import {
+  MessageType,
+  StatusBarVisibility
 } from '@the7ofdiamonds/ui-ux';
 import {
   CheckList,
@@ -53,8 +57,9 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
   const [projectSkills, setProjectSkills] = useState<ProjectSkills | null>(null);
   const [repoURL, setRepoURL] = useState<RepoURL | null>(null);
   const [buttonTitle, setButtonTitle] = useState<string | null>(null);
-  const [messageType, setMessageType] = useState<string | null>(null);
+  const [show, setShow] = useState<StatusBarVisibility>('hide');
   const [message, setMessage] = useState<string | null>(null);
+  const [messageType, setMessageType] = useState<MessageType>('info');
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
@@ -155,7 +160,7 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
             <h3 className={styles.title}>{buttonTitle}</h3>
           </button>}
 
-        {messageType && message && <StatusBar show={'hide'} messageType={messageType} message={message} />}
+        {message && <StatusBar show={show} messageType={messageType} message={message} />}
       </div>
     }
     </>

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import { StatusBar } from '@the7ofdiamonds/ui-ux';
+import { MessageType, StatusBar, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
 import { Project } from '@the7ofdiamonds/ui-ux';
 
 import { EditStatus } from '@/views/components/edit/process/EditStatus';
@@ -16,6 +16,10 @@ interface EditProcessProps {
 }
 
 export const EditProcess: React.FC<EditProcessProps> = ({ project, change }) => {
+    const [show, setShow] = useState<StatusBarVisibility>('hide');
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<MessageType>('info');
+
     return (
         <div className={styles.edit} id='edit_process'>
             <h1 className={styles.title}>process</h1>
@@ -40,7 +44,7 @@ export const EditProcess: React.FC<EditProcessProps> = ({ project, change }) => 
                 <h3>SAVE PROCESS</h3>
             </button>
 
-            <StatusBar show={'show'} messageType={''} message={''} />
+            <StatusBar show={show} messageType={messageType} message={message} />
         </div>
     )
 }

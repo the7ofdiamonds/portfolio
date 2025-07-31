@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
-import { StatusBar } from '@the7ofdiamonds/ui-ux';
+import { MessageType, StatusBar, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
 import { Contributor, Project, ProjectDetails } from '@the7ofdiamonds/ui-ux';
 
 import { Privacy, privacyFromString } from '@/model/enum/Enums';
@@ -18,9 +18,9 @@ export const EditDetails: React.FC<EditDetailsProps> = ({ project, change }) => 
   const [content, setContent] = useState<string>('');
   const [team, setTeam] = useState<Array<Contributor>>([]);
   const [story, setStory] = useState<string>('');
-  const [show, setShow] = useState<'show' | 'hide'>('hide');
+  const [show, setShow] = useState<StatusBarVisibility>('hide');
   const [message, setMessage] = useState<string>('');
-  const [messageType, setMessageType] = useState<string>('info');
+  const [messageType, setMessageType] = useState<MessageType>('info');
 
   useEffect(() => {
     if (project?.details?.privacy) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 
-import { Taxonomy, StatusBar,Image } from '@the7ofdiamonds/ui-ux';
+import { Taxonomy, StatusBar,Image, MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
 
 import { addSkill } from '@/controllers/skillsSlice';
 
@@ -22,9 +22,9 @@ export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
   const [path, setPath] = useState('');
   const [url, setUrl] = useState('');
   const [className, setClassName] = useState('');
-  const [show, setShow] = useState<'hide'|'show'>('hide');
-  const [messageType, setMessageType] = useState('');
-  const [message, setMessage] = useState(`Add ${taxonomy.type} to your skill set.`);
+  const [show, setShow] = useState<StatusBarVisibility>('hide');
+  const [messageType, setMessageType] = useState<MessageType>('info');
+  const [message, setMessage] = useState<string>(`Add ${taxonomy.type} to your skill set.`);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     try {

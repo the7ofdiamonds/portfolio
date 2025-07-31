@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import type { TypedUseSelectorHook } from 'react-redux';
 
 import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
 import { MessageType, StatusBarVisibility, Account, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
 
 import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
 
-import { useAppSelector } from '@/model/hooks';
-
-interface PortfolioPageProps {
+interface PortfolioPageProps<RootState, AppDispatch> {
   account: Account;
   portfolio: Portfolio | null;
   skills: Skills | null;
+  useAppSelector: TypedUseSelectorHook<RootState>;
+  useAppDispatch: () => AppDispatch;
 }
 
-export const PortfolioPage: React.FC<PortfolioPageProps> = ({ account, portfolio, skills }) => {
+export const PortfolioPage: React.FC<PortfolioPageProps<any, any>> = ({ account, portfolio, skills, useAppSelector, useAppDispatch }) => {
   const [title, setTitle] = useState<string>(`Portfolio`);
 
   const [message, setMessage] = useState<string | null>(null);
