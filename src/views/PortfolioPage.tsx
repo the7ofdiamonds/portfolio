@@ -14,12 +14,13 @@ interface PortfolioPageProps<RootState, AppDispatch> {
   useAppDispatch: () => AppDispatch;
 }
 
-export const PortfolioPage: React.FC<PortfolioPageProps<any, any>> = ({ account, portfolio, skills, useAppSelector, useAppDispatch }) => {
-  const [title, setTitle] = useState<string>(`Portfolio`);
-
-  const [message, setMessage] = useState<string | null>(null);
+export const PortfolioPage: React.FC<PortfolioPageProps<any, any>> = ({ account, skills, useAppSelector, useAppDispatch }) => {
+    const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<MessageType>('info');
   const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
+
+  const [title, setTitle] = useState<string>(`Portfolio`);
+  const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
 
   const {
     portfolioLoading,
@@ -62,6 +63,14 @@ export const PortfolioPage: React.FC<PortfolioPageProps<any, any>> = ({ account,
   useEffect(() => {
     document.title = title;
   }, [title]);
+
+  useEffect(() => {
+    if( account.portfolio) {
+      setPortfolio(account.portfolio);
+      setMessage(null);
+      setShowStatusBar('hide');
+    }
+  }, [account.portfolio]);
 
   return (
     <Section>

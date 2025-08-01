@@ -43,7 +43,7 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ organization
         if (organization?.login === login) {
             setOrg(organization);
         }
-    }, [organization?.login]);
+    }, [organization?.login,login]);
 
     useEffect(() => {
         if (!organizationObject && login) {

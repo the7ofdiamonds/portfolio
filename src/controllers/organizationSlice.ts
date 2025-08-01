@@ -40,17 +40,17 @@ export const getOrganization = createAsyncThunk(
       ) {
         const organization = new Organization(organizationResponse.payload);
 
-        const databaseResponse = organization.id
-          ? await thunkAPI.dispatch(getOrganizationData(organization.id))
-          : null;
+        // const databaseResponse = organization.id
+        //   ? await thunkAPI.dispatch(getOrganizationData(organization.id))
+        //   : null;
 
-        if (
-          databaseResponse &&
-          getOrganizationData.fulfilled.match(databaseResponse) &&
-          databaseResponse.payload
-        ) {
-          organization.fromDB(databaseResponse.payload);
-        }
+        // if (
+        //   databaseResponse &&
+        //   getOrganizationData.fulfilled.match(databaseResponse) &&
+        //   databaseResponse.payload
+        // ) {
+        //   organization.fromDB(databaseResponse.payload);
+        // }
 
         return organization.toOrganizationObject();
       }
