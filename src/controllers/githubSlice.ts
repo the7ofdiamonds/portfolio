@@ -789,13 +789,27 @@ export const getOrganizationAccount = createAsyncThunk(
       const query = `
         query ($login: String!) {
           organization(login: $login) {
-            login
-            name
-            email
             id
             __typename
-            avatarUrl
-            url
+                name
+    login
+    description
+    websiteUrl
+    url
+    email
+    location
+    twitterUsername
+    avatarUrl
+    isVerified
+    membersWithRole(first: 10) {
+      totalCount
+      nodes {
+        login
+        name
+        email
+        avatarUrl
+      }
+    }
             repositories(first: 30) {
               nodes {
                 id
