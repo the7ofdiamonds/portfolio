@@ -15,7 +15,7 @@ interface PortfolioPageProps<RootState, AppDispatch> {
 }
 
 export const PortfolioPage: React.FC<PortfolioPageProps<any, any>> = ({ account, skills, useAppSelector, useAppDispatch }) => {
-    const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<MessageType>('info');
   const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
 
@@ -65,7 +65,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps<any, any>> = ({ account,
   }, [title]);
 
   useEffect(() => {
-    if( account.portfolio) {
+    if (account.portfolio) {
       setPortfolio(account.portfolio);
       setMessage(null);
       setShowStatusBar('hide');
