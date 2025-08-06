@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import type { TypedUseSelectorHook } from 'react-redux';
 
-import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
-import { MessageType, StatusBarVisibility, Account, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
+import { Organization, Section, StatusBar, User } from '@the7ofdiamonds/ui-ux';
+import { MessageType, StatusBarVisibility, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
 
 import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
 
 interface PortfolioPageProps<RootState, AppDispatch> {
-  account: Account;
+  account: Organization | User;
   portfolio: Portfolio | null;
   skills: Skills | null;
   useAppSelector: TypedUseSelectorHook<RootState>;

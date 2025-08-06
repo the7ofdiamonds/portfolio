@@ -1,6 +1,6 @@
 {
   "name": "@the7ofdiamonds/github-portfolio",
-  "version": "1.0.43",
+  "version": "1.0.44",
   "description": "Use GitHub API to create portfolio website with repositories.",
   "author": "@the7ofdiamonds",
   "license": "ISC",
