@@ -27,7 +27,7 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills, setProjec
   const [selectedLanguages, setSelectedLanguages] = useState<Set<Language>>(projectSkills.languages ?? new Set());
   const [selectedFrameworks, setSelectedFrameworks] = useState<Set<Framework>>(projectSkills.frameworks ?? new Set());
   const [selectedTechnologies, setSelectedTechnologies] = useState<Set<Technology>>(projectSkills.technologies ?? new Set());
-  const [selectedServices, setSelectedServices] = useState<Set<Service>>(projectSkills.services ?? new Set());
+  const [selectedServices, setSelectedServices] = useState<Set<Service>>(projectSkills.services);
 
   const [skills, setSkills] = useState<Skills>(new Skills());
 
@@ -127,7 +127,6 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills, setProjec
 
         {skills?.types && skills.types.size > 0 &&
           Array.from(skills.types)
-            .map((type) => new ProjectType(type))
             .map((type) => (
               <div className={styles['form-item-flex']} key={type.id}>
                 <input
@@ -149,7 +148,6 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills, setProjec
 
         {skills.languages && skills.languages.size > 0 &&
           Array.from(skills.languages)
-            .map((lang) => new Language(lang))
             .map((language) => (
               <div className={styles['form-item-flex']} key={language.id}>
                 <input
@@ -170,7 +168,6 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills, setProjec
 
         {skills.frameworks && skills.frameworks.size > 0 &&
           Array.from(skills.frameworks)
-            .map((framework) => new Framework(framework))
             .map((framework) => (
               <div className={styles['form-item-flex']} key={framework.id}>
                 <input
@@ -191,7 +188,6 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills, setProjec
 
         {skills.technologies && skills.technologies.size > 0 &&
           Array.from(skills.technologies)
-            .map((tech) => new Technology(tech))
             .map((technology) => (
               <div className={styles['form-item-flex']} key={technology.id}>
                 <input
@@ -212,7 +208,6 @@ export const EditSkills: React.FC<EditSkillsProps> = ({ projectSkills, setProjec
 
         {skills.services && skills.services.size > 0 &&
           Array.from(skills.services)
-            .map((service) => new Service(service))
             .map((service) => (
               <div className={styles['form-item-flex']} key={service.id}>
                 <input

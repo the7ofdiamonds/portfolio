@@ -1,0 +1,12 @@
+@use './variables.scss';
+@use './card.scss';
+
+.description-card {
+  background-color: var(--card-background-color-secondary);
+  color: var(--card-color-secondary);
+
+  h4 {
+    letter-spacing: normal;
+    margin: 0;
+  }
+}
