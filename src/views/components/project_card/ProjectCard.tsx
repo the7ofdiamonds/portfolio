@@ -14,18 +14,17 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
     return (
         <div className={`${styles['project-card']} ${styles.card}`}>
-            <h2>{title}</h2>
+            <h3 className='title'>{title}</h3>
 
             {solution && solution.gallery && Array.isArray(solution.gallery.images) &&
-                solution.gallery.images.length > 0 ? (
-                <img
-                    className={styles.photo}
-                    src={solution.gallery.images[0].url}
-                    alt={solution.gallery.images[0].title}
-                />
-            ) : (
-                ''
-            )}
+                solution.gallery.images.length > 0 && (
+                    <img
+                        className={styles.photo}
+                        src={solution.gallery.images[0].url}
+                        alt={solution.gallery.images[0].title}
+                    />
+                )
+            }
 
             {subtitle && <h3>{subtitle}</h3>}
 
