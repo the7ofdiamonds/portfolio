@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import type { TypedUseSelectorHook } from 'react-redux';
 
-import { Section, StatusBar, Skills } from '@the7ofdiamonds/ui-ux';
+import { Organization, Section, Skills, StatusBar, User } from '@the7ofdiamonds/ui-ux';
 import { MessageType, StatusBarVisibility, Account, GitHubRepoQuery, Portfolio, Project } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectComponent } from './components/project/ProjectComponent';
 
 import { getProject } from '@/controllers/projectSlice';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
-
-interface ProjectPageProps {
-  account: Account;
+interface ProjectPageProps<RootState, AppDispatch> {
+  account: Organization | User;
   portfolio: Portfolio | null;
   skills: Skills | null;
+  useAppSelector: TypedUseSelectorHook<RootState>;
+  useAppDispatch: () => AppDispatch;
 }
 
-export const ProjectPage: React.FC<ProjectPageProps> = ({ account, portfolio, skills }) => {
+export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, portfolio, skills, useAppSelector, useAppDispatch }) => {
   const dispatch = useAppDispatch();
 
   const { owner, projectID } = useParams<string>();

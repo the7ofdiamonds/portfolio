@@ -2,12 +2,12 @@ import React from 'react';
 
 // import {user} from '@the7ofdiamonds/communications'
 
-import { Account, Contributor } from '@the7ofdiamonds/ui-ux';
+import { Contributor, Organization, User } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
 
 interface TeamProps {
-  account: Account;
+  account: Organization | User;
   projectTeam: Array<Contributor>
 }
 

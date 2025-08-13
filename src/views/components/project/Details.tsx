@@ -5,10 +5,11 @@ import { ContentComponent, RepoContentQuery } from '@the7ofdiamonds/ui-ux';
 import { ProjectTeamComponent } from '@/views/components/project/ProjectTeam';
 
 import {
-  Account,
   Contributor,
+  Organization,
   Project,
-  RepoSize
+  RepoSize,
+  User
 } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
@@ -16,7 +17,7 @@ import { useAppDispatch } from '@/model/hooks';
 import { getRepoFile } from '@/controllers/githubSlice';
 
 interface ProjectDetailsProps {
-  account: Account;
+  account: Organization | User;
   project: Project;
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@the7ofdiamonds/github-portfolio",
-  "version": "1.0.46",
+  "version": "1.0.47",
   "description": "Use GitHub API to create portfolio website with repositories.",
   "author": "@the7ofdiamonds",
   "license": "ISC",
@@ -44,8 +44,8 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@the7ofdiamonds/communications": "^0.0.62",
-    "@the7ofdiamonds/ui-ux": "^1.0.61",
-    "@the7ofdiamonds/gateway": "^0.0.34",
+    "@the7ofdiamonds/ui-ux": "^1.0.62",
+    "@the7ofdiamonds/gateway": "^0.0.35",
     "buffer": "^6.0.3",
     "cors": "^2.8.5",
     "crypto-browserify": "^3.12.0",

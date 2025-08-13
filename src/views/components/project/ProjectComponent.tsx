@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { ProjectDetailsComponent } from '@/views/components/project/Details';
-import { ProjectDescription } from '@/views/components/project/ProjectDescription';
-import { TheSolution } from '@/views/components/project/TheSolution';
-import { TheProcess } from '@/views/components/project/TheProcess';
-import { TheProblem } from '@/views/components/project/TheProblem';
-import { OwnerComponent } from '@/views/components/project/OwnerComponent';
-
 import {
   Account,
+  Organization,
   Owner,
   Project,
   ProjectDetails,
@@ -16,13 +10,25 @@ import {
   ProjectProcess,
   ProjectSolution,
   ProjectQuery,
-  Skills
+  Skills,
+  User
 } from '@the7ofdiamonds/ui-ux';
+import {
+  Main,
+  StatusBar
+} from '@the7ofdiamonds/ui-ux';
+
+import { ProjectDetailsComponent } from '@/views/components/project/Details';
+import { ProjectDescription } from '@/views/components/project/ProjectDescription';
+import { TheSolution } from '@/views/components/project/TheSolution';
+import { TheProcess } from '@/views/components/project/TheProcess';
+import { TheProblem } from '@/views/components/project/TheProblem';
+import { OwnerComponent } from '@/views/components/project/OwnerComponent';
 
 import styles from './Project.module.scss';
 
 interface ProjectComponentProps {
-  account: Account;
+  account: Organization | User;
   project: Project | null;
   skills: Skills | null;
 }
@@ -95,7 +101,7 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
 
   return (
     project &&
-     <main className={styles.main}>
+    <Main>
       {title && <h1 className={styles.title}>{title}</h1>}
 
       {subtitle && <h2 className={styles.subtitle}>{subtitle}</h2>}
@@ -111,6 +117,6 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
       {problem && <TheProblem project={project} />}
 
       {owner && <OwnerComponent project={project} />}
-    </main>
+    </Main>
   );
 }
