@@ -72,14 +72,13 @@ export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
   }, [design?.gallery?.umlDiagrams]);
 
   useEffect(() => {
-    if (projectQuery && projectQuery.owner && projectQuery.repo) {
-      setRepoContentQuery(new RepoContentQuery(projectQuery.owner, projectQuery.repo, 'Design.md', ''))
+    if (design.contentURL && design.contentURL && design.contentURL.owner && design.contentURL.repo) {
+      setRepoContentQuery(new RepoContentQuery(design.contentURL.owner, design.contentURL.repo, design.contentURL.path, design.contentURL.branch))
     }
-  }, [projectQuery]);
+  }, [design?.contentURL]);
 
   useEffect(() => {
-    if (design
-      && design.checkList) {
+    if (design?.checkList?.tasks?.list.size > 0) {
       setCheckList(design.checkList)
     }
   }, [design.checkList]);

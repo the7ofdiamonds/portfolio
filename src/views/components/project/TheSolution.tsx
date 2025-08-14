@@ -38,10 +38,10 @@ export const TheSolution: React.FC<SolutionProps> = ({ project }) => {
   }, [project?.solution?.gallery]);
 
   useEffect(() => {
-    if (project.query && project.query.owner && project.query.repo) {
-      setQuery(new RepoContentQuery(project.query.owner, project.query.repo, '', ''))
+    if (project.solution && project.solution.contentURL && project.solution.contentURL && project.solution.contentURL.owner && project.solution.contentURL.repo) {
+      setQuery(new RepoContentQuery(project.solution.contentURL.owner, project.solution.contentURL.repo, project.solution.contentURL.path, project.solution.contentURL.branch))
     }
-  }, [project.query]);
+  }, [project?.solution?.contentURL]);
 
   useEffect(() => {
     if (project.solution && project.solution.projectURLs) {

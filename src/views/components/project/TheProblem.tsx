@@ -20,10 +20,9 @@ interface ProblemProps {
 
 export const TheProblem: React.FC<ProblemProps> = ({ project }) => {
   const dispatch = useAppDispatch();
-  
+
   const [gallery, setGallery] = useState<Gallery | null>(null);
   const [query, setQuery] = useState<RepoContentQuery | null>(null);
-  const [content, setContent] = useState<ContentURL | null>(null);
   const [whitepaperURL, setWhitepaperURL] = useState<DocumentURL | null>(null);
 
   useEffect(() => {
@@ -41,8 +40,8 @@ export const TheProblem: React.FC<ProblemProps> = ({ project }) => {
   }, [project.query]);
 
   useEffect(() => {
-    if (project?.problem && project.problem.contentURL && project.problem.contentURL.path === 'TheProblem.md') {
-      setContent(project.problem.contentURL)
+    if (project?.problem?.contentURL && project?.problem?.contentURL.owner && project?.problem?.contentURL.repo) {
+      setQuery(new RepoContentQuery(project?.problem?.contentURL.owner, project?.problem?.contentURL.repo, project?.problem?.contentURL.path, project?.problem?.contentURL.branch))
     }
   }, [project?.problem?.contentURL]);
 
@@ -52,7 +51,7 @@ export const TheProblem: React.FC<ProblemProps> = ({ project }) => {
     }
   }, [project?.problem?.whitepaperURL]);
 
-  const hasContent = gallery || content || whitepaperURL;
+  const hasContent = query || gallery || whitepaperURL;
 
   return (
     <>
@@ -61,7 +60,7 @@ export const TheProblem: React.FC<ProblemProps> = ({ project }) => {
           <div className={`${styles['project-section'], styles['project-problem']}`} id="project_problem">
             <h2 className={styles.title}>the problem</h2>
 
-            {gallery && gallery.images && < GalleryComponent title={'Problem'} gallery={gallery.images} />}
+            {gallery && gallery.images && < GalleryComponent title={''} gallery={gallery.images} />}
 
             {query && <ContentComponent<RepoContentQuery> title={null} query={query} getFile={getRepoFile} dispatch={dispatch} />}
           </div>

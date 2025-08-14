@@ -37,10 +37,11 @@ import {
   loginWithPopUp
 } from '@the7ofdiamonds/gateway';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
+import { useAppDispatch } from '@/model/hooks';
+
+import { ProjectSkillsComponent } from './ProjectSkillsComponent';
 
 import styles from './Project.module.scss';
-import { ProjectSkillsComponent } from './ProjectSkillsComponent';
 
 interface DevelopmentProps {
   solution: ProjectSolution | null;
@@ -54,12 +55,10 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
 
   const [versions, setVersions] = useState<ProjectVersions | null>(null);
   const [featuresRoadmap, setFeaturesRoadmap] = useState<FeaturesRoadmap | null>(null)
-  const [content, setContent] = useState<ContentURL | null>(null);
   const [checkList, setCheckList] = useState<CheckList | null>(null);
-  const [query, setQuery] = useState<ProjectQuery | null>(null);
+  const [query, setQuery] = useState<RepoContentQuery | null>(null);
   const [projectSkills, setProjectSkills] = useState<ProjectSkills | null>(null);
   const [repoURL, setRepoURL] = useState<RepoURL | null>(null);
-  const [buttonTitle, setButtonTitle] = useState<string | null>(null);
   const [show, setShow] = useState<StatusBarVisibility>('hide');
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<MessageType>('info');
@@ -80,25 +79,16 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
   }, [solution?.features]);
 
   useEffect(() => {
-    if (development
-      && development.contentURL
-      && development.contentURL.path === 'Development.md') {
-      setContent(development.contentURL)
-    }
-  }, [development?.contentURL]);
-
-  useEffect(() => {
-    if (development
-      && development.checkList) {
+    if (development?.checkList?.tasks?.list.size > 0) {
       setCheckList(development.checkList)
     }
   }, [development?.checkList]);
 
   useEffect(() => {
-    if (projectQuery) {
-      setQuery(projectQuery)
+    if (development.contentURL && development.contentURL && development.contentURL.owner && development.contentURL.repo) {
+      setQuery(new RepoContentQuery(development.contentURL.owner, development.contentURL.repo, development.contentURL.path, development.contentURL.branch))
     }
-  }, [projectQuery]);
+  }, [development?.contentURL]);
 
   useEffect(() => {
     if (development
@@ -116,7 +106,6 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
 
   useEffect(() => {
     if (!isAuthenticated) {
-      setButtonTitle('Log in with GitHub');
       setMessage('Click Log in with GitHub to gain access to the code.');
       setMessageType('info');
     }
@@ -124,21 +113,12 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
 
   useEffect(() => {
     if (isAuthenticated) {
-      setButtonTitle('See Code');
       setMessage('Gain access to the source code on GitHub.');
       setMessageType('info');
     }
   }, [isAuthenticated]);
 
-  const handleSeeCode = () => {
-    if (isAuthenticated && repoURL && repoURL.url) {
-      window.open(repoURL.url, '_blank');
-    } else {
-      dispatch(loginWithPopUp(githubAuthProvider));
-    }
-  };
-
-  const hasContent = versions || featuresRoadmap || content || (checkList && query) || skills;
+  const hasContent = versions || featuresRoadmap || (checkList && query) || skills;
 
   return (
     <>{hasContent &&
@@ -151,15 +131,13 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
         {featuresRoadmap && <RoadmapComponent roadmap={featuresRoadmap} />}
 
         {query &&
-          <ContentComponent<RepoContentQuery> title={null} query={new RepoContentQuery(query.owner, query.repo, 'Development.md', '')} getFile={getRepoFile} dispatch={dispatch} />}
+          <ContentComponent<RepoContentQuery> title={null} query={query} getFile={getRepoFile} dispatch={dispatch} />}
 
-        {checkList && query && <CheckListComponent checkList={checkList} />}
+        {checkList && <CheckListComponent checkList={checkList} />}
 
         {projectSkills && skills && <ProjectSkillsComponent projectSkills={projectSkills} skills={skills} />}
 
-        {repoURL && buttonTitle &&
-          <LoginButtonGitHub />
-        }
+        {repoURL && <LoginButtonGitHub />}
 
         {message && <StatusBar show={show} messageType={messageType} message={message} />}
       </div>

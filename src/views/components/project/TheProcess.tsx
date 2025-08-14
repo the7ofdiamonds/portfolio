@@ -75,7 +75,6 @@ export const TheProcess: React.FC<ProcessProps> = ({ project, projectQuery, skil
     }
   }, [projectQuery]);
 
-
   const hasContent = status || design || development || delivery;
 
   return (
