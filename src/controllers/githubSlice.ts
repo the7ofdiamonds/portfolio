@@ -38,6 +38,7 @@ import {
   Skills,
   ProjectSkills,
   GitHubRepoFileResponse,
+  GitHubUser,
 } from '@the7ofdiamonds/ui-ux';
 
 type OctokitResponse<T = any, S = number> = {
@@ -249,7 +250,6 @@ export const getContributors = createAsyncThunk(
         const contributors = new Contributors();
         const tRepoContributors = repoContributors.data as RepoContributors;
         contributors.fromGitHub(tRepoContributors);
-
         return contributors.toContributorsObject();
       }
 
@@ -493,7 +493,7 @@ export const getRepoDetails = createAsyncThunk(
             repo.setIssues(issues);
           }
         }
-
+        
         return repo.toRepoObject();
       }
 
@@ -723,7 +723,7 @@ export const getUserAccount = createAsyncThunk(
 
       if (data) {
         const user = new User();
-        user.fromGitHub(data);
+        user.fromGitHub(data as GitHubUser);
 
         if (user.organizationsURL) {
           const orgResponse = await thunkAPI.dispatch(

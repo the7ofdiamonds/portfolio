@@ -56,8 +56,8 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
   }, [project.query]);
 
   useEffect(() => {
-    if (project.details && project.details.teamList && project.details.teamList.length > 0) {
-      setContributors(project.details.teamList)
+    if (project.details && project.details.teamList && project.details.teamList.list.length > 0) {
+      setContributors(project.details.teamList.list)
     }
   }, [project]);
 

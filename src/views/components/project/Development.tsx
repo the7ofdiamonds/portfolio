@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import {
+  Button,
+  ButtonImage,
   CheckListComponent,
   ContentComponent,
   ImageComponent,
@@ -31,6 +33,7 @@ import { RoadmapComponent } from '@/views/components/project/RoadmapComponent';
 import { getRepoFile } from '@/controllers/githubSlice';
 import {
   githubAuthProvider,
+  LoginButtonGitHub,
   loginWithPopUp
 } from '@the7ofdiamonds/gateway';
 
@@ -155,10 +158,8 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
         {projectSkills && skills && <ProjectSkillsComponent projectSkills={projectSkills} skills={skills} />}
 
         {repoURL && buttonTitle &&
-          <button className={styles.repo} onClick={handleSeeCode}>
-            <ImageComponent image={new Image({ title: 'GitHub', url: '', class_name: 'fa fa-github fa-fw' })} />
-            <h3 className={styles.title}>{buttonTitle}</h3>
-          </button>}
+          <LoginButtonGitHub />
+        }
 
         {message && <StatusBar show={show} messageType={messageType} message={message} />}
       </div>
