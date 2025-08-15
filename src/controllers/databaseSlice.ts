@@ -121,7 +121,7 @@ export const getProjectData = createAsyncThunk(
           })
         : null;
 
-      const text = response ? await response.text() : null;
+        const text = response ? await response.text() : null;
 
       if (text) {
         const data = JSON.parse(text);
@@ -133,6 +133,7 @@ export const getProjectData = createAsyncThunk(
     } catch (error) {
       const err = error as Error;
       console.error(err);
+
       throw new Error(err.message);
     }
   }

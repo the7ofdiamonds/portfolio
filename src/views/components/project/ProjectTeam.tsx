@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// import {user} from '@the7ofdiamonds/communications'
-
 import { Contributor, Organization, User } from '@the7ofdiamonds/ui-ux';
 
 import { UserCard } from '@the7ofdiamonds/communications';
@@ -22,9 +20,6 @@ export const ProjectTeamComponent: React.FC<TeamProps> = ({ account, projectTeam
     if (account instanceof Organization) {
       account?.team?.forEach((user) => {
         pTeam = projectTeam.map((contributor) => {
-          console.log(contributor.login)
-          console.log(user.login)
-
           if (contributor.login === user.login) {
             return user as Contributor;
           }

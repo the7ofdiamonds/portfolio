@@ -1,0 +1,14 @@
+.roadmap {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .feature {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}

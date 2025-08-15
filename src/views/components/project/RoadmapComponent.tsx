@@ -21,7 +21,7 @@ export const RoadmapComponent: React.FC<RoadmapProps> = ({ roadmap }) => {
                                 v{feature.version ? feature.version.toString() : '1.0.0'}
                             </h3>
                             <h3>-</h3>
-                            <p>{feature.description}</p>
+                            <h3>{feature.description}</h3>
                         </div>
                     ))}
                 </div>}

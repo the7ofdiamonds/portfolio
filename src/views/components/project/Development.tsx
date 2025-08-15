@@ -79,14 +79,14 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
   }, [solution?.features]);
 
   useEffect(() => {
-    if (development?.checkList?.tasks?.list.size > 0) {
+    if (development?.checkList?.tasks && development.checkList.tasks?.list.size > 0) {
       setCheckList(development.checkList)
     }
   }, [development?.checkList]);
 
   useEffect(() => {
-    if (development.contentURL && development.contentURL && development.contentURL.owner && development.contentURL.repo) {
-      setQuery(new RepoContentQuery(development.contentURL.owner, development.contentURL.repo, development.contentURL.path, development.contentURL.branch))
+    if (development.contentURL && development.contentURL && development.contentURL.owner && development.contentURL.repo && development.contentURL.path) {
+      setQuery(new RepoContentQuery(development.contentURL.owner, development.contentURL.repo, development.contentURL.path, development.contentURL.branch ?? ''))
     }
   }, [development?.contentURL]);
 
