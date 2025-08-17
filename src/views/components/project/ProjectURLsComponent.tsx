@@ -39,15 +39,15 @@ const ProjectURLsComponent: React.FC<ProjectURLsProps> = ({ projectUrls }) => {
       <div className={styles['project-urls']}>
         {homepage && <ButtonImage action={function (): void {
           throw new Error("Function not implemented.");
-        } } image={undefined} name={""} url={""}/>}
+        } } image={homepage.image} name={""} url={""}/>}
 
         {ios && <ButtonImage action={function (): void {
           throw new Error("Function not implemented.");
-        } } image={undefined} name={""} url={""} />}
+        } } image={ios.image} name={""} url={""} />}
 
         {android && <ButtonImage action={function (): void {
           throw new Error("Function not implemented.");
-        } } image={undefined} name={""} url={""} />}
+        } } image={android.image} name={""} url={""} />}
       </div>)}
     </>
   );

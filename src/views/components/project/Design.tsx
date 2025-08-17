@@ -72,13 +72,13 @@ export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
   }, [design?.gallery?.umlDiagrams]);
 
   useEffect(() => {
-    if (design.contentURL && design.contentURL && design.contentURL.owner && design.contentURL.repo) {
-      setRepoContentQuery(new RepoContentQuery(design.contentURL.owner, design.contentURL.repo, design.contentURL.path, design.contentURL.branch))
+    if (design.contentURL && design.contentURL && design.contentURL.owner && design.contentURL.repo && design.contentURL.path) {
+      setRepoContentQuery(new RepoContentQuery(design.contentURL.owner, design.contentURL.repo, design.contentURL.path, design.contentURL.branch ?? ''))
     }
   }, [design?.contentURL]);
 
   useEffect(() => {
-    if (design?.checkList?.tasks?.list.size > 0) {
+    if (design?.checkList?.tasks?.list && design?.checkList?.tasks?.list.size > 0) {
       setCheckList(design.checkList)
     }
   }, [design.checkList]);
@@ -110,7 +110,7 @@ export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
             <ContentComponent<RepoContentQuery> title={null} query={repoContentQuery} getFile={getRepoFile} dispatch={dispatch} />}
 
           {checkList &&
-            <CheckListComponent checkList={design.checkList} />}
+            <CheckListComponent checkList={checkList} />}
         </div>
       }
     </>

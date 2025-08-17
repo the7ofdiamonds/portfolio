@@ -46,12 +46,6 @@ export const TheProcess: React.FC<ProcessProps> = ({ project, projectQuery, skil
   }, [project?.process?.status]);
 
   useEffect(() => {
-    if (project?.process?.status) {
-      setStatus(project.process.status)
-    }
-  }, [project?.process?.status]);
-
-  useEffect(() => {
     if (project?.process?.design) {
       setDesign(project.process.design)
     }

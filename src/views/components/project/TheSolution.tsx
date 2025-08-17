@@ -38,8 +38,8 @@ export const TheSolution: React.FC<SolutionProps> = ({ project }) => {
   }, [project?.solution?.gallery]);
 
   useEffect(() => {
-    if (project.solution && project.solution.contentURL && project.solution.contentURL && project.solution.contentURL.owner && project.solution.contentURL.repo) {
-      setQuery(new RepoContentQuery(project.solution.contentURL.owner, project.solution.contentURL.repo, project.solution.contentURL.path, project.solution.contentURL.branch))
+    if (project.solution && project.solution.contentURL && project.solution.contentURL && project.solution.contentURL.owner && project.solution.contentURL.repo && project.solution.contentURL.path) {
+      setQuery(new RepoContentQuery(project.solution.contentURL.owner, project.solution.contentURL.repo, project.solution.contentURL.path, project.solution.contentURL.branch ?? ''))
     }
   }, [project?.solution?.contentURL]);
 

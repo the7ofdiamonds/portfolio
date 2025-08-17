@@ -38,8 +38,8 @@ export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) =>
   }, [delivery.gallery]);
 
   useEffect(() => {
-    if (projectQuery && projectQuery.owner && projectQuery.repo) {
-      setRepoContentQuery(new RepoContentQuery(projectQuery.owner, projectQuery.repo, 'Delivery.md', ''))
+    if (delivery.contentURL && delivery.contentURL.owner && delivery.contentURL.repo && delivery.contentURL.path) {
+      setRepoContentQuery(new RepoContentQuery(delivery.contentURL.owner, delivery.contentURL.repo, delivery.contentURL.path, delivery.contentURL.branch ?? ''))
     }
   }, [projectQuery]);
 

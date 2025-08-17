@@ -50,8 +50,8 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
   }, [project]);
 
   useEffect(() => {
-    if (project.details?.content && project.details?.content.owner && project.details?.content.repo) {
-      setRepoContentQuery(new RepoContentQuery(project.details?.content.owner, project.details?.content.repo, project.details?.content.path, project.details?.content.branch))
+    if (project.details?.content && project.details?.content.owner && project.details?.content.repo && project.details?.content.path) {
+      setRepoContentQuery(new RepoContentQuery(project.details?.content.owner, project.details?.content.repo, project.details?.content.path, project.details?.content.branch ?? ''))
     }
   }, [project.details?.content]);
 

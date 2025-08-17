@@ -40,8 +40,8 @@ export const TheProblem: React.FC<ProblemProps> = ({ project }) => {
   }, [project.query]);
 
   useEffect(() => {
-    if (project?.problem?.contentURL && project?.problem?.contentURL.owner && project?.problem?.contentURL.repo) {
-      setQuery(new RepoContentQuery(project?.problem?.contentURL.owner, project?.problem?.contentURL.repo, project?.problem?.contentURL.path, project?.problem?.contentURL.branch))
+    if (project?.problem?.contentURL && project?.problem?.contentURL.owner && project?.problem?.contentURL.repo && project?.problem?.contentURL.path) {
+      setQuery(new RepoContentQuery(project?.problem?.contentURL.owner, project?.problem?.contentURL.repo, project?.problem?.contentURL.path, project?.problem?.contentURL.branch ?? ''))
     }
   }, [project?.problem?.contentURL]);
 

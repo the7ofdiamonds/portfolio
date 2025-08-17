@@ -110,21 +110,21 @@ export const EditProjectURL: React.FC<EditProjectURLProps> = ({ projectURLs }) =
             {homepage &&
                 (<div className={styles['form-item-flex']}>
                     <label className={styles.label} htmlFor="homepage_url">{homepage.name}:</label>
-                    <input className={styles.input} type="text" id="homepage" value={homepageURL ?? ''} placeholder={homepage.description} name='homepage_url' onChange={handleHomepageChange} />
+                    <input className={styles.input} type="text" id="homepage" value={homepageURL ?? ''} placeholder={homepage.description ?? ''} name='homepage_url' onChange={handleHomepageChange} />
                 </div>)
             }
 
             {ios &&
                 (<div className={styles['form-item-flex']}>
                     <label className={styles.label} htmlFor="ios_url">{ios.name}:</label>
-                    <input className={styles.input} type="text" id="ios" value={iosURL ?? ''} placeholder={ios.description} name='ios_url' onChange={handleIosChange} />
+                    <input className={styles.input} type="text" id="ios" value={iosURL ?? ''} placeholder={ios.description ?? ''} name='ios_url' onChange={handleIosChange} />
                 </div>)
             }
 
             {android &&
                 (<div className={styles['form-item-flex']}>
                     <label className={styles.label} htmlFor="android_url">{android.name}:</label>
-                    <input className={styles.input} type="text" id="android" value={androidURL ?? ''} placeholder={android.description} name='android_url' onChange={handleAndroidChange} />
+                    <input className={styles.input} type="text" id="android" value={androidURL ?? ''} placeholder={android.description ?? ''} name='android_url' onChange={handleAndroidChange} />
                 </div>)
             }
 
