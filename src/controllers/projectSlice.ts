@@ -54,9 +54,9 @@ export const getProject = createAsyncThunk(
 
       if (
         getProjectData.fulfilled.match(projectDataResponse) &&
-        projectDataResponse.payload?.data
+        projectDataResponse.payload
       ) {
-        project.fromDocumentData(projectDataResponse.payload.data);
+        project.fromDocumentData(projectDataResponse.payload);
       }
 
       return project.toProjectObject();

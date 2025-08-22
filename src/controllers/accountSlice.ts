@@ -5,11 +5,12 @@ import {
   CreateSliceOptions,
 } from '@reduxjs/toolkit';
 
-import { User } from '@the7ofdiamonds/ui-ux';
+import { GitHubRepoQuery, User } from '@the7ofdiamonds/ui-ux';
 
 import { getAuthenticatedUserAccount } from '@/controllers/userSlice';
+import { getSkills } from './skillsSlice';
 // import { getSkills } from '@/controllers/taxonomiesSlice';
-// import { getPortfolio } from '@/controllers/portfolioSlice';
+import { getPortfolioDetails } from '@/controllers/portfolioSlice';
 
 export interface AccountState {
   accountLoading: boolean;
@@ -60,14 +61,14 @@ export const getAccount = createAsyncThunk(
         accountResponse.payload
       ) {
         let skills = null;
-        // const skillsResponse = await thunkAPI.dispatch(getSkills());
+        const skillsResponse = await thunkAPI.dispatch(getSkills());
 
-        // if (
-        //   getSkills.fulfilled.match(skillsResponse) &&
-        //   skillsResponse.payload
-        // ) {
-        //   skills = skillsResponse.payload;
-        // }
+        if (
+          getSkills.fulfilled.match(skillsResponse) &&
+          skillsResponse.payload
+        ) {
+          skills = skillsResponse.payload;
+        }
 
         let projects = null;
 
@@ -76,18 +77,18 @@ export const getAccount = createAsyncThunk(
         if (Array.isArray(repos) && repos.length > 0) {
           const user = new User(accountResponse.payload);
 
-          //   const portfolioResponse =
-          //     user.repoQueries && user.repoQueries.length > 0
-          //       ? await thunkAPI.dispatch(getPortfolio(user.repoQueries))
-          //       : null;
+            const portfolioResponse =
+              user.repos && user.repos.count > 0
+                ? await thunkAPI.dispatch(getPortfolioDetails(user.repos))
+                : null;
 
-          //   if (
-          //     portfolioResponse &&
-          //     getPortfolio.fulfilled.match(portfolioResponse) &&
-          //     portfolioResponse.payload
-          //   ) {
-          //     projects = portfolioResponse.payload;
-          //   }
+            if (
+              portfolioResponse &&
+              getPortfolioDetails.fulfilled.match(portfolioResponse) &&
+              portfolioResponse.payload
+            ) {
+              projects = portfolioResponse.payload;
+            }
         }
 
         return {

@@ -12,27 +12,27 @@ interface SkillsComponentProps {
 export const SkillsComponent: React.FC<SkillsComponentProps> = ({ skills }) => {
     return (
         <>
-            {skills && skills.list.length > 0 &&
+            {skills && (skills.types || skills.languages || skills.frameworks || skills.technologies || skills.services) &&
                 <div className={styles.skills} id="skills">
                     <h3 className={styles.title}>skills</h3>
 
-                    {skills.types && skills.types.size > 0 && (
+                    {skills.types.size > 0 && (
                         <TaxListIcon taxonomiesSet={skills.types} taxonomiesTitle="Project Types" handleClick={handleSkillClick} />
                     )}
 
-                    {skills.languages && skills.languages.size > 0 && (
+                    {skills.languages.size > 0 && (
                         <TaxListIcon taxonomiesSet={skills.languages} taxonomiesTitle="Languages" handleClick={handleSkillClick} />
                     )}
 
-                    {skills.frameworks && skills.frameworks.size > 0 && (
+                    {skills.frameworks.size > 0 && (
                         <TaxListIcon taxonomiesSet={skills.frameworks} taxonomiesTitle="Frameworks" handleClick={handleSkillClick} />
                     )}
 
-                    {skills.technologies && skills.technologies.size > 0 && (
+                    {skills.technologies.size > 0 && (
                         <TaxListIcon taxonomiesSet={skills.technologies} taxonomiesTitle="Technologies" handleClick={handleSkillClick} />
                     )}
 
-                    {skills.services && skills.services.size > 0 && (
+                    {skills.services.size > 0 && (
                         <TaxListIcon taxonomiesSet={skills.services} taxonomiesTitle="Services" handleClick={handleSkillClick} />
                     )}
                 </div>

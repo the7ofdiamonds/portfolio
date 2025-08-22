@@ -49,14 +49,16 @@ export const getPortfolioDetails = createAsyncThunk(
           const projectDataResponse = await thunkAPI.dispatch(
             getProjectData(repo.name)
           );
+            console.log(projectDataResponse.payload)
 
           if (
             getProjectData.fulfilled.match(projectDataResponse) &&
-            projectDataResponse.payload?.data
+            projectDataResponse.payload
           ) {
-            project.fromDocumentData(projectDataResponse.payload.data);
-          }
+            console.log(projectDataResponse.payload)
 
+            project.fromDocumentData(projectDataResponse.payload);
+          }
           return project;
         }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Section, StatusBar, HeaderTaxonomyComponent } from '@the7ofdiamonds/ui-ux';
+import { Section, StatusBar, HeaderTaxonomyComponent, Organization } from '@the7ofdiamonds/ui-ux';
 import { MessageType, StatusBarVisibility, Portfolio, Project, Skills, User } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectsComponent } from '@/views/components/portfolio/ProjectsComponent';
@@ -12,14 +12,14 @@ import { getPortfolioDetails } from '@/controllers/portfolioSlice';
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 interface SearchProps {
-  user: User;
+  account: User | Organization;
   skills: Skills
 }
 
-export const SearchPage: React.FC<SearchProps> = ({ user, skills }) => {
+export const SearchPage: React.FC<SearchProps> = ({ account, skills }) => {
   const dispatch = useAppDispatch();
 
-  const { taxonomy, term } = useParams<string>();
+  const { taxonomy, type, term } = useParams<string>();
 
   const { portfolioLoading, portfolioLoadingMessage, portfolioErrorMessage, portfolioObject } = useAppSelector(
     (state) => state.portfolio
@@ -43,16 +43,16 @@ export const SearchPage: React.FC<SearchProps> = ({ user, skills }) => {
   }, [term]);
 
   useEffect(() => {
-    if (!user.portfolio && user.repos) {
-      dispatch(getPortfolioDetails(user.repos))
+    if (!account?.portfolio && account?.repos) {
+      dispatch(getPortfolioDetails(account.repos))
     }
-  }, [user?.repos]);
+  }, [account?.repos]);
 
   useEffect(() => {
-    if (user.portfolio) {
-      setPortfolio(user.portfolio)
+    if (account?.portfolio) {
+      setPortfolio(account.portfolio)
     }
-  }, [user.portfolio]);
+  }, [account?.portfolio]);
 
   useEffect(() => {
     if (portfolioObject) {
@@ -61,10 +61,15 @@ export const SearchPage: React.FC<SearchProps> = ({ user, skills }) => {
   }, [portfolioObject]);
 
   useEffect(() => {
-    if (portfolio && taxonomy && term) {
-      setProjects(portfolio.filterProjects(taxonomy, term));
+
+    if (portfolio && taxonomy && type && term) {
+          console.log(term)
+    console.log(type)
+    console.log(taxonomy)
+    console.log(portfolio)
+      setProjects(portfolio.filterProjects(type, term));
     }
-  }, [portfolio, taxonomy, term]);
+  }, [portfolio, taxonomy, type, term]);
 
   useEffect(() => {
     if (portfolioLoading) {
@@ -98,7 +103,7 @@ export const SearchPage: React.FC<SearchProps> = ({ user, skills }) => {
         <ProjectsComponent projects={projects} />
       }
 
-      <SkillsComponent skills={user.skills ?? skills} />
+      <SkillsComponent skills={skills} />
 
       {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
     </Section>

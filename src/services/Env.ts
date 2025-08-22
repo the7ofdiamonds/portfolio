@@ -13,7 +13,11 @@ export class Env {
   measurementId: string;
 
   constructor(env: ImportMetaEnv) {
-    this.apiURL = env.VITE_API_URL ?? null;
+    this.apiURL = env.DEV
+      ? env.VITE_DEV_API_URL
+      : env.VITE_API_URL
+      ? env.VITE_API_URL
+      : null;
     this.githubToken = env.VITE_OCTOKIT_AUTH ?? null;
     this.apiKey = env.VITE_FIREBASE_API_KEY ?? null;
     this.authDomain = env.VITE_FIREBASE_AUTH_DOMAIN ?? null;

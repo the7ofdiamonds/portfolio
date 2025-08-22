@@ -124,8 +124,6 @@ export const getToken = () => {
 
 export const setEnvVariables = (env: ImportMetaEnv) => {
   try {
-      console.log('init config')
-
     const envVars = new Env(env);
 
     return setConfig(envVars.toConfigObject());

@@ -19,7 +19,8 @@ const ProjectSkills: React.FC<ProjectSkillsProp> = ({ skillsSet }) => {
 
   const handleClick = (skill: Taxonomy) => {
     handleSkills();
-    window.location.href = `/projects/${skill.path}/${skill.id}`;
+    console.log(skill)
+    // window.location.href = `/${skill.path}`;
   };
 
   const handleSkills = () => {

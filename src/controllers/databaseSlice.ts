@@ -6,6 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 
 import { getAPI } from '@/services/Config';
+import { Project } from '@the7ofdiamonds/ui-ux';
 
 export interface DatabaseState {
   databaseLoading: boolean;
@@ -121,12 +122,13 @@ export const getProjectData = createAsyncThunk(
           })
         : null;
 
-        const text = response ? await response.text() : null;
+      const text = response ? await response.text() : null;
 
       if (text) {
-        const data = JSON.parse(text);
-
-        return data;
+        const json = JSON.parse(text);
+        const project = new Project();
+        project.fromDocumentData(json.data);
+        return project.toProjectDataObject();
       }
 
       return null;
@@ -180,10 +182,8 @@ const databaseSliceOptions: CreateSliceOptions<DatabaseState> = {
       })
       .addCase(getProjectData.fulfilled, (state, action) => {
         state.databaseLoading = false;
-        state.databaseErrorMessage = action.payload?.error_message ?? '';
         state.databaseError = null;
-        state.databaseStatusCode = action.payload?.status_code ?? '';
-        state.projectDataObject = action.payload?.data ?? null;
+        state.projectDataObject = action.payload;
       })
       .addMatcher(
         isAnyOf(getUserData.pending, getOrganizationData.pending),
