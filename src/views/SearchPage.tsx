@@ -49,14 +49,7 @@ export const SearchPage: React.FC<SearchProps> = ({ account, skills }) => {
   }, [account?.portfolio]);
 
   useEffect(() => {
-    if (account?.portfolio) {
-      setPortfolio(account.portfolio)
-    }
-  }, [account?.portfolio]);
-
-  useEffect(() => {
     if (portfolioObject) {
-      console.log(portfolioObject)
       setPortfolio(new Portfolio(portfolioObject))
     }
   }, [portfolioObject]);
