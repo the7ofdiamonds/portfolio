@@ -12,6 +12,7 @@ import {
 
 import { getProjectData } from './databaseSlice';
 import { getRepo, getRepoLanguages } from './githubSlice';
+import { getProject } from './projectSlice';
 
 export interface PortfolioState {
   portfolioLoading: boolean;
@@ -35,41 +36,39 @@ const initialState: PortfolioState = {
 
 export const getPortfolioDetails = createAsyncThunk(
   'portfolio/getPortfolio',
-  async (repos: Repos, thunkAPI) => {
+  async (portfolio: Portfolio, thunkAPI) => {
     try {
-      if (!Array.isArray(repos.queries) || repos.queries.length === 0) {
+      if (portfolio?.projects.size === 0) {
         return null;
       }
 
-      const portfolioPromises = repos.collection.map(async (repo) => {
-        if (repo.name) {
-          const project = new Project();
-          project.fromRepo(repo);
+      const portfolioPromises = Array.from(portfolio?.projects).map(
+        async (project) => {
+          if (project.name && project.query?.owner && project.query?.repo) {
+            const projectResponse = await thunkAPI.dispatch(
+              getProject(
+                new GitHubRepoQuery(project.query?.owner, project.query?.repo)
+              )
+            );
 
-          const projectDataResponse = await thunkAPI.dispatch(
-            getProjectData(repo.name)
-          );
-            console.log(projectDataResponse.payload)
+            if (
+              getProject.fulfilled.match(projectResponse) &&
+              projectResponse.payload
+            ) {
+              return new Project(projectResponse.payload);
+            }
 
-          if (
-            getProjectData.fulfilled.match(projectDataResponse) &&
-            projectDataResponse.payload
-          ) {
-            console.log(projectDataResponse.payload)
-
-            project.fromDocumentData(projectDataResponse.payload);
+            return null;
           }
-          return project;
-        }
 
-        return null;
-      });
+          return null;
+        }
+      );
 
       const projects = (await Promise.all(portfolioPromises)).filter(
         (project) => project !== null
       );
 
-      const portfolio = new Portfolio();
       portfolio.setProjects(new Set(projects));
 
       return portfolio.toPortfolioObject();

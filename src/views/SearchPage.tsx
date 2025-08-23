@@ -43,10 +43,10 @@ export const SearchPage: React.FC<SearchProps> = ({ account, skills }) => {
   }, [term]);
 
   useEffect(() => {
-    if (!account?.portfolio && account?.repos) {
-      dispatch(getPortfolioDetails(account.repos))
+    if (account?.portfolio) {
+      dispatch(getPortfolioDetails(account.portfolio))
     }
-  }, [account?.repos]);
+  }, [account?.portfolio]);
 
   useEffect(() => {
     if (account?.portfolio) {
@@ -56,17 +56,13 @@ export const SearchPage: React.FC<SearchProps> = ({ account, skills }) => {
 
   useEffect(() => {
     if (portfolioObject) {
+      console.log(portfolioObject)
       setPortfolio(new Portfolio(portfolioObject))
     }
   }, [portfolioObject]);
 
   useEffect(() => {
-
     if (portfolio && taxonomy && type && term) {
-          console.log(term)
-    console.log(type)
-    console.log(taxonomy)
-    console.log(portfolio)
       setProjects(portfolio.filterProjects(type, term));
     }
   }, [portfolio, taxonomy, type, term]);
