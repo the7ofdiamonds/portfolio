@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ProjectSkills, Skills, TaxListIcon } from '@the7ofdiamonds/ui-ux';
-import { handleSkillClick } from '@the7ofdiamonds/ui-ux';
+import { useHandleSkillClick } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Skills.module.scss';
 
@@ -10,6 +10,8 @@ interface SkillsComponentProps {
 }
 
 export const SkillsComponent: React.FC<SkillsComponentProps> = ({ skills }) => {
+    const handleSkillClick = useHandleSkillClick();
+
     return (
         <>
             {skills && (skills.types || skills.languages || skills.frameworks || skills.technologies || skills.services) &&

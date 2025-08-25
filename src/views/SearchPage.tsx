@@ -7,8 +7,6 @@ import { MessageType, StatusBarVisibility, Portfolio, Project, Skills, User } fr
 import { ProjectsComponent } from '@/views/components/portfolio/ProjectsComponent';
 import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
 
-import { getPortfolioDetails } from '@/controllers/portfolioSlice';
-
 import { useAppDispatch, useAppSelector } from '@/model/hooks';
 
 interface SearchProps {
@@ -17,8 +15,6 @@ interface SearchProps {
 }
 
 export const SearchPage: React.FC<SearchProps> = ({ account, skills }) => {
-  const dispatch = useAppDispatch();
-
   const { taxonomy, type, term } = useParams<string>();
 
   const { portfolioLoading, portfolioLoadingMessage, portfolioErrorMessage, portfolioObject } = useAppSelector(
@@ -44,15 +40,9 @@ export const SearchPage: React.FC<SearchProps> = ({ account, skills }) => {
 
   useEffect(() => {
     if (account?.portfolio) {
-      dispatch(getPortfolioDetails(account.portfolio))
+      setPortfolio(account.portfolio)
     }
   }, [account?.portfolio]);
-
-  useEffect(() => {
-    if (portfolioObject) {
-      setPortfolio(new Portfolio(portfolioObject))
-    }
-  }, [portfolioObject]);
 
   useEffect(() => {
     if (portfolio && taxonomy && type && term) {

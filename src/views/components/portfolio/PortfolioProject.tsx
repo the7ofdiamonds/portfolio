@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Project } from '@the7ofdiamonds/ui-ux';
 
@@ -12,9 +13,9 @@ const PortfolioProject: React.FC<PortfolioProjectProps> = ({ project }) => {
     const { name, owner } = project;
     
     return (
-        owner && owner.login && name && (<a href={`/portfolio/${owner?.login}/${name}`}>
+        owner && owner.login && name && (<Link to={`/portfolio/${owner?.login}/${name}`}>
             <ProjectCard project={project} />
-        </a>)
+        </Link>)
     )
 }
 
