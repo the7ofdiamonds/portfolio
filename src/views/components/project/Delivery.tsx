@@ -32,10 +32,8 @@ export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) =>
   const [checkList, setCheckList] = useState<CheckList | null>(null);
 
   useEffect(() => {
-    if (delivery && delivery.gallery) {
       setGallery(delivery.gallery)
-    }
-  }, [delivery.gallery]);
+  }, [delivery]);
 
   useEffect(() => {
     if (delivery.contentURL && delivery.contentURL.owner && delivery.contentURL.repo && delivery.contentURL.path) {
@@ -44,10 +42,8 @@ export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) =>
   }, [projectQuery]);
 
   useEffect(() => {
-    if (delivery && delivery.checkList) {
       setCheckList(delivery.checkList)
-    }
-  }, [delivery.checkList]);
+  }, [delivery]);
 
   const hasContent = gallery || repoContentQuery || checkList;
 

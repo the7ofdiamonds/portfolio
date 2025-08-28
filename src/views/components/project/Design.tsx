@@ -21,67 +21,43 @@ interface DesignProps {
 export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
   const dispatch = useAppDispatch();
 
-  const [colors, setColors] = useState<Array<Color> | null>(null);
-  const [logos, setLogos] = useState<Array<Image> | null>(null);
-  const [icons, setIcons] = useState<Array<Image> | null>(null);
-  const [animations, setAnimations] = useState<Array<Image> | null>(null);
-  const [umlDiagrams, setUmlDiagrams] = useState<Array<Image> | null>(null);
+  const [colors, setColors] = useState<Array<Color>>([]);
+  const [logos, setLogos] = useState<Array<Image>>([]);
+  const [icons, setIcons] = useState<Array<Image>>([]);
+  const [animations, setAnimations] = useState<Array<Image>>([]);
+  const [umlDiagrams, setUmlDiagrams] = useState<Array<Image>>([]);
   const [repoContentQuery, setRepoContentQuery] = useState<RepoContentQuery | null>(null);
   const [checkList, setCheckList] = useState<CheckList | null>(null);
 
   useEffect(() => {
-    if (design && design.colors && design.colors.list.size > 0) {
-      setColors(Array.from(design.colors.list))
-    }
-  }, [design.colors]);
+    setColors(Array.from(design?.colors?.list ?? []))
+  }, [design]);
 
   useEffect(() => {
-    if (design
-      && design.gallery
-      && design.gallery.logos
-      && design.gallery.logos.length > 0) {
-      setLogos(design.gallery.logos)
-    }
-  }, [design?.gallery?.logos]);
+    setLogos(design?.gallery?.logos ?? [])
+  }, [design]);
 
   useEffect(() => {
-    if (design
-      && design.gallery
-      && design.gallery.icons
-      && design.gallery.icons.length > 0) {
-      setIcons(design.gallery.icons)
-    }
-  }, [design?.gallery?.icons]);
+    setIcons(design?.gallery?.icons ?? [])
+  }, [design]);
 
   useEffect(() => {
-    if (design
-      && design.gallery
-      && design.gallery.animations
-      && design.gallery.animations.length > 0) {
-      setAnimations(design.gallery.animations)
-    }
-  }, [design?.gallery?.animations]);
+    setAnimations(design?.gallery?.animations ?? [])
+  }, [design]);
 
   useEffect(() => {
-    if (design
-      && design.gallery
-      && design.gallery.umlDiagrams
-      && design.gallery.umlDiagrams.length > 0) {
-      setUmlDiagrams(design.gallery.umlDiagrams)
-    }
-  }, [design?.gallery?.umlDiagrams]);
+    setUmlDiagrams(design?.gallery?.umlDiagrams ?? [])
+  }, [design]);
 
   useEffect(() => {
     if (design.contentURL && design.contentURL && design.contentURL.owner && design.contentURL.repo && design.contentURL.path) {
       setRepoContentQuery(new RepoContentQuery(design.contentURL.owner, design.contentURL.repo, design.contentURL.path, design.contentURL.branch ?? ''))
     }
-  }, [design?.contentURL]);
+  }, [design]);
 
   useEffect(() => {
-    if (design?.checkList?.tasks?.list && design?.checkList?.tasks?.list.size > 0) {
-      setCheckList(design.checkList)
-    }
-  }, [design.checkList]);
+      setCheckList(design?.checkList)
+  }, [design]);
 
   const hasContent = colors || logos || icons || animations || umlDiagrams || repoContentQuery || checkList;
 

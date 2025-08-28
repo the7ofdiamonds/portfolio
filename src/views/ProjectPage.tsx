@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import type { TypedUseSelectorHook } from 'react-redux';
 
 import { Organization, Section, Skills, StatusBar, User } from '@the7ofdiamonds/ui-ux';
-import { MessageType, StatusBarVisibility, Account, GitHubRepoQuery, Portfolio, Project } from '@the7ofdiamonds/ui-ux';
+import { MessageType, StatusBarVisibility, GitHubRepoQuery, Portfolio, Project } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectComponent } from './components/project/ProjectComponent';
 
@@ -43,12 +43,15 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
 
   useEffect(() => {
     if (portfolio && portfolio.projects.size > 0 && projectID) {
-      const selectedProject = portfolio.filterProject(projectID);
-      if (selectedProject) {
-        setTitle(selectedProject.title);
-      }
+      setProject(portfolio.filterProject(projectID));
     }
-  }, [portfolio?.projects, projectID]);
+  }, [portfolio, projectID]);
+
+  useEffect(() => {
+    if (project) {
+      setTitle(project.title);
+    }
+  }, [project]);
 
   useEffect(() => {
     if (title) {
@@ -56,17 +59,17 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
     }
   }, [title]);
 
-  useEffect(() => {
-    if (owner && owner !== 'null' && projectID) {
-      setRepoQuery(new GitHubRepoQuery(owner, projectID))
-    }
-  }, [owner, projectID]);
+  // useEffect(() => {
+  //   if (owner && owner !== 'null' && projectID) {
+  //     setRepoQuery(new GitHubRepoQuery(owner, projectID))
+  //   }
+  // }, [owner, projectID]);
 
-  useEffect(() => {
-    if (repoQuery) {
-      dispatch(getProject(repoQuery));
-    }
-  }, [repoQuery]);
+  // useEffect(() => {
+  //   if (repoQuery) {
+  //     dispatch(getProject(repoQuery));
+  //   }
+  // }, [repoQuery]);
 
   useEffect(() => {
     if (title && (githubLoading || projectLoading)) {
@@ -84,11 +87,11 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
     }
   }, [githubLoading, projectLoading]);
 
-  useEffect(() => {
-    if (projectObject) {
-      setProject(new Project(projectObject));
-    }
-  }, [projectObject]);
+  // useEffect(() => {
+  //   if (projectObject) {
+  //     setProject(new Project(projectObject));
+  //   }
+  // }, [projectObject]);
 
   useEffect(() => {
     if (githubErrorMessage) {
