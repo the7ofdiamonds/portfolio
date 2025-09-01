@@ -56,7 +56,7 @@ export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
   }, [design]);
 
   useEffect(() => {
-      setCheckList(design?.checkList)
+    setCheckList(design?.checkList)
   }, [design]);
 
   const hasContent = colors || logos || icons || animations || umlDiagrams || repoContentQuery || checkList;
@@ -67,19 +67,19 @@ export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
         <div className={styles['project-process-design']} id="project_process_design">
           <h3 className={styles.title}>design</h3>
 
-          {colors &&
+          {colors && colors.length > 0 &&
             <ColorsComponent colors={colors} />}
 
-          {logos &&
+          {logos && logos.length > 0 &&
             <GalleryComponent title={'Logos'} gallery={logos} />}
 
-          {icons &&
+          {icons && icons.length > 0 &&
             <GalleryComponent title={'icons'} gallery={icons} />}
 
-          {animations &&
+          {animations && animations.length > 0 &&
             <GalleryComponent title={'animations'} gallery={animations} />}
 
-          {umlDiagrams &&
+          {umlDiagrams && umlDiagrams.length > 0 &&
             <GalleryComponent title={'uml diagrams'} gallery={umlDiagrams} />}
 
           {repoContentQuery &&
