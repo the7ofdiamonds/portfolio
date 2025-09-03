@@ -427,6 +427,7 @@ export const getIssues = createAsyncThunk(
 
       const issues = new Issues();
       issues.fromGitHubGraphQL(issueArray);
+
       return issues.toIssuesObject();
     } catch (error) {
       const err = error as Error;

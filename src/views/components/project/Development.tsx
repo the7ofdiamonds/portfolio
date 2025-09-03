@@ -74,7 +74,7 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
 
   useEffect(() => {
     if (solution && solution?.features) {
-      setFeaturesRoadmap(new FeaturesRoadmap(solution.features))
+      setFeaturesRoadmap(new FeaturesRoadmap(solution.features.list))
     }
   }, [solution?.features]);
 

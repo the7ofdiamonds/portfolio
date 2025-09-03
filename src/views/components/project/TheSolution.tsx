@@ -35,25 +35,25 @@ export const TheSolution: React.FC<SolutionProps> = ({ project }) => {
       && project.solution.gallery.images.length > 0) {
       setGallery(project.solution.gallery)
     }
-  }, [project?.solution?.gallery]);
+  }, [project]);
 
   useEffect(() => {
     if (project.solution && project.solution.contentURL && project.solution.contentURL && project.solution.contentURL.owner && project.solution.contentURL.repo && project.solution.contentURL.path) {
       setQuery(new RepoContentQuery(project.solution.contentURL.owner, project.solution.contentURL.repo, project.solution.contentURL.path, project.solution.contentURL.branch ?? ''))
     }
-  }, [project?.solution?.contentURL]);
+  }, [project]);
 
   useEffect(() => {
     if (project.solution && project.solution.projectURLs) {
       setProjectURLs(project.solution.projectURLs)
     }
-  }, [project?.solution?.projectURLs]);
+  }, [project]);
 
   useEffect(() => {
-    if (project.solution && project.solution.features && project.solution.features.size > 0) {
-      setFeatures(project.solution.features)
+    if (project.solution && project.solution.features && project.solution.features.list.size > 0) {
+      setFeatures(project.solution.features.list)
     }
-  }, [project?.solution?.features]);
+  }, [project]);
 
   useEffect(() => {
     if (project.process && project.process.development
@@ -61,7 +61,7 @@ export const TheSolution: React.FC<SolutionProps> = ({ project }) => {
       && project.process.development.versionsList.current) {
       setVersion(new Version(project.process.development.versionsList.current))
     }
-  }, [project?.process?.development?.versionsList?.current]);
+  }, [project]);
 
   const hasContent = gallery || query || projectURLs || features || version;
 
