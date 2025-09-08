@@ -88,18 +88,18 @@ export const portfolioSlice = createSlice({
       .addCase(getPortfolioDetails.fulfilled, (state, action) => {
         state.portfolioLoading = false;
         state.portfolioError = null;
-        state.portfolioErrorMessage = '';
+        state.portfolioErrorMessage = null;
         state.portfolioObject = action.payload;
       })
       .addMatcher(isAnyOf(getPortfolioDetails.pending), (state) => {
         state.portfolioLoading = true;
         state.portfolioError = null;
-        state.portfolioErrorMessage = '';
+        state.portfolioErrorMessage = null;
       })
       .addMatcher(isAnyOf(getPortfolioDetails.rejected), (state, action) => {
         state.portfolioLoading = false;
         state.portfolioError = (action.error as Error) || null;
-        state.portfolioErrorMessage = action.error.message || '';
+        state.portfolioErrorMessage = action.error.message || 'There was an error getting the portfolio.';
       });
   },
 });
