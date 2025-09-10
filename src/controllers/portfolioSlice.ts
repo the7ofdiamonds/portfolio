@@ -1,17 +1,12 @@
 import { createSlice, createAsyncThunk, isAnyOf } from '@reduxjs/toolkit';
 
 import {
-  GitHubRepoQuery,
   Portfolio,
   PortfolioObject,
   Project,
   ProjectObject,
-  Repo,
-  Repos,
 } from '@the7ofdiamonds/ui-ux';
 
-import { getProjectData } from './databaseSlice';
-import { getRepo, getRepoLanguages } from './githubSlice';
 import { getProject } from './projectSlice';
 
 export interface PortfolioState {
@@ -44,24 +39,16 @@ export const getPortfolioDetails = createAsyncThunk(
 
       const portfolioPromises = Array.from(portfolio?.projects).map(
         async (project) => {
-          if (project.name && project.query?.owner && project.query?.repo) {
-            const projectResponse = await thunkAPI.dispatch(
-              getProject(
-                new GitHubRepoQuery(project.query?.owner, project.query?.repo)
-              )
-            );
+          const projectResponse = await thunkAPI.dispatch(getProject(project));
 
-            if (
-              getProject.fulfilled.match(projectResponse) &&
-              projectResponse.payload
-            ) {
-              return new Project(projectResponse.payload);
-            }
-
-            return null;
+          if (
+            getProject.fulfilled.match(projectResponse) &&
+            projectResponse.payload
+          ) {
+            return new Project(projectResponse.payload);
           }
 
-          return null;
+          return project;
         }
       );
 
@@ -99,7 +86,8 @@ export const portfolioSlice = createSlice({
       .addMatcher(isAnyOf(getPortfolioDetails.rejected), (state, action) => {
         state.portfolioLoading = false;
         state.portfolioError = (action.error as Error) || null;
-        state.portfolioErrorMessage = action.error.message || 'There was an error getting the portfolio.';
+        state.portfolioErrorMessage =
+          action.error.message || 'There was an error getting the portfolio.';
       });
   },
 });

@@ -40,7 +40,7 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [projectID]);
-
+console.log(portfolio)
   useEffect(() => {
     if (portfolio && portfolio.projects.size > 0 && projectID) {
       setProject(portfolio.filterProject(projectID));
