@@ -17,11 +17,11 @@ export const RoadmapComponent: React.FC<RoadmapProps> = ({ roadmap }) => {
 
                     {roadmap.path.map((feature) => (
                         <div className={styles.feature} key={feature.id}>
-                            <h3 className={styles['feature-version']}>
+                            <h5 className={styles['feature-version']}>
                                 v{feature.version ? feature.version.toString() : '1.0.0'}
-                            </h3>
-                            <h3>-</h3>
-                            <h3>{feature.description}</h3>
+                            </h5>
+                            <h5>-</h5>
+                            <h5>{feature.description}</h5>
                         </div>
                     ))}
                 </div>}

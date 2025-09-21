@@ -28,15 +28,18 @@ const initialState: ProjectState = {
   projectObject: null,
 };
 
-export const getProject = createAsyncThunk<Project, Project | null>(
+export const getProject = createAsyncThunk<ProjectObject | null, Project>(
   'project/getProject',
   async (project: Project, thunkAPI) => {
     try {
-      if (!project?.query || (!project?.query?.owner || !project?.query?.repo)) {
+      if (!project?.query || !project?.query?.owner || !project?.query?.repo) {
         return null;
       }
 
-      const repoQuery = new GitHubRepoQuery(project.query.owner, project.query.repo);
+      const repoQuery = new GitHubRepoQuery(
+        project.query.owner,
+        project.query.repo
+      );
       const repoDetailsResponse = await thunkAPI.dispatch(
         getRepoDetails(repoQuery)
       );

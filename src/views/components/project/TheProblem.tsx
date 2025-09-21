@@ -4,11 +4,10 @@ import {
   GalleryComponent,
   ContentComponent,
   DocumentComponent,
-  ProjectQuery,
   RepoContentQuery
 } from '@the7ofdiamonds/ui-ux';
 
-import { ContentURL, DocumentURL, Gallery, Project } from '@the7ofdiamonds/ui-ux';
+import { DocumentURL, Gallery, Project } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
 import { getRepoFile } from '@/controllers/githubSlice';
@@ -60,7 +59,7 @@ export const TheProblem: React.FC<ProblemProps> = ({ project }) => {
           <div className={`${styles['project-section'], styles['project-problem']}`} id="project_problem">
             <h2 className={styles.title}>the problem</h2>
 
-            {gallery && gallery.images && < GalleryComponent title={''} gallery={gallery.images} />}
+            {gallery && gallery.images && <GalleryComponent title={''} gallery={gallery.images} />}
 
             {query && <ContentComponent<RepoContentQuery> title={null} query={query} getFile={getRepoFile} dispatch={dispatch} />}
           </div>

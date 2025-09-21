@@ -172,7 +172,7 @@ export const getRepoContents = createAsyncThunk(
     try {
       const octokit = getInstance();
 
-      const repoContents: RepoContentsResponse =
+      const { data }: RepoContentsResponse =
         await octokit.rest.repos.getContent({
           owner: query.owner,
           repo: query.repo,
@@ -181,16 +181,25 @@ export const getRepoContents = createAsyncThunk(
 
       let contents: Array<Record<string, any>> = [];
 
-      if (Array.isArray(repoContents.data) && repoContents.data.length > 0) {
-        repoContents.data.forEach((content) => {
+      if (Array.isArray(data) && data.length > 0) {
+        data.forEach((content) => {
           contents.push(new RepoContent(content).toRepoContentObject());
         });
       }
 
       return contents;
     } catch (error) {
+      if (
+        error instanceof RequestError &&
+        error.status === 404 &&
+        error.message.includes('empty')
+      ) {
+        return null;
+      }
+
       const err = error as Error;
-      console.warn(err);
+      console.error('Failed to fetch repo contents:', err);
+      return null;
     }
   }
 );
@@ -427,7 +436,6 @@ export const getIssues = createAsyncThunk(
 
       const issues = new Issues();
       issues.fromGitHubGraphQL(issueArray);
-
       return issues.toIssuesObject();
     } catch (error) {
       const err = error as Error;
@@ -445,28 +453,28 @@ export const getRepoDetails = createAsyncThunk(
 
       if (getRepo.fulfilled.match(repoResponse) && repoResponse.payload) {
         const repo = new Repo(repoResponse.payload);
-
         const langResponse = await thunkAPI.dispatch(getRepoLanguages(query));
 
-        if (
-          getRepoLanguages.fulfilled.match(langResponse) &&
-          langResponse.payload
-        ) {
-          const skills = new ProjectSkills();
-          skills.languagesFromGithub(langResponse.payload);
+        if (repo.size && repo.size > 0) {
+          if (
+            getRepoLanguages.fulfilled.match(langResponse) &&
+            langResponse.payload
+          ) {
+            const skills = new ProjectSkills();
+            skills.languagesFromGithub(langResponse.payload);
+            repo.setSkills(skills);
+          }
 
-          repo.setSkills(skills);
-        }
+          const contentsResponse = await thunkAPI.dispatch(
+            getRepoContents(query)
+          );
 
-        const contentsResponse = await thunkAPI.dispatch(
-          getRepoContents(query)
-        );
-
-        if (
-          getRepoContents.fulfilled.match(contentsResponse) &&
-          contentsResponse.payload
-        ) {
-          repo.filterContents(contentsResponse.payload);
+          if (
+            getRepoContents.fulfilled.match(contentsResponse) &&
+            contentsResponse.payload
+          ) {
+            repo.filterContents(contentsResponse.payload);
+          }
         }
 
         const contributorsResponse = await thunkAPI.dispatch(
@@ -494,7 +502,7 @@ export const getRepoDetails = createAsyncThunk(
             repo.setIssues(issues);
           }
         }
-        
+
         return repo.toRepoObject();
       }
 
@@ -1052,7 +1060,7 @@ const githubSliceOptions: CreateSliceOptions<GithubState> = {
         state.githubLoadingMessage = null;
         state.githubErrorMessage = '';
         state.githubError = null;
-        state.contents = action.payload ?? [];
+        state.contents = action.payload;
       })
       .addCase(getRepoLanguages.fulfilled, (state, action) => {
         state.githubLoading = false;

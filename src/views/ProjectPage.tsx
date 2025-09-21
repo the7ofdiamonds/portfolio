@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import type { TypedUseSelectorHook } from 'react-redux';
 
-import { Organization, Section, Skills, StatusBar, User } from '@the7ofdiamonds/ui-ux';
+import { Organization, ProjectQuery, Section, Skills, StatusBar, User } from '@the7ofdiamonds/ui-ux';
 import { MessageType, StatusBarVisibility, GitHubRepoQuery, Portfolio, Project } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectComponent } from './components/project/ProjectComponent';
@@ -40,18 +40,18 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [projectID]);
-console.log(portfolio)
-  useEffect(() => {
-    if (portfolio && portfolio.projects.size > 0 && projectID) {
-      setProject(portfolio.filterProject(projectID));
-    }
-  }, [portfolio, projectID]);
+
+  // useEffect(() => {
+  //   if (portfolio && portfolio.projects.size > 0 && projectID) {
+  //     setProject(portfolio.filterProject(projectID));
+  //   }
+  // }, [portfolio, projectID]);
 
   useEffect(() => {
-    if (project) {
+    if (project?.title) {
       setTitle(project.title);
     }
-  }, [project]);
+  }, [project?.title]);
 
   useEffect(() => {
     if (title) {
@@ -59,33 +59,35 @@ console.log(portfolio)
     }
   }, [title]);
 
-  // useEffect(() => {
-  //   if (owner && owner !== 'null' && projectID) {
-  //     setRepoQuery(new GitHubRepoQuery(owner, projectID))
-  //   }
-  // }, [owner, projectID]);
-
-  // useEffect(() => {
-  //   if (repoQuery) {
-  //     dispatch(getProject(repoQuery));
-  //   }
-  // }, [repoQuery]);
+  useEffect(() => {
+    if (owner && owner !== 'null' && projectID && !project) {
+      const prj = new Project();
+      prj.setQuery(new ProjectQuery(owner, projectID))
+      setProject(prj)
+    }
+  }, [owner, projectID]);
 
   useEffect(() => {
-    if (title && (githubLoading || projectLoading)) {
-      setMessageType('caution');
-      setMessage(`Now Loading Project ${title}`);
-      setShowStatusBar('show');
-    } else {
-      setMessage(null)
+    if (project) {
+      dispatch(getProject(project));
     }
-  }, [githubLoading, projectLoading, title]);
+  }, [project]);
 
-  useEffect(() => {
-    if (!githubLoading && !projectLoading) {
-      setMessage(null)
-    }
-  }, [githubLoading, projectLoading]);
+  // useEffect(() => {
+  //   if (title && (githubLoading || projectLoading)) {
+  //     setMessageType('caution');
+  //     setMessage(`Now Loading Project ${title}`);
+  //     setShowStatusBar('show');
+  //   } else {
+  //     setMessage(null)
+  //   }
+  // }, [githubLoading, projectLoading, title]);
+
+  // useEffect(() => {
+  //   if (!githubLoading && !projectLoading) {
+  //     setMessage(null)
+  //   }
+  // }, [githubLoading, projectLoading]);
 
   // useEffect(() => {
   //   if (projectObject) {
@@ -93,21 +95,21 @@ console.log(portfolio)
   //   }
   // }, [projectObject]);
 
-  useEffect(() => {
-    if (githubErrorMessage) {
-      setMessageType('error');
-      setMessage(githubErrorMessage);
-      setShowStatusBar('show');
-    }
-  }, [githubErrorMessage]);
+  // useEffect(() => {
+  //   if (githubErrorMessage) {
+  //     setMessageType('error');
+  //     setMessage(githubErrorMessage);
+  //     setShowStatusBar('show');
+  //   }
+  // }, [githubErrorMessage]);
 
-  useEffect(() => {
-    if (projectErrorMessage) {
-      setMessageType('error');
-      setMessage(projectErrorMessage);
-      setShowStatusBar('show');
-    }
-  }, [projectErrorMessage]);
+  // useEffect(() => {
+  //   if (projectErrorMessage) {
+  //     setMessageType('error');
+  //     setMessage(projectErrorMessage);
+  //     setShowStatusBar('show');
+  //   }
+  // }, [projectErrorMessage]);
 
   return (
     <Section>
