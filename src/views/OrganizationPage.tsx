@@ -78,11 +78,6 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ organization
     useEffect(() => {
         if (organization && organization.skills && skills) {
             skills.list.push(...organization.skills.list)
-            skills.getProjectTypesFromList()
-            skills.getLanguagesFromList()
-            skills.getFrameworksFromList()
-            skills.getTechnologiesFromList()
-            skills.getServicesFromList()
             setOrgSkills(skills)
         }
     }, [organization?.skills]);
