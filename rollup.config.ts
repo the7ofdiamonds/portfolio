@@ -8,23 +8,25 @@ import pkg from './package.json';
 
 const rollupConfig: RollupOptions = {
   input: 'src/index.ts',
+
   external: [
     ...Object.keys(pkg.dependencies || {}),
-    ...Object.keys(pkg.devDependencies || {}),
-    ...Object.keys(pkg.optionalDependencies || {}),
     ...Object.keys(pkg.peerDependencies || {}),
+    ...Object.keys(pkg.optionalDependencies || {}),
   ],
-  output: {
-    globals: {
-      react: 'React',
-      'react-dom': 'ReactDOM',
-      'react-redux': 'ReactRedux',
+
+  output: [
+    {
+      dir: 'dist',
+      format: 'esm',
+      sourcemap: true,
+      preserveModules: true,
+      preserveModulesRoot: 'src',
+      exports: 'named',
+      compact: false,
     },
-    preserveModules: true,
-    preserveModulesRoot: 'src',
-    exports: 'named',
-    compact: false,
-  },
+  ],
+
   plugins: [
     peerDepsExternal(),
     resolve(),
@@ -34,7 +36,6 @@ const rollupConfig: RollupOptions = {
       sourceMap: true,
       declaration: true,
       declarationDir: 'dist/types',
-      emitDeclarationOnly: false,
       rootDir: 'src',
     }),
   ],

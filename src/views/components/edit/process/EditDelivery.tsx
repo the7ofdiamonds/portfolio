@@ -3,8 +3,8 @@ import React, { useEffect, useState, ChangeEvent } from 'react';
 import { ProjectDelivery, ProjectProcess, StatusBar } from '@the7ofdiamonds/ui-ux';
 import { CheckList, Gallery, Project } from '@the7ofdiamonds/ui-ux';
 
-import { EditCheckList } from '@/views/components/edit/components/check_list/EditCheckList';
-import { EditGallery } from '@/views/components/edit/components/gallery/EditGallery';
+import { EditCheckList } from '../../../../views/components/edit/components/check_list/EditCheckList';
+import { EditGallery } from '../../../../views/components/edit/components/gallery/EditGallery';
 
 import styles from './EditProcess.module.scss';
 

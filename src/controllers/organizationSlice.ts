@@ -1,14 +1,15 @@
+import type { CreateSliceOptions } from '@reduxjs/toolkit';
 import {
   createSlice,
   createAsyncThunk,
-  isAnyOf,
-  CreateSliceOptions,
+  isAnyOf
 } from '@reduxjs/toolkit';
 
-import { Organization, OrganizationObject } from '@the7ofdiamonds/ui-ux';
+import type { OrganizationObject } from '@the7ofdiamonds/ui-ux';
+import { Organization } from '@the7ofdiamonds/ui-ux';
 
-import { getOrganizationDetails } from '@/controllers/githubSlice';
-import { getOrganizationData } from '@/controllers/databaseSlice';
+import { getOrganizationDetails } from '../controllers/githubSlice';
+import { getOrganizationData } from '../controllers/databaseSlice';
 
 export interface OrganizationState {
   organizationLoading: boolean;

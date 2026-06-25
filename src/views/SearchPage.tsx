@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Section, StatusBar, HeaderTaxonomyComponent, Organization } from '@the7ofdiamonds/ui-ux';
-import { MessageType, StatusBarVisibility, Portfolio, Project, Skills, User } from '@the7ofdiamonds/ui-ux';
+import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import {Portfolio, Project, Skills, User } from '@the7ofdiamonds/ui-ux';
 
-import { ProjectsComponent } from '@/views/components/portfolio/ProjectsComponent';
-import { SkillsComponent } from '@/views/components/skills/SkillsComponent';
+import { ProjectsComponent } from '../views/components/portfolio/ProjectsComponent';
+import { SkillsComponent } from '../views/components/skills/SkillsComponent';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
+import { useAppDispatch, useAppSelector } from '../model/hooks';
 
 interface SearchProps {
   account: User | Organization;

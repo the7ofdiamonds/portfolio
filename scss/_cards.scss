@@ -6,7 +6,7 @@
   width: fit-content;
   max-width: 1000px;
   padding: 0.75rem;
-  opacity: 0.85;
+  opacity: var(--opacity, 1);
   background-color: var(--card-background-color);
   color: var(--card-color);
   box-shadow: var(--box-shadow);

@@ -1,15 +1,15 @@
+import type { CreateSliceOptions } from '@reduxjs/toolkit';
 import {
   createSlice,
   createAsyncThunk,
-  isAnyOf,
-  CreateSliceOptions,
+  isAnyOf
 } from '@reduxjs/toolkit';
 
 import { Taxonomy, Project, SecureHeaders } from '@the7ofdiamonds/ui-ux';
 
-import { getAPI } from '@/services/Config';
+import { getAPI } from '../services/Config';
 
-import { addSecureHeaders } from '@/utilities/Headers';
+import { addSecureHeaders } from '../utilities/Headers';
 
 export interface AddState {
   addLoading: boolean;

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import ProjectStatusComponent from './Status';
 
-import { Design } from '@/views/components/project/Design';
-import { Development } from '@/views/components/project/Development';
-import { Delivery } from '@/views/components/project/Delivery';
+import { Design } from '../../../views/components/project/Design';
+import { Development } from '../../../views/components/project/Development';
+import { Delivery } from '../../../views/components/project/Delivery';
 
 import {
   Project,

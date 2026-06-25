@@ -10,17 +10,24 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-    const { title, description, solution, subtitle } = project;
+    const { name, title, description, solution, subtitle } = project;
 
+    const [category, setCategory] = useState<string | null>(null);
     const [gallery, setGallery] = useState<Gallery | null>(null);
     const [images, setImages] = useState<Array<Image> | null>(null);
     const [image, setImage] = useState<Image | null>(null);
 
     useEffect(() => {
-        if (project?.solution?.gallery) {
-            setGallery(project.solution.gallery)
+        if (solution?.category) {
+            setCategory(solution.category)
         }
-    }, [project?.solution?.gallery])
+    }, [solution?.category])
+
+    useEffect(() => {
+        if (solution?.gallery) {
+            setGallery(solution.gallery)
+        }
+    }, [solution?.gallery])
 
     useEffect(() => {
         if (gallery?.images) {
@@ -29,7 +36,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     }, [gallery?.images])
 
     useEffect(() => {
-        if (images && images.length>0) {
+        if (images && images.length > 0) {
             setImage(images[0])
         }
     }, [images])
@@ -38,14 +45,16 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         <div className={`${styles['project-card']} ${styles.card}`}>
             <h3 className='title'>{title}</h3>
 
-            {image && image.url && (
+            {image && image.url ? (
                 <img
                     className={styles.photo}
                     src={image.url}
                     alt={image.title ?? ''}
                 />
             )
-            }
+                : category && (
+                    <h2>{category}</h2>
+                )}
 
             {subtitle && <h3>{subtitle}</h3>}
 

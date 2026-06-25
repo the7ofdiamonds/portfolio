@@ -16,7 +16,7 @@ export const SkillsComponent: React.FC<SkillsComponentProps> = ({ skills }) => {
         <>
             {skills && (skills.types || skills.softwareApplications || skills.databases || skills.languages || skills.frameworks || skills.technologies || skills.cicdTools || skills.platforms || skills.cloudProviders) &&
                 <div className={styles.skills} id="skills">
-                    <h3 className={styles.title}>skills</h3>
+                    <h2 className={styles.title}>skills</h2>
 
                     {skills.types.size > 0 && (
                         <TaxListIcon taxonomiesSet={skills.types} taxonomiesTitle="Project Types" handleClick={handleSkillClick} />

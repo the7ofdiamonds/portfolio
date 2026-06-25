@@ -1,10 +1,11 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 
-import { Color, ColorObject, Colors } from '@the7ofdiamonds/ui-ux';
+import type { ColorObject } from '@the7ofdiamonds/ui-ux';
+import { Color, Colors } from '@the7ofdiamonds/ui-ux';
 
-import { updateColors } from '@/controllers/updateSlice';
+import { updateColors } from '../../../../../controllers/updateSlice';
 
-import { useAppDispatch } from '@/model/hooks';
+import { useAppDispatch } from '../../../../../model/hooks';
 
 import styles from './Colors.module.scss';
 

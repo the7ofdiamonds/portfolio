@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import type { TypedUseSelectorHook } from 'react-redux';
 
-import { Organization, ProjectQuery, Section, Skills, StatusBar, User } from '@the7ofdiamonds/ui-ux';
-import { MessageType, StatusBarVisibility, GitHubRepoQuery, Portfolio, Project } from '@the7ofdiamonds/ui-ux';
+import { Organization, Section, Skills, StatusBar, User } from '@the7ofdiamonds/ui-ux';
+import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import { Portfolio, Project } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectComponent } from './components/project/ProjectComponent';
 
-import { getProject } from '@/controllers/projectSlice';
+import { getProject } from '../controllers/projectSlice';
 
 interface ProjectPageProps<RootState, AppDispatch> {
   account: Organization | User;
@@ -18,40 +19,40 @@ interface ProjectPageProps<RootState, AppDispatch> {
 }
 
 export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, portfolio, skills, useAppSelector, useAppDispatch }) => {
+  const location = useLocation();
   const dispatch = useAppDispatch();
 
   const { owner, projectID } = useParams<string>();
 
-  const { githubLoading, githubErrorMessage } = useAppSelector(
-    (state) => state.github
-  );
   const { projectLoading, projectErrorMessage, projectObject } = useAppSelector(
     (state) => state.project
   );
-
-  const [repoQuery, setRepoQuery] = useState<GitHubRepoQuery | null>(null);
-  const [project, setProject] = useState<Project | null>(null);
-  const [title, setTitle] = useState<string | null>(null);
 
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<MessageType>('info');
   const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
 
+  const [project, setProject] = useState<Project | null>(location.state.project || null);
+
+  const hasData = project?.path && projectObject?.path ? new String(project.path).localeCompare(projectObject.path) === 0 : false;
+
+  const [APICalled, setAPICalled] = useState<boolean>(hasData);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [projectID]);
-
-  // useEffect(() => {
-  //   if (portfolio && portfolio.projects.size > 0 && projectID) {
-  //     setProject(portfolio.filterProject(projectID));
-  //   }
-  // }, [portfolio, projectID]);
+  }, [owner, projectID]);
 
   useEffect(() => {
-    if (project?.title) {
-      setTitle(project.title);
+    if (!project && location?.pathname && portfolio.projects.size > 0) {
+      const withinPortfolio: Project | Set<Project> = portfolio?.filterProjectsByPath(location.pathname);
+      if (withinPortfolio instanceof Project) {
+        setProject(withinPortfolio);
+      }
     }
-  }, [project?.title]);
+  }, [project, location.pathname, portfolio.projects.size]);
+
+  const title = project?.title || null;
+  const query = project?.query || null;
 
   useEffect(() => {
     if (title) {
@@ -60,56 +61,41 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
   }, [title]);
 
   useEffect(() => {
-    if (owner && owner !== 'null' && projectID && !project) {
-      const prj = new Project();
-      prj.setQuery(new ProjectQuery(owner, projectID))
-      setProject(prj)
+    if (title && projectLoading) {
+      setMessageType('info');
+      setMessage(`Now Loading Project ${title}`);
+      setShowStatusBar('show');
+    } else {
+      setMessage(null)
     }
-  }, [owner, projectID]);
+  }, [title, projectLoading]);
 
   useEffect(() => {
-    if (project) {
-      dispatch(getProject(project));
+    if (projectErrorMessage) {
+      setMessageType('error');
+      setMessage(projectErrorMessage);
+      setShowStatusBar('show');
     }
-  }, [project]);
+  }, [projectErrorMessage]);
 
-  // useEffect(() => {
-  //   if (title && (githubLoading || projectLoading)) {
-  //     setMessageType('caution');
-  //     setMessage(`Now Loading Project ${title}`);
-  //     setShowStatusBar('show');
-  //   } else {
-  //     setMessage(null)
-  //   }
-  // }, [githubLoading, projectLoading, title]);
+  useEffect(() => {
+    if (query && !hasData) {
+      dispatch(getProject(query));
+      setAPICalled(true);
+    }
+  }, [query, hasData]);
 
-  // useEffect(() => {
-  //   if (!githubLoading && !projectLoading) {
-  //     setMessage(null)
-  //   }
-  // }, [githubLoading, projectLoading]);
+  useEffect(() => {
+    if (projectObject && APICalled && !projectLoading) {
+      setProject(new Project(projectObject));
+    }
+  }, [projectObject, APICalled, projectLoading]);
 
-  // useEffect(() => {
-  //   if (projectObject) {
-  //     setProject(new Project(projectObject));
-  //   }
-  // }, [projectObject]);
-
-  // useEffect(() => {
-  //   if (githubErrorMessage) {
-  //     setMessageType('error');
-  //     setMessage(githubErrorMessage);
-  //     setShowStatusBar('show');
-  //   }
-  // }, [githubErrorMessage]);
-
-  // useEffect(() => {
-  //   if (projectErrorMessage) {
-  //     setMessageType('error');
-  //     setMessage(projectErrorMessage);
-  //     setShowStatusBar('show');
-  //   }
-  // }, [projectErrorMessage]);
+  useEffect(() => {
+    if (hasData) {
+      setProject(new Project(projectObject));
+    }
+  }, [hasData, projectObject]);
 
   return (
     <Section>

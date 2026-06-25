@@ -1,44 +1,47 @@
+import type { CreateSliceOptions } from '@reduxjs/toolkit';
 import {
   createSlice,
   createAsyncThunk,
-  isAnyOf,
-  CreateSliceOptions,
+  isAnyOf
 } from '@reduxjs/toolkit';
 
 import { Octokit } from '@octokit/rest';
-
-import { getHeaders, getInstance } from '@/services/github/Config';
 import { graphql } from '@octokit/graphql';
-import {
+import type {
   GetResponseDataTypeFromEndpointMethod,
   GetResponseTypeFromEndpointMethod,
 } from '@octokit/types';
 import { RequestError } from '@octokit/request-error';
 
+import { getGitHubHeaders, getInstance } from '../services/github/Config';
+
+import type {
+  OrganizationObject,
+  OrganizationResponseGQL,
+  UserObject,
+  IssueGQL,
+  IssuesObject,
+  ContributorsObject,
+  AccountGQLResponse,
+  RepoObject,
+  GitHubRepoFileResponse,
+  GitHubUser,
+} from '@the7ofdiamonds/ui-ux';
 import {
   RepoContent,
   GitHubRepoQuery,
   RepoContentQuery,
   Organization,
-  OrganizationObject,
-  OrganizationResponseGQL,
   Repo,
-  UserObject,
   User,
   Repos,
   ContactMethods,
   RepoAPIURL,
-  IssueGQL,
   Issues,
-  IssuesObject,
   Contributors,
-  ContributorsObject,
-  AccountGQLResponse,
-  RepoObject,
   Skills,
   ProjectSkills,
-  GitHubRepoFileResponse,
-  GitHubUser,
+  Commits
 } from '@the7ofdiamonds/ui-ux';
 
 type OctokitResponse<T = any, S = number> = {
@@ -52,21 +55,22 @@ export interface GithubState {
   githubStatusCode: number;
   githubError: Error | null;
   githubErrorMessage: string | null;
+  socialAccounts: SocialAccounts | null;
   userObject: UserObject | null;
   organizationObject: OrganizationObject | null;
   organizationReposObject: Array<RepoObject> | null;
   organizationsObject: Array<OrganizationObject> | null;
   organizationDetailsList: Array<Record<string, any>> | null;
+  contents: Array<Record<string, any>> | null;
+
   repos: Array<RepoObject> | null;
   repoDetailsList: Array<Record<string, any>> | null;
-  socialAccounts: SocialAccounts | null;
   repoObject: RepoObject | null;
   repoLanguages: Array<Record<string, any>> | null;
-  contents: Array<Record<string, any>> | null;
   file: string | null;
+  issues: IssuesObject | null;
   contributorsObject: ContributorsObject | null;
   organizationProjects: Array<Record<string, any>> | null;
-  issues: IssuesObject | null;
 }
 
 const initialState: GithubState = {
@@ -130,32 +134,39 @@ export const getRepo = createAsyncThunk(
   'github/getRepo',
   async (query: GitHubRepoQuery, { rejectWithValue }) => {
     try {
-      if (query.owner && query.repo) {
-        const octokit = getInstance();
-
-        const repoResponse: RepoResponse = await octokit.rest.repos.get({
-          owner: query.owner,
-          repo: query.repo,
-        });
-
-        if (repoResponse.status === 200) {
-          const githubRepo: GitHubRepo = repoResponse.data;
-          const repo = new Repo();
-          repo.fromGitHub(githubRepo);
-          return repo.toRepoObject();
-        }
-
-        return rejectWithValue('Unexpected response status.');
+      if (!query.owner || !query.repo) {
+        throw new Error('Missing owner or repo name.');
       }
 
-      return rejectWithValue('Missing owner or repo name.');
-    } catch (error) {
+      const octokit = getInstance();
+
+      if (!octokit) {
+        console.error('Failed to initialize Octokit instance.');
+        return null;
+      }
+
+      const repoResponse: RepoResponse = await octokit.request('GET /repos/{owner}/{repo}', {
+        owner: query.owner,
+        repo: query.repo,
+        headers: {
+          'X-GitHub-Api-Version': '2026-03-10'
+        }
+      })
+
+      if (repoResponse.status === 200) {
+        const githubRepo: GitHubRepo = repoResponse.data;
+        const repo = new Repo();
+        repo.fromGitHub(githubRepo);
+        return repo.toRepoObject();
+      }
+
+      return null;
+    } catch (error: Error | RequestError) {
       if (error instanceof RequestError && error.status === 404) {
         return rejectWithValue('Project could not be found or does not exist.');
       }
 
-      const err = error as Error;
-      return rejectWithValue(err.message || 'An unknown error occurred.');
+      return rejectWithValue(error.message || 'An unknown error occurred.');
     }
   }
 );
@@ -271,28 +282,28 @@ export const getContributors = createAsyncThunk(
   }
 );
 
-// type CommitsResponse = GetResponseTypeFromEndpointMethod<
-//   typeof octokit.rest.repos.ge
-// >;
+export type CommitsResponse = GetResponseTypeFromEndpointMethod<
+  typeof octokit.rest.repos.listCommits
+>;
 
-// export type GitHubContents = RepoContentsResponse['data'];
+export const getCommits = createAsyncThunk<CommitsResponse[], { owner: string; repo: string }>(
+  'github/getCommits',
+  async ({ owner, repo }: { owner: string; repo: string }) => {
+    const octokit = getInstance();
 
-// export const getCommits = createAsyncThunk(
-//   'github/getCommits',
-//   async (username: string) => {
-//     try {
-//       const response:CommitsResponse = await octokit.request(`users/${username}/repos`);
+    try {
+      const response = await octokit.request('GET /repos/{owner}/{repo}/commits', {
+        owner,
+        repo,
+      });
 
-//       console.log(response);
-
-//       return response;
-//     } catch (error) {
-//       const err = error as Error;
-//       console.error(err);
-//       throw new Error(err.message);
-//     }
-//   }
-// );
+      return response.data;
+    } catch (error: any) {
+      console.error('Error fetching commits:', error);
+      throw new Error(error.message || 'Failed to fetch commits');
+    }
+  }
+);
 
 type RepoFileResponse = GetResponseTypeFromEndpointMethod<
   typeof octokit.rest.repos.getContent
@@ -303,27 +314,35 @@ export type GitHubRepoFile = RepoFileResponse['data'];
 export const getRepoFile = createAsyncThunk<string | null, RepoContentQuery>(
   'github/getRepoFile',
   async (query: RepoContentQuery) => {
+    const { owner, repo, path, branch } = query;
+
     try {
       const octokit = getInstance();
 
-      const { owner, repo, path, branch } = query;
-
-      const response: OctokitResponse = await octokit.repos.getContent({
-        owner: owner,
-        repo: repo,
-        path: path,
+      const response: OctokitResponse<any> = await octokit.repos.getContent({
+        owner,
+        repo,
+        path,
         ref: branch,
       });
+
+      if ((owner === null || owner.trim() === "") || (repo === null || repo.trim() === "") || (path === null || path.trim() === "")) {
+        return null;
+      }
 
       if (response.data.type === 'file') {
         return atob(response.data.content);
       }
 
+      console.warn(`Content at ${path} is not a file. Type: ${response.data.type}`);
       return null;
-    } catch (error) {
-      const err = error as Error;
-      console.error(err);
-      throw new Error(err.message);
+    } catch (error: any) {
+      if (error.status === 404) {
+        console.warn(`File not found: ${owner}/${repo}/${path} (branch: ${branch})`);
+        return null;
+      }
+      console.error('GitHub API error:', error);
+      throw new Error(error.message || 'Unknown error fetching GitHub content');
     }
   }
 );
@@ -338,9 +357,8 @@ type IssuesGQL = {
 
 export const getIssues = createAsyncThunk(
   'github/getIssues',
-  async (url: string) => {
+  async (query: GitHubRepoQuery) => {
     try {
-      const repoURL = new RepoAPIURL(url);
 
       const queryIssues = `
         query ($owner: String!, $repo: String!) {
@@ -354,12 +372,12 @@ export const getIssues = createAsyncThunk(
         }
       `;
 
-      const headers = getHeaders();
+      const headers = getGitHubHeaders();
 
       const issuesGQL = await graphql<IssuesGQL>(queryIssues, {
-        owner: repoURL.owner,
-        repo: repoURL.repo,
-        headers: headers,
+        owner: query.owner,
+        repo: query.repo,
+        ...headers,
       });
 
       let issueNums: Array<number> = issuesGQL.repository.issues.nodes.map(
@@ -419,10 +437,10 @@ export const getIssues = createAsyncThunk(
 
       const issueDetailPromises = issueNums.map((issueNumber) => {
         const issue = graphql<{ repository: { issue: IssueGQL } }>(queryIssue, {
-          owner: repoURL.owner,
-          repo: repoURL.repo,
+          owner: query.owner,
+          repo: query.repo,
           issueNumber: issueNumber,
-          headers: headers,
+          ...headers,
         });
 
         return issue;
@@ -445,7 +463,7 @@ export const getIssues = createAsyncThunk(
   }
 );
 
-export const getRepoDetails = createAsyncThunk(
+export const getRepoDetails = createAsyncThunk<RepoObject | null, GitHubRepoQuery>(
   'github/getRepoDetails',
   async (query: GitHubRepoQuery, thunkAPI) => {
     try {
@@ -453,28 +471,27 @@ export const getRepoDetails = createAsyncThunk(
 
       if (getRepo.fulfilled.match(repoResponse) && repoResponse.payload) {
         const repo = new Repo(repoResponse.payload);
+
         const langResponse = await thunkAPI.dispatch(getRepoLanguages(query));
 
-        if (repo.size && repo.size > 0) {
-          if (
-            getRepoLanguages.fulfilled.match(langResponse) &&
-            langResponse.payload
-          ) {
-            const skills = new ProjectSkills();
-            skills.languagesFromGithub(langResponse.payload);
-            repo.setSkills(skills);
-          }
+        if (
+          getRepoLanguages.fulfilled.match(langResponse) &&
+          langResponse.payload
+        ) {
+          const skills = new ProjectSkills();
+          skills.languagesFromGithub(langResponse.payload);
+          repo.setSkills(skills);
+        }
 
-          const contentsResponse = await thunkAPI.dispatch(
-            getRepoContents(query)
-          );
+        const contentsResponse = await thunkAPI.dispatch(
+          getRepoContents(query)
+        );
 
-          if (
-            getRepoContents.fulfilled.match(contentsResponse) &&
-            contentsResponse.payload
-          ) {
-            repo.filterContents(contentsResponse.payload);
-          }
+        if (
+          getRepoContents.fulfilled.match(contentsResponse) &&
+          contentsResponse.payload
+        ) {
+          repo.filterContents(contentsResponse.payload);
         }
 
         const contributorsResponse = await thunkAPI.dispatch(
@@ -489,18 +506,26 @@ export const getRepoDetails = createAsyncThunk(
           repo.setContributors(contributors);
         }
 
-        if (repo.apiURL) {
-          const issuesResponse = await thunkAPI.dispatch(
-            getIssues(repo.apiURL)
-          );
+        const getCommitsResponse = await thunkAPI.dispatch(
+          getCommits(query)
+        );
 
-          if (
-            getIssues.fulfilled.match(issuesResponse) &&
-            issuesResponse.payload
-          ) {
-            const issues = new Issues(issuesResponse.payload);
-            repo.setIssues(issues);
-          }
+        if (getCommitsResponse.payload) {
+          const commits = new Commits();
+          commits.fromResponse(getCommitsResponse.payload)
+          repo.setCommits(commits)
+        }
+
+        const issuesResponse = await thunkAPI.dispatch(
+          getIssues(query)
+        );
+
+        if (
+          getIssues.fulfilled.match(issuesResponse) &&
+          issuesResponse.payload
+        ) {
+          const issues = new Issues(issuesResponse.payload);
+          repo.setIssues(issues);
         }
 
         return repo.toRepoObject();
@@ -517,10 +542,17 @@ export const getRepoDetails = createAsyncThunk(
 
 export const getRepos = createAsyncThunk('github/getRepos', async () => {
   try {
+    const octokit = getInstance();
+
+    if (!octokit) {
+      console.error('Failed to initialize Octokit instance.');
+      return null;
+    }
+
     const { data } = await octokit.request('/user/repos');
 
     return data;
-  } catch (error) {
+  } catch (error: Error | RequestError) {
     const err = error as Error;
     console.error(err);
     throw new Error(err.message);
@@ -576,6 +608,13 @@ export const getAuthenticatedAccount = createAsyncThunk(
   'github/getAuthenticatedAccount',
   async (_, thunkAPI) => {
     try {
+      const headers = getGitHubHeaders();
+
+      if (!headers) {
+        console.error('Headers are not present in the instance.');
+        return null;
+      }
+
       const query = `
         query {
           viewer {
@@ -587,21 +626,13 @@ export const getAuthenticatedAccount = createAsyncThunk(
             avatarUrl
             bio
             url
-            repositories(first: 20) {
+            repositories(first: 100) {
               nodes {
                 id
                 name
                 description
                 url
-                languages(first: 5) {
-                  edges {
-                    size
-                    node {
-                      name
-                      color
-                    }
-                  }
-                }
+                isPrivate
                 owner {
                   id
                   __typename
@@ -618,7 +649,7 @@ export const getAuthenticatedAccount = createAsyncThunk(
                 }
               }
             }
-            organizations(first: 10) {
+            organizations(first: 25) {
               nodes {
                 id
                 login
@@ -630,6 +661,7 @@ export const getAuthenticatedAccount = createAsyncThunk(
                     name
                     description
                     url
+                    isPrivate
                     owner {
                       id
                       __typename
@@ -652,17 +684,54 @@ export const getAuthenticatedAccount = createAsyncThunk(
         }
       `;
 
-      const headers = getHeaders();
+      //       const account: User | null = await graphql<AccountGQLResponse>(query, {
+      //         headers: headers,
+      //       }).then((data) => {
+      // console.log('GraphQL response for authenticated account:', data);
+      //         if (data.viewer.__typename === 'User') {
+      //           const user = new User();
+      //           user.fromGitHubGraphQL(data.viewer);
+      //           return user;
+      //         }
 
-      const account: User | null = await graphql<AccountGQLResponse>(query, {
-        headers: headers,
-      }).then((data) => {
-        if (data.viewer.__typename === 'User') {
-          const user = new User();
-          user.fromGitHubGraphQL(data.viewer);
-          return user;
-        }
+      //         return null;
+      //       }).catch((error) => {
+      //         console.error('Error fetching authenticated account:', error.message);
+      //         return null;
+      //       });
 
+      const account: User | null = await fetch("https://api.github.com/graphql", {
+        method: "POST",
+        ...headers,
+        body: JSON.stringify({ query: query }),
+      }).then((res) => {
+        const json = res.json()
+          .then((json) => {
+            if (json.errors) {
+              const errorMessages = json.errors.map((error: any) => error.message).join(", ");
+              throw new Error(errorMessages);
+            }
+
+            if (!json.data) {
+              throw new Error('No data field in GraphQL response');
+            }
+
+            const jsonData = json.data as AccountGQLResponse;
+
+            if (jsonData?.viewer?.__typename === 'User') {
+              const user = new User();
+              user.fromGitHubGraphQL(jsonData.viewer);
+              return user;
+            }
+
+            return null;
+          }).catch((error) => {
+            console.error('Error parsing JSON response:', error);
+            return null;
+          });
+        return json;
+      }).catch((error) => {
+        console.error('Error fetching authenticated account:', error.message);
         return null;
       });
 
@@ -681,41 +750,11 @@ export const getAuthenticatedAccount = createAsyncThunk(
         account.contactMethods.fromGitHub(contactsResponse.payload);
       }
 
-      const contentsResponse =
-        account && account.username
-          ? await thunkAPI.dispatch(
-              getRepoContents(
-                new GitHubRepoQuery(account.username, account.username)
-              )
-            )
-          : null;
-
-      if (
-        account &&
-        contentsResponse &&
-        getRepoContents.fulfilled.match(contentsResponse) &&
-        contentsResponse.payload
-      ) {
-        if (
-          Array.isArray(contentsResponse.payload) &&
-          contentsResponse.payload.length > 0
-        ) {
-          const contents = contentsResponse.payload;
-          contents.forEach((content) => {
-            if (content.type === 'file') {
-              if (content.name === 'story.md') {
-                account.setStory(content.download_url);
-              }
-            }
-          });
-        }
-      }
-
       return account instanceof User ? account.toUserObject() : null;
     } catch (error) {
       const err = error as Error;
       console.error(err);
-      throw new Error(err.message);
+      return null;
     }
   }
 );
@@ -783,10 +822,9 @@ export const getUserAccount = createAsyncThunk(
       }
 
       return null;
-    } catch (error) {
-      const err = error as Error;
-      console.error(err);
-      throw new Error(err.message);
+    } catch (error: Error | RequestError) {
+      console.error(error.message);
+      return null;
     }
   }
 );
@@ -845,7 +883,7 @@ export const getOrganizationAccount = createAsyncThunk(
         }
       `;
 
-      const headers = getHeaders();
+      const headers = getGitHubHeaders();
 
       const org: Organization = await graphql<OrganizationResponseGQL>(query, {
         headers,
@@ -895,10 +933,10 @@ export const getOrganizationDetailsList = createAsyncThunk(
   async (url: string, thunkAPI) => {
     try {
       let organizations: Array<OrganizationObject> = [];
-      const headers = getHeaders();
+      const headers = getGitHubHeaders();
 
       const organizationDetailsList = await fetch(url, {
-        headers: headers,
+        ...headers,
       });
 
       const orgDetailsList = await organizationDetailsList.json();
@@ -953,33 +991,33 @@ const githubSliceOptions: CreateSliceOptions<GithubState> = {
       .addCase(getAuthenticatedAccount.pending, (state, action) => {
         state.githubLoading = true;
         state.githubLoadingMessage = 'Now Loading User Data from GitHub';
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
       })
       .addCase(getOrganizationAccount.pending, (state, action) => {
         state.githubLoading = true;
         state.githubLoadingMessage =
           'Now Loading Organization Data from GitHub';
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
       })
       .addCase(getOrganizationDetailsList.pending, (state, action) => {
         state.githubLoading = true;
         state.githubLoadingMessage =
           'Now Loading Organization Data from GitHub';
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
       })
       .addCase(getIssues.pending, (state, action) => {
         state.githubLoading = true;
         state.githubLoadingMessage = 'Now Loading Issues from GitHub Repo';
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
       })
       .addCase(getRepo.pending, (state, action) => {
         state.githubLoading = true;
         state.githubLoadingMessage = 'Now Loading Repo from GitHub';
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
       })
       .addCase(getRepoContents.pending, (state, action) => {
@@ -991,13 +1029,13 @@ const githubSliceOptions: CreateSliceOptions<GithubState> = {
       .addCase(getRepoLanguages.pending, (state, action) => {
         state.githubLoading = true;
         state.githubLoadingMessage = 'Now Loading Languages from GitHub Repo';
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
       })
       .addCase(getRepoDetailsList.pending, (state, action) => {
         state.githubLoading = true;
         state.githubLoadingMessage = 'Now Loading GitHub Repo Details';
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
       })
       .addCase(getRepos.pending, (state, action) => {
@@ -1010,62 +1048,62 @@ const githubSliceOptions: CreateSliceOptions<GithubState> = {
         state.githubLoading = true;
         state.githubLoadingMessage =
           'Now Loading User Social Accounts from GitHub';
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
       })
       .addCase(getAuthenticatedAccount.fulfilled, (state, action) => {
         state.githubLoading = false;
         state.githubLoadingMessage = null;
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
         state.userObject = action.payload;
       })
       .addCase(getOrganizationDetailsList.fulfilled, (state, action) => {
         state.githubLoading = false;
         state.githubLoadingMessage = null;
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
         state.organizationDetailsList = action.payload;
       })
       .addCase(getOrganizationAccount.fulfilled, (state, action) => {
         state.githubLoading = false;
         state.githubLoadingMessage = null;
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
         state.organizationObject = action.payload;
       })
       .addCase(getRepos.fulfilled, (state, action) => {
         state.githubLoading = false;
         state.githubLoadingMessage = null;
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
         state.repos = action.payload;
       })
       .addCase(getRepoDetailsList.fulfilled, (state, action) => {
         state.githubLoading = false;
         state.githubLoadingMessage = null;
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
         state.repoDetailsList = action.payload;
       })
       .addCase(getRepo.fulfilled, (state, action) => {
         state.githubLoading = false;
         state.githubLoadingMessage = null;
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
         state.repoObject = action.payload;
       })
       .addCase(getRepoContents.fulfilled, (state, action) => {
         state.githubLoading = false;
         state.githubLoadingMessage = null;
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
         state.contents = action.payload;
       })
       .addCase(getRepoLanguages.fulfilled, (state, action) => {
         state.githubLoading = false;
         state.githubLoadingMessage = null;
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
         state.githubStatusCode = 200;
         state.repoLanguages = action.payload;
@@ -1073,14 +1111,14 @@ const githubSliceOptions: CreateSliceOptions<GithubState> = {
       .addCase(getSocialAccounts.fulfilled, (state, action) => {
         state.githubLoading = false;
         state.githubLoadingMessage = null;
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
         state.socialAccounts = action.payload;
       })
       .addCase(getIssues.fulfilled, (state, action) => {
         state.githubLoading = false;
         state.githubLoadingMessage = null;
-        state.githubErrorMessage = '';
+        state.githubErrorMessage = null;
         state.githubError = null;
         state.issues = action.payload;
       })

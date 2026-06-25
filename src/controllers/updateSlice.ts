@@ -1,33 +1,35 @@
+import type { CreateSliceOptions } from '@reduxjs/toolkit';
 import {
   createSlice,
   createAsyncThunk,
-  isAnyOf,
-  CreateSliceOptions,
+  isAnyOf
 } from '@reduxjs/toolkit';
 
-import {
-  CheckList,
+import type {
   CheckListObject,
-  Color,
   ColorObject,
-  Gallery,
   GalleryObject,
-  Feature,
   FeatureObject,
-  Project,
-  ProjectDelivery,
-  ProjectSkills,
   ProjectURLsDataObject,
-  ProjectVersions,
-  SecureHeaders,
-  Skills,
   TaskObject,
   ProjectSkillsObject,
 } from '@the7ofdiamonds/ui-ux';
+import {
+  CheckList,
+  Color,
+  Gallery,
+  Feature,
+  Project,
+  ProjectDelivery,
+  ProjectSkills,
+  ProjectVersions,
+  SecureHeaders,
+  Skills
+} from '@the7ofdiamonds/ui-ux';
 
-import { getAPI } from '@/services/Config';
+import { getAPI } from '../services/Config';
 
-import { addSecureHeaders } from '@/utilities/Headers';
+import { addSecureHeaders } from '../utilities/Headers';
 
 export interface UpdateState {
   updateLoading: boolean;

@@ -4,8 +4,8 @@ import { ProjectProcess, StatusBar } from '@the7ofdiamonds/ui-ux';
 import { CheckList, Colors, Gallery, Project, ProjectDesign } from '@the7ofdiamonds/ui-ux';
 
 import { EditGallery } from '../components/gallery/EditGallery';
-import { EditColorsList } from '@/views/components/edit/components/colors/EditColorsList';
-import { EditCheckList } from '@/views/components/edit/components/check_list/EditCheckList';
+import { EditColorsList } from '../../../../views/components/edit/components/colors/EditColorsList';
+import { EditCheckList } from '../../../../views/components/edit/components/check_list/EditCheckList';
 
 import styles from './EditProcess.module.scss';
 

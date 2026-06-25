@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ProjectVersions } from '@the7ofdiamonds/ui-ux'
 
-import { useAppDispatch } from '@/model/hooks';
+import { useAppDispatch } from '../../../../../model/hooks';
 
 import styles from './ProjectVersions.module.scss';
 

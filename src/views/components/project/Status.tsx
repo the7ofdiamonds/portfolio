@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import { ProjectProgress, ProjectStatus } from "@the7ofdiamonds/ui-ux";
+import { Commits, ProjectProgress, ProjectStatus } from "@the7ofdiamonds/ui-ux";
 
 import styles from './Project.module.scss';
+import { ProjectCommits } from "./ProjectCommits";
 
 interface ProjectStatusProps {
   status: ProjectStatus;
@@ -13,6 +14,7 @@ const Status: React.FC<ProjectStatusProps> = ({ status }) => {
   const [createdAt, setCreatedAt] = useState<string | null>(null);
   const [progress, setProgress] = useState<ProjectProgress | null>(null);
   const [percentageComplete, setPercentageComplete] = useState<number | null>(null);
+  const [commits, setCommits] = useState<Commits | null>(null);
 
   useEffect(() => { if (status?.updatedAt) { setUpdatedAt(status.updatedAt) } }, [status?.updatedAt])
 
@@ -30,7 +32,9 @@ const Status: React.FC<ProjectStatusProps> = ({ status }) => {
     }
   }, [progress?.completion])
 
-  const hasContent = createdAt || updatedAt || percentageComplete;
+  useEffect(() => { if (status?.commits) { setCommits(status.commits) } }, [status?.commits])
+
+  const hasContent = createdAt || updatedAt || percentageComplete || commits;
 
   return (
     <>
@@ -56,6 +60,8 @@ const Status: React.FC<ProjectStatusProps> = ({ status }) => {
               <h4>{percentageComplete.toFixed(1)}% Completed</h4>
             </div>
           )}
+
+          {commits && <ProjectCommits commits={commits} />}
         </div>}
     </>
   );

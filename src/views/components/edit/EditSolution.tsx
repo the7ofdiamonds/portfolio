@@ -3,11 +3,11 @@ import React, { useEffect, useState, ChangeEvent } from 'react';
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
 import { Feature, Gallery, Project, ProjectSolution, ProjectURLs } from '@the7ofdiamonds/ui-ux';
 
-import { EditFeatures } from '@/views/components/edit/components/features/EditFeatures';
-import { EditProjectURL } from '@/views/components/edit/components/project_url/EditProjectURL';
-import { EditGallery } from '@/views/components/edit/components/gallery/EditGallery';
+import { EditFeatures } from '../../../views/components/edit/components/features/EditFeatures';
+import { EditProjectURL } from '../../../views/components/edit/components/project_url/EditProjectURL';
+import { EditGallery } from '../../../views/components/edit/components/gallery/EditGallery';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
+import { useAppDispatch, useAppSelector } from '../../../model/hooks';
 
 import styles from './Edit.module.scss';
 

@@ -14,12 +14,11 @@ fs.emptyDirSync(path.resolve(__dirname, 'dist'));
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
   plugins: [
-    cssInjectedByJsPlugin(),
     dts({ insertTypesEntry: true, outDir: 'dist/types' }),
   ],
   build: {
     cssCodeSplit: true,
-    sourcemap: true,
+    sourcemap: false,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'GitHubPortfolio',

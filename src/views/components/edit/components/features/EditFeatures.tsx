@@ -1,11 +1,12 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Feature, FeatureObject, Version } from '@the7ofdiamonds/ui-ux';
+import type { FeatureObject } from '@the7ofdiamonds/ui-ux';
+import { Feature, Version } from '@the7ofdiamonds/ui-ux';
 
-import { updateFeatures } from '@/controllers/updateSlice';
+import { updateFeatures } from '../../../../../controllers/updateSlice';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../../model/hooks';
 
 import styles from './Features.module.scss';
 

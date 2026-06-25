@@ -9,12 +9,12 @@ import {
   Version
 } from '@the7ofdiamonds/ui-ux';
 
-import FeaturesComponent from '@/views/components/project/Features';
-import ProjectURLsComponent from '@/views/components/project/ProjectURLsComponent';
+import FeaturesComponent from '../../../views/components/project/Features';
+import ProjectURLsComponent from '../../../views/components/project/ProjectURLsComponent';
 
 import styles from './Project.module.scss';
-import { getRepoFile } from '@/controllers/githubSlice';
-import { useAppDispatch } from '@/model/hooks';
+import { getRepoFile } from '../../../controllers/githubSlice';
+import { useAppDispatch } from '../../../model/hooks';
 
 interface SolutionProps {
   project: Project

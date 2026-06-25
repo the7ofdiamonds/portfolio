@@ -10,8 +10,8 @@ import {
 import { CheckList, Color, Image, ProjectDesign, ProjectQuery } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
-import { getRepoFile } from '@/controllers/githubSlice';
-import { useAppDispatch } from '@/model/hooks';
+import { getRepoFile } from '../../../controllers/githubSlice';
+import { useAppDispatch } from '../../../model/hooks';
 
 interface DesignProps {
   design: ProjectDesign;

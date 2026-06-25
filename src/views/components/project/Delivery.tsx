@@ -13,9 +13,9 @@ import {
   RepoContentQuery
 } from '@the7ofdiamonds/ui-ux';
 
-import { getRepoFile } from '@/controllers/githubSlice';
+import { getRepoFile } from '../../../controllers/githubSlice';
 
-import { useAppDispatch } from '@/model/hooks';
+import { useAppDispatch } from '../../../model/hooks';
 
 import styles from './Project.module.scss';
 
@@ -32,18 +32,22 @@ export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) =>
   const [checkList, setCheckList] = useState<CheckList | null>(null);
 
   useEffect(() => {
+    if (delivery?.gallery?.images?.length > 0) {
       setGallery(delivery.gallery)
-  }, [delivery]);
-
-  useEffect(() => {
-    if (delivery.contentURL && delivery.contentURL.owner && delivery.contentURL.repo && delivery.contentURL.path) {
-      setRepoContentQuery(new RepoContentQuery(delivery.contentURL.owner, delivery.contentURL.repo, delivery.contentURL.path, delivery.contentURL.branch ?? ''))
     }
-  }, [projectQuery]);
+  }, [delivery?.gallery]);
 
   useEffect(() => {
+    if (delivery?.contentURL) {
+      setRepoContentQuery(delivery.contentURL.toRepoContentQuery())
+    }
+  }, [delivery?.contentURL]);
+
+  useEffect(() => {
+    if (delivery?.checkList?.task?.length > 0) {
       setCheckList(delivery.checkList)
-  }, [delivery]);
+    }
+  }, [delivery?.checkList]);
 
   const hasContent = gallery || repoContentQuery || checkList;
 

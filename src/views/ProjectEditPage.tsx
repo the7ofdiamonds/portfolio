@@ -2,19 +2,18 @@ import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
-import { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
-
-import { updateProject } from '@/controllers/updateSlice';
-
-import { getProject } from '@/controllers/projectSlice';
-
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
-
+import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
 import { GitHubRepoQuery, Owner, Project, Portfolio, RepoURL, User } from '@the7ofdiamonds/ui-ux';
 
-import { EditProject } from '@/views/components/edit/EditProject';
+import { updateProject } from '../controllers/updateSlice';
 
-import styles from '@/views/components/edit/Edit.module.scss';
+import { getProject } from '../controllers/projectSlice';
+
+import { useAppDispatch, useAppSelector } from '../model/hooks';
+
+import { EditProject } from '../views/components/edit/EditProject';
+
+import styles from '../views/components/edit/Edit.module.scss';
 
 interface ProjectEditPageProps {
     user: User;

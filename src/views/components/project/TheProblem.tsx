@@ -10,8 +10,8 @@ import {
 import { DocumentURL, Gallery, Project } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
-import { getRepoFile } from '@/controllers/githubSlice';
-import { useAppDispatch } from '@/model/hooks';
+import { getRepoFile } from '../../../controllers/githubSlice';
+import { useAppDispatch } from '../../../model/hooks';
 
 interface ProblemProps {
   project: Project;

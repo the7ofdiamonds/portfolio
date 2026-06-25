@@ -1,0 +1,13 @@
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG
+    - if: $CI_PIPELINE_SOURCE == "pipeline"
+    - when: never
+    
+include:
+  - component: $CI_SERVER_FQDN/components/pipelines/packages_javascript_pipeline@~latest
+    inputs:
+      username: $GITHUB_USERNAME
+      token: $GITHUB_TOKEN
+      branch: $BRANCH
+      package_json_path: /package.json

@@ -1,22 +1,24 @@
+import type { CreateSliceOptions } from '@reduxjs/toolkit';
 import {
-  CreateSliceOptions,
   createSlice,
   createAsyncThunk,
   isAnyOf,
 } from '@reduxjs/toolkit';
 
+import type {
+  SkillObject,
+  SkillsObject,
+} from '@the7ofdiamonds/ui-ux';
 import {
   Taxonomy,
   SecureHeaders,
   Skill,
-  SkillObject,
   Skills,
-  SkillsObject,
 } from '@the7ofdiamonds/ui-ux';
 
-import { addSecureHeaders } from '@/utilities/Headers';
+import { addSecureHeaders } from '../utilities/Headers';
 
-import { getAPI } from '@/services/Config';
+import { getAPI } from '../services/Config';
 
 export interface SkillsState {
   skillsLoading: boolean;

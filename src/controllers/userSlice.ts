@@ -1,17 +1,18 @@
+import type { CreateSliceOptions } from '@reduxjs/toolkit';
 import {
   createSlice,
   createAsyncThunk,
-  isAnyOf,
-  CreateSliceOptions,
+  isAnyOf
 } from '@reduxjs/toolkit';
 
-import { UserObject, User } from '@the7ofdiamonds/ui-ux';
+import type { UserObject } from '@the7ofdiamonds/ui-ux';
+import { User } from '@the7ofdiamonds/ui-ux';
 
 import {
   getAuthenticatedAccount,
   getUserAccount,
-} from '@/controllers/githubSlice';
-import { getUserData } from '@/controllers/databaseSlice';
+} from '../controllers/githubSlice';
+import { getUserData } from '../controllers/databaseSlice';
 
 export interface UserState {
   userLoading: boolean;

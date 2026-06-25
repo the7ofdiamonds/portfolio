@@ -1,12 +1,13 @@
+import type { CreateSliceOptions } from '@reduxjs/toolkit';
 import {
   createSlice,
   createAsyncThunk,
-  isAnyOf,
-  CreateSliceOptions,
+  isAnyOf
 } from '@reduxjs/toolkit';
 
-import { getAPI } from '@/services/Config';
 import { Project } from '@the7ofdiamonds/ui-ux';
+
+import { getAPI } from '../services/Config';
 
 export interface DatabaseState {
   databaseLoading: boolean;
@@ -58,10 +59,14 @@ export const getUserData = createAsyncThunk(
     try {
       const api = getAPI();
 
+      if ((typeof api !== "string") || (typeof username !== "string")) {
+        return null;
+      }
+
       const response = api
         ? await fetch(`${api}/user/${username}`, {
-            method: 'GET',
-          })
+          method: 'GET',
+        })
         : null;
 
       const text = response ? await response.text() : null;
@@ -87,10 +92,14 @@ export const getOrganizationData = createAsyncThunk(
     try {
       const api = getAPI();
 
+      if ((typeof api !== "string") || (typeof organization !== "string")) {
+        return null;
+      }
+
       const response = api
         ? await fetch(`${api}/organization/${organization}`, {
-            method: 'GET',
-          })
+          method: 'GET',
+        })
         : null;
 
       const text = response ? await response.text() : null;
@@ -115,11 +124,16 @@ export const getProjectData = createAsyncThunk(
   async (projectID: string) => {
     try {
       const api = getAPI();
+console.log(api)
+
+      if ((typeof api !== "string") || (typeof projectID !== "string")) {
+        return null;
+      }
 
       const response = api
         ? await fetch(`${api}/project/${projectID}`, {
-            method: 'GET',
-          })
+          method: 'GET',
+        })
         : null;
 
       const text = response ? await response.text() : null;

@@ -1,13 +1,14 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Gallery, GalleryObject, Image } from '@the7ofdiamonds/ui-ux';
+import type { GalleryObject } from '@the7ofdiamonds/ui-ux';
+import { Gallery, Image } from '@the7ofdiamonds/ui-ux';
 
-import { updateDeliveryGallery, updateDesignGallery, updateDevelopmentGallery, updateProblemGallery, updateSolutionGallery } from '@/controllers/updateSlice';
+import { updateDeliveryGallery, updateDesignGallery, updateDevelopmentGallery, updateProblemGallery, updateSolutionGallery } from '../../../../../controllers/updateSlice';
 
 import EditImages from '../images/EditImages';
 
-import type { AppDispatch } from '@/model/store';
+import type { AppDispatch } from '../../../../../model/store';
 
 import styles from './Gallery.module.scss';
 

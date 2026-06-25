@@ -1,24 +1,31 @@
-import { Env } from '@/services/Env';
-import { FirebaseApp, initializeApp } from 'firebase/app';
-import { Auth, getAuth } from 'firebase/auth';
+import type { FirebaseApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 
-import { getFirestore, Firestore } from 'firebase/firestore';
+import type { Auth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
+
+import type{ Firestore } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
+
+import { Env } from '../services/Env';
 
 export type FirebaseConfig = {
-  apiKey: string;
-  authDomain: string;
-  databaseURL: string;
-  projectId: string;
-  storageBucket: string;
-  messagingSenderId: string;
-  appId: string;
-  measurementId: string;
+  apiKey: string | null;
+  authDomain: string | null;
+  databaseURL: string | null;
+  projectId: string | null;
+  storageBucket: string | null;
+  messagingSenderId: string | null;
+  appId: string | null;
+  measurementId: string | null;
 };
 
 export type ConfigObject = {
-  api_url: string;
+  api_url: string | null;
   firebase_config: FirebaseConfig;
-  github_token: string;
+  github_token: string | null;
+  gitlab_url: string | null;
+  gitlab_token: string | null;
 };
 
 export class Config {
@@ -27,15 +34,19 @@ export class Config {
   db: Firestore | null;
   auth: Auth | null;
   githubToken: string | null;
+  gitlabToken: string | null;
+  gitlabURL: string | null;
 
   constructor(config: ConfigObject) {
-    this.apiURL = config.api_url ? config.api_url : null;
-    this.app = config.firebase_config
+    this.apiURL = config?.api_url ? config.api_url : null;
+    this.app = config?.firebase_config
       ? this.initFirebase(config.firebase_config)
       : null;
     this.db = this.app ? getFirestore(this.app) : null;
     this.auth = this.app ? getAuth(this.app) : null;
-    this.githubToken = config.github_token ? config.github_token : null;
+    this.githubToken = config?.github_token ? config.github_token : null;
+    this.gitlabToken = config?.gitlab_token ? config.gitlab_token : null;
+    this.gitlabURL = config?.gitlab_url ? config.gitlab_url : null;
   }
 
   initFirebase(config: FirebaseConfig): FirebaseApp {
@@ -66,6 +77,10 @@ export class Config {
   setAPI = (apiURL: string) => {
     this.apiURL = apiURL;
   };
+
+  setGitLabURL = (gitlabURL: string) => {
+    this.gitlabURL = gitlabURL;
+  };
 }
 
 let configInstance: Config | null = null;
@@ -92,7 +107,7 @@ export const getConfig = (): Config | null => {
 
 export const getAPI = () => {
   let config = getConfig();
-  if (config) {
+  if (config && config.apiURL) {
     return config.apiURL;
   }
   return null;
@@ -100,7 +115,7 @@ export const getAPI = () => {
 
 export const getDB = () => {
   let config = getConfig();
-  if (config) {
+  if (config && config.db) {
     return config.db;
   }
   return null;
@@ -108,16 +123,24 @@ export const getDB = () => {
 
 export const getAuthorization = () => {
   let config = getConfig();
-  if (config) {
+  if (config && config.auth) {
     return config.auth;
   }
   return null;
 };
 
-export const getToken = () => {
+export const getGithubToken = () => {
   let config = getConfig();
-  if (config) {
+  if (config && config.githubToken) {
     return config.githubToken;
+  }
+  return null;
+};
+
+export const getGitlabToken = () => {
+  let config = getConfig();
+  if (config && config.gitlabToken) {
+    return config.gitlabToken;
   }
   return null;
 };

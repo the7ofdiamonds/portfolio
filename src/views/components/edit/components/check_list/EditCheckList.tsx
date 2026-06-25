@@ -3,18 +3,20 @@ import { useDispatch } from 'react-redux';
 
 import { v4 as uuidv4 } from 'uuid';
 
+import type {
+    CheckListObject,
+    TaskObject
+} from '@the7ofdiamonds/ui-ux';
 import {
     CheckList,
-    CheckListObject,
     Project,
     Task,
-    TaskObject,
     Tasks
 } from '@the7ofdiamonds/ui-ux';
 
-import { updateDesignCheckList, updateDevelopmentCheckList, updateDeliveryCheckList } from '@/controllers/updateSlice';
+import { updateDesignCheckList, updateDevelopmentCheckList, updateDeliveryCheckList } from '../../../../../controllers/updateSlice';
 
-import { useAppDispatch } from '@/model/hooks';
+import { useAppDispatch } from '../../../../../model/hooks';
 
 import styles from './CheckList.module.scss';
 

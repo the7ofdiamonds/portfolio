@@ -1,5 +1,5 @@
 {
-  "name": "@the7ofdiamonds/github-portfolio",
+  "name": "@the7ofdiamonds/portfolio",
   "version": "1.0.70",
   "description": "Use GitHub API to create portfolio website with repositories.",
   "author": "@the7ofdiamonds",
@@ -10,18 +10,24 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
       "types": "./dist/types/index.d.ts"
+    },
+    "./scss": {
+      "sass": "./scss/index.scss",
+      "default": "./scss/index.scss"
     }
   },
-  "main": "dist/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist",
+    "scss"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/the7ofdiamonds/github-portfolio.git"
+    "url": "git+ssh://git@github.com/the7ofdiamonds/portfolio.git"
   },
   "bugs": {
-    "url": "https://github.com/the7ofdiamonds/github-portfolio/issues"
+    "url": "https://github.com/the7ofdiamonds/portfolio/issues"
   },
-  "homepage": "https://github.com/the7ofdiamonds/github-portfolio#readme",
+  "homepage": "https://github.com/the7ofdiamonds/portfolio#readme",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
@@ -32,20 +38,21 @@
     "vite": "vite -c vite.config.ts",
     "build": "vite build",
     "preview": "vite preview --port 8080",
-    "update-dev": "git push gitport development",
-    "update-prod": "git push gitport",
-    "refactor": "./refactor.sh && npm run update-prod",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rimraf dist node_modules package-lock.json"
+    "update-prod": "git push git@github.com:the7ofdiamonds/portfolio.git",
+    "update-dev": "git push ssh://git@gitlab.jclyonsenterprises.com:2424/seven-tech/packages/javascript/portfolio.git",
+    "workflow": "bash ../workflow.sh",
+    "refactor": "npm run workflow refactor",
+    "test": "echo \"No test specified\" && exit 0",
+    "clean": "rimraf dist node_modules"
   },
   "dependencies": {
+    "@the7ofdiamonds/ui-ux": "latest",
+    "@the7ofdiamonds/communications": "latest",
+    "@the7ofdiamonds/gateway": "latest",
     "@octokit/rest": "^21.0.2",
     "@octokit/types": "^13.6.2",
     "@reduxjs/toolkit": "^1.9.5",
     "@rollup/plugin-commonjs": "^28.0.3",
-    "@the7ofdiamonds/communications": "^0.0.83",
-    "@the7ofdiamonds/ui-ux": "^1.0.83",
-    "@the7ofdiamonds/gateway": "^0.0.56",
     "buffer": "^6.0.3",
     "cors": "^2.8.5",
     "crypto-browserify": "^3.12.0",
@@ -57,7 +64,6 @@
     "jsonwebtoken": "^9.0.2",
     "marked": "^15.0.5",
     "moment": "^2.29.4",
-    "node": "^23.8.0",
     "octokit": "5.0.2",
     "path": "^0.12.7",
     "source-map-js": "^1.0.2",
@@ -80,7 +86,7 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "sass": "^1.89.2",
     "typescript": "^5.7.3",
-    "vite": "^5.0.10",
+    "vite": "5.4.20",
     "vite-plugin-css-injected-by-js": "^3.5.2",
     "vite-plugin-dts": "^4.5.4",
     "vite-tsconfig-paths": "^5.1.4"

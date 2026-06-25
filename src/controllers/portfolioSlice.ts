@@ -1,19 +1,26 @@
 import { createSlice, createAsyncThunk, isAnyOf } from '@reduxjs/toolkit';
 
-import {
-  Portfolio,
+import type {
   PortfolioObject,
+  ProjectObject
+} from '@the7ofdiamonds/ui-ux';
+import {
+  GitHubRepoQuery,
+  Portfolio,
   Project,
-  ProjectObject,
+  Repo
 } from '@the7ofdiamonds/ui-ux';
 
 import { getProject } from './projectSlice';
+import { getRepoDetails } from './githubSlice';
+import { getProjectData } from './databaseSlice';
 
 export interface PortfolioState {
   portfolioLoading: boolean;
   portfolioLoadingMessage: string | null;
   portfolioError: Error | null;
   portfolioErrorMessage: string | null;
+  portfolioProjectObject: ProjectObject | null;
   portfolioObject: PortfolioObject | null;
   organizationPortfolioObject: PortfolioObject | null;
   projects: Array<ProjectObject> | null;
@@ -24,10 +31,59 @@ const initialState: PortfolioState = {
   portfolioLoadingMessage: null,
   portfolioError: null,
   portfolioErrorMessage: null,
+  portfolioProjectObject: null,
   portfolioObject: null,
   organizationPortfolioObject: null,
   projects: null,
 };
+
+export const getPortfolioProject = createAsyncThunk<ProjectObject | null, Project>(
+  'project/getPortfolioProject',
+  async (project: Project, thunkAPI) => {
+    try {
+
+      if (!project?.query || !project?.query?.owner || !project?.query?.repo) {
+        return null;
+      }
+
+      const repoQuery = new GitHubRepoQuery(
+        project.query.owner,
+        project.query.repo
+      );
+
+      const repoDetailsResponse = await thunkAPI.dispatch(
+        getRepoDetails(repoQuery)
+      );
+
+      if (
+        getRepoDetails.fulfilled.match(repoDetailsResponse) &&
+        repoDetailsResponse.payload
+      ) {
+        const repo = new Repo(repoDetailsResponse.payload);
+        project.fromRepo(repo);
+      } else {
+        return null;
+      }
+
+      const projectDataResponse = await thunkAPI.dispatch(
+        getProjectData(project.query.repo)
+      );
+
+      if (
+        getProjectData.fulfilled.match(projectDataResponse) &&
+        projectDataResponse.payload
+      ) {
+        project.fromDocumentData(projectDataResponse.payload);
+      }
+
+      return project.toProjectObject();
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      throw new Error(err.message);
+    }
+  }
+);
 
 export const getPortfolioDetails = createAsyncThunk(
   'portfolio/getPortfolio',
@@ -39,7 +95,7 @@ export const getPortfolioDetails = createAsyncThunk(
 
       const portfolioPromises = Array.from(portfolio?.projects).map(
         async (project) => {
-          const projectResponse = await thunkAPI.dispatch(getProject(project));
+          const projectResponse = await thunkAPI.dispatch(getPortfolioProject(project));
 
           if (
             getProject.fulfilled.match(projectResponse) &&

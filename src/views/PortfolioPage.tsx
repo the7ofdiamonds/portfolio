@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import type { TypedUseSelectorHook } from 'react-redux';
 
 import { Organization, Section, StatusBar, User } from '@the7ofdiamonds/ui-ux';
-import { MessageType, StatusBarVisibility, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
+import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import { Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
 
-import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
+import { PortfolioComponent } from '../views/components/portfolio/PortfolioComponent';
 
 interface PortfolioPageProps<RootState, AppDispatch> {
   account: Organization | User;

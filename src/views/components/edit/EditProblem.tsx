@@ -3,7 +3,7 @@ import React, { useEffect, useState, ChangeEvent } from 'react';
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
 import { Gallery, Project, ProjectProblem } from '@the7ofdiamonds/ui-ux';
 
-import { EditGallery } from '@/views/components/edit/components/gallery/EditGallery';
+import { EditGallery } from '../../../views/components/edit/components/gallery/EditGallery';
 
 import styles from './Edit.module.scss';
 

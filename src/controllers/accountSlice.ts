@@ -1,16 +1,16 @@
+import type { CreateSliceOptions } from '@reduxjs/toolkit';
 import {
   createSlice,
   createAsyncThunk,
-  isAnyOf,
-  CreateSliceOptions,
+  isAnyOf
 } from '@reduxjs/toolkit';
 
 import { GitHubRepoQuery, User } from '@the7ofdiamonds/ui-ux';
 
-import { getAuthenticatedUserAccount } from '@/controllers/userSlice';
+import { getAuthenticatedUserAccount } from '../controllers/userSlice';
 import { getSkills } from './skillsSlice';
 // import { getSkills } from '@/controllers/taxonomiesSlice';
-import { getPortfolioDetails } from '@/controllers/portfolioSlice';
+import { getPortfolioDetails } from '../controllers/portfolioSlice';
 
 export interface AccountState {
   accountLoading: boolean;
@@ -77,18 +77,18 @@ export const getAccount = createAsyncThunk(
         if (Array.isArray(repos) && repos.length > 0) {
           const user = new User(accountResponse.payload);
 
-            const portfolioResponse =
-              user.repos && user.repos.count > 0
-                ? await thunkAPI.dispatch(getPortfolioDetails(user.repos))
-                : null;
+          const portfolioResponse =
+            user.repos && user.repos.count > 0
+              ? await thunkAPI.dispatch(getPortfolioDetails(user.repos))
+              : null;
 
-            if (
-              portfolioResponse &&
-              getPortfolioDetails.fulfilled.match(portfolioResponse) &&
-              portfolioResponse.payload
-            ) {
-              projects = portfolioResponse.payload;
-            }
+          if (
+            portfolioResponse &&
+            getPortfolioDetails.fulfilled.match(portfolioResponse) &&
+            portfolioResponse.payload
+          ) {
+            projects = portfolioResponse.payload;
+          }
         }
 
         return {

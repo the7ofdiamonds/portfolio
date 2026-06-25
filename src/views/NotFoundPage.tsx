@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
-import { StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import type { StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
 
 export const NotFoundPage: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);

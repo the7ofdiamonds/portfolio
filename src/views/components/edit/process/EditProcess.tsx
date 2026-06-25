@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 
-import { MessageType, StatusBar, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import {StatusBar } from '@the7ofdiamonds/ui-ux';
 import { Project } from '@the7ofdiamonds/ui-ux';
 
-import { EditStatus } from '@/views/components/edit/process/EditStatus';
-import { EditDesign } from '@/views/components/edit/process/EditDesign';
-import { EditDevelopment } from '@/views/components/edit/process/EditDevelopment';
-import { EditDelivery } from '@/views/components/edit/process/EditDelivery';
+import { EditStatus } from '../../../../views/components/edit/process/EditStatus';
+import { EditDesign } from '../../../../views/components/edit/process/EditDesign';
+import { EditDevelopment } from '../../../../views/components/edit/process/EditDevelopment';
+import { EditDelivery } from '../../../../views/components/edit/process/EditDelivery';
 
 import styles from './EditProcess.module.scss';
 

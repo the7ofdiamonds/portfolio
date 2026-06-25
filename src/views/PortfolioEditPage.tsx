@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
-import { MessageType, StatusBarVisibility, Portfolio, Project, User } from '@the7ofdiamonds/ui-ux';
+import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import { Portfolio, Project, User } from '@the7ofdiamonds/ui-ux';
 
-import { EditPortfolioProject } from '@/views/components/edit/EditPortfolioProject';
+import { EditPortfolioProject } from '../views/components/edit/EditPortfolioProject';
 
 interface PortfolioEditPageProps {
     user: User;

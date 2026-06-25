@@ -1,43 +1,30 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  Button,
-  ButtonImage,
+  CheckList,
   CheckListComponent,
   ContentComponent,
-  ImageComponent,
-  Skills,
-  StatusBar,
-} from '@the7ofdiamonds/ui-ux';
-import {
-  MessageType,
-  StatusBarVisibility
-} from '@the7ofdiamonds/ui-ux';
-import {
-  CheckList,
-  ContentURL,
   FeaturesRoadmap,
-  Image,
   ProjectDevelopment,
   ProjectQuery,
   ProjectSkills,
   ProjectSolution,
   ProjectVersions,
   RepoContentQuery,
-  RepoURL
+  RepoURL,
+  Skills
+} from '@the7ofdiamonds/ui-ux';
+import type {
+  MessageType,
+  StatusBarVisibility
 } from '@the7ofdiamonds/ui-ux';
 
-import { Versions } from '@/views/components/project/Versions';
-import { RoadmapComponent } from '@/views/components/project/RoadmapComponent';
+import { Versions } from '../../../views/components/project/Versions';
+import { RoadmapComponent } from '../../../views/components/project/RoadmapComponent';
 
-import { getRepoFile } from '@/controllers/githubSlice';
-import {
-  githubAuthProvider,
-  LoginButtonGitHub,
-  loginWithPopUp
-} from '@the7ofdiamonds/gateway';
+import { getRepoFile } from '../../../controllers/githubSlice';
 
-import { useAppDispatch } from '@/model/hooks';
+import { useAppDispatch } from '../../../model/hooks';
 
 import { ProjectSkillsComponent } from './ProjectSkillsComponent';
 
@@ -58,12 +45,6 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
   const [checkList, setCheckList] = useState<CheckList | null>(null);
   const [query, setQuery] = useState<RepoContentQuery | null>(null);
   const [projectSkills, setProjectSkills] = useState<ProjectSkills | null>(null);
-  const [repoURL, setRepoURL] = useState<RepoURL | null>(null);
-  const [show, setShow] = useState<StatusBarVisibility>('hide');
-  const [message, setMessage] = useState<string | null>(null);
-  const [messageType, setMessageType] = useState<MessageType>('info');
-
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
     if (development
@@ -97,27 +78,6 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
     }
   }, [development?.skills]);
 
-  useEffect(() => {
-    if (development
-      && development.repoURL) {
-      setRepoURL(development.repoURL)
-    }
-  }, [development?.repoURL]);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setMessage('Click Log in with GitHub to gain access to the code.');
-      setMessageType('info');
-    }
-  }, [isAuthenticated]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      setMessage('Gain access to the source code on GitHub.');
-      setMessageType('info');
-    }
-  }, [isAuthenticated]);
-
   const hasContent = versions || featuresRoadmap || (checkList && query) || skills;
 
   return (
@@ -136,10 +96,6 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
         {checkList && <CheckListComponent checkList={checkList} />}
 
         {projectSkills && skills && <ProjectSkillsComponent projectSkills={projectSkills} skills={skills} />}
-
-        {repoURL && <LoginButtonGitHub />}
-
-        {message && <StatusBar show={show} messageType={messageType} message={message} />}
       </div>
     }
     </>

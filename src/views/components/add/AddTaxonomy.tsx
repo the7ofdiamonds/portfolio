@@ -1,10 +1,11 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 
-import { Taxonomy, StatusBar,Image, MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import { Taxonomy, StatusBar,Image } from '@the7ofdiamonds/ui-ux';
 
-import { addSkill } from '@/controllers/skillsSlice';
+import { addSkill } from '../../../controllers/skillsSlice';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
+import { useAppDispatch, useAppSelector } from '../../../model/hooks';
 
 export interface AddTaxonomyProps {
   taxonomy: Taxonomy;

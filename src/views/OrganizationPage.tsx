@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
-import { MessageType, StatusBarVisibility, ContactMethods } from '@the7ofdiamonds/ui-ux';
+import { Organization, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
+import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import { ContactMethods } from '@the7ofdiamonds/ui-ux';
 import { ContactBar } from '@the7ofdiamonds/communications';
 
-import { OrganizationComponent } from '@/views/components/organization/OrganizationComponent';
-import { PortfolioComponent } from '@/views/components/portfolio/PortfolioComponent';
+import { OrganizationComponent } from '../views/components/organization/OrganizationComponent';
+import { PortfolioComponent } from '../views/components/portfolio/PortfolioComponent';
 
-import { getOrganization } from '@/controllers/organizationSlice';
+import { getOrganization } from '../controllers/organizationSlice';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
-import { Organization, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
+import { useAppDispatch, useAppSelector } from '../model/hooks';
 
 export interface OrganizationPageProps {
     organization: Organization | null;
@@ -43,7 +44,7 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ organization
         if (organization?.login === login) {
             setOrg(organization);
         }
-    }, [organization?.login,login]);
+    }, [organization?.login, login]);
 
     useEffect(() => {
         if (!organizationObject && login) {

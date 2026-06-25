@@ -2,6 +2,7 @@ export * from './controllers/accountSlice';
 export * from './controllers/addSlice';
 export * from './controllers/databaseSlice';
 export * from './controllers/githubSlice';
+export * from './controllers/gitlabSlice';
 export * from './controllers/organizationSlice';
 export * from './controllers/skillsSlice';
 export * from './controllers/portfolioSlice';
@@ -30,6 +31,8 @@ export * from './views/components/add/AddFrameworks';
 export * from './views/components/add/AddLanguages';
 export * from './views/components/add/AddProjectTypes';
 export * from './views/components/add/AddTechnologies';
+
+export * from './views/components/buttons/ButtonGitHub';
 
 export * from './views/components/edit/EditDetails';
 export * from './views/components/edit/EditPortfolioProject';
@@ -67,6 +70,7 @@ export * from './views/components/project/TheProblem';
 export * from './views/components/project/TheProcess';
 export * from './views/components/project/TheSolution';
 export * from './views/components/project/Versions';
+export * from './views/components/project/the_process/the_details/code/Code';
 
 export * from './views/components/project_card/ProjectCard';
 

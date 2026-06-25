@@ -1,23 +1,33 @@
 import { Octokit } from '@octokit/rest';
 
-import { getToken } from '@/services/Config';
+import { getGithubToken } from '../../services/Config';
 
 let instance: Octokit | null = null;
 
-export const getHeaders = () => {
+export const getGitHubHeaders = () => {
+  const token = getGithubToken();
+  if (!token) {
+    console.error('GitHub token not found in config.');
+    return null;
+  }
   return {
-    Authorization: `Bearer ${getToken()}`,
+    headers: {
+      Authorization: `bearer ${token}`,
+      'X-GitHub-Api-Version': '2022-11-28',
+      Accept: "application/vnd.github.v4.idl"
+    }
   };
 };
 
 export const getInstance = (): Octokit => {
+  const token = getGithubToken();
+  if (!token) {
+    console.error('GitHub token not found in config.');
+    return null;
+  }
   if (!instance) {
-    const token = getToken();
     instance = new Octokit({
-      auth: token,
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
+      auth: token
     });
   }
   return instance;

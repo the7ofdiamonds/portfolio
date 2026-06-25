@@ -1,13 +1,17 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+import type { ProjectObject } from '@the7ofdiamonds/ui-ux';
 import {
   GitHubRepoQuery,
   Project,
-  ProjectObject,
   Repo,
+  Commits,
+  ProjectQuery
 } from '@the7ofdiamonds/ui-ux';
 
-import { getRepoDetails } from './githubSlice';
+import { getCommits, getRepoDetails } from './githubSlice';
+import { getGitLabRepo } from './gitlabSlice';
 import { getProjectData } from './databaseSlice';
 
 export interface ProjectState {
@@ -30,42 +34,49 @@ const initialState: ProjectState = {
 
 export const getProject = createAsyncThunk<ProjectObject | null, Project>(
   'project/getProject',
-  async (project: Project, thunkAPI) => {
+  async (projectQuery: ProjectQuery, thunkAPI) => {
     try {
-      if (!project?.query || !project?.query?.owner || !project?.query?.repo) {
+      if (!projectQuery.repoType || !projectQuery.owner || !projectQuery.repo) {
         return null;
       }
 
-      const repoQuery = new GitHubRepoQuery(
-        project.query.owner,
-        project.query.repo
-      );
-      const repoDetailsResponse = await thunkAPI.dispatch(
-        getRepoDetails(repoQuery)
-      );
+      let repo: Repo | null = null;
+      let project: Project | null = null;
 
-      if (
-        getRepoDetails.fulfilled.match(repoDetailsResponse) &&
-        repoDetailsResponse.payload
-      ) {
-        const repo = new Repo(repoDetailsResponse.payload);
+      if (projectQuery.repoType === 'GitHub') {
+        const repoDetailsResponse = await thunkAPI.dispatch(
+          getRepoDetails(projectQuery)
+        );
+
+        if (
+          getRepoDetails.fulfilled.match(repoDetailsResponse) &&
+          repoDetailsResponse.payload
+        ) {
+          repo = new Repo(repoDetailsResponse.payload);
+        }
+      }
+
+      if (projectQuery.repoType === 'GitLab') {
+        const getGitLabRepoResponse = await thunkAPI.dispatch(
+          getGitLabRepo(projectQuery)
+        );
+
+        if (
+          getGitLabRepo.fulfilled.match(getGitLabRepoResponse) &&
+          getGitLabRepoResponse.payload
+        ) {
+          repo = new Repo();
+          repo.fromGitLab(getGitLabRepoResponse.payload);
+        }
+      }
+
+      if (repo) {
+        project = new Project();
         project.fromRepo(repo);
-      } else {
-        return null;
+        return project.toProjectObject();
       }
 
-      const projectDataResponse = await thunkAPI.dispatch(
-        getProjectData(project.query.repo)
-      );
-
-      if (
-        getProjectData.fulfilled.match(projectDataResponse) &&
-        projectDataResponse.payload
-      ) {
-        project.fromDocumentData(projectDataResponse.payload);
-      }
-
-      return project.toProjectObject();
+      return null;
     } catch (error) {
       const err = error as Error;
       console.error(err);

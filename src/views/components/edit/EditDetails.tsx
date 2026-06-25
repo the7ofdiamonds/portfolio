@@ -1,9 +1,10 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
-import { MessageType, StatusBar, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import { StatusBar } from '@the7ofdiamonds/ui-ux';
 import { Contributors, Project, ProjectDetails } from '@the7ofdiamonds/ui-ux';
 
-import { Privacy, privacyFromString } from '@/model/enum/Enums';
+import { Privacy, privacyFromString } from '../../../model/enum/Enums';
 
 import styles from './Edit.module.scss';
 
