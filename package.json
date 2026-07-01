@@ -52,56 +52,30 @@
     "@the7ofdiamonds/ui-ux": "latest",
     "@the7ofdiamonds/communications": "latest",
     "@the7ofdiamonds/gateway": "latest",
+    "@octokit/graphql": "latest",
+    "@octokit/request-error": "latest",
     "@octokit/rest": "^21.0.2",
     "@octokit/types": "^13.6.2",
     "@reduxjs/toolkit": "^1.9.5",
-    "@rollup/plugin-commonjs": "^28.0.3",
-    "buffer": "^6.0.3",
-    "cors": "^2.8.5",
-    "crypto-browserify": "^3.12.0",
-    "del": "^8.0.0",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "firebase": "^10.0.0",
-    "glob": "^11.0.1",
-    "jsonwebtoken": "^9.0.2",
-    "marked": "^15.0.5",
-    "moment": "^2.29.4",
     "octokit": "5.0.2",
-    "path": "^0.12.7",
-    "source-map-js": "^1.0.2",
-    "tslib": "^2.8.1",
-    "uuid": "^11.1.0",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-redux": "^7.2.9",
-    "react-router-dom": "^5.3.4"
+    "path": "^0.12.7"
   },
   "devDependencies": {
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-node-resolve": "^16.0.0",
-    "@rollup/plugin-typescript": "^12.1.2",
-    "@types/marked": "^5.0.2",
-    "@types/node": "^22.10.7",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^4.3.4",
-    "browser-sync": "^3.0.3",
-    "firebase-tools": "^13.29.2",
     "npm-run-all": "^4.1.5",
     "rimraf": "^5.0.10",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
     "sass": "^1.89.2",
     "typescript": "^5.7.3",
     "vite": "5.4.20",
     "vite-plugin-css-injected-by-js": "^3.5.2",
-    "vite-plugin-dts": "^4.5.4",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-plugin-dts": "^4.5.4"
   },
   "peerDependencies": {
-    "firebase": "^10.0.0"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.9.5"
+    "firebase": "^10.0.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-redux": "^7.2.9",
+    "react-router-dom": "^5.3.4"
   }
 }

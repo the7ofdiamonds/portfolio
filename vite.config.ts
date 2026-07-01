@@ -5,12 +5,6 @@ import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 import path from 'path';
 
-import rollupOptions from './rollup.config';
-
-import fs from 'fs-extra';
-
-fs.emptyDirSync(path.resolve(__dirname, 'dist'));
-
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
   plugins: [
@@ -21,11 +15,10 @@ export default defineConfig({
     sourcemap: false,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'GitHubPortfolio',
+      name: 'Portfolio',
       formats: ['es', 'cjs'],
-      fileName: (format, name) => `${name}.${format === 'es' ? 'js' : format}`,
+      fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`
     },
-    rollupOptions: rollupOptions,
     minify: false,
   },
   resolve: {
