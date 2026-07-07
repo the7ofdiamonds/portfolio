@@ -684,22 +684,6 @@ export const getAuthenticatedAccount = createAsyncThunk(
         }
       `;
 
-      //       const account: User | null = await graphql<AccountGQLResponse>(query, {
-      //         headers: headers,
-      //       }).then((data) => {
-      // console.log('GraphQL response for authenticated account:', data);
-      //         if (data.viewer.__typename === 'User') {
-      //           const user = new User();
-      //           user.fromGitHubGraphQL(data.viewer);
-      //           return user;
-      //         }
-
-      //         return null;
-      //       }).catch((error) => {
-      //         console.error('Error fetching authenticated account:', error.message);
-      //         return null;
-      //       });
-
       const account: User | null = await fetch("https://api.github.com/graphql", {
         method: "POST",
         ...headers,
@@ -885,16 +869,45 @@ export const getOrganizationAccount = createAsyncThunk(
 
       const headers = getGitHubHeaders();
 
-      const org: Organization = await graphql<OrganizationResponseGQL>(query, {
-        headers,
-        login: organization,
+      const organizationResponse: OrganizationResponseGQL | null = await fetch("https://api.github.com/graphql", {
+        method: "POST",
+        ...headers,
+        body: JSON.stringify({
+          query: query, variables: {
+            login: organization,
+          },
+        })
       }).then((response) => {
-        const org = new Organization();
-        org.fromGitHubGraphQL(response.organization);
-        return org;
+        const orgData = response.json()
+          .then((json) => {
+            if (json.errors) {
+              const errorMessages = json.errors.map((error: any) => error.message).join(", ");
+              throw new Error(errorMessages);
+            }
+
+            if (!json.data) {
+              throw new Error('No data field in GraphQL response');
+            }
+
+            const jsonData = json.data as OrganizationResponseGQL;
+            const orgResponse = jsonData?.organization;
+
+            if (orgResponse.__typename === 'Organization') {
+              const org = new Organization();
+              org.fromGitHubGraphQL(orgResponse);
+              return org.toOrganizationObject();
+            }
+
+            return null;
+          }).catch((error) => {
+            console.error('Error parsing JSON response:', error);
+            return null;
+          });
+
+        return orgData;
       });
 
-      return org.toOrganizationObject();
+      return organizationResponse;
     } catch (error) {
       const err = error as Error;
       console.error(err);
@@ -916,6 +929,22 @@ export const getOrganizationDetails = createAsyncThunk(
         orgResponse.payload
       ) {
         const organization = new Organization(orgResponse.payload);
+        const contactsResponse =
+          organization && organization.login
+            ? await thunkAPI.dispatch(getSocialAccounts(organization.login))
+            : null;
+
+        if (
+          getSocialAccounts.fulfilled.match(contactsResponse) &&
+          contactsResponse.payload
+        ) {
+                    console.log(contactsResponse.payload)
+
+          const contactsObj = new ContactMethods(contactsResponse.payload);
+          contactsObj.fromGitHub(contactsResponse.payload);
+          organization.setContactMethods(contactsObj);
+          console.log(organization)
+        }
         return organization.toOrganizationObject();
       }
 
