@@ -9,8 +9,10 @@ import path from 'path';
 export default defineConfig({
   plugins: [
     dts({ insertTypesEntry: true, outDir: 'dist/types' }),
+    cssInjectedByJsPlugin()
   ],
   build: {
+    emptyOutDir: true,
     cssCodeSplit: true,
     sourcemap: false,
     lib: {
@@ -18,6 +20,20 @@ export default defineConfig({
       name: 'Portfolio',
       formats: ['es', 'cjs'],
       fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`
+    },
+    rollupOptions: {
+      external: [
+        '@reduxjs/toolkit',
+        '@the7ofdiamonds/types',
+        '@the7ofdiamonds/ui-ux',
+        '@the7ofdiamonds/communications',
+        '@the7ofdiamonds/gateway',
+        'firebase',
+        'react',
+        'react-dom',
+        'react-router-dom',
+        'react-redux',
+      ],
     },
     minify: false,
   },
