@@ -40,6 +40,7 @@
     "sync": "browser-sync start --config browsersync.config.js",
     "vite": "vite -c vite.config.ts",
     "build": "vite build",
+    "build-pkg": "bash build_package.sh",
     "preview": "vite preview --port 8080",
     "update-prod": "git push git@github.com:the7ofdiamonds/portfolio.git",
     "update-dev": "git push ssh://git@gitlab.jclyonsenterprises.com:2424/seven-tech/packages/javascript/portfolio.git",
@@ -59,6 +60,7 @@
   "devDependencies": {
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^6.0.3",
     "npm-run-all": "^4.1.5",
     "rimraf": "^5.0.10",
     "sass": "^1.89.2",
