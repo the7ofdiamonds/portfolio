@@ -49,14 +49,10 @@
     "clean": "rimraf dist node_modules"
   },
   "dependencies": {
-    "@the7ofdiamonds/ui-ux": "latest",
-    "@the7ofdiamonds/communications": "latest",
-    "@the7ofdiamonds/gateway": "latest",
     "@octokit/graphql": "latest",
     "@octokit/request-error": "latest",
     "@octokit/rest": "^21.0.2",
     "@octokit/types": "^13.6.2",
-    "@reduxjs/toolkit": "^1.9.5",
     "octokit": "5.0.2",
     "path": "^0.12.7"
   },
@@ -72,6 +68,10 @@
     "vite-plugin-dts": "^4.5.4"
   },
   "peerDependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
+    "@the7ofdiamonds/ui-ux": "latest",
+    "@the7ofdiamonds/communications": "latest",
+    "@the7ofdiamonds/gateway": "latest",
     "firebase": "^10.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
