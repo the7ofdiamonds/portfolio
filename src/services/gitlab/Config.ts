@@ -14,7 +14,7 @@ export const getGitLabHeaders = () => {
     };
   } catch (error: unknown) {
     if (error instanceof Error) {
-      throw new Error('Error retrieving GitLab token:' + error.message);
+      throw new Error(`Error retrieving GitLab token: ${error.message}`);
     }
     throw new Error('Error retrieving GitLab token: unknown error');
   }
@@ -31,7 +31,7 @@ export const getGitLabURL = () => {
     return config.gitlabURL;
   } catch (error: unknown) {
     if (error instanceof Error) {
-      throw new Error('Error retrieving GitLab URL:' + error.message);
+      throw new Error(`Error retrieving GitLab URL: ${error.message}`);
     } else {
       throw new Error('Error retrieving GitLab URL: unknown error');
     }

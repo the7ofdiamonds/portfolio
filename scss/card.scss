@@ -12,3 +12,15 @@
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
 }
+
+@media (max-width: 767px) {
+  .card {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .card {
+    max-width: 1000px;
+  }
+}

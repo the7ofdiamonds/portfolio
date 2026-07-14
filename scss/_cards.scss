@@ -12,3 +12,28 @@
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
 }
+
+@media (max-width: 767px) {
+  .card {
+    width: fit-content;
+    max-width: 100%;
+    background-color: green;
+  }
+}
+
+@media (min-width: 768px) {
+  .card {
+    width: fit-content;
+    max-width: 1000px;
+
+    background-color: green;
+  }
+}
+
+@media (min-width: 992px) {
+  .card {
+    width: fit-content;
+    max-width: 1000px;
+    background-color: green;
+  }
+}

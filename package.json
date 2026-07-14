@@ -45,8 +45,8 @@
     "preview": "vite preview --port 8080",
     "update-prod": "git push git@github.com:the7ofdiamonds/portfolio.git",
     "update-dev": "git push ssh://git@gitlab.jclyonsenterprises.com:2424/seven-tech/packages/javascript/portfolio.git",
-    "workflow": "bash ../workflow.sh",
-    "refactor": "npm run workflow refactor",
+    "workflow": "bash update_npm_workflow.sh",
+    "refactor": "bash update_npm_workflow.sh refactor",
     "test": "echo \"No test specified\" && exit 0",
     "clean": "rimraf dist node_modules"
   },
