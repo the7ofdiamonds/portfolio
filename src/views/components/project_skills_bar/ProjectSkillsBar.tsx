@@ -18,8 +18,9 @@ const ProjectSkills: React.FC<ProjectSkillsProp> = ({ skillsSet }) => {
   }, [skillsSet, setSkills]);
 
   const handleClick = (skill: Taxonomy) => {
+        console.log(skill)
+
     handleSkills();
-    console.log(skill)
     // window.location.href = `/${skill.path}`;
   };
 
@@ -30,7 +31,7 @@ const ProjectSkills: React.FC<ProjectSkillsProp> = ({ skillsSet }) => {
       skillsElement.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
+console.log("testing.....")
   return (
     <>
       {skills && skills.size > 0 && (

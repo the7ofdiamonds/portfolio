@@ -40,10 +40,10 @@ export const SearchPage: React.FC<SearchProps> = ({ account, skills }) => {
   }, [term]);
 
   useEffect(() => {
-    if (account?.portfolio) {
+    if (account?.portfolio?.projects && account.portfolio.projects.size > 0) {
       setPortfolio(account.portfolio)
     }
-  }, [account?.portfolio]);
+  }, [account?.portfolio?.projects]);
 
   useEffect(() => {
     if (portfolio && taxonomy && type && term) {

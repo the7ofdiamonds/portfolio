@@ -124,7 +124,6 @@ export const getProjectData = createAsyncThunk(
   async (projectID: string) => {
     try {
       const api = getAPI();
-console.log(api)
 
       if ((typeof api !== "string") || (typeof projectID !== "string")) {
         return null;
