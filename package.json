@@ -71,7 +71,7 @@
     "vite-plugin-dts": "^4.5.4"
   },
   "peerDependencies": {
-    "@reduxjs/toolkit": "^1.9.5",
+    "@reduxjs/toolkit": "^2.12.0",
     "@the7ofdiamonds/ui-ux": "latest",
     "@the7ofdiamonds/communications": "latest",
     "@the7ofdiamonds/gateway": "latest",
