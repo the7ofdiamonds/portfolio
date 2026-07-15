@@ -127,7 +127,7 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
             messageType={messageType}
           />}
 
-          {repoSize &&
+          {repoSize && repoSize?.amount && repoSize.amount > 0 &&
             <h5>
               Repo Size
               <span className={styles.colon}>:</span>
