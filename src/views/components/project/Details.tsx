@@ -31,7 +31,7 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
   const dispatch = useAppDispatch();
 
   const [privacy, setPrivacy] = useState<string>('public');
-  const [repoSize, setRepoSize] = useState<RepoSize | null>(null);
+  const [repoSize, setRepoSize] = useState<String | null>(null);
   const [repoURL, setRepoURL] = useState<RepoURL | null>(null);
   const [repoContentQuery, setRepoContentQuery] = useState<RepoContentQuery | null>(null);
   const [contributors, setContributors] = useState<Array<Contributor> | null>(null);
@@ -62,7 +62,9 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
 
   useEffect(() => {
     if (project?.details?.repoSize) {
-      setRepoSize(project.details.repoSize)
+      if (project?.details?.repoSize.amount && project.details.repoSize.amount > 0) {
+        setRepoSize(project.details.repoSize.display())
+      }
     }
   }, [project?.details?.repoSize]);
 
@@ -127,11 +129,11 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
             messageType={messageType}
           />}
 
-          {repoSize && repoSize?.amount && repoSize.amount > 0 &&
+          {repoSize &&
             <h5>
               Repo Size
               <span className={styles.colon}>:</span>
-              <span className={styles['repo-size']}>{repoSize.display()}</span>
+              <span className={styles['repo-size']}>{repoSize}</span>
             </h5>}
 
           {showContent &&
