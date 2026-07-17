@@ -5,13 +5,15 @@ import { ContentComponent, RepoContentQuery } from '@the7ofdiamonds/ui-ux';
 import { ProjectTeamComponent } from '../../../views/components/project/ProjectTeam';
 
 import type {
-  Contributor,
   MessageType,
+  StatusBarVisibility,
+} from '@the7ofdiamonds/ui-ux';
+import {
+  Contributor,
   Organization,
   Project,
   RepoSize,
   RepoURL,
-  StatusBarVisibility,
   User
 } from '@the7ofdiamonds/ui-ux';
 
@@ -62,9 +64,7 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
 
   useEffect(() => {
     if (project?.details?.repoSize) {
-      if (project?.details?.repoSize.amount && project.details.repoSize.amount > 0) {
-        setRepoSize(project.details.repoSize.display())
-      }
+      setRepoSize(project.details.repoSize)
     }
   }, [project?.details?.repoSize]);
 
