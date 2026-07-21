@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 
 import { FeaturesRoadmap } from '@the7ofdiamonds/ui-ux';
 
@@ -9,16 +9,24 @@ interface RoadmapProps {
 }
 
 export const RoadmapComponent: React.FC<RoadmapProps> = ({ roadmap }) => {
+    const [path, setPath] = useState<Array<String>>([]);
+
+    useEffect(() => {
+        if (roadmap && roadmap.display()) {
+            setPath(roadmap.display());
+        }
+    }, [roadmap]);
+
     return (
         <>
-            {roadmap.path && roadmap.path.length > 0 &&
+            {path && path.length > 0 &&
                 <div className={styles.roadmap}>
                     <h4 className={styles.title}>Roadmap</h4>
 
-                    {roadmap.path.map((feature) => (
+                    {path.map((feature) => (
                         <div className={styles.feature} key={feature.id}>
                             <h5 className={styles['feature-version']}>
-                                v{feature.version ? feature.version.toString() : '1.0.0'}
+                                {`v${feature.version}`}
                             </h5>
                             <h5>-</h5>
                             <h5>{feature.description}</h5>

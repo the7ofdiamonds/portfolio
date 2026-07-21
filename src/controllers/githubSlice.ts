@@ -26,6 +26,7 @@ import type {
   RepoObject,
   GitHubRepoFileResponse,
   GitHubUser,
+  GitHubCommits
 } from '@the7ofdiamonds/ui-ux';
 import {
   RepoContent,
@@ -286,7 +287,7 @@ export type CommitsResponse = GetResponseTypeFromEndpointMethod<
   typeof octokit.rest.repos.listCommits
 >;
 
-export const getCommits = createAsyncThunk<CommitsResponse[], { owner: string; repo: string }>(
+export const getCommits = createAsyncThunk<GitHubCommits, { owner: string; repo: string }>(
   'github/getCommits',
   async ({ owner, repo }: { owner: string; repo: string }) => {
     const octokit = getInstance();

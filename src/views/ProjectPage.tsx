@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import type { TypedUseSelectorHook } from 'react-redux';
 
-import { Organization, Section, Skills, StatusBar, User } from '@the7ofdiamonds/ui-ux';
+import { Organization, ProjectQuery, Section, Skills, StatusBar, User } from '@the7ofdiamonds/ui-ux';
 import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
 import { Portfolio, Project } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectComponent } from './components/project/ProjectComponent';
 
-import { getProject } from '../controllers/projectSlice';
+import { removeProject, addProjectList, getProject } from '../controllers/projectSlice';
 
 interface ProjectPageProps<RootState, AppDispatch> {
   account: Organization | User;
@@ -18,13 +18,12 @@ interface ProjectPageProps<RootState, AppDispatch> {
   useAppDispatch: () => AppDispatch;
 }
 
-export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, portfolio, skills, useAppSelector, useAppDispatch }) => {
-  const location = useLocation();
+export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, portfolio, setPortfolio, skills, useAppSelector, useAppDispatch }) => {
   const dispatch = useAppDispatch();
 
   const { owner, projectID } = useParams<string>();
 
-  const { projectLoading, projectErrorMessage, projectObject } = useAppSelector(
+  const { projectLoading, projectErrorMessage, projectObject, projectList } = useAppSelector(
     (state) => state.project
   );
 
@@ -32,43 +31,64 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
   const [messageType, setMessageType] = useState<MessageType>('info');
   const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
 
-  const [project, setProject] = useState<Project | null>(location.state.project || null);
-
-  const hasData = project?.path && projectObject?.path ? new String(project.path).localeCompare(projectObject.path) === 0 : false;
-
-  const [APICalled, setAPICalled] = useState<boolean>(hasData);
+  const [project, setProject] = useState<Project | null>(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [owner, projectID]);
 
   useEffect(() => {
-    if (!project && location?.pathname && portfolio.projects.size > 0) {
-      const withinPortfolio: Project | Set<Project> = portfolio?.filterProjectsByPath(location.pathname);
+    if (portfolio.projects.size > 0 && owner && projectID) {
+      const withinPortfolio: Project | Set<Project> = portfolio?.filterProject(new ProjectQuery({
+        owner: owner,
+        repo: projectID
+      }));
+
       if (withinPortfolio instanceof Project) {
         setProject(withinPortfolio);
       }
     }
-  }, [project, location.pathname, portfolio.projects.size]);
-
-  const title = project?.title || null;
-  const query = project?.query || null;
+  }, [portfolio, owner, projectID]);
 
   useEffect(() => {
-    if (title) {
-      document.title = title;
+    if (project?.query?.id && !projectList.includes(project.query.id)) {
+      dispatch(getProject(project?.query))
     }
-  }, [title]);
+  }, [project?.query?.id, projectList]);
 
   useEffect(() => {
-    if (title && projectLoading) {
+    if (projectObject) {
+      setProject(new Project(projectObject));
+    }
+  }, [projectObject]);
+
+  useEffect(() => {
+    if (typeof project?.query?.id === "number") {
+      setPortfolio((prevProjects: Portfolio) => {
+        prevProjects.addProject(project);
+        return prevProjects;
+      });
+
+      dispatch(addProjectList(project.query))
+      dispatch(removeProject(project.query))
+    }
+  }, [project?.query?.id]);
+
+  useEffect(() => {
+    if (project?.title) {
+      document.title = project?.title;
+    }
+  }, [project?.title]);
+
+  useEffect(() => {
+    if (owner && projectID && projectLoading) {
       setMessageType('info');
-      setMessage(`Now Loading Project ${title}`);
+      setMessage(`Now Loading Project by @${owner} ${projectID.replace(/-/g, " ").toUpperCase()}`);
       setShowStatusBar('show');
     } else {
       setMessage(null)
     }
-  }, [title, projectLoading]);
+  }, [owner, projectID, projectLoading]);
 
   useEffect(() => {
     if (projectErrorMessage) {
@@ -77,25 +97,6 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
       setShowStatusBar('show');
     }
   }, [projectErrorMessage]);
-
-  useEffect(() => {
-    if (query && !hasData) {
-      dispatch(getProject(query));
-      setAPICalled(true);
-    }
-  }, [query, hasData]);
-
-  useEffect(() => {
-    if (projectObject && APICalled && !projectLoading) {
-      setProject(new Project(projectObject));
-    }
-  }, [projectObject, APICalled, projectLoading]);
-
-  useEffect(() => {
-    if (hasData) {
-      setProject(new Project(projectObject));
-    }
-  }, [hasData, projectObject]);
 
   return (
     <Section>

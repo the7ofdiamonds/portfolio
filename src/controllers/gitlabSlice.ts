@@ -35,7 +35,9 @@ import {
   Contributors,
   Skills,
   ProjectSkills,
-  Commits
+  Commits,
+  GitLabQuery,
+  GitLabRepoQuery
 } from '@the7ofdiamonds/ui-ux';
 
 // type OctokitResponse<T = any, S = number> = {
@@ -89,18 +91,17 @@ const initialState: GitLabState = {
   // repoLanguages: null,
 };
 
-// const octokit: Octokit = new Octokit();
-
 export const getGitLabRepos = createAsyncThunk<null, void>('gitLab/getGitLabRepos', async () => {
   try {
     const headers = getGitLabHeaders();
     const url = getGitLabURL();
 
-    const repos = await fetch(`${url}/projects`, {
-      headers: headers,
-    }).then((response) => {
+    const gitlabQuery = new GitLabQuery({ headers: headers, url: url });
+
+    const repos = await fetch(gitlabQuery.url, gitlabQuery.headers).then((response) => {
       if (!response.ok) {
-        throw new Error(`GitLab API error: ${response.status} ${response.statusText}`);
+        console.error(`GitLab API error: ${response.status} ${response.statusText}`);
+        return null;
       }
 
       return response.json();
@@ -120,11 +121,14 @@ export const getGitLabRepo = createAsyncThunk(
       const headers = getGitLabHeaders();
       const url = getGitLabURL();
 
-      const repos = await fetch(`${url}/projects/${query.id}`, {
-        headers: headers,
-      }).then((response) => {
+      const gitlabRepoQuery = new GitLabRepoQuery({ headers: headers, url: url, id: query.id, owner: query.owner });
+
+      if (!gitlabRepoQuery.isValid()) return null;
+
+      const repos = await fetch(`${gitlabRepoQuery.url}/${gitlabRepoQuery.id}`, gitlabRepoQuery.headers).then((response) => {
         if (!response.ok) {
-          throw new Error(`GitLab API error: ${response.status} ${response.statusText}`);
+          console.error(`GitLab API error: ${response.status} ${response.statusText}`);
+          return null;
         }
 
         return response.json();
