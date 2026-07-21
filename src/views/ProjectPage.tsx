@@ -36,9 +36,9 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [owner, projectID]);
-
+  console.log(project)
   useEffect(() => {
-    if (portfolio.projects.size > 0 && owner && projectID) {
+    if (!project && portfolio && owner && projectID) {
       const withinPortfolio: Project | Set<Project> = portfolio?.filterProject(new ProjectQuery({
         owner: owner,
         repo: projectID
@@ -57,10 +57,11 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
   }, [project?.query?.id, projectList]);
 
   useEffect(() => {
-    if (projectObject) {
+    if (project?.query && projectObject) {
       setProject(new Project(projectObject));
+      dispatch(removeProject(project.query))
     }
-  }, [projectObject]);
+  }, [project?.query, projectObject]);
 
   useEffect(() => {
     if (typeof project?.query?.id === "number") {
@@ -70,7 +71,6 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
       });
 
       dispatch(addProjectList(project.query))
-      dispatch(removeProject(project.query))
     }
   }, [project?.query?.id]);
 
