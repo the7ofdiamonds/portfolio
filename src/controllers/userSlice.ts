@@ -5,14 +5,16 @@ import {
   isAnyOf
 } from '@reduxjs/toolkit';
 
-import type { UserObject } from '@the7ofdiamonds/ui-ux';
-import { User } from '@the7ofdiamonds/ui-ux';
+import type { UserObject, SkillsObject } from '@the7ofdiamonds/ui-ux';
+import { ContactMethods, Organization, Organizations, Skills, User } from '@the7ofdiamonds/ui-ux';
 
 import {
   getAuthenticatedAccount,
   getUserAccount,
 } from '../controllers/githubSlice';
 import { getUserData } from '../controllers/databaseSlice';
+
+import type { RootState } from '../model/store';
 
 export interface UserState {
   userLoading: boolean;
@@ -54,17 +56,53 @@ const initialState: UserState = {
   socialAccounts: [],
 };
 
+type LocalData = {
+  user: UserObject;
+  skills: SkillsObject;
+}
+
 export const getAuthenticatedUserAccount = createAsyncThunk(
   'user/getAuthenticatedUserAccount',
-  async (_, thunkAPI) => {
+  async (data?: LocalData, thunkAPI) => {
     try {
+      let user: User | null = null;
+
+      if (data) {
+        user = new User();
+
+        if (data?.user) {
+          const userData = data.user;
+
+          user.fromJSON(userData);
+
+          if (userData?.company) {
+            const org = new Organization();
+            org.fromJSON(data?.user?.company);
+            const orgs = new Organizations();
+            orgs.add(org);
+            user.setOrganizations(orgs)
+          }
+
+          if (userData?.contact_methods) {
+            const contacts = new ContactMethods();
+            user.setContactMethods(contacts.fromJson(userData.contact_methods))
+          }
+        }
+
+        if (data?.skills) {
+          user.setSkills(new Skills({ list: data.skills }));
+        }
+      }
+
       const userResponse = await thunkAPI.dispatch(getAuthenticatedAccount());
 
       if (
         getAuthenticatedAccount.fulfilled.match(userResponse) &&
         userResponse.payload
       ) {
-        const user = new User(userResponse.payload);
+        if (!user) user = new User();
+
+        user.fromUserObject(userResponse.payload)
 
         // const databaseResponse = user.id
         //   ? await thunkAPI.dispatch(getUserData(user.id))
@@ -77,11 +115,11 @@ export const getAuthenticatedUserAccount = createAsyncThunk(
         // ) {
         //   user.fromDB(databaseResponse.payload.data);
         // }
-
-        return user.toUserObject();
       }
 
-      return null;
+      if (!user) return null;
+
+      return user.toUserObject();
     } catch (error) {
       const err = error as Error;
       console.error(err);

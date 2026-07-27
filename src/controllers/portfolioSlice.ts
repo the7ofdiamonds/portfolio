@@ -99,6 +99,9 @@ export const getPortfolioFromUser = createAsyncThunk<PortfolioObject | null, Use
   'portfolio/getPortfolioFromUser',
   async (user: UserObject, thunkAPI) => {
     try {
+      const state = thunkAPI.getState() as RootState;
+      // const user = state.user.userObject;
+
       let portfolio: Portfolio | null = null;
 
       if (user?.portfolio?.projects && user.portfolio.projects.length > 0) {
@@ -114,6 +117,8 @@ export const getPortfolioFromUser = createAsyncThunk<PortfolioObject | null, Use
           }
         })
       }
+
+      if (!portfolio) return null;
 
       return portfolio.toPortfolioObject();
     } catch (error) {
@@ -220,7 +225,7 @@ export const getPortfolioDetails = createAsyncThunk(
       if (!projects || projects.size === 0) return null;
 
       let updatedPortfolio = new Portfolio();
-      
+
       for (const project of portfolio.projects) {
         const projectResponse = await thunkAPI.dispatch(getProject(project.query));
 
@@ -293,6 +298,12 @@ export const portfolioSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(getPortfolioDetails.pending, (state, action) => {
+        state.portfolioLoading = true;
+        state.portfolioError = null;
+        state.portfolioErrorMessage = null;
+        state.portfolioLoadingMessage = 'Now Loading Portfolio Details';
+      })
       .addCase(getPortfolioFromUser.fulfilled, (state, action) => {
         state.portfolioLoading = false;
         state.portfolioError = null;
@@ -307,6 +318,7 @@ export const portfolioSlice = createSlice({
       })
       .addCase(getPortfolioDetails.fulfilled, (state, action) => {
         state.portfolioLoading = false;
+        state.portfolioLoadingMessage = null;
         state.portfolioError = null;
         state.portfolioErrorMessage = null;
         state.portfolioObject = action.payload;
@@ -318,7 +330,7 @@ export const portfolioSlice = createSlice({
         state.portfolioErrorMessage = null;
         state.projectObject = action.payload;
       })
-      .addMatcher(isAnyOf(getPortfolioDetails.pending, getPortfolioFromUser.pending, getPortfolioProject.pending), (state) => {
+      .addMatcher(isAnyOf(getPortfolioFromUser.pending, getPortfolioProject.pending), (state) => {
         state.portfolioLoading = true;
         state.portfolioError = null;
         state.portfolioErrorMessage = null;
