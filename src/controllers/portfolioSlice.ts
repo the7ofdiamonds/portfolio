@@ -1,19 +1,23 @@
 import { createSlice, createAsyncThunk, isAnyOf } from '@reduxjs/toolkit';
 
 import type {
+  OrganizationObject,
   PortfolioObject,
-  ProjectObject
+  ProjectObject,
+  UserObject
 } from '@the7ofdiamonds/ui-ux';
 import {
   GitHubRepoQuery,
   Portfolio,
   Project,
-  Repo
+  Repo,
+  ProjectQuery
 } from '@the7ofdiamonds/ui-ux';
 
-import { getProject } from './projectSlice';
+import { getProject, removeProject } from './projectSlice';
 import { getRepoDetails } from './githubSlice';
 import { getProjectData } from './databaseSlice';
+import type { RootState } from '../model/store';
 
 export interface PortfolioState {
   portfolioLoading: boolean;
@@ -24,6 +28,9 @@ export interface PortfolioState {
   portfolioObject: PortfolioObject | null;
   organizationPortfolioObject: PortfolioObject | null;
   projects: Array<ProjectObject> | null;
+  projectList: Array<string | number>;
+  hasDetails: boolean;
+  projectObject: ProjectObject | null;
 }
 
 const initialState: PortfolioState = {
@@ -35,10 +42,13 @@ const initialState: PortfolioState = {
   portfolioObject: null,
   organizationPortfolioObject: null,
   projects: null,
+  projectList: [],
+  hasDetails: false,
+  projectObject: null
 };
 
-export const getPortfolioProject = createAsyncThunk<ProjectObject | null, Project>(
-  'project/getPortfolioProject',
+export const getPortfolio = createAsyncThunk<ProjectObject | null, Project>(
+  'portfolio/getPortfolioProject',
   async (project: Project, thunkAPI) => {
     try {
 
@@ -85,36 +95,191 @@ export const getPortfolioProject = createAsyncThunk<ProjectObject | null, Projec
   }
 );
 
+export const getPortfolioFromUser = createAsyncThunk<PortfolioObject | null, UserObject>(
+  'portfolio/getPortfolioFromUser',
+  async (user: UserObject, thunkAPI) => {
+    try {
+      let portfolio: Portfolio | null = null;
+
+      if (user?.portfolio?.projects && user.portfolio.projects.length > 0) {
+        portfolio = new Portfolio()
+        portfolio.addProjectObjects(user?.portfolio?.projects)
+      }
+
+      if (user?.organizations && user.organizations.length > 0) {
+        user.organizations.forEach((org: OrganizationObject) => {
+          if (org?.portfolio?.projects && org.portfolio.projects.length > 0) {
+            if (!portfolio) portfolio = new Portfolio()
+            portfolio.addProjectObjects(org?.portfolio?.projects)
+          }
+        })
+      }
+
+      return portfolio.toPortfolioObject();
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      throw new Error(err.message);
+    }
+  }
+);
+
+export const addProjectList = createAsyncThunk<Array<number>, ProjectQuery>(
+  'portfolio/addProjectList',
+  async (projectQuery: ProjectQuery, thunkAPI) => {
+    try {
+      const state = thunkAPI.getState() as RootState;
+      const projectList = state.portfolio.projectList;
+
+      if (!projectQuery.id) {
+        console.warn('No query id provided')
+        return [
+          ...projectList
+        ];
+      }
+
+      if (typeof projectQuery.id === 'string' && projectQuery?.repoType === 'GitHub') {
+        console.warn('Query id provided is a string and can not be added to list')
+        return [
+          ...projectList
+        ];
+      }
+
+      if (projectList.includes(projectQuery.id)) {
+        console.warn('Query id already in project list')
+        return [
+          ...projectList
+        ];
+      }
+
+      return [
+        ...projectList,
+        projectQuery.id,
+      ];
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      throw new Error(err.message);
+    }
+  }
+);
+
+
+export const maintainPortfolio = createAsyncThunk<boolean, ProjectQuery>(
+  'portfolio/maintainPortfolio',
+  async (projectQuery: ProjectQuery, thunkAPI) => {
+    try {
+      const state = thunkAPI.getState() as RootState;
+      const projectList = state.portfolio.projectList;
+
+      let status: 'success' | 'failure' | null = null;
+
+      const projectListResponse = await thunkAPI.dispatch(addProjectList(projectQuery));
+
+      if (
+        addProjectList.fulfilled.match(projectListResponse) &&
+        projectListResponse.payload
+      ) {
+        if (projectList.length >= projectListResponse.payload.length) {
+          console.warn('Project was not added to projectList at portfolioSlice');
+          status = 'failure';
+        } else {
+          status = 'success';
+        }
+      }
+
+      const removeProjectResponse = await thunkAPI.dispatch(removeProject(projectQuery));
+
+      if (
+        removeProject.fulfilled.match(removeProjectResponse) &&
+        removeProjectResponse.payload
+      ) {
+        console.warn('Project data still exist at projectSlice');
+        status = 'failure';
+      }
+
+      if (status === 'failure') {
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      throw new Error(err.message);
+    }
+  }
+);
+
 export const getPortfolioDetails = createAsyncThunk(
-  'portfolio/getPortfolio',
+  'portfolio/getPortfolioDetails',
   async (portfolio: Portfolio, thunkAPI) => {
     try {
-      if (portfolio?.projects.size === 0) {
+      const projects = portfolio?.projects;
+
+      if (!projects || projects.size === 0) return null;
+
+      let updatedPortfolio = new Portfolio();
+      
+      for (const project of portfolio.projects) {
+        const projectResponse = await thunkAPI.dispatch(getProject(project.query));
+
+        if (
+          getProject.fulfilled.match(projectResponse) &&
+          projectResponse.payload
+        ) {
+          const updatedProject = new Project(projectResponse.payload)
+          updatedPortfolio.addProject(updatedProject)
+          await thunkAPI.dispatch(maintainPortfolio(updatedProject.query));
+        }
+      }
+
+      return updatedPortfolio.toPortfolioObject();
+    } catch (error) {
+      console.error(error);
+      throw new Error((error as Error).message);
+    }
+  }
+);
+
+type PortfolioQuery = {
+  project_query: ProjectQuery;
+  portfolio: Portfolio;
+};
+
+export const getPortfolioProject = createAsyncThunk<ProjectObject | null, PortfolioQuery>(
+  'portfolio/getPortfolioProject',
+  async (portfolioQuery: PortfolioQuery, thunkAPI) => {
+    try {
+      const { project_query, portfolio } = portfolioQuery;
+
+      let project: ProjectObject | null = null;
+
+      if (!project_query || !portfolio || portfolio.projects.length === 0) return null;
+
+      project = portfolio?.filterProject(project_query);
+
+      const state = thunkAPI.getState() as RootState;
+      const projectList = state.portfolio.projectList;
+
+      if (project?.query?.id && (projectList.length === 0 || !projectList.includes(project.query.id))) {
+        const projectResponse = await thunkAPI.dispatch(getProject(project.query));
+
+        if (
+          getProject.fulfilled.match(projectResponse) &&
+          projectResponse.payload
+        ) {
+          project = new Project(projectResponse.payload);
+        }
+
+        await thunkAPI.dispatch(maintainPortfolio(project.query));
+      }
+
+      if (!project || !(project instanceof Project)) {
         return null;
       }
 
-      const portfolioPromises = Array.from(portfolio?.projects).map(
-        async (project) => {
-          const projectResponse = await thunkAPI.dispatch(getPortfolioProject(project));
-
-          if (
-            getProject.fulfilled.match(projectResponse) &&
-            projectResponse.payload
-          ) {
-            return new Project(projectResponse.payload);
-          }
-
-          return project;
-        }
-      );
-
-      const projects = (await Promise.all(portfolioPromises)).filter(
-        (project) => project !== null
-      );
-
-      portfolio.setProjects(new Set(projects));
-
-      return portfolio.toPortfolioObject();
+      return project.toProjectObject();
     } catch (error) {
       console.error(error);
       throw new Error((error as Error).message);
@@ -128,18 +293,38 @@ export const portfolioSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getPortfolioDetails.fulfilled, (state, action) => {
+      .addCase(getPortfolioFromUser.fulfilled, (state, action) => {
         state.portfolioLoading = false;
         state.portfolioError = null;
         state.portfolioErrorMessage = null;
         state.portfolioObject = action.payload;
       })
-      .addMatcher(isAnyOf(getPortfolioDetails.pending), (state) => {
+      .addCase(addProjectList.fulfilled, (state, action) => {
+        state.portfolioLoading = false;
+        state.portfolioError = null;
+        state.portfolioErrorMessage = null;
+        state.projectList = action.payload;
+      })
+      .addCase(getPortfolioDetails.fulfilled, (state, action) => {
+        state.portfolioLoading = false;
+        state.portfolioError = null;
+        state.portfolioErrorMessage = null;
+        state.portfolioObject = action.payload;
+        state.hasDetails = true;
+      })
+      .addCase(getPortfolioProject.fulfilled, (state, action) => {
+        state.portfolioLoading = false;
+        state.portfolioError = null;
+        state.portfolioErrorMessage = null;
+        state.projectObject = action.payload;
+      })
+      .addMatcher(isAnyOf(getPortfolioDetails.pending, getPortfolioFromUser.pending, getPortfolioProject.pending), (state) => {
         state.portfolioLoading = true;
         state.portfolioError = null;
         state.portfolioErrorMessage = null;
+        state.portfolioObject = null;
       })
-      .addMatcher(isAnyOf(getPortfolioDetails.rejected), (state, action) => {
+      .addMatcher(isAnyOf(getPortfolioDetails.rejected, getPortfolioFromUser.rejected, getPortfolioProject.rejected), (state, action) => {
         state.portfolioLoading = false;
         state.portfolioError = (action.error as Error) || null;
         state.portfolioErrorMessage =

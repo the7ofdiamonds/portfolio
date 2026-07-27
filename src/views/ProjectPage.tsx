@@ -8,7 +8,7 @@ import { Portfolio, Project } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectComponent } from './components/project/ProjectComponent';
 
-import { removeProject, addProjectList, getProject } from '../controllers/projectSlice';
+import { getPortfolioProject } from '../controllers/portfolioSlice';
 
 interface ProjectPageProps<RootState, AppDispatch> {
   account: Organization | User;
@@ -23,8 +23,12 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
 
   const { owner, projectID } = useParams<string>();
 
-  const { projectLoading, projectErrorMessage, projectObject, projectList } = useAppSelector(
+  const { projectLoading, projectErrorMessage } = useAppSelector(
     (state) => state.project
+  );
+
+  const { projectObject } = useAppSelector(
+    (state) => state.portfolio
   );
 
   const [message, setMessage] = useState<string | null>(null);
@@ -36,43 +40,32 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [owner, projectID]);
-  console.log(project)
+
   useEffect(() => {
     if (!project && portfolio && owner && projectID) {
-      const withinPortfolio: Project | Set<Project> = portfolio?.filterProject(new ProjectQuery({
-        owner: owner,
-        repo: projectID
-      }));
-
-      if (withinPortfolio instanceof Project) {
-        setProject(withinPortfolio);
-      }
+      dispatch(getPortfolioProject({
+        project_query: new ProjectQuery({
+          owner: owner,
+          repo: projectID
+        }), portfolio: portfolio
+      }))
     }
   }, [portfolio, owner, projectID]);
 
   useEffect(() => {
-    if (project?.query?.id && !projectList.includes(project.query.id)) {
-      dispatch(getProject(project?.query))
-    }
-  }, [project?.query?.id, projectList]);
-
-  useEffect(() => {
-    if (project?.query && projectObject) {
+    if (projectObject) {
       setProject(new Project(projectObject));
-      dispatch(removeProject(project.query))
     }
-  }, [project?.query, projectObject]);
+  }, [projectObject]);
 
   useEffect(() => {
-    if (typeof project?.query?.id === "number") {
+    if (project?.query) {
       setPortfolio((prevProjects: Portfolio) => {
         prevProjects.addProject(project);
         return prevProjects;
       });
-
-      dispatch(addProjectList(project.query))
     }
-  }, [project?.query?.id]);
+  }, [project?.query]);
 
   useEffect(() => {
     if (project?.title) {

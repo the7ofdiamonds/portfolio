@@ -7,25 +7,22 @@ import { Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
 
 import { PortfolioComponent } from '../views/components/portfolio/PortfolioComponent';
 
-interface PortfolioPageProps<RootState, AppDispatch> {
+interface PortfolioPageProps<RootState> {
   account: Organization | User;
   portfolio: Portfolio | null;
   skills: Skills | null;
   useAppSelector: TypedUseSelectorHook<RootState>;
-  useAppDispatch: () => AppDispatch;
 }
 
-export const PortfolioPage: React.FC<PortfolioPageProps<any, any>> = ({ account, skills, useAppSelector, useAppDispatch }) => {
+export const PortfolioPage: React.FC<PortfolioPageProps<any>> = ({ account, portfolio, skills, useAppSelector }) => {
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<MessageType>('info');
   const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
 
   const [title, setTitle] = useState<string>(`Portfolio`);
-  const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
 
   const {
     portfolioLoading,
-    portfolioObject,
     portfolioErrorMessage
   } = useAppSelector((state) => state.portfolio);
 
@@ -34,16 +31,26 @@ export const PortfolioPage: React.FC<PortfolioPageProps<any, any>> = ({ account,
   }, []);
 
   useEffect(() => {
+    if (account?.name) {
+      setTitle(`Portfolio - ${account.name}`)
+    }
+  }, [account?.name]);
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  useEffect(() => {
     if (portfolioLoading) {
+      setMessageType('info');
       setMessage('Now Loading Portfolio');
       setShowStatusBar('show');
     }
   }, [portfolioLoading]);
 
   useEffect(() => {
-    if (portfolioLoading) {
-      setMessageType('info');
-      setMessage('Now Loading Portfolio');
+    if (!portfolioLoading) {
+      setMessage(null);
     }
   }, [portfolioLoading]);
 
@@ -54,24 +61,6 @@ export const PortfolioPage: React.FC<PortfolioPageProps<any, any>> = ({ account,
       setShowStatusBar('show');
     }
   }, [portfolioErrorMessage]);
-
-  useEffect(() => {
-    if (account.name) {
-      setTitle(`Portfolio - ${account.name}`)
-    }
-  }, [account]);
-
-  useEffect(() => {
-    document.title = title;
-  }, [title]);
-
-  useEffect(() => {
-    if (account.portfolio) {
-      setPortfolio(account.portfolio);
-      setMessage(null);
-      setShowStatusBar('hide');
-    }
-  }, [account.portfolio]);
 
   return (
     <Section>
