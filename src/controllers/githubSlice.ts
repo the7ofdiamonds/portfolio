@@ -612,7 +612,6 @@ export const getAuthenticatedAccount = createAsyncThunk(
       const headers = getGitHubHeaders();
 
       if (!headers) {
-        console.error('Headers are not present in the instance.');
         return null;
       }
 
@@ -708,6 +707,12 @@ export const getAuthenticatedAccount = createAsyncThunk(
               user.fromGitHubGraphQL(jsonData.viewer);
               return user;
             }
+
+            // if (jsonData?.viewer?.__typename === 'Organization') {
+            //   const user = new User();
+            //   user.fromGitHubGraphQL(jsonData.viewer);
+            //   return user;
+            // }
 
             return null;
           }).catch((error) => {

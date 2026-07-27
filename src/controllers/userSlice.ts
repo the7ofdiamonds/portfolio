@@ -63,7 +63,7 @@ type LocalData = {
 
 export const getAuthenticatedUserAccount = createAsyncThunk(
   'user/getAuthenticatedUserAccount',
-  async (data?: LocalData, thunkAPI) => {
+  async (data: LocalData, thunkAPI) => {
     try {
       let user: User | null = null;
 
