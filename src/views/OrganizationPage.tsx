@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
-import { Organization, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
+import { Organizations, Organization, Portfolio, Skills } from '@the7ofdiamonds/ui-ux';
 import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
 import { ContactMethods } from '@the7ofdiamonds/ui-ux';
 import { ContactBar } from '@the7ofdiamonds/communications';
@@ -15,11 +15,10 @@ import { getOrganization } from '../controllers/organizationSlice';
 import { useAppDispatch, useAppSelector } from '../model/hooks';
 
 export interface OrganizationPageProps {
-    organization: Organization | null;
-    skills: Skills;
+    organizations: Organizations | null;
 }
 
-export const OrganizationPage: React.FC<OrganizationPageProps> = ({ organization, skills }) => {
+export const OrganizationPage: React.FC<OrganizationPageProps> = ({ organizations }) => {
     const dispatch = useAppDispatch();
 
     const { login } = useParams<string>();
@@ -27,10 +26,9 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ organization
     const { organizationObject } = useAppSelector(
         (state) => state.organization);
 
-    const [org, setOrg] = useState<Organization | null>(null);
-    const [orgContactMethods, setOrgContactMethods] = useState<ContactMethods | null>();
+    const [organization, setOrganization] = useState<Organization | null>(null);
+    const [contactMethods, setContactMethods] = useState<ContactMethods | null>();
     const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
-    const [orgSkills, setOrgSkills] = useState<Skills>(new Skills);
 
     const [message, setMessage] = useState<string | null>(null);
     const [messageType, setMessageType] = useState<MessageType>('info');
@@ -41,55 +39,48 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ organization
     }, [login]);
 
     useEffect(() => {
-        if (organization?.login === login) {
-            setOrg(organization);
+        if (organizations?.list && organizations?.list.length > 0) {
+            setOrganization(organizations.filterOrganizationsByLogin(login));
         }
-    }, [organization?.login, login]);
+    }, [organizations?.list]);
+
+    // useEffect(() => {
+    //     if (!organizationObject && login) {
+    //         dispatch(getOrganization(login));
+    //     }
+    // }, [organization?.login, login, organizationObject]);
+
+    // useEffect(() => {
+    //     if (organizationObject) {
+    //         setOrg(new Organization(organizationObject));
+    //     }
+    // }, [organizationObject]);
 
     useEffect(() => {
-        if (!organizationObject && login) {
-            dispatch(getOrganization(login));
+        if (organization?.contactMethods) {
+            setContactMethods(organization.contactMethods)
         }
-    }, [organization?.login, login, organizationObject]);
+    }, [organization?.contactMethods]);
 
     useEffect(() => {
-        if (organizationObject) {
-            setOrg(new Organization(organizationObject));
+        if (organization?.name) {
+            document.title = organization.name
         }
-    }, [organizationObject]);
+    }, [organization?.name]);
 
     useEffect(() => {
-        if (organization?.login === `@${login}` && organization?.contactMethods) {
-            setOrgContactMethods(organization.contactMethods)
+        if (organization?.portfolio) {
+            setPortfolio(organization.portfolio)
         }
-    }, [organization]);
-
-    useEffect(() => {
-        if (org?.name) {
-            document.title = org.name
-        }
-    }, [org]);
-
-    useEffect(() => {
-        if (org && org.portfolio) {
-            setPortfolio(org.portfolio)
-        }
-    }, [org?.portfolio]);
-
-    useEffect(() => {
-        if (organization && organization.skills && skills) {
-            skills.list.push(...organization.skills.list)
-            setOrgSkills(skills)
-        }
-    }, [organization?.skills]);
+    }, [organization?.portfolio]);
 
     return (
         <Section>
-            {org && <OrganizationComponent organization={org} />}
+            {organization && <OrganizationComponent organization={organization} />}
 
-            {orgContactMethods && <ContactBar contactMethods={orgContactMethods} location='' />}
+            {contactMethods && <ContactBar contactMethods={contactMethods} location='' />}
 
-            {(portfolio || orgSkills) && <PortfolioComponent portfolio={portfolio} skills={orgSkills} />}
+            {portfolio && <PortfolioComponent portfolio={portfolio} />}
 
             {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
         </Section>

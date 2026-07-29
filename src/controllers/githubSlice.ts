@@ -684,7 +684,7 @@ export const getAuthenticatedAccount = createAsyncThunk(
         }
       `;
 
-      const account: User | null = await fetch("https://api.github.com/graphql", {
+      const account = await fetch("https://api.github.com/graphql", {
         method: "POST",
         ...headers,
         body: JSON.stringify({ query: query }),
@@ -702,19 +702,7 @@ export const getAuthenticatedAccount = createAsyncThunk(
 
             const jsonData = json.data as AccountGQLResponse;
 
-            if (jsonData?.viewer?.__typename === 'User') {
-              const user = new User();
-              user.fromGitHubGraphQL(jsonData.viewer);
-              return user;
-            }
-
-            // if (jsonData?.viewer?.__typename === 'Organization') {
-            //   const user = new User();
-            //   user.fromGitHubGraphQL(jsonData.viewer);
-            //   return user;
-            // }
-
-            return null;
+            return jsonData;
           }).catch((error) => {
             console.error('Error parsing JSON response:', error);
             return null;
@@ -725,22 +713,7 @@ export const getAuthenticatedAccount = createAsyncThunk(
         return null;
       });
 
-      const contactsResponse =
-        account && account.username
-          ? await thunkAPI.dispatch(getSocialAccounts(account.username))
-          : null;
-
-      if (
-        account &&
-        contactsResponse &&
-        getSocialAccounts.fulfilled.match(contactsResponse) &&
-        contactsResponse.payload
-      ) {
-        account.contactMethods = new ContactMethods();
-        account.contactMethods.fromGitHub(contactsResponse.payload);
-      }
-
-      return account instanceof User ? account.toUserObject() : null;
+      return account;
     } catch (error) {
       const err = error as Error;
       console.error(err);

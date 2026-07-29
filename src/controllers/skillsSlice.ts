@@ -171,37 +171,43 @@ export const getSkillType = createAsyncThunk(
   }
 );
 
-export const getSkills = createAsyncThunk('skills/getSkills', async () => {
-  try {
-    const api = getAPI();
+export const getSkills = createAsyncThunk('skills/getSkills',
+  async (data: SkillsObject, thunkAPI) => {
+    try {
+      let skills: Skills | null;
 
-    if (!api) {
-      throw new Error('API is not initialized.');
-    }
+      if (data) {
+        skills = new Skills({ list: data });
+      }
 
-    const response = await fetch(`${api}/taxonomies/skills`, {
-      method: 'GET',
-    });
+      // const api = getAPI();
 
-    if (!response.ok) {
+      // if (!api) {
+      //   throw new Error('API is not initialized.');
+      // }
+
+      // const response = await fetch(`${api}/taxonomies/skills`, {
+      //   method: 'GET',
+      // });
+
+      // if (!response.ok) {
+      //   throw new Error(
+      //     `Failed to get skills: ${response.status} ${response.statusText}`
+      //   );
+      // }
+
+      // const text = await response.text();
+      // const data: SkillsObject = JSON.parse(text);
+
+      return skills.toSkillsObject();
+    } catch (error) {
+      const err = error as Error;
+      console.error('Get skills error:', err);
       throw new Error(
-        `Failed to get skills: ${response.status} ${response.statusText}`
+        err?.message || 'Unknown error occurred while getting skills.'
       );
     }
-
-    const text = await response.text();
-    const data: SkillsObject = JSON.parse(text);
-    const skills = new Skills(data);
-
-    return skills.toSkillsObject();
-  } catch (error) {
-    const err = error as Error;
-    console.error('Get skills error:', err);
-    throw new Error(
-      err?.message || 'Unknown error occurred while getting skills.'
-    );
-  }
-});
+  });
 
 type UpdateSkillResponse = {
   status_code: number | null;

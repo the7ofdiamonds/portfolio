@@ -5,8 +5,8 @@ import {
   isAnyOf
 } from '@reduxjs/toolkit';
 
-import type { OrganizationObject } from '@the7ofdiamonds/ui-ux';
-import { Organization } from '@the7ofdiamonds/ui-ux';
+import type { OrganizationObject, OrganizationsObject } from '@the7ofdiamonds/ui-ux';
+import { Organization, Organizations } from '@the7ofdiamonds/ui-ux';
 
 import { getOrganizationDetails } from '../controllers/githubSlice';
 import { getOrganizationData } from '../controllers/databaseSlice';
@@ -17,6 +17,7 @@ export interface OrganizationState {
   organizationError: Error | null;
   organizationErrorMessage: string;
   organizationObject: OrganizationObject | null;
+  organizationsObject: OrganizationsObject | null;
 }
 
 const initialState: OrganizationState = {
@@ -25,38 +26,89 @@ const initialState: OrganizationState = {
   organizationError: null,
   organizationErrorMessage: '',
   organizationObject: null,
+  organizationsObject: null,
 };
 
 export const getOrganization = createAsyncThunk(
   'organization/getOrganization',
-  async (login: string, thunkAPI) => {
+  async (data: OrganizationObject, thunkAPI) => {
     try {
-      const organizationResponse = await thunkAPI.dispatch(
-        getOrganizationDetails(login)
-      );
+      let organization: Organization | null = null;
 
-      if (
-        getOrganizationDetails.fulfilled.match(organizationResponse) &&
-        organizationResponse.payload
-      ) {
-        const organization = new Organization(organizationResponse.payload);
-
-        const databaseResponse = organization.id
-          ? await thunkAPI.dispatch(getOrganizationData(organization.id))
-          : null;
-
-        if (
-          databaseResponse &&
-          getOrganizationData.fulfilled.match(databaseResponse) &&
-          databaseResponse.payload
-        ) {
-          organization.fromDB(databaseResponse.payload);
-        }
-
-        return organization.toOrganizationObject();
+      if (data) {
+        organization = new Organization(data)
       }
 
-      return null;
+      // const organizationResponse = await thunkAPI.dispatch(
+      //   getOrganizationDetails(login)
+      // );
+
+      // if (
+      //   getOrganizationDetails.fulfilled.match(organizationResponse) &&
+      //   organizationResponse.payload
+      // ) {
+      //   const organization = new Organization(organizationResponse.payload);
+
+      //   const databaseResponse = organization.id
+      //     ? await thunkAPI.dispatch(getOrganizationData(organization.id))
+      //     : null;
+
+      //   if (
+      //     databaseResponse &&
+      //     getOrganizationData.fulfilled.match(databaseResponse) &&
+      //     databaseResponse.payload
+      //   ) {
+      //     organization.fromDB(databaseResponse.payload);
+      //   }
+
+      //   return organization.toOrganizationObject();
+      // }
+
+      return organization.toOrganizationObject();
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      throw new Error(err.message);
+    }
+  }
+);
+
+export const getOrganizations = createAsyncThunk(
+  'organization/getOrganizations',
+  async (data: OrganizationsObject, thunkAPI) => {
+    try {
+      let organizations: Organizations | null = null;
+
+      if (data) {
+        organizations = new Organizations(data)
+      }
+
+      // const organizationResponse = await thunkAPI.dispatch(
+      //   getOrganizationDetails(login)
+      // );
+
+      // if (
+      //   getOrganizationDetails.fulfilled.match(organizationResponse) &&
+      //   organizationResponse.payload
+      // ) {
+      //   const organization = new Organization(organizationResponse.payload);
+
+      //   const databaseResponse = organization.id
+      //     ? await thunkAPI.dispatch(getOrganizationData(organization.id))
+      //     : null;
+
+      //   if (
+      //     databaseResponse &&
+      //     getOrganizationData.fulfilled.match(databaseResponse) &&
+      //     databaseResponse.payload
+      //   ) {
+      //     organization.fromDB(databaseResponse.payload);
+      //   }
+
+      //   return organization.toOrganizationObject();
+      // }
+
+      return organizations.toOrganizationsObject();
     } catch (error) {
       const err = error as Error;
       console.error(err);

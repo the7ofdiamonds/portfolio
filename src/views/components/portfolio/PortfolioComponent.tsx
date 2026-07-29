@@ -11,21 +11,18 @@ import styles from './Portfolio.module.scss';
 
 interface PortfolioComponentProps {
   portfolio: Portfolio | null;
-  skills: Skills | null;
 }
 
-export const PortfolioComponent: React.FC<PortfolioComponentProps> = ({ portfolio, skills }) => {
+export const PortfolioComponent: React.FC<PortfolioComponentProps> = ({ portfolio }) => {
   return (
-    <Main>
+    <>
       {portfolio && portfolio.projects.size > 0 &&
-        <>
+        <Main>
           <h1 className="title">portfolio</h1>
 
           <ProjectsComponent projects={portfolio.projects} />
-        </>
+        </Main>
       }
-
-      {skills && <SkillsComponent skills={skills} />}
-    </Main>
+    </>
   );
 }

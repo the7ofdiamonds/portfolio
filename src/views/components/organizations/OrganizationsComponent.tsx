@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 import { DescriptionComponent } from '@the7ofdiamonds/ui-ux';
 import { Organization, Organizations } from '@the7ofdiamonds/ui-ux';
@@ -10,11 +11,15 @@ interface OrganizationsComponentProps {
 }
 
 export const OrganizationsComponent: React.FC<OrganizationsComponentProps> = ({ organizations }) => {
-  const { list } = organizations;
+  const navigate = useNavigate();
 
   const handleClick = (organization: Organization) => {
     handleOrganizations();
-    window.location.href = `/organization/${organization.login}`;
+    if (organization?.website && !organization?.portfolio) {
+      window.location.href = `${organization.website}`;
+    } else {
+      navigate(`/organization/${organization.login}`)
+    }
   };
 
   const handleOrganizations = () => {
@@ -27,15 +32,15 @@ export const OrganizationsComponent: React.FC<OrganizationsComponentProps> = ({ 
 
   return (
     <>
-      {Array.isArray(list) && list.length > 0 && (
+      {Array.isArray(organizations?.list) && organizations.list.length > 0 && (
         <div className={styles.organizations}>
           <h2 className='title'>
-            {list.length === 1
+            {organizations.list.length === 1
               ? 'Organization'
               : 'Organizations'}
           </h2>
 
-          {list.map((organization, index) => (
+          {organizations.list.map((organization, index) => (
             <div className={styles.organization} key={index}>
               <button
                 key={index}
