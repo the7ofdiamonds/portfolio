@@ -1,17 +1,21 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
+import type { TypedUseSelectorHook } from 'react-redux';
 
 import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
-import { Taxonomy, StatusBar,Image } from '@the7ofdiamonds/ui-ux';
+import { Taxonomy, StatusBar, Image } from '@the7ofdiamonds/ui-ux';
 
 import { addSkill } from '../../../controllers/skillsSlice';
+import type { AppDispatch, RootState } from '../../../model/store';
 
-import { useAppDispatch, useAppSelector } from '../../../model/hooks';
+import styles from './Add.module.scss';
 
 export interface AddTaxonomyProps {
   taxonomy: Taxonomy;
+  useAppDispatch: () => AppDispatch;
+  useAppSelector: TypedUseSelectorHook<RootState>;
 };
 
-export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
+export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy, useAppDispatch, useAppSelector }) => {
   const dispatch = useAppDispatch();
 
   const { skillsLoading, skillsStatusCode, skillsSuccessMessage, skillsErrorMessage, taxType } =
@@ -128,7 +132,7 @@ export const AddTaxonomy: React.FC<AddTaxonomyProps> = ({ taxonomy }) => {
 
   return (
     <>
-      <main>
+      <main className={styles['add-taxonomy']}>
         <h2>Add {taxonomy.type}</h2>
 
         <form action="">

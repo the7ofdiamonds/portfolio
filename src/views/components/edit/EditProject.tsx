@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
-import { StatusBar } from '@the7ofdiamonds/ui-ux';
+import { Main, StatusBar } from '@the7ofdiamonds/ui-ux';
 import { Project } from '@the7ofdiamonds/ui-ux';
 
 import { EditDetails } from '../../../views/components/edit/EditDetails';
@@ -16,24 +16,18 @@ interface EditProjectProps {
 }
 
 export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => {
-    const [title, setTitle] = useState<string>('');
-    const [message, setMessage] = useState<string>('');
+    const [title, setTitle] = useState<string | null>(project?.title);
+    const [message, setMessage] = useState<string | null>("Save updates made to the project.");
     const [messageType, setMessageType] = useState<'info' | 'error' | 'success'>('info');
     const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
-
-    useEffect(() => {
-        if (project && project.title) {
-            setTitle(project.title);
-        }
-    }, [project]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         try {
             const target = e.target as HTMLInputElement;
-
             const { name, value } = target;
 
-            if (name === 'title') {
+            if (name === 'title' && value && value.trim()) {
+                setTitle(value)
                 project.setTitle(value);
             }
         } catch (error) {
@@ -44,8 +38,41 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => 
         }
     };
 
+    const saveTitle = (e: ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        try {
+            if (title && title.trim()) {
+                project.setTitle(title);
+            }
+
+            change(project)
+            setMessage("Title saved successfully");
+            setMessageType('success');
+            setShowStatusBar('show');
+        } catch (error) {
+            const err = error as Error;
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
+        }
+    };
+
+    const saveProject = (e: ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        try {
+            change(project)
+        } catch (error) {
+            const err = error as Error;
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
+        }
+    };
+
     return (
-        <>
+        <Main>
+            <h1 className={styles.title}>{`edit project ${title}`}</h1>
+
             <form className={styles.form} action="" id="edit_project">
                 <div className={styles['form-item-flex']}>
                     <label className={styles.label} htmlFor="title">Title:</label>
@@ -54,12 +81,12 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => 
                         type="text"
                         name="title"
                         placeholder="Title"
-                        value={title}
+                        value={title ?? ''}
                         onChange={handleChange}
                     />
                 </div>
 
-                <button className={styles.button} onClick={change(project)}>
+                <button className={styles.button} onClick={saveTitle}>
                     <h3>SAVE TITLE</h3>
                 </button>
             </form>
@@ -82,11 +109,11 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => 
 
             <br />
 
-            <button className={styles.button} onClick={change(project)}>
+            <button className={styles.button} onClick={saveProject}>
                 <h3>SAVE PROJECT</h3>
             </button>
 
             <StatusBar show={showStatusBar} messageType={messageType} message={message} />
-        </>
+        </Main>
     )
 }

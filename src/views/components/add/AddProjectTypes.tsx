@@ -1,12 +1,19 @@
 import React from 'react';
+import type { TypedUseSelectorHook } from 'react-redux';
 
-import { Taxonomy } from '@the7ofdiamonds/ui-ux';
+import { ProjectType } from '@the7ofdiamonds/ui-ux';
 
 import { AddTaxonomy } from './AddTaxonomy';
+import type { AppDispatch, RootState } from '../../../model/store';
 
-export const AddProjectTypes: React.FC = () => {
+export interface AddProjectTypesProps {
+  useAppDispatch: () => AppDispatch;
+  useAppSelector: TypedUseSelectorHook<RootState>;
+};
+
+export const AddProjectTypes: React.FC<AddProjectTypesProps> = ({ useAppDispatch, useAppSelector }) => {
 
   return (
-    <AddTaxonomy taxonomy={new Taxonomy} />
+    <AddTaxonomy taxonomy={new ProjectType} useAppDispatch={useAppDispatch} useAppSelector={useAppSelector} />
   );
 }

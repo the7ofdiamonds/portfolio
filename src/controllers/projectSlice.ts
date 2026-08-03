@@ -36,29 +36,28 @@ export const getProject = createAsyncThunk<ProjectObject | null, ProjectQuery>(
   'project/getProject',
   async (projectQuery: ProjectQuery, thunkAPI) => {
     try {
+      let errorMessage: String | null = null;
 
       if (!projectQuery?.owner || !projectQuery?.repo) {
-        console.error("Both owner and repo are required")
-
-        if (!projectQuery?.owner) {
-          console.error("Owner was not provided")
-        }
-
-        if (!projectQuery?.repo) {
-          console.error("Repo was not provided")
-        }
-
-        return null;
+        errorMessage = new String("Both owner and repo are required.");
       }
 
+      if (!projectQuery?.owner) {
+        errorMessage = errorMessage + ' ' + "Owner was not provided.";
+      }
+
+      if (!projectQuery?.repo) {
+        errorMessage = errorMessage + ' ' + "Repo was not provided.";
+      }
+
+
       if (!projectQuery?.repoType) {
-        console.error("Repo Type is required")
-        return null;
+        errorMessage = errorMessage + ' ' + "Repo Type was not provided.";
       }
 
       let repo: Repo | null = null;
 
-      if (projectQuery.repoType === 'GitLab') {
+      if (!errorMessage && projectQuery.repoType === 'GitLab') {
         const getGitLabRepoResponse = await thunkAPI.dispatch(
           getGitLabRepo(projectQuery)
         );
@@ -72,7 +71,7 @@ export const getProject = createAsyncThunk<ProjectObject | null, ProjectQuery>(
         }
       }
 
-      if (projectQuery.repoType === 'GitHub') {
+      if (!errorMessage && projectQuery.repoType === 'GitHub') {
         const githubRepoQuery = new GitHubRepoQuery({ owner: projectQuery.owner, repo: projectQuery.repo });
 
         const repoDetailsResponse = await thunkAPI.dispatch(
@@ -85,6 +84,10 @@ export const getProject = createAsyncThunk<ProjectObject | null, ProjectQuery>(
         ) {
           repo = new Repo(repoDetailsResponse.payload);
         }
+      }
+
+      if (errorMessage) {
+        throw new Error(errorMessage.toString());
       }
 
       if (!repo) {

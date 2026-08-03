@@ -1,15 +1,27 @@
 @use './input.scss';
 
-section.add {
-  margin-top: 6.25rem;
+.add-taxonomy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.5rem;
 
-  main {
-    form {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 1.5rem;
+  h2 {
+    text-transform: uppercase;
+  }
+
+  form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+
+    button {
+      h3 {
+        text-transform: uppercase;
+      }
     }
   }
 }

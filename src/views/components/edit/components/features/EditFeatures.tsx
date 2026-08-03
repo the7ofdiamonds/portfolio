@@ -1,34 +1,33 @@
-import React, { useEffect, useState, ChangeEvent, MouseEvent, FormEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent, MouseEvent, FormEvent, Dispatch, SetStateAction } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { Main, StatusBar } from '@the7ofdiamonds/ui-ux';
 import type { FeatureObject } from '@the7ofdiamonds/ui-ux';
-import { Feature, Version } from '@the7ofdiamonds/ui-ux';
-
-import { updateFeatures } from '../../../../../controllers/updateSlice';
-
-import { useAppDispatch, useAppSelector } from '../../../../../model/hooks';
+import { Feature, Features, Version } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Features.module.scss';
 
 interface EditFeaturesProps {
-    features: Set<Feature> | undefined | null;
+    features: Features | null;
+    setFeatures: Dispatch<SetStateAction<Features | null>>;
 }
 
-export const EditFeatures: React.FC<EditFeaturesProps> = ({ features }) => {
-    const dispatch = useAppDispatch();
-
+export const EditFeatures: React.FC<EditFeaturesProps> = ({ features, setFeatures }) => {
     const [featuresObject, setFeaturesObject] = useState<Array<FeatureObject> | null>(null);
-    const [feature, setFeature] = useState<Feature>(new Feature());
+    const [feature, setFeature] = useState<Feature>(new Feature({ id: Date.now() }));
 
     const [message, setMessage] = useState<string>('');
     const [messageType, setMessageType] = useState<string>('info');
     const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
     useEffect(() => {
-        if (features) {
-            setFeaturesObject(Array.from(features).map((feature) => feature.toFeatureObject()))
+        if (features && features?.list && features.list.size > 0) {
+            setFeaturesObject(Array.from(features.list).map((feature: Feature) => {
+                if (!feature?.id) feature.setID(Date.now());
+                return feature.toFeatureObject()
+            }))
         }
-    }, [features]);
+    }, [features?.list?.size]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>, feature: FeatureObject) => {
         const { name, value } = e.target;
@@ -68,15 +67,25 @@ export const EditFeatures: React.FC<EditFeaturesProps> = ({ features }) => {
         e.preventDefault();
 
         try {
-            if (!feature.description.trim()) {
+            if (!feature?.description || !feature?.description.trim()) {
                 throw new Error('A description is required');
             }
 
-            const updatedFeatures = featuresObject ? [...featuresObject, feature.toFeatureObject()] : [feature.toFeatureObject()];
+            if (!feature?.version) {
+                throw new Error('A version is required');
+            }
 
-            setFeaturesObject(updatedFeatures);
+            if (!feature?.id) {
+                throw new Error('An id is required');
+            }
 
-            setFeature(new Feature());
+            if (!features) {
+                features = new Features();
+            }
+
+            features.add(feature)
+
+            setFeature(new Feature({ id: Date.now() }));
         } catch (error) {
             const err = error as Error;
             setMessage(err.message);
@@ -85,15 +94,15 @@ export const EditFeatures: React.FC<EditFeaturesProps> = ({ features }) => {
         }
     };
 
-    const handleUpdateFeatures = async (e: MouseEvent<HTMLButtonElement>) => {
+    const handleUpdateFeatures = (features: Features) => async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         try {
-            if (!featuresObject || featuresObject.length === 0) {
+            if (!features || features?.list?.length === 0) {
                 throw new Error('No features added');
             }
 
-            dispatch(updateFeatures(new Set(featuresObject.map((featureObject) => new Feature(featureObject)))));
+            setFeatures(features)
         } catch (error) {
             const err = error as Error;
             setMessage(err.message);
@@ -103,11 +112,34 @@ export const EditFeatures: React.FC<EditFeaturesProps> = ({ features }) => {
     };
 
     return (
-        <div className={styles.edit} id="update_features">
-            <h3>Features</h3>
+        <Main>
+            <div className={styles.edit} id="update_features">
+                <h3>Features</h3>
 
-            {featuresObject && featuresObject.map((feature) => (
-                <div className={styles['form-item']} key={feature.id}>
+                {featuresObject && featuresObject.map((feature) => (
+                    <div className={styles['form-item']} key={feature.id}>
+                        <div className={styles['form-item-flex']}>
+                            <label className={styles.label} htmlFor="">ID:</label>
+                            <h3>{feature.id}</h3>
+                        </div>
+
+                        <div className={styles['form-item-flex']}>
+                            <label className={styles.label} htmlFor="">Feature</label>
+                            <input className={styles.input} type="text" value={feature.description ?? ''} placeholder='Description' name='description' onChange={(e) => handleChange(e, feature)} />
+                        </div>
+
+                        <div className={styles['form-item-flex']}>
+                            <label className={styles.label} htmlFor="">Version</label>
+                            <input className={styles.input} type="text" value={feature?.version ?? ''} placeholder='Version' name='version' onChange={(e) => handleChange(e, feature)} />
+                        </div>
+                    </div>
+                ))}
+
+                <hr />
+
+                <h4>Add New Feature</h4>
+
+                <div className={styles['form-item']}>
                     <div className={styles['form-item-flex']}>
                         <label className={styles.label} htmlFor="">ID:</label>
                         <h3>{feature.id}</h3>
@@ -115,44 +147,25 @@ export const EditFeatures: React.FC<EditFeaturesProps> = ({ features }) => {
 
                     <div className={styles['form-item-flex']}>
                         <label className={styles.label} htmlFor="">Feature</label>
-                        <input className={styles.input} type="text" value={feature.description} placeholder='Description' name='description' onChange={(e) => handleChange(e, feature)} />
+                        <input className={styles.input} type="text" value={feature.description ?? ''} placeholder='Description' name='description' onChange={handleFeatureChange} />
                     </div>
 
                     <div className={styles['form-item-flex']}>
                         <label className={styles.label} htmlFor="">Version</label>
-                        <input className={styles.input} type="text" value={feature?.version ?? ''} placeholder='Version' name='version' onChange={(e) => handleChange(e, feature)} />
+                        <input className={styles.input} type="text" value={feature.version ? feature.version.toString() : ''} placeholder='Version' name='version' onChange={handleFeatureChange} />
                     </div>
-                </div>
-            ))}
 
-            <hr />
-
-            <h4>Add New Feature</h4>
-
-            <div className={styles['form-item']}>
-                <div className={styles['form-item-flex']}>
-                    <label className={styles.label} htmlFor="">ID:</label>
-                    <h3>{feature.id}</h3>
+                    <button className={styles.button} onClick={handleAddFeature}>
+                        <h3>Add Feature</h3>
+                    </button>
                 </div>
 
-                <div className={styles['form-item-flex']}>
-                    <label className={styles.label} htmlFor="">Feature</label>
-                    <input className={styles.input} type="text" value={feature.description} placeholder='Description' name='description' onChange={handleFeatureChange} />
-                </div>
-
-                <div className={styles['form-item-flex']}>
-                    <label className={styles.label} htmlFor="">Version</label>
-                    <input className={styles.input} type="text" value={feature.version ? feature.version.toString() : ''} placeholder='Version' name='version' onChange={handleFeatureChange} />
-                </div>
-
-                <button className={styles.button} onClick={handleAddFeature}>
-                    <h3>Add Feature</h3>
+                <button className={styles.button} onClick={handleUpdateFeatures(features)}>
+                    <h3>Update Features</h3>
                 </button>
             </div>
 
-            <button className={styles.button} onClick={handleUpdateFeatures}>
-                <h3>Update Features</h3>
-            </button>
-        </div>
+            <StatusBar show={showStatusBar} messageType={messageType} message={message} />
+        </Main>
     )
 }

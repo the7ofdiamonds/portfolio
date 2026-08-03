@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import type { TypedUseSelectorHook } from 'react-redux';
 
 import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
 import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
@@ -6,23 +7,20 @@ import { Portfolio, Project, User } from '@the7ofdiamonds/ui-ux';
 
 import { EditPortfolioProject } from '../views/components/edit/EditPortfolioProject';
 
+import type { AppDispatch, RootState } from '../../../model/store';
+
 interface PortfolioEditPageProps {
-    user: User;
+    portfolio: Portfolio;
+    useAppDispatch: () => AppDispatch;
+    useAppSelector: TypedUseSelectorHook<RootState>;
 }
 
-export const PortfolioEditPage: React.FC<PortfolioEditPageProps> = ({ user }) => {
-    const [portfolio, setPortfolio] = useState<Portfolio | null>(user.portfolio);
-    const [projects, setProjects] = useState<Set<Project>>(portfolio && portfolio.projects ? portfolio.projects : new Set);
+export const PortfolioEditPage: React.FC<PortfolioEditPageProps> = ({ portfolio, useAppDispatch, useAppSelector }) => {
+    const [projects, setProjects] = useState<Set<Project>>(new Set());
 
     const [message, setMessage] = useState<string | null>(null);
     const [messageType, setMessageType] = useState<MessageType>('info');
     const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
-
-    useEffect(() => {
-        if (user.portfolio) {
-            setPortfolio(user.portfolio);
-        }
-    }, [user]);
 
     useEffect(() => {
         if (portfolio && portfolio.projects) {
@@ -34,7 +32,7 @@ export const PortfolioEditPage: React.FC<PortfolioEditPageProps> = ({ user }) =>
         <Section>
             {projects.size > 0 && (
                 Array.from(projects).map((project, index) => (
-                    <EditPortfolioProject key={index} project={project} />
+                    <EditPortfolioProject key={index} project={project} useAppDispatch={useAppDispatch} useAppSelector={useAppSelector} />
                 ))
             )}
 

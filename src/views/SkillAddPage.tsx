@@ -1,4 +1,5 @@
 import React from 'react';
+import type { TypedUseSelectorHook } from 'react-redux';
 
 import { Section } from '@the7ofdiamonds/ui-ux';
 
@@ -6,17 +7,23 @@ import { AddFrameworks } from '../views/components/add/AddFrameworks';
 import { AddLanguages } from '../views/components/add/AddLanguages';
 import { AddProjectTypes } from '../views/components/add/AddProjectTypes';
 import { AddTechnologies } from '../views/components/add/AddTechnologies';
+import type { AppDispatch, RootState } from '../../../model/store';
 
-export const SkillAddPage: React.FC = () => {
+export interface SkillAddPageProps {
+  useAppDispatch: () => AppDispatch;
+  useAppSelector: TypedUseSelectorHook<RootState>;
+};
+
+export const SkillAddPage: React.FC<SkillAddPageProps> = ({ useAppDispatch, useAppSelector }) => {
   return (
     <Section>
-      <AddLanguages />
+      <AddLanguages useAppDispatch={useAppDispatch} useAppSelector={useAppSelector} />
 
-      <AddFrameworks />
+      <AddFrameworks useAppDispatch={useAppDispatch} useAppSelector={useAppSelector} />
 
-      <AddProjectTypes />
+      <AddProjectTypes useAppDispatch={useAppDispatch} useAppSelector={useAppSelector} />
 
-      <AddTechnologies />
+      <AddTechnologies useAppDispatch={useAppDispatch} useAppSelector={useAppSelector} />
     </Section>
   );
 }

@@ -3,10 +3,24 @@
 @use './form.scss';
 @use './input.scss';
 @use './buttons.scss';
+@use './portfolio_edit.scss';
 
 .edit {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
+}
+
+.edit-solution[open],
+.edit-solution[open],
+.edit-process[open],
+.edit-problem[open],
+.edit-details[open] {
+  width: 90%;
+}
+
+details {
+  width: fit-content;
+  max-width: 1000px;
 }

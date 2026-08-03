@@ -4,7 +4,7 @@ import { initializeApp } from 'firebase/app';
 import type { Auth } from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
 
-import type{ Firestore } from 'firebase/firestore';
+import type { Firestore } from 'firebase/firestore';
 import { getFirestore } from 'firebase/firestore';
 
 import { Env } from '../services/Env';
@@ -100,17 +100,26 @@ export const getConfig = (): Config | null => {
     }
     return configInstance;
   } catch (error) {
-    console.error(error);
-    return null;
+    const err = error as Error;
+    console.error(err);
+    throw new Error(err.message);
   }
 };
 
-export const getAPI = () => {
-  let config = getConfig();
-  if (config && config.apiURL) {
+export const getAPI = (): string | null => {
+  try {
+    let config = getConfig();
+
+    if (!config || config?.apiURL) {
+      throw new Error('API URL not set.');
+    }
+
     return config.apiURL;
+  } catch (error) {
+    const err = error as Error;
+    console.error(err);
+    throw new Error(err.message);
   }
-  return null;
 };
 
 export const getDB = () => {

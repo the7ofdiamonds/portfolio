@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
-import { StatusBar } from '@the7ofdiamonds/ui-ux';
-import { Feature, Gallery, Project, ProjectSolution, ProjectURLs } from '@the7ofdiamonds/ui-ux';
+import { Main, StatusBar } from '@the7ofdiamonds/ui-ux';
+import { Feature, Features, Gallery, Project, ProjectSolution, ProjectURLs } from '@the7ofdiamonds/ui-ux';
 
 import { EditFeatures } from '../../../views/components/edit/components/features/EditFeatures';
 import { EditProjectURL } from '../../../views/components/edit/components/project_url/EditProjectURL';
@@ -17,38 +17,45 @@ interface EditSolutionProps {
 }
 
 export const EditSolution: React.FC<EditSolutionProps> = ({ project, change }) => {
+  const solution: ProjectSolution = project?.solution ?? new ProjectSolution();
+  const instruction: string = "Save changes made to the project solution.";
+
+  const [show, setShow] = useState<'show' | 'hide'>('hide');
+  const [message, setMessage] = useState<string>(instruction);
+  const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
+
+  const [gallery, setGallery] = useState<Gallery | null>(project?.solution?.gallery ?? new Gallery());
+  const [features, setFeatures] = useState<Features | null>(project?.solution?.features ?? new Features());
+  const [projectURLs, setProjectURLs] = useState<ProjectURLs | null>(project?.solution?.projectURLs ?? new ProjectURLs());
+  const [content, setContent] = useState<string>('');
+
   const { updatedSolutionGallery, updatedFeatures, updatedProjectURLs } = useAppSelector(
     (state) => state.update
   );
 
-  const [content, setContent] = useState<string>('');
-  const [show, setShow] = useState<'show' | 'hide'>('hide');
-  const [message, setMessage] = useState<string>('');
-  const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
+  // useEffect(() => {
+  //   if (gallery) {
+  //     solution.setGallery(gallery);
+  //   }
+  // }, [gallery]);
 
   // useEffect(() => {
-  //   if (updatedSolutionGallery) {
-  //     if (project.solution) {
-  //       project.solution.setGallery(new Gallery(updatedSolutionGallery));
-  //     } else {
-  //       const solution = new ProjectSolution();
-  //       solution.setGallery(new Gallery(updatedSolutionGallery));
-  //       project.setSolution(solution);
-  //     }
+  //   if (features) {
+  //     solution.setFeatures(features);
   //   }
-  // }, [updatedSolutionGallery]);
+  // }, [features]);
 
   // useEffect(() => {
-  //   if (updatedFeatures) {
-  //     if (project.solution) {
-  //       project.solution.setFeatures(new Set(updatedFeatures.map((feature) => new Feature(feature))));
-  //     } else {
-  //       const solution = new ProjectSolution();
-  //       solution.setFeatures(new Set(updatedFeatures.map((feature) => new Feature(feature))));
-  //       project.setSolution(solution);
-  //     }
+  //   if (projectURLs) {
+  //     solution.setProjectURLs(projectURLs);
   //   }
-  // }, [updatedFeatures]);
+  // }, [projectURLs]);
+
+  // useEffect(() => {
+  //   if (content) {
+  //     solution.setContentURL(content)
+  //   }
+  // }, [content]);
 
   // useEffect(() => {
   //   if (updatedProjectURLs &&
@@ -77,13 +84,6 @@ export const EditSolution: React.FC<EditSolutionProps> = ({ project, change }) =
 
       if (name === 'solution_content_url') {
         setContent(value)
-        if (project.solution) {
-          project.solution.setContentURL(value);
-        } else {
-          const solution = new ProjectSolution();
-          solution.setContentURL(value);
-          project.setSolution(solution);
-        }
       }
     } catch (error) {
       const err = error as Error;
@@ -93,34 +93,80 @@ export const EditSolution: React.FC<EditSolutionProps> = ({ project, change }) =
     }
   };
 
+  const saveSolution = () => {
+    try {
+      let hasData = false;
+
+      if (gallery.images.length > 0) {
+        gallery.setID(project?.id)
+        solution.setGallery(gallery);
+        hasData = true;
+      }
+
+      if (features.list.length > 0) {
+        features.setID(project?.id)
+        solution.setFeatures(features);
+        hasData = true;
+      }
+
+      if (projectURLs.hasData()) {
+        projectURLs.setID(project?.id)
+        solution.setProjectURLs(projectURLs);
+        hasData = true;
+      }
+
+      if (content) {
+        solution.setContentURL(content);
+        hasData = true;
+      }
+
+      if (hasData) {
+        if (!solution.id) solution.setID(project?.id)
+      } else {
+        setMessage("No new project solution data to save.");
+        setMessageType('caution');
+        return;
+      }
+
+      if (!solution.id) {
+        throw new Error("An ID is required for project solution.")
+      }
+
+      project.setSolution(solution)
+      change(project)
+
+      setMessage("Project solution has been updated.");
+      setMessageType('success');
+    } catch (error) {
+      const err = error as Error;
+      setShow('show');
+      setMessage(err.message);
+      setMessageType('error');
+    }
+  };
+
   return (
-    <div className={styles.edit} id='edit_solution'>
-      <h1 className={styles.title}>solution</h1>
+    <details className={styles['edit-solution']} id='edit_solution'>
+      <summary><h1 className={styles.title}>solution</h1></summary>
 
-      <EditGallery location='solution' gallery={project.solution?.gallery ?? new Gallery} setVal={function (value: Gallery): void {
-        throw new Error('Function not implemented.');
-      }} />
+      <div className={styles.edit}>
+        <EditGallery location='solution' gallery={gallery} setGallery={setGallery} />
 
-      <br />
+        <EditFeatures features={features} setFeatures={setFeatures} />
 
-      <EditFeatures features={project.solution?.features} />
+        <EditProjectURL projectURLs={projectURLs} setProjectURLs={setProjectURLs} />
 
-      <br />
+        <div className={styles['form-item-flex']}>
+          <label className={styles.label} htmlFor="solution_content_url">Solution Content URL:</label>
+          <input className={styles.input} type="text" id="solution_content_url" value={content} placeholder='URL to the html content' name='solution_content_url' onChange={handleSolutionContentURLChange} />
+        </div>
 
-      <EditProjectURL projectURLs={project.solution?.projectURLs} />
+        <StatusBar show={show} messageType={messageType} message={message} />
 
-      <hr />
-
-      <div className={styles['form-item-flex']}>
-        <label className={styles.label} htmlFor="solution_content_url">Solution Content URL:</label>
-        <input className={styles.input} type="text" id="solution_content_url" value={content} placeholder='URL to the html content' name='solution_content_url' onChange={handleSolutionContentURLChange} />
+        <button className={styles.button} onClick={saveSolution}>
+          <h3>SAVE SOLUTION</h3>
+        </button>
       </div>
-
-      <button className={styles.button} onClick={change(project)}>
-        <h3>SAVE SOLUTION</h3>
-      </button>
-
-      <StatusBar show={show} messageType={messageType} message={message} />
-    </div>
+    </details>
   )
 }

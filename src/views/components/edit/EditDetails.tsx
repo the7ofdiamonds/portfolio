@@ -14,44 +14,17 @@ interface EditDetailsProps {
 }
 
 export const EditDetails: React.FC<EditDetailsProps> = ({ project, change }) => {
-  const [privacy, setPrivacy] = useState<string>('private');
-  const [clientID, setClientID] = useState<string>('0');
-  const [content, setContent] = useState<string>('');
-  const [team, setTeam] = useState<Contributors | null>(null);
-  const [story, setStory] = useState<string>('');
+  const details: ProjectDetails = project?.details ?? new ProjectDetails();
+
+  const [privacy, setPrivacy] = useState<string | null>(project?.details?.privacy);
+  const [clientID, setClientID] = useState<string | null>(project?.details?.clientID);
+  const [content, setContent] = useState<string | null>(project?.details?.content?.url);
+  const [team, setTeam] = useState<Contributors | null>(project?.details?.teamList);
+  const [story, setStory] = useState<string>(project?.details?.story?.url);
+
   const [show, setShow] = useState<StatusBarVisibility>('hide');
-  const [message, setMessage] = useState<string>('');
+  const [message, setMessage] = useState<string>('Save updates made to the project details.');
   const [messageType, setMessageType] = useState<MessageType>('info');
-
-  useEffect(() => {
-    if (project?.details?.privacy) {
-      setPrivacy(project.details.privacy)
-    }
-  }, [project?.details?.privacy]);
-
-  useEffect(() => {
-    if (project?.details?.clientID) {
-      setClientID(project.details.clientID)
-    }
-  }, [project?.details?.clientID]);
-
-  useEffect(() => {
-    if (project?.details?.content?.url) {
-      setContent(project.details.content.url)
-    }
-  }, [project?.details?.content]);
-
-  useEffect(() => {
-    if (project?.details?.teamList) {
-      setTeam(project.details.teamList)
-    }
-  }, [project?.details?.teamList]);
-
-  useEffect(() => {
-    if (project?.details?.story?.url) {
-      setStory(project.details.story.url)
-    }
-  }, [project?.details?.story]);
 
   const handleChangeSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     try {
@@ -59,16 +32,7 @@ export const EditDetails: React.FC<EditDetailsProps> = ({ project, change }) => 
 
       const { name, value } = target;
 
-      if (name === 'privacy') {
-        setPrivacy(privacyFromString(value));
-        if (project.details) {
-          project.details.setPrivacy(privacyFromString(value));
-        } else {
-          const projetDetails = new ProjectDetails();
-          projetDetails.setPrivacy(privacyFromString(value));
-          project.setDetails(projetDetails);
-        }
-      }
+      if (name === 'privacy') setPrivacy(privacyFromString(value));
     } catch (error) {
       const err = error as Error;
       setShow('show');
@@ -84,36 +48,53 @@ export const EditDetails: React.FC<EditDetailsProps> = ({ project, change }) => 
 
       if (name === 'client_id') {
         setClientID(value);
-        if (project.details) {
-          project.details.setClientID(value);
-        } else {
-          const projetDetails = new ProjectDetails();
-          projetDetails.setClientID(value);
-          project.setDetails(projetDetails);
-        }
       }
 
       if (name === 'content_url') {
         setContent(value);
-        if (project.details) {
-          project.details.setContentURL(value);
-        } else {
-          const projetDetails = new ProjectDetails();
-          projetDetails.setContentURL(value);
-          project.setDetails(projetDetails);
-        }
       }
 
       if (name === 'story') {
         setStory(value);
-        if (project.details) {
-          project.details.setStory(value);
-        } else {
-          const projetDetails = new ProjectDetails();
-          projetDetails.setStory(value);
-          project.setDetails(projetDetails);
+      }
+
+      console.log(value)
+    } catch (error) {
+      const err = error as Error;
+      setShow('show');
+      setMessage(err.message);
+      setMessageType('error');
+    }
+  };
+
+  const saveDetails = () => {
+    try {
+
+      if (clientID) {
+        details.setClientID(clientID);
+      }
+
+      if (content) {
+        details.setContentURL(content);
+      }
+
+      if (story) {
+        details.setStory(story);
+      }
+
+      if (clientID || content || story) {
+        if (!details.id) {
+          details.setID(project.id)
         }
       }
+
+      if (!details.id) {
+        throw new Error("Details ID is required to be added to project.")
+      }
+
+      project.setDetails(details);
+      console.log(project)
+      // change(project)
     } catch (error) {
       const err = error as Error;
       setShow('show');
@@ -123,39 +104,41 @@ export const EditDetails: React.FC<EditDetailsProps> = ({ project, change }) => 
   };
 
   return (
-    <>
-      <h2 className={styles.title}>Details</h2>
+    <details className={styles['edit-details']} id="edit_details">
+      <summary><h2 className={styles.title}>Details</h2></summary>
 
-      <form className={styles.form} action="" id='edit_details'>
-        <div className={styles['form-item-flex']}>
-          <label className={styles.label} htmlFor="privacy">Privacy:</label>
-          <select className={styles.select} id="privacy" name='privacy' value={privacy ?? ''} onChange={handleChangeSelect}>
-            <option value={Privacy.Private}>Private</option>
-            <option value={Privacy.Public}>Public</option>
-          </select>
-        </div>
+      <div className={styles.edit}>
+        <form className={styles.form} action="" id='edit_details'>
+          <div className={styles['form-item-flex']}>
+            <label className={styles.label} htmlFor="privacy">Privacy:</label>
+            <select className={styles.select} id="privacy" name='privacy' value={privacy ?? ''} onChange={handleChangeSelect}>
+              <option value={Privacy.Private}>Private</option>
+              <option value={Privacy.Public}>Public</option>
+            </select>
+          </div>
 
-        <div className={styles['form-item-flex']}>
-          <label className={styles.label} htmlFor="client_id">Client ID:</label>
-          <input className={styles.input} type="text" id='client_id' name='client_id' value={clientID} onChange={handleChange} />
-        </div>
+          <div className={styles['form-item-flex']}>
+            <label className={styles.label} htmlFor="client_id">Client ID:</label>
+            <input className={styles.input} type="text" id='client_id' name='client_id' value={clientID ?? ''} onChange={handleChange} />
+          </div>
 
-        <div className={styles['form-item-flex']}>
-          <label className={styles.label} htmlFor="content_url">Content URL:</label>
-          <input className={styles.input} type="string" id="content_url" name="content_url" value={content} onChange={handleChange} />
-        </div>
+          <div className={styles['form-item-flex']}>
+            <label className={styles.label} htmlFor="content_url">Content URL:</label>
+            <input className={styles.input} type="string" id="content_url" name="content_url" value={content ?? ''} onChange={handleChange} />
+          </div>
 
-        <div className={styles['form-item-flex']}>
-          <label className={styles.label} htmlFor="story">Story URL:</label>
-          <input className={styles.input} type="string" id="story" name="story" value={story} onChange={handleChange} />
-        </div>
+          <div className={styles['form-item-flex']}>
+            <label className={styles.label} htmlFor="story">Story URL:</label>
+            <input className={styles.input} type="string" id="story" name="story" value={story ?? ''} onChange={handleChange} />
+          </div>
+        </form>
 
-        <button className={styles.button} onClick={change(project)}>
+        <StatusBar show={show} messageType={messageType} message={message} />
+
+        <button className={styles.button} onClick={saveDetails}>
           <h3>SAVE DETAILS</h3>
         </button>
-      </form>
-
-      <StatusBar show={show} messageType={messageType} message={message} />
-    </>
+      </div>
+    </details>
   )
 }

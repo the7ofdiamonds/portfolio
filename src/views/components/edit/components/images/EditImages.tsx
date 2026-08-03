@@ -1,6 +1,6 @@
-import React, { useState, ChangeEvent } from 'react'
+import React, { useState, ChangeEvent, Dispatch, SetStateAction } from 'react'
 
-import { Image } from '@the7ofdiamonds/ui-ux';
+import { Badge, Image, StatusBar } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Images.module.scss';
 
@@ -8,48 +8,64 @@ interface EditImagesProps {
     plural: string;
     singular: string;
     images: Array<Image>;
-    setVal: (value: Array<Image>) => void;
+    setImages: Dispatch<SetStateAction<Array<Image> | null>>;
 }
 
-const EditImages: React.FC<EditImagesProps> = ({ plural, singular, images, setVal }) => {
-    const [newImage, setNewImage] = useState<Image>(new Image({ id: '', title: '', url: '', class_name: '' }));
+const EditImages: React.FC<EditImagesProps> = ({ plural, singular, images, setImages }) => {
+    const newImg = new Image({ id: Date.now() });
+    const [newImage, setNewImage] = useState<Image>(newImg);
 
-    const handleNewLogo = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+    const [message, setMessage] = useState<string>('');
+    const [messageType, setMessageType] = useState<string>('info');
+    const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
-        const image = new Image()
-        image.setID(crypto.randomUUID());
+    const handleNewImage = (e: ChangeEvent<HTMLInputElement>) => {
+        try {
+            const { name, value } = e.target;
 
-        if (name === 'title') {
-            image.setTitle(value)
+            setNewImage((oldImage: Image) => (
+                new Image({
+                    ...oldImage.toImageObject(),
+                    [name]: value
+                })
+            ))
+        } catch (error) {
+            const err = error as Error;
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
         }
-
-        if (name === 'url') {
-            image.setURL(value)
-        }
-
-        if (name === 'class_name') {
-            image.setClassName(value)
-        }
-
-        setNewImage(image)
-        images.push(newImage)
-        setVal(images)
-        setNewImage(new Image);
-
     };
 
-    const handleAddNewImage = () => {
-        if (newImage && newImage.title && (newImage.url || newImage.className)) {
-            images.push(newImage)
-            setVal(images)
-            setNewImage(new Image({ id: '', title: '', url: '', class_name: '' }));
-        };
+    const handleAddNewImage = (image: Image) => (e: ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        try {
+
+            if (!image.id) {
+                throw new Error("ID is required.")
+            }
+
+            if (!image.title || !image.title.trim()) {
+                throw new Error("Title is required.")
+            }
+
+            if ((!image.url || !image.url.trim()) && (!image.className || !image.className.trim())) {
+                throw new Error("Either URL or class name is required.")
+            }
+
+            images.push(image)
+            setNewImage(newImg);
+        } catch (error) {
+            const err = error as Error;
+            setMessage(err.message);
+            setMessageType('error');
+            setShowStatusBar('show');
+        }
     }
 
     const handleChange = (
         e: ChangeEvent<HTMLInputElement>,
-        state: any[]
+        state: Image[]
     ) => {
         const { name, value, dataset } = e.target;
         const index = dataset.index ? parseInt(dataset.index, 10) : -1;
@@ -57,16 +73,18 @@ const EditImages: React.FC<EditImagesProps> = ({ plural, singular, images, setVa
         if (index === -1) return;
 
         const updatedState = [...state];
-        updatedState[index] = { ...updatedState[index], [name]: value };
+        updatedState[index] = new Image({ ...updatedState[index].toImageObject(), [name]: value });
 
-        setVal(updatedState);
+        setImages(updatedState);
     };
 
     return (
         <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
             {Array.isArray(images) && images.length > 0 && (
                 <>
-                    <h3>{plural}</h3>
+                    <Badge amount={images.length}>
+                        <h3>{plural}</h3>
+                    </Badge>
 
                     {images.map((item: Image, index: number) => (
                         <div className={styles['form-item']} key={item.id}>
@@ -78,6 +96,7 @@ const EditImages: React.FC<EditImagesProps> = ({ plural, singular, images, setVa
                                     placeholder="ID"
                                     value={item.id ?? ""}
                                     name="id"
+                                    id="id"
                                     disabled
                                 />
                             </div>
@@ -130,14 +149,32 @@ const EditImages: React.FC<EditImagesProps> = ({ plural, singular, images, setVa
             <h4>{`Add New ${singular}`}</h4>
 
             <div className={styles['form-item']}>
-                <input className={styles.input}
-                    type="text" name="title" placeholder="Title" value={newImage.title ?? ''} onChange={handleNewLogo} />
-                <input className={styles.input}
-                    type="text" name="url" placeholder="URL" value={newImage.url ?? ''} onChange={handleNewLogo} />
-                <input className={styles.input}
-                    type="text" name="class_name" placeholder="Class Name" value={newImage.className ?? ''} onChange={handleNewLogo} />
-                <button className={styles.button} type="submit" onClick={handleAddNewImage}><h3>{`Add ${singular}`}</h3></button>
+                <div className={styles['form-item-flex']}>
+                    <label className={styles.label} htmlFor="id">ID:</label>
+                    <input className={styles.input} type="text" name="id" placeholder="ID" value={newImage.id ?? ''} onChange={handleNewImage} />
+                </div>
+
+                <div className={styles['form-item-flex']}>
+                    <label className={styles.label} htmlFor="id">Title:</label>
+                    <input className={styles.input} type="text" name="title" placeholder="Title" value={newImage.title ?? ''} onChange={handleNewImage} />
+                </div>
+
+                <div className={styles['form-item-flex']}>
+                    <label className={styles.label} htmlFor="title">URL:</label>
+                    <input className={styles.input} type="text" name="url" placeholder="URL" value={newImage.url ?? ''} onChange={handleNewImage} />
+                </div>
+
+                <div className={styles['form-item-flex']}>
+                    <label className={styles.label} htmlFor="url">Class Name:</label>
+                    <input className={styles.input} type="text" name="class_name" placeholder="Class Name" value={newImage.className ?? ''} onChange={handleNewImage} />
+                </div>
+
+                <button className={styles.button} type="submit" onClick={handleAddNewImage(newImage)}>
+                    <h3>{`Add ${singular}`}</h3>
+                </button>
             </div>
+
+            <StatusBar show={showStatusBar} messageType={messageType} message={message} />
         </form>
     )
 }

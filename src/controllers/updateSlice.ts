@@ -521,23 +521,24 @@ export const updateProject = createAsyncThunk(
   async (project: Project) => {
     try {
       const api = getAPI();
-
+console.log(api)
       const headers: SecureHeaders = await addSecureHeaders();
 
       if (headers.errorMessage) {
         return headers;
       }
+      return null;
 
-      const response = await fetch(`${api}/saveProject/${project.id}`, {
-        method: 'POST',
-        headers:
-          headers instanceof SecureHeaders
-            ? new Headers(headers.toObject())
-            : {},
-        body: JSON.stringify(project.toProjectDataObject()),
-      });
+      // const response = await fetch(`${api}/saveProject/${project.id}`, {
+      //   method: 'POST',
+      //   headers:
+      //     headers instanceof SecureHeaders
+      //       ? new Headers(headers.toObject())
+      //       : {},
+      //   body: JSON.stringify(project.toProjectDataObject()),
+      // });
 
-      return await response.json();
+      // return await response.json();
     } catch (error) {
       const err = error as Error;
       console.error(err);

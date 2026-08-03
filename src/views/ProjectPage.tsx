@@ -18,7 +18,7 @@ interface ProjectPageProps<RootState, AppDispatch> {
   useAppDispatch: () => AppDispatch;
 }
 
-export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, portfolio, setPortfolio, skills, useAppSelector, useAppDispatch }) => {
+export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, portfolio, skills, useAppSelector, useAppDispatch }) => {
   const dispatch = useAppDispatch();
 
   const { owner, projectID } = useParams<string>();
@@ -57,15 +57,6 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
       setProject(new Project(projectObject));
     }
   }, [projectObject]);
-
-  useEffect(() => {
-    if (project?.query) {
-      setPortfolio((prevProjects: Portfolio) => {
-        prevProjects.addProject(project);
-        return prevProjects;
-      });
-    }
-  }, [project?.query]);
 
   useEffect(() => {
     if (project?.title) {

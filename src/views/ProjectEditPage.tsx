@@ -1,92 +1,58 @@
 import React, { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import type { TypedUseSelectorHook } from 'react-redux';
 
-import { Section, StatusBar } from '@the7ofdiamonds/ui-ux';
+import { ProjectQuery, Section, StatusBar } from '@the7ofdiamonds/ui-ux';
 import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
-import { GitHubRepoQuery, Owner, Project, Portfolio, RepoURL, User } from '@the7ofdiamonds/ui-ux';
+import { Project, Portfolio, RepoURL } from '@the7ofdiamonds/ui-ux';
 
+import { getPortfolioProject } from '../controllers/portfolioSlice';
 import { updateProject } from '../controllers/updateSlice';
-
-import { getProject } from '../controllers/projectSlice';
-
-import { useAppDispatch, useAppSelector } from '../model/hooks';
 
 import { EditProject } from '../views/components/edit/EditProject';
 
-import styles from '../views/components/edit/Edit.module.scss';
-
-interface ProjectEditPageProps {
-    user: User;
+interface ProjectEditPageProps<RootState, AppDispatch> {
+    portfolio: Portfolio;
+    useAppDispatch: () => AppDispatch;
+    useAppSelector: TypedUseSelectorHook<RootState>;
 }
 
-export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
+export const ProjectEditPage: React.FC<ProjectEditPageProps<any, any>> = ({ portfolio, useAppDispatch, useAppSelector }) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const { login, projectID } = useParams();
+    const { owner, projectID } = useParams<string>();
 
-    const { projectLoading, projectLoadingMessage, projectErrorMessage, projectObject } = useAppSelector(
+    const { projectLoading, projectLoadingMessage, projectErrorMessage } = useAppSelector(
         (state) => state.project
     );
-    const { portfolioObject } = useAppSelector(
+    const { projectObject } = useAppSelector(
         (state) => state.portfolio
     );
     const { updateLoading, updateLoadingMessage, updateErrorMessage, updateSuccessMessage, updateStatusCode } = useAppSelector(
         (state) => state.update
     );
 
-    const [portfolio, setPortfolio] = useState<Portfolio | null>(user.portfolio);
-
-    const [owner, setOwner] = useState<Owner>(new Owner());
-    const [id, setId] = useState<string>();
-    const [repoQuery, setRepoQuery] = useState<GitHubRepoQuery>();
-
-    const [project, setProject] = useState<Project>(new Project());
-
-    const [title, setTitle] = useState<string>(projectID ?? '');
-
     const [message, setMessage] = useState<string | null>(null);
     const [messageType, setMessageType] = useState<MessageType>('info');
     const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
 
-    useEffect(() => {
-        if (login) {
-            setOwner(new Owner({ login: login }))
-        }
-    }, [login]);
+    const [project, setProject] = useState<Project | null>(null);
 
     useEffect(() => {
-        if (projectID) {
-            setId(projectID);
-        }
-    }, [projectID]);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [owner, projectID]);
 
     useEffect(() => {
-        if (user.portfolio) {
-            setPortfolio(user.portfolio);
+        if (!project && portfolio && owner && projectID) {
+            dispatch(getPortfolioProject({
+                project_query: new ProjectQuery({
+                    owner: owner,
+                    repo: projectID
+                }), portfolio: portfolio
+            }))
         }
-    }, [user?.portfolio]);
-
-    useEffect(() => {
-        if (portfolio && portfolio.size > 0 && id) {
-            const filteredProject = portfolio.filterProject(id);
-            if (filteredProject) {
-                setProject(filteredProject);
-            }
-        }
-    }, [id, portfolio]);
-
-    useEffect(() => {
-        if (id && owner.login) {
-            setRepoQuery(new GitHubRepoQuery(owner.login, id))
-        }
-    }, [owner, id]);
-
-    useEffect(() => {
-        if (repoQuery) {
-            dispatch(getProject(repoQuery));
-        }
-    }, [repoQuery]);
+    }, [portfolio, owner, projectID]);
 
     useEffect(() => {
         if (projectObject) {
@@ -95,18 +61,22 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
     }, [projectObject]);
 
     useEffect(() => {
-        if (projectLoading && projectLoadingMessage) {
-            setMessage(projectLoadingMessage);
+        if (owner && projectID && projectLoading) {
             setMessageType('info');
+            setMessage(`Now Loading Project by @${owner} ${projectID.replace(/-/g, " ").toUpperCase()}`);
             setShowStatusBar('show');
+        } else {
+            setMessage(null)
         }
-    }, [projectLoading, projectLoadingMessage]);
+    }, [owner, projectID, projectLoading]);
 
     useEffect(() => {
         if (projectErrorMessage) {
             setMessage(projectErrorMessage);
-            setMessageType('info');
+            setMessageType('error');
             setShowStatusBar('show');
+        } else {
+            setShowStatusBar('hide');
         }
     }, [projectErrorMessage]);
 
@@ -115,6 +85,8 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
             setMessage(updateLoadingMessage);
             setMessageType('info');
             setShowStatusBar('show');
+        } else {
+            setShowStatusBar('hide');
         }
     }, [updateLoading, updateLoadingMessage]);
 
@@ -123,8 +95,16 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
             setMessage(updateErrorMessage);
             setMessageType('error');
             setShowStatusBar('show');
+        } else {
+            setShowStatusBar('hide');
         }
     }, [updateErrorMessage]);
+
+    useEffect(() => {
+        if (updateStatusCode === 403) {
+            navigate('/login');
+        }
+    }, [updateStatusCode]);
 
     useEffect(() => {
         if (updateSuccessMessage) {
@@ -134,34 +114,17 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
         }
     }, [updateSuccessMessage]);
 
-    useEffect(() => {
-        if (updateStatusCode === 403) {
-            navigate('/login');
-        }
-    }, [updateStatusCode]);
-
-    useEffect(() => {
-        if (project && project.title) {
-            setTitle(project.title);
-        }
-    }, [project]);
-
-    const handleUpdateProject = (project: Project) => (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-
+    const handleUpdateProject = (project: Project) => {
         try {
-            dispatch(updateProject(project))
-                .then((res) => {
-                    if (res.meta.requestStatus === 'fulfilled') {
-                        let id = res.payload.id;
-                        let repoURL = new RepoURL(res.payload.repo_url);
+            if (!(project instanceof Project)) {
+                throw new Error("A project is required to update.");
+            }
 
-                        if (repoURL.owner) {
-                            const repoQuery = new GitHubRepoQuery(repoURL.owner, id);
-                            dispatch(getProject(repoQuery));
-                        }
-                    }
-                });
+            console.log(project)
+            // dispatch(updateProject(project));
+            setMessage("Project has been updated.");
+            setMessageType('success');
+            setShowStatusBar('show');
         } catch (error) {
             const err = error as Error;
             setMessageType('error');
@@ -172,8 +135,7 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ user }) => {
 
     return (
         <Section>
-            <h1 className={styles.title}>edit project</h1>
-            <EditProject project={project} change={handleUpdateProject} />
+            {project && <EditProject project={project} change={handleUpdateProject} />}
             {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
         </Section>
     )

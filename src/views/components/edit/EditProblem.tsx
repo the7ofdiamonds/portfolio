@@ -13,57 +13,23 @@ interface EditProblemProps {
 }
 
 export const EditProblem: React.FC<EditProblemProps> = ({ project, change }) => {
-  // const { updatedProblemGallery } = useAppSelector(
-  //   (state) => state.update
-  // );
+  const problem = project.problem?.gallery ?? new ProjectProblem();
+  const instruction: string = "Save updates made to the project problem.";
 
-  const [gallery, setGallery] = useState<Gallery>(new Gallery);
-  const [contentURL, setContentURL] = useState<string>('');
-  const [whitepaperURL, setWhitepaperURL] = useState<string>('');
+  const [gallery, setGallery] = useState<Gallery>(project?.problem?.gallery ?? new Gallery());
+  const [contentURL, setContentURL] = useState<string>(project?.problem?.contentURL?.url ?? '');
+  const [whitepaperURL, setWhitepaperURL] = useState<string>(project?.problem?.whitepaperURL?.url ?? '');
+
   const [show, setShow] = useState<'show' | 'hide'>('hide');
-  const [message, setMessage] = useState<string>('');
+  const [message, setMessage] = useState<string>(instruction);
   const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
-
-  useEffect(() => {
-    if (project.problem?.gallery) {
-      setGallery(project.problem.gallery);
-    }
-  }, [project.problem?.gallery]);
-
-  useEffect(() => {
-    if (project.problem?.contentURL?.url) {
-      setContentURL(project.problem.contentURL.url);
-    }
-  }, [project.problem?.contentURL?.url]);
-
-  useEffect(() => {
-    if (project.problem?.whitepaperURL?.url) {
-      setWhitepaperURL(project.problem.whitepaperURL.url);
-    }
-  }, [project.problem?.whitepaperURL]);
-
-  // useEffect(() => {
-  //   if (updatedProblemGallery) {
-  //     setGallery(new Gallery(updatedProblemGallery));
-  //   }
-  // }, [updatedProblemGallery, setGallery]);
 
   const handleProblemContentURLChange = (e: ChangeEvent<HTMLInputElement>) => {
     try {
       const target = e.target as HTMLInputElement;
-
       const { name, value } = target;
 
-      if (name === 'problem_content_url') {
-        setContentURL(value);
-        if (project.problem) {
-          project.problem.setContentURL(value);
-        } else {
-          const projetProblem = new ProjectProblem();
-          projetProblem.setContentURL(value);
-          project.setProblem(projetProblem);
-        }
-      }
+      if (name === 'problem_content_url') setContentURL(value);
     } catch (error) {
       const err = error as Error;
       setShow('show');
@@ -75,19 +41,48 @@ export const EditProblem: React.FC<EditProblemProps> = ({ project, change }) => 
   const handleWhitepaperURLChange = (e: ChangeEvent<HTMLInputElement>) => {
     try {
       const target = e.target as HTMLInputElement;
-
       const { name, value } = target;
 
-      if (name === 'whitepaper_url') {
-        setWhitepaperURL(value);
-        if (project.problem) {
-          project.problem.setWhitepaperURL(value);
-        } else {
-          const projetProblem = new ProjectProblem();
-          projetProblem.setWhitepaperURL(value);
-          project.setProblem(projetProblem);
-        }
+      if (name === 'whitepaper_url') setWhitepaperURL(value);
+    } catch (error) {
+      const err = error as Error;
+      setShow('show');
+      setMessage(err.message);
+      setMessageType('error');
+    }
+  };
+
+  const saveProblem = () => {
+    try {
+      let hasData = false;
+
+      if (gallery.images.length > 0) {
+        gallery.setID(project?.id)
+        problem.setGallery(gallery);
+        hasData = true;
       }
+
+      if (contentURL.trim()) {
+        problem.setContentURL(contentURL);
+        hasData = true;
+      }
+
+      if (hasData) {
+        if (!problem.id) problem.setID(project?.id)
+      } else {
+        setMessage("No new project problem data to save.");
+        setMessageType('caution');
+        return;
+      }
+
+      if (!problem.id) {
+        throw new Error("An ID is required for project problem.")
+      }
+
+      project.setProblem(problem)
+      console.log(project)
+
+      // change(project)
     } catch (error) {
       const err = error as Error;
       setShow('show');
@@ -97,31 +92,30 @@ export const EditProblem: React.FC<EditProblemProps> = ({ project, change }) => 
   };
 
   return (
-    <div className={styles.edit} id="edit_problem">
+    <details className={styles['edit-problem']} id="edit_problem">
+      <summary><h2 className={styles.title}>Problem</h2></summary>
 
-      <h2 className={styles.title}>Problem</h2>
+      <div className={styles.edit}>
+        <EditGallery location='problem' gallery={gallery} setGallery={setGallery} />
 
-      <EditGallery location='problem' gallery={gallery} setVal={function (value: Gallery): void {
-        throw new Error('Function not implemented.');
-      }} />
+        <hr />
 
-      <hr />
+        <div className={styles['form-item-flex']}>
+          <label className={styles.label} htmlFor="problem_content_url">Problem Content URL:</label>
+          <input className={styles.input} type="text" name='problem_content_url' value={contentURL} onChange={handleProblemContentURLChange} />
+        </div>
 
-      <div className={styles['form-item-flex']}>
-        <label className={styles.label} htmlFor="problem_content_url">Problem Content URL:</label>
-        <input className={styles.input} type="text" name='problem_content_url' value={contentURL} onChange={handleProblemContentURLChange} />
+        <div className={styles['form-item-flex']}>
+          <label className={styles.label} htmlFor="whitepaper_url">Whitepaper URL:</label>
+          <input className={styles.input} type="text" name='whitepaper_url' value={whitepaperURL} onChange={handleWhitepaperURLChange} />
+        </div>
+
+        <StatusBar show={show} messageType={messageType} message={message} />
+
+        <button className={styles.button} onClick={saveProblem}>
+          <h3>SAVE PROBLEM</h3>
+        </button>
       </div>
-
-      <div className={styles['form-item-flex']}>
-        <label className={styles.label} htmlFor="whitepaper_url">Whitepaper URL:</label>
-        <input className={styles.input} type="text" name='whitepaper_url' value={whitepaperURL} onChange={handleWhitepaperURLChange} />
-      </div>
-
-      <button className={styles.button} onClick={change(project)}>
-        <h3>SAVE PROBLEM</h3>
-      </button>
-
-      <StatusBar show={show} messageType={messageType} message={message} />
-    </div>
+    </details>
   );
 };
