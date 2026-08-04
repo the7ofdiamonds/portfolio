@@ -2,21 +2,28 @@ import React, { useEffect, useState, ChangeEvent } from 'react';
 
 import { Main, StatusBar } from '@the7ofdiamonds/ui-ux';
 import { Feature, Features, Gallery, Project, ProjectSolution, ProjectURLs } from '@the7ofdiamonds/ui-ux';
+import type { ProjectSolutionObject } from '@the7ofdiamonds/ui-ux';
+
+import { updateSolution } from '../../../controllers/updateProjectSlice';
 
 import { EditFeatures } from '../../../views/components/edit/components/features/EditFeatures';
 import { EditProjectURL } from '../../../views/components/edit/components/project_url/EditProjectURL';
 import { EditGallery } from '../../../views/components/edit/components/gallery/EditGallery';
 
-import { useAppDispatch, useAppSelector } from '../../../model/hooks';
+import { useAppSelector } from '../../../model/hooks';
+import type { AppDispatch } from "../../../model/store";
 
 import styles from './Edit.module.scss';
 
 interface EditSolutionProps {
   project: Project;
   change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
+  useAppDispatch: () => AppDispatch;
 }
 
-export const EditSolution: React.FC<EditSolutionProps> = ({ project, change }) => {
+export const EditSolution: React.FC<EditSolutionProps> = ({ project, change, useAppDispatch }) => {
+  const dispatch = useAppDispatch();
+
   const solution: ProjectSolution = project?.solution ?? new ProjectSolution();
   const instruction: string = "Save changes made to the project solution.";
 
@@ -122,21 +129,26 @@ export const EditSolution: React.FC<EditSolutionProps> = ({ project, change }) =
 
       if (hasData) {
         if (!solution.id) solution.setID(project?.id)
-      } else {
-        setMessage("No new project solution data to save.");
-        setMessageType('caution');
+      }
+
+     dispatch(updateSolution(solution)).then((res) => {
+        const solutionObject: ProjectSolutionObject | null = res?.payload;
+
+        if (!solutionObject) {
+          setShow('show');
+          setMessage("No Project Solution data to save to this project.");
+          setMessageType('error');
+          return;
+        }
+
+        project.setSolution(new ProjectSolution(solutionObject))
+        change(project)
+
+        setMessage("Project Solution has been updated.");
+        setMessageType('success');
+
         return;
-      }
-
-      if (!solution.id) {
-        throw new Error("An ID is required for project solution.")
-      }
-
-      project.setSolution(solution)
-      change(project)
-
-      setMessage("Project solution has been updated.");
-      setMessageType('success');
+      }).catch((err: Error) => { throw new Error(err.message) })
     } catch (error) {
       const err = error as Error;
       setShow('show');

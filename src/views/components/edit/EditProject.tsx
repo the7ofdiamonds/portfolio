@@ -1,6 +1,7 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
+import type { TypedUseSelectorHook } from 'react-redux';
 
-import { Main, StatusBar } from '@the7ofdiamonds/ui-ux';
+import { EditName, EditTitle, EditSubtitle, EditPromotionalText, EditDescription, EditPath, Main, StatusBar } from '@the7ofdiamonds/ui-ux';
 import { Project } from '@the7ofdiamonds/ui-ux';
 
 import { EditDetails } from '../../../views/components/edit/EditDetails';
@@ -8,16 +9,28 @@ import { EditProcess } from '../../../views/components/edit/process/EditProcess'
 import { EditSolution } from '../../../views/components/edit/EditSolution';
 import { EditProblem } from '../../../views/components/edit/EditProblem';
 
+import type { AppDispatch, RootState } from "../../../model/store";
+
 import styles from './Edit.module.scss';
 
 interface EditProjectProps {
     project: Project;
     change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
+    useAppDispatch: () => AppDispatch;
+    useAppSelector: TypedUseSelectorHook<RootState>;
 }
 
-export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => {
+export const EditProject: React.FC<EditProjectProps> = ({ project, change, useAppDispatch, useAppSelector }) => {
+    const instructions = "Save updates made to project.";
+
+    const [name, setName] = useState<string | null>(project?.name);
     const [title, setTitle] = useState<string | null>(project?.title);
-    const [message, setMessage] = useState<string | null>("Save updates made to the project.");
+    const [subtitle, setSubtitle] = useState<string | null>(project?.subtitle);
+    const [promotionalText, setPromotionalText] = useState<string | null>(project?.promotionalText);
+    const [description, setDescription] = useState<string | null>(project?.description);
+    const [path, setPath] = useState<string | null>(project?.path);
+
+    const [message, setMessage] = useState<string | null>(instructions);
     const [messageType, setMessageType] = useState<'info' | 'error' | 'success'>('info');
     const [showStatusBar, setShowStatusBar] = useState<'show' | 'hide'>('hide');
 
@@ -26,29 +39,40 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => 
             const target = e.target as HTMLInputElement;
             const { name, value } = target;
 
-            if (name === 'title' && value && value.trim()) {
+            if (name === 'name') {
+                setName(value)
+                project.setName(value);
+            }
+
+
+            if (name === 'title') {
                 setTitle(value)
                 project.setTitle(value);
             }
-        } catch (error) {
-            const err = error as Error;
-            setMessage(err.message);
-            setMessageType('error');
-            setShowStatusBar('show');
-        }
-    };
 
-    const saveTitle = (e: ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        try {
-            if (title && title.trim()) {
-                project.setTitle(title);
+
+            if (name === 'subtitle') {
+                setSubtitle(value)
+                project.setSubtitle(value);
             }
 
-            change(project)
-            setMessage("Title saved successfully");
-            setMessageType('success');
-            setShowStatusBar('show');
+
+            if (name === 'promotional_text') {
+                setPromotionalText(value)
+                project.setPromotionalText(value);
+            }
+
+
+            if (name === 'description') {
+                setDescription(value)
+                project.setDescription(value);
+            }
+
+
+            if (name === 'path') {
+                setPath(value)
+                project.setPath(value);
+            }
         } catch (error) {
             const err = error as Error;
             setMessage(err.message);
@@ -73,47 +97,51 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change }) => 
         <Main>
             <h1 className={styles.title}>{`edit project ${title}`}</h1>
 
-            <form className={styles.form} action="" id="edit_project">
-                <div className={styles['form-item-flex']}>
-                    <label className={styles.label} htmlFor="title">Title:</label>
-                    <input
-                        className={styles.input}
-                        type="text"
-                        name="title"
-                        placeholder="Title"
-                        value={title ?? ''}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <button className={styles.button} onClick={saveTitle}>
-                    <h3>SAVE TITLE</h3>
-                </button>
-            </form>
+            <EditName title={name} handleChange={handleChange} saveName={saveProject} />
 
             <hr />
 
-            <EditSolution project={project} change={change} />
+            <EditTitle title={title} handleChange={handleChange} saveTitle={saveProject} />
 
             <hr />
 
-            <EditProcess project={project} change={change} />
+            <EditSubtitle subtitle={subtitle} handleChange={handleChange} saveSubtitle={saveProject} />
 
             <hr />
 
-            <EditProblem project={project} change={change} />
+            <EditPromotionalText promotionalText={promotionalText} handleChange={handleChange} savePromotionalText={saveProject} />
 
             <hr />
 
-            <EditDetails project={project} change={change} />
+            <EditDescription description={description} handleChange={handleChange} saveDescription={saveProject} />
+
+            <hr />
+
+            <EditPath path={path} handleChange={handleChange} savePath={saveProject} />
+
+            <hr />
+
+            <EditSolution project={project} change={change} useAppSelector={useAppSelector} useAppDispatch={useAppDispatch} />
+
+            <hr />
+
+            <EditProcess project={project} change={change} useAppSelector={useAppSelector} useAppDispatch={useAppDispatch} />
+
+            <hr />
+
+            <EditProblem project={project} change={change} useAppSelector={useAppSelector} useAppDispatch={useAppDispatch} />
+
+            <hr />
+
+            <EditDetails project={project} change={change} useAppSelector={useAppSelector} useAppDispatch={useAppDispatch} />
 
             <br />
+
+            <StatusBar show={showStatusBar} messageType={messageType} message={message} />
 
             <button className={styles.button} onClick={saveProject}>
                 <h3>SAVE PROJECT</h3>
             </button>
-
-            <StatusBar show={showStatusBar} messageType={messageType} message={message} />
         </Main>
     )
 }

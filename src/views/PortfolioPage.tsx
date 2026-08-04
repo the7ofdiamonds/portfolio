@@ -15,11 +15,11 @@ interface PortfolioPageProps<RootState> {
 }
 
 export const PortfolioPage: React.FC<PortfolioPageProps<any>> = ({ account, portfolio, skills, useAppSelector }) => {
+  const [title, setTitle] = useState<string>(`Portfolio`);
+
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<MessageType>('info');
   const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
-
-  const [title, setTitle] = useState<string>(`Portfolio`);
 
   const {
     portfolioLoading,
@@ -64,7 +64,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps<any>> = ({ account, port
 
   return (
     <Section>
-      <PortfolioComponent portfolio={portfolio} skills={skills} />
+      {portfolio && <PortfolioComponent portfolio={portfolio} skills={skills} />}
       {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
     </Section>
   );

@@ -16,27 +16,63 @@ interface PortfolioEditPageProps {
 }
 
 export const PortfolioEditPage: React.FC<PortfolioEditPageProps> = ({ portfolio, useAppDispatch, useAppSelector }) => {
-    const [projects, setProjects] = useState<Set<Project>>(new Set());
+    const [projects, setProjects] = useState<Set<Project>>(portfolio?.projects ?? new Set());
+    const instruction = "Choose the project you would like to update.";
 
-    const [message, setMessage] = useState<string | null>(null);
+    const [message, setMessage] = useState<string | null>(instruction);
     const [messageType, setMessageType] = useState<MessageType>('info');
     const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
 
+    const {
+        portfolioLoading,
+        portfolioErrorMessage
+    } = useAppSelector((state) => state.portfolio);
+
     useEffect(() => {
-        if (portfolio && portfolio.projects) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+
+    useEffect(() => {
+        if (portfolio?.size > 0 && portfolio.projects) {
             setProjects(portfolio.projects);
         }
-    }, [portfolio]);
+    }, [portfolio?.size]);
+
+    useEffect(() => {
+        if (portfolioLoading) {
+            setMessageType('info');
+            setMessage('Now Loading Portfolio');
+            setShowStatusBar('show');
+        }
+    }, [portfolioLoading]);
+
+    useEffect(() => {
+        if (!portfolioLoading) {
+            setMessage(instruction);
+        }
+    }, [portfolioLoading]);
+
+    useEffect(() => {
+        if (portfolioErrorMessage) {
+            setMessage(portfolioErrorMessage);
+            setMessageType('error');
+            setShowStatusBar('show');
+        }
+    }, [portfolioErrorMessage]);
 
     return (
         <Section>
-            {projects.size > 0 && (
-                Array.from(projects).map((project, index) => (
-                    <EditPortfolioProject key={index} project={project} useAppDispatch={useAppDispatch} useAppSelector={useAppSelector} />
-                ))
-            )}
+            <>
+                <h1 className='title'>edit portfolio</h1>
 
-            {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
+                {message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
+
+                {projects.size > 0 && (
+                    Array.from(projects).map((project, index) => (
+                        <EditPortfolioProject key={index} project={project} useAppDispatch={useAppDispatch} useAppSelector={useAppSelector} />
+                    ))
+                )}
+            </>
         </Section>
     )
 }

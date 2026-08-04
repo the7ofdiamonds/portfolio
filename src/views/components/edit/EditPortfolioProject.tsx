@@ -14,7 +14,7 @@ interface EditPortfolioProjectProps {
 export const EditPortfolioProject: React.FC<EditPortfolioProjectProps> = ({ project }) => {
     const navigate = useNavigate();
 
-    const [query, setQuery] = useState<ProjectQuery | null>(null);
+    const [query, setQuery] = useState<ProjectQuery | null>(project?.query);
     const [owner, setOwner] = useState<string | null>(null);
     const [repo, setRepo] = useState<string | null>(null);
 
@@ -23,7 +23,7 @@ export const EditPortfolioProject: React.FC<EditPortfolioProjectProps> = ({ proj
     useEffect(() => { if (query?.owner) { setOwner(query.owner) } }, [query?.query])
 
     useEffect(() => { if (query?.repo) { setRepo(query.repo) } }, [query?.repo])
-
+       
     const onClick = () => {
         if (owner && repo) {
             navigate(`/admin/update/project/${owner}/${repo}`);

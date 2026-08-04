@@ -9,6 +9,7 @@ import { organizationSlice } from '../controllers/organizationSlice';
 import { portfolioSlice } from '../controllers/portfolioSlice';
 import { projectSlice } from '../controllers/projectSlice';
 import { skillsSlice } from '../controllers/skillsSlice';
+import { updateProjectSlice } from '../controllers/updateProjectSlice';
 import { updateSlice } from '../controllers/updateSlice';
 import { userSlice } from '../controllers/userSlice';
 
@@ -19,6 +20,7 @@ export const store = configureStore({
     project: projectSlice.reducer,
     github: githubSlice.reducer,
     skills: skillsSlice.reducer,
+    updateProject: updateProjectSlice.reducer,
     update: updateSlice.reducer,
     user: userSlice.reducer,
     auth: authSlice.reducer,

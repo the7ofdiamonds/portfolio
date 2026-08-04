@@ -13,6 +13,7 @@ import type {
   ProjectURLsDataObject,
   TaskObject,
   ProjectSkillsObject,
+  ProjectObject
 } from '@the7ofdiamonds/ui-ux';
 import {
   CheckList,
@@ -53,6 +54,7 @@ export interface UpdateState {
   updatedProjectURLs: ProjectURLsDataObject | null;
   updatedFeatures: Array<FeatureObject> | null;
   updatedColors: Array<ColorObject> | null;
+  updatedProject: ProjectObject | null;
 }
 
 const initialState: UpdateState = {
@@ -77,6 +79,7 @@ const initialState: UpdateState = {
   updatedProjectURLs: null,
   updatedFeatures: null,
   updatedColors: null,
+  updatedProject: null,
 };
 
 export const updateColors = createAsyncThunk(
@@ -520,14 +523,14 @@ export const updateProject = createAsyncThunk(
   'update/updateProject',
   async (project: Project) => {
     try {
-      const api = getAPI();
-console.log(api)
-      const headers: SecureHeaders = await addSecureHeaders();
+      //       const api = getAPI();
+      // console.log(api)
+      //       const headers: SecureHeaders = await addSecureHeaders();
 
-      if (headers.errorMessage) {
-        return headers;
-      }
-      return null;
+      //       if (headers.errorMessage) {
+      //         return headers;
+      //       }
+      return project.toProjectObject();
 
       // const response = await fetch(`${api}/saveProject/${project.id}`, {
       //   method: 'POST',
@@ -654,11 +657,16 @@ const updateSliceOptions: CreateSliceOptions<UpdateState> = {
         state.updateLoading = false;
         state.updatedProjectSkills = action.payload;
       })
+      .addCase(updateProject.fulfilled, (state, action) => {
+        state.updateLoading = false;
+        state.updatedProject = action.payload;
+      })
       .addCase(updateProject.pending, (state) => {
         state.updateLoading = true;
         state.updateError = null;
         state.updateErrorMessage = '';
-        state.updateLoadingMessage = 'Attempting to update the your project...';
+        console.log(state.updatedProject)
+        state.updateLoadingMessage = 'Updating your project...';
       })
       .addCase(updateSolution.pending, (state) => {
         state.updateLoading = true;

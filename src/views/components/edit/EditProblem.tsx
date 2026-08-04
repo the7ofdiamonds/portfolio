@@ -2,17 +2,25 @@ import React, { useEffect, useState, ChangeEvent } from 'react';
 
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
 import { Gallery, Project, ProjectProblem } from '@the7ofdiamonds/ui-ux';
+import type { ProjectProblemObject } from '@the7ofdiamonds/ui-ux';
+
+import type { AppDispatch } from "../../../model/store";
 
 import { EditGallery } from '../../../views/components/edit/components/gallery/EditGallery';
 
 import styles from './Edit.module.scss';
 
+import { updateProblem } from '../../../controllers/updateProjectSlice';
+
 interface EditProblemProps {
   project: Project;
   change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
+  useAppDispatch: () => AppDispatch;
 }
 
-export const EditProblem: React.FC<EditProblemProps> = ({ project, change }) => {
+export const EditProblem: React.FC<EditProblemProps> = ({ project, change, useAppDispatch }) => {
+  const dispatch = useAppDispatch();
+
   const problem = project.problem?.gallery ?? new ProjectProblem();
   const instruction: string = "Save updates made to the project problem.";
 
@@ -54,6 +62,8 @@ export const EditProblem: React.FC<EditProblemProps> = ({ project, change }) => 
 
   const saveProblem = () => {
     try {
+      setMessage(instruction);
+
       let hasData = false;
 
       if (gallery.images.length > 0) {
@@ -69,20 +79,21 @@ export const EditProblem: React.FC<EditProblemProps> = ({ project, change }) => 
 
       if (hasData) {
         if (!problem.id) problem.setID(project?.id)
-      } else {
-        setMessage("No new project problem data to save.");
-        setMessageType('caution');
-        return;
       }
 
-      if (!problem.id) {
-        throw new Error("An ID is required for project problem.")
-      }
+      dispatch(updateProblem(problem)).then((res) => {
+        const problemObject: ProjectProblemObject | null = res?.payload;
 
-      project.setProblem(problem)
-      console.log(project)
+        if (!problemObject) {
+          setShow('show');
+          setMessage("No Project Problem data to save to this project.");
+          setMessageType('error');
+          return null;
+        }
 
-      // change(project)
+        project.setProblem(new ProjectProblem(problemObject))
+        change(project)
+      }).catch((err: Error) => { throw new Error(err.message) })
     } catch (error) {
       const err = error as Error;
       setShow('show');

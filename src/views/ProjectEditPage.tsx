@@ -6,18 +6,20 @@ import { ProjectQuery, Section, StatusBar } from '@the7ofdiamonds/ui-ux';
 import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
 import { Project, Portfolio, RepoURL } from '@the7ofdiamonds/ui-ux';
 
+import type { AppDispatch, RootState } from "../model/store";
+
 import { getPortfolioProject } from '../controllers/portfolioSlice';
-import { updateProject } from '../controllers/updateSlice';
+import { updateProject } from '../controllers/updateProjectSlice';
 
 import { EditProject } from '../views/components/edit/EditProject';
 
-interface ProjectEditPageProps<RootState, AppDispatch> {
+interface ProjectEditPageProps {
     portfolio: Portfolio;
     useAppDispatch: () => AppDispatch;
     useAppSelector: TypedUseSelectorHook<RootState>;
 }
 
-export const ProjectEditPage: React.FC<ProjectEditPageProps<any, any>> = ({ portfolio, useAppDispatch, useAppSelector }) => {
+export const ProjectEditPage: React.FC<ProjectEditPageProps> = ({ portfolio, useAppDispatch, useAppSelector }) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -120,11 +122,7 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps<any, any>> = ({ port
                 throw new Error("A project is required to update.");
             }
 
-            console.log(project)
-            // dispatch(updateProject(project));
-            setMessage("Project has been updated.");
-            setMessageType('success');
-            setShowStatusBar('show');
+            dispatch(updateProject(project));
         } catch (error) {
             const err = error as Error;
             setMessageType('error');
@@ -135,7 +133,7 @@ export const ProjectEditPage: React.FC<ProjectEditPageProps<any, any>> = ({ port
 
     return (
         <Section>
-            {project && <EditProject project={project} change={handleUpdateProject} />}
+            {project && <EditProject project={project} change={handleUpdateProject} useAppSelector={useAppSelector} useAppDispatch={useAppDispatch} />}
             {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
         </Section>
     )

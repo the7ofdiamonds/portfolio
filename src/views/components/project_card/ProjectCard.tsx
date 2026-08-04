@@ -30,7 +30,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     }, [solution?.gallery])
 
     useEffect(() => {
-        if (gallery?.images) {
+        if (gallery?.images && gallery.images.length > 0) {
             setImages(gallery.images)
         }
     }, [gallery?.images])

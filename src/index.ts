@@ -42,7 +42,6 @@ export * from './views/components/edit/EditSolution';
 export * from './views/components/edit/process/EditProcess';
 
 export * from './views/components/edit/components/colors/EditColorsList';
-
 export * from './views/components/edit/components/gallery/EditGallery';
 
 export * from './views/components/organization/OrganizationComponent';

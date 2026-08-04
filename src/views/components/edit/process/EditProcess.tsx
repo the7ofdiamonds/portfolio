@@ -3,6 +3,11 @@ import React, { useState } from 'react'
 import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
 import { Project, ProjectProcess, ProjectStatus, ProjectDesign, ProjectDevelopment, ProjectDelivery } from '@the7ofdiamonds/ui-ux';
+import type { ProjectProcessObject } from '@the7ofdiamonds/ui-ux';
+
+import type { AppDispatch } from "../../../../model/store";
+
+import { updateProcess } from "../../../../controllers/updateProjectSlice";
 
 import { EditStatus } from '../../../../views/components/edit/process/EditStatus';
 import { EditDesign } from '../../../../views/components/edit/process/EditDesign';
@@ -14,9 +19,12 @@ import styles from './EditProcess.module.scss';
 interface EditProcessProps {
     project: Project;
     change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
+    useAppDispatch: () => AppDispatch;
 }
 
-export const EditProcess: React.FC<EditProcessProps> = ({ project, change }) => {
+export const EditProcess: React.FC<EditProcessProps> = ({ project, change, useAppDispatch }) => {
+    const dispatch = useAppDispatch();
+
     const process = project?.process ?? new ProjectProcess();
     const instruction = "Save updates made to the project process.";
 
@@ -59,21 +67,26 @@ export const EditProcess: React.FC<EditProcessProps> = ({ project, change }) => 
 
             if (hasData) {
                 if (!process.id) process.setID(project?.id)
-            } else {
-                setMessage("No new project solution data to save.");
-                setMessageType('caution');
+            }
+
+            dispatch(updateProcess(process)).then((res) => {
+                const processObject: ProjectProcessObject | null = res?.payload;
+
+                if (!processObject) {
+                    setShow('show');
+                    setMessage("No Project Process data to save to this project.");
+                    setMessageType('error');
+                    return;
+                }
+
+                project.setProcess(new ProjectProcess(processObject));
+                change(project)
+
+                setMessage("Project Process has been updated.");
+                setMessageType('success');
+
                 return;
-            }
-
-            if (!process.id) {
-                throw new Error("An ID is required for project solution.")
-            }
-
-            project.setProcess(process)
-            change(project)
-
-            setMessage("Project process has been updated.");
-            setMessageType('success');
+            }).catch((err: Error) => { throw new Error(err.message) })
         } catch (error) {
             const err = error as Error;
             setShow('show');
