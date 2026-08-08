@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
 import { ProjectDelivery, ProjectProcess, StatusBar } from '@the7ofdiamonds/ui-ux';
-import { CheckList, Gallery, Project } from '@the7ofdiamonds/ui-ux';
+import { CheckList, ContentURL, Gallery } from '@the7ofdiamonds/ui-ux';
 
 import { EditCheckList } from '../../../../views/components/edit/components/check_list/EditCheckList';
 import { EditGallery } from '../../../../views/components/edit/components/gallery/EditGallery';
@@ -9,43 +9,20 @@ import { EditGallery } from '../../../../views/components/edit/components/galler
 import styles from './EditProcess.module.scss';
 
 interface EditDeliveryProps {
-  project: Project;
-  change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
+  id: string | number | null;
+  delivery: ProjectDelivery;
+  setDelivery: React.Dispatch<React.SetStateAction<ProjectDelivery>>;
 }
 
-export const EditDelivery: React.FC<EditDeliveryProps> = ({ project, change }) => {
-  const [delivery, setDelivery] = useState<ProjectDelivery>(new ProjectDelivery)
-  const [gallery, setGallery] = useState<Gallery>(new Gallery);
-  const [checkList, setCheckList] = useState<CheckList>(new CheckList);
-  const [content, setContent] = useState<string>('');
+export const EditDelivery: React.FC<EditDeliveryProps> = ({ id, delivery, setDelivery }) => {
 
   const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>('');
   const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
 
-  useEffect(() => {
-    if (project.process?.delivery) {
-      setDelivery(project.process.delivery);
-    }
-  }, [project.process?.delivery]);
-
-  useEffect(() => {
-    if (project.process?.delivery?.gallery) {
-      setGallery(project.process.delivery.gallery);
-    }
-  }, [project.process?.delivery?.gallery]);
-
-  useEffect(() => {
-    if (project.process?.delivery?.checkList) {
-      setCheckList(project.process.delivery.checkList);
-    }
-  }, [project.process?.delivery?.checkList]);
-
-  useEffect(() => {
-    if (project.process?.delivery?.contentURL?.url) {
-      setContent(project.process.delivery.contentURL.url);
-    }
-  }, [project.process?.delivery?.contentURL]);
+  const [gallery, setGallery] = useState<Gallery>(delivery?.gallery ?? new Gallery);
+  const [checkList, setCheckList] = useState<CheckList>(delivery?.checkList ?? new CheckList);
+  const [content, setContent] = useState<ContentURL>(delivery?.contentURL ?? new ContentURL);
 
   const handleDeliveryContentURLChange = (e: ChangeEvent<HTMLInputElement>) => {
     try {
@@ -65,15 +42,13 @@ export const EditDelivery: React.FC<EditDeliveryProps> = ({ project, change }) =
   };
 
   const saveDelivery = () => {
-    if (!project.process) {
-      project.process = new ProjectProcess();
-    }
+    const updatedDelivery = new ProjectDelivery();
 
-    delivery.setGallery(gallery)
-    delivery.setCheckList(checkList)
-    delivery.setContentURL(content)
-    project.process.setDelivery(delivery)
-    change(project)
+    updatedDelivery.setGallery(gallery)
+    updatedDelivery.setCheckList(checkList)
+    updatedDelivery.setContentURL(content)
+
+    setDelivery(updatedDelivery)
   }
 
   return (

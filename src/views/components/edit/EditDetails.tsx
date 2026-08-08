@@ -1,34 +1,27 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 
 import type { MessageType, StatusBarVisibility, ProjectDetailsObject } from '@the7ofdiamonds/ui-ux';
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
-import { Contributors, Project, ProjectDetails } from '@the7ofdiamonds/ui-ux';
-
-import type { AppDispatch } from "../../../model/store";
+import { Contributors, ProjectDetails } from '@the7ofdiamonds/ui-ux';
 
 import { Privacy, privacyFromString } from '../../../model/enum/Enums';
-
-import { updateDetails } from '../../../controllers/updateProjectSlice';
 
 import styles from './Edit.module.scss';
 
 interface EditDetailsProps {
-  project: Project;
-  change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
-  useAppDispatch: () => AppDispatch;
+  id: string | number | null;
+  details: ProjectDetails;
+  setDetails: React.Dispatch<React.SetStateAction<ProjectDetails>>;
 }
 
-export const EditDetails: React.FC<EditDetailsProps> = ({ project, change, useAppDispatch }) => {
-  const dispatch = useAppDispatch();
-
-  const details: ProjectDetails = project?.details ?? new ProjectDetails();
+export const EditDetails: React.FC<EditDetailsProps> = ({ id, details, setDetails }) => {
   const instruction: string = "Save updates to the Project Details.";
 
-  const [privacy, setPrivacy] = useState<string | null>(project?.details?.privacy);
-  const [clientID, setClientID] = useState<string | null>(project?.details?.clientID);
-  const [content, setContent] = useState<string | null>(project?.details?.content?.url);
-  const [team, setTeam] = useState<Contributors | null>(project?.details?.teamList);
-  const [story, setStory] = useState<string>(project?.details?.story?.url);
+  const [privacy, setPrivacy] = useState<string | null>(details?.privacy);
+  const [clientID, setClientID] = useState<string | null>(details?.clientID);
+  const [content, setContent] = useState<string | null>(details?.content?.url);
+  const [team, setTeam] = useState<Contributors | null>(details?.teamList ?? new Contributors);
+  const [story, setStory] = useState<string>(details?.story?.url);
 
   const [show, setShow] = useState<StatusBarVisibility>('hide');
   const [message, setMessage] = useState<string>(instruction);
@@ -78,43 +71,27 @@ export const EditDetails: React.FC<EditDetailsProps> = ({ project, change, useAp
   const saveDetails = () => {
     try {
       setMessage(instruction);
+      const updatedDetails = new ProjectDetails();
 
       if (clientID) {
-        details.setClientID(clientID);
+        updatedDetails.setClientID(clientID);
       }
 
       if (content) {
-        details.setContentURL(content);
+        updatedDetails.setContentURL(content);
       }
 
       if (story) {
-        details.setStory(story);
+        updatedDetails.setStory(story);
       }
 
       if (clientID || content || story) {
-        if (!details.id) {
-          details.setID(project.id)
+        if (!updatedDetails.id) {
+          updatedDetails.setID(id)
         }
       }
 
-      dispatch(updateDetails(details)).then((res) => {
-        const detailsObject: ProjectDetailsObject | null = res?.payload;
-
-        if (!detailsObject) {
-          setShow('show');
-          setMessage("No Project Details data to save to this project.");
-          setMessageType('error');
-          return;
-        }
-
-        project.setDetails(new ProjectDetails(detailsObject));
-        change(project)
-
-        setMessage("Project Details has been updated.");
-        setMessageType('success');
-
-        return;
-      }).catch((err: Error) => { throw new Error(err.message) })
+      setDetails(updatedDetails)
     } catch (error) {
       const err = error as Error;
       setShow('show');

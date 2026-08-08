@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
-import { ProjectProcess, StatusBar } from '@the7ofdiamonds/ui-ux';
-import { CheckList, Colors, Gallery, Project, ProjectDesign } from '@the7ofdiamonds/ui-ux';
+import { StatusBar } from '@the7ofdiamonds/ui-ux';
+import { CheckList, Colors, Gallery, ProjectDesign, ContentURL } from '@the7ofdiamonds/ui-ux';
 
 import { EditGallery } from '../components/gallery/EditGallery';
 import { EditColorsList } from '../../../../views/components/edit/components/colors/EditColorsList';
@@ -10,50 +10,21 @@ import { EditCheckList } from '../../../../views/components/edit/components/chec
 import styles from './EditProcess.module.scss';
 
 interface EditDesignProps {
-  project: Project;
-  change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
+  id: string | number | null;
+  design: ProjectDesign;
+  setDesign: React.Dispatch<React.SetStateAction<ProjectDesign>>;
 }
 
-export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
-  const [design, setDesign] = useState<ProjectDesign>(new ProjectDesign);
-  const [gallery, setGallery] = useState<Gallery>(new Gallery);
-  const [checkList, setCheckList] = useState<CheckList>(new CheckList);
-  const [colors, setColors] = useState<Colors>(new Colors);
-  const [content, setContent] = useState<string>('');
+export const EditDesign: React.FC<EditDesignProps> = ({ id, design, setDesign }) => {
 
   const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>('');
   const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
 
-  useEffect(() => {
-    if (project?.process?.design) {
-      setDesign(project.process.design)
-    }
-  }, [project?.process?.design]);
-
-  useEffect(() => {
-    if (project?.process?.design?.gallery) {
-      setGallery(project.process.design.gallery)
-    }
-  }, [project?.process?.design?.gallery]);
-
-  useEffect(() => {
-    if (project?.process?.design?.checkList) {
-      setCheckList(project.process.design.checkList)
-    }
-  }, [project?.process?.design?.checkList]);
-
-  useEffect(() => {
-    if (project?.process?.design?.colors) {
-      setColors(project.process.design.colors)
-    }
-  }, [project?.process?.design?.colors]);
-
-  useEffect(() => {
-    if (project?.process?.design?.contentURL?.url) {
-      setContent(project.process.design.contentURL.url)
-    }
-  }, [project?.process?.design?.contentURL]);
+  const [gallery, setGallery] = useState<Gallery>(design?.gallery ?? new Gallery);
+  const [checkList, setCheckList] = useState<CheckList>(design?.checkList ?? new CheckList);
+  const [colors, setColors] = useState<Colors>(design?.colors ?? new Colors);
+  const [content, setContent] = useState<ContentURL>(design?.contentURL ?? new ContentURL);
 
   const handleDesignContentURLChange = (e: ChangeEvent<HTMLInputElement>) => {
     try {
@@ -76,23 +47,21 @@ export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
   }
 
   const saveProjectDesign = () => {
-    if (!project.process) {
-      project.process = new ProjectProcess();
-    }
+    const updatedProjectDesign = ProjectDesign();
 
-    design.setGallery(gallery)
-    design.setCheckList(checkList)
-    design.setColors(colors)
-    design.setContentURL(content)
-    project.process.setDesign(design)
-    change(project)
+    updatedProjectDesign.setGallery(gallery)
+    updatedProjectDesign.setCheckList(checkList)
+    updatedProjectDesign.setColors(colors)
+    updatedProjectDesign.setContentURL(content)
+
+    setDesign(updatedProjectDesign)
   }
 
   return (
     <div className={styles.edit} id='edit_design'>
       <h2 className={styles.title}>design</h2>
 
-      <EditCheckList location='design' checkList={checkList} setCheckList={setCheckList}/>
+      <EditCheckList location='design' checkList={checkList} setCheckList={setCheckList} />
 
       <br />
 
@@ -100,7 +69,7 @@ export const EditDesign: React.FC<EditDesignProps> = ({ project, change }) => {
 
       <br />
 
-      <EditColorsList colors={colors} setColors={setColors}/>
+      <EditColorsList colors={colors} setColors={setColors} />
 
       <hr />
 

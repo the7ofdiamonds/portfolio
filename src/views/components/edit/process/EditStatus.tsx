@@ -12,10 +12,12 @@ import {
 import Status from '../../../../views/components/project/Status';
 
 interface EditStatusProps {
-    project: Project;
+    id: string | number | null;
+    process: ProjectProcess;
+    setProcess: React.Dispatch<React.SetStateAction<ProjectProcess>>;
 }
 
-export const EditStatus: React.FC<EditStatusProps> = ({ project }) => {
+export const EditStatus: React.FC<EditStatusProps> = ({ id, process, setProcess }) => {
     const [designCheckList, setDesignCheckList] = useState<CheckList | null>(null)
     const [developmentCheckList, setDevelopmentCheckList] = useState<CheckList | null>(null)
     const [deliveryCheckList, setDeliveryCheckList] = useState<CheckList | null>(null)
@@ -23,22 +25,22 @@ export const EditStatus: React.FC<EditStatusProps> = ({ project }) => {
     const [progress, setProgress] = useState<ProjectProgress | null>(null);
 
     useEffect(() => {
-        if (project.process?.design?.checkList) {
-            setDesignCheckList(project.process.design.checkList)
+        if (process?.design?.checkList) {
+            setDesignCheckList(process.design.checkList)
         }
-    }, [project.process?.design?.checkList]);
+    }, [process?.design?.checkList]);
 
     useEffect(() => {
-        if (project.process?.development?.checkList) {
-            setDevelopmentCheckList(project.process.development.checkList)
+        if (process?.development?.checkList) {
+            setDevelopmentCheckList(process.development.checkList)
         }
-    }, [project.process?.development?.checkList]);
+    }, [process?.development?.checkList]);
 
     useEffect(() => {
-        if (project.process?.delivery?.checkList) {
-            setDeliveryCheckList(project.process.delivery.checkList)
+        if (process?.delivery?.checkList) {
+            setDeliveryCheckList(process.delivery.checkList)
         }
-    }, [project.process?.delivery?.checkList]);
+    }, [process?.delivery?.checkList]);
 
     useEffect(() => {
         if (designCheckList || developmentCheckList || deliveryCheckList) {
@@ -60,21 +62,21 @@ export const EditStatus: React.FC<EditStatusProps> = ({ project }) => {
 
     useEffect(() => {
         if (progress) {
-            if (project.process && project.process.status) {
-                project.process.status.setProgress(progress)
+            if (process && process.status) {
+                process.status.setProgress(progress)
             } else {
                 const projectStatus = new ProjectStatus();
                 projectStatus.setProgress(progress)
                 const projectProcess = new ProjectProcess();
                 projectProcess.setStatus(projectStatus)
-                project.setProcess(projectProcess)
+                setProcess(projectProcess)
             }
         }
     }, [progress]);
 
     return (
         <>
-            {project.process && project.process.status && <Status status={project.process.status} />}
+            {process && process.status && <Status status={process.status} />}
         </>
     )
 }

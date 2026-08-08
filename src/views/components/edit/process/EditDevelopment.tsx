@@ -4,9 +4,7 @@ import { StatusBar } from '@the7ofdiamonds/ui-ux';
 import {
   CheckList,
   Gallery,
-  Project,
   ProjectDevelopment,
-  ProjectProcess,
   ProjectSkills,
   ProjectVersions
 } from '@the7ofdiamonds/ui-ux';
@@ -19,64 +17,35 @@ import { EditProjectVersions } from '../components/project_versions/EditProjectV
 import styles from './EditProcess.module.scss';
 
 interface EditDevelopmentProps {
-  project: Project;
-  change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
+  id: string | number | null;
+  development: ProjectDevelopment;
+  setDevelopment: React.Dispatch<React.SetStateAction<ProjectDevelopment>>;
 }
 
-export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, change }) => {
-  const [development, setDevelopment] = useState<ProjectDevelopment>(new ProjectDevelopment)
-  const [gallery, setGallery] = useState<Gallery>(new Gallery);
-  const [checkList, setCheckList] = useState<CheckList>(new CheckList);
-  const [projectSkills, setProjectSkills] = useState<ProjectSkills>(new ProjectSkills);
-  const [repoURL, setRepoURL] = useState<string>('');
-  const [content, setContent] = useState<string>('');
-  const [projectVersions, setProjectVersions] = useState<ProjectVersions>(new ProjectVersions);
+export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ id, development, setDevelopment }) => {
 
   const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>('');
   const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
 
-  useEffect(() => {
-    if (project.process?.development) {
-      setDevelopment(project.process.development)
-    }
-  }, [project?.process?.development])
+  const [gallery, setGallery] = useState<Gallery>(development?.gallery ?? new Gallery);
+  const [checkList, setCheckList] = useState<CheckList>(development?.checkList ?? new CheckList);
+  const [projectSkills, setProjectSkills] = useState<ProjectSkills>(development?.skills ?? new ProjectSkills);
+  const [repoURL, setRepoURL] = useState<string>('');
+  const [content, setContent] = useState<string>('');
+  const [projectVersions, setProjectVersions] = useState<ProjectVersions>(development?.versionsList ?? new ProjectVersions);
 
-  useEffect(() => {
-    if (project.process?.development?.gallery) {
-      setGallery(project.process.development.gallery)
-    }
-  }, [project?.process?.development?.gallery])
+  // useEffect(() => {
+  //   if (project.process?.development?.repoURL?.url) {
+  //     setRepoURL(project.process.development.repoURL.url)
+  //   }
+  // }, [project.process?.development?.repoURL]);
 
-  useEffect(() => {
-    if (project.process?.development?.checkList) {
-      setCheckList(project.process.development.checkList)
-    }
-  }, [project.process?.development?.checkList]);
-
-  useEffect(() => {
-    if (project.process?.development?.skills) {
-      setProjectSkills(project.process.development.skills)
-    }
-  }, [project.process?.development?.skills]);
-
-  useEffect(() => {
-    if (project.process?.development?.repoURL?.url) {
-      setRepoURL(project.process.development.repoURL.url)
-    }
-  }, [project.process?.development?.repoURL]);
-
-  useEffect(() => {
-    if (project.process?.development?.contentURL?.url) {
-      setContent(project.process.development.contentURL.url)
-    }
-  }, [project.process?.development?.contentURL]);
-
-  useEffect(() => {
-    if (project.process?.development?.versionsList) {
-      setProjectVersions(project.process.development.versionsList)
-    }
-  }, [project.process?.development?.versionsList]);
+  // useEffect(() => {
+  //   if (project.process?.development?.contentURL?.url) {
+  //     setContent(project.process.development.contentURL.url)
+  //   }
+  // }, [project.process?.development?.contentURL]);
 
   const handleRepoURLChange = (e: ChangeEvent<HTMLInputElement>) => {
     try {
@@ -85,16 +54,16 @@ export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, chang
       const { name, value } = target;
 
       if (name === 'repo_url') {
-        setRepoURL(value);
-        if (project.process && project.process.development) {
-          project.process.development.setContentURL(value);
-        } else {
-          const projectDevelopment = new ProjectDevelopment();
-          projectDevelopment.setRepoURL(value);
-          const projectProcess = new ProjectProcess();
-          projectProcess.setDevelopment(projectDevelopment);
-          project.setProcess(projectProcess);
-        }
+        // setRepoURL(value);
+        // if (project.process && project.process.development) {
+        //   project.process.development.setContentURL(value);
+        // } else {
+        //   const projectDevelopment = new ProjectDevelopment();
+        //   projectDevelopment.setRepoURL(value);
+        //   const projectProcess = new ProjectProcess();
+        //   projectProcess.setDevelopment(projectDevelopment);
+        //   project.setProcess(projectProcess);
+        // }
       }
     } catch (error) {
       const err = error as Error;
@@ -112,16 +81,16 @@ export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, chang
       const { name, value } = target;
 
       if (name === 'content_url') {
-        setContent(value);
-        if (project.process && project.process.development) {
-          project.process.development.setContentURL(value);
-        } else {
-          const projectDevelopment = new ProjectDevelopment();
-          projectDevelopment.setContentURL(value);
-          const projectProcess = new ProjectProcess();
-          projectProcess.setDevelopment(projectDevelopment);
-          project.setProcess(projectProcess);
-        }
+        // setContent(value);
+        // if (project.process && project.process.development) {
+        //   project.process.development.setContentURL(value);
+        // } else {
+        //   const projectDevelopment = new ProjectDevelopment();
+        //   projectDevelopment.setContentURL(value);
+        //   const projectProcess = new ProjectProcess();
+        //   projectProcess.setDevelopment(projectDevelopment);
+        //   project.setProcess(projectProcess);
+        // }
       }
     } catch (error) {
       const err = error as Error;
@@ -133,18 +102,16 @@ export const EditDevelopment: React.FC<EditDevelopmentProps> = ({ project, chang
   }
 
   const saveDevelopment = () => {
-    if (!project.process) {
-      project.process = new ProjectProcess();
-    }
+    const updatedDevelopment = new ProjectDevelopment();
 
-    development.setGallery(gallery)
-    development.setCheckList(checkList)
-    development.setSkills(projectSkills)
-    development.setRepoURL(repoURL)
-    development.setContentURL(content)
-    development.setVersionsList(projectVersions)
-    project.process.setDevelopment(development)
-    change(project)
+    updatedDevelopment.setGallery(gallery)
+    updatedDevelopment.setCheckList(checkList)
+    updatedDevelopment.setSkills(projectSkills)
+    updatedDevelopment.setRepoURL(repoURL)
+    updatedDevelopment.setContentURL(content)
+    updatedDevelopment.setVersionsList(projectVersions)
+
+    setDevelopment(updatedDevelopment)
   }
 
   return (

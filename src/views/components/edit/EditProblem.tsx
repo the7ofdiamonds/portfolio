@@ -1,36 +1,30 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 
 import { StatusBar } from '@the7ofdiamonds/ui-ux';
-import { Gallery, Project, ProjectProblem } from '@the7ofdiamonds/ui-ux';
+import { Gallery, ProjectProblem } from '@the7ofdiamonds/ui-ux';
 import type { ProjectProblemObject } from '@the7ofdiamonds/ui-ux';
-
-import type { AppDispatch } from "../../../model/store";
 
 import { EditGallery } from '../../../views/components/edit/components/gallery/EditGallery';
 
 import styles from './Edit.module.scss';
 
-import { updateProblem } from '../../../controllers/updateProjectSlice';
-
 interface EditProblemProps {
-  project: Project;
-  change: (project: Project) => (e: React.MouseEvent<HTMLButtonElement>) => void;
-  useAppDispatch: () => AppDispatch;
+  id: string | number | null;
+  problem: ProjectProblem;
+  setProblem: React.Dispatch<React.SetStateAction<ProjectProblem>>;
 }
 
-export const EditProblem: React.FC<EditProblemProps> = ({ project, change, useAppDispatch }) => {
-  const dispatch = useAppDispatch();
-
-  const problem = project.problem?.gallery ?? new ProjectProblem();
+export const EditProblem: React.FC<EditProblemProps> = ({ id, problem, setProblem }) => {
   const instruction: string = "Save updates made to the project problem.";
 
-  const [gallery, setGallery] = useState<Gallery>(project?.problem?.gallery ?? new Gallery());
-  const [contentURL, setContentURL] = useState<string>(project?.problem?.contentURL?.url ?? '');
-  const [whitepaperURL, setWhitepaperURL] = useState<string>(project?.problem?.whitepaperURL?.url ?? '');
 
   const [show, setShow] = useState<'show' | 'hide'>('hide');
   const [message, setMessage] = useState<string>(instruction);
   const [messageType, setMessageType] = useState<'info' | 'error' | 'caution' | 'success'>('info');
+
+  const [gallery, setGallery] = useState<Gallery>(problem?.gallery ?? new Gallery());
+  const [contentURL, setContentURL] = useState<string>(problem?.contentURL?.url ?? '');
+  const [whitepaperURL, setWhitepaperURL] = useState<string>(problem?.whitepaperURL?.url ?? '');
 
   const handleProblemContentURLChange = (e: ChangeEvent<HTMLInputElement>) => {
     try {
@@ -67,7 +61,7 @@ export const EditProblem: React.FC<EditProblemProps> = ({ project, change, useAp
       let hasData = false;
 
       if (gallery.images.length > 0) {
-        gallery.setID(project?.id)
+        gallery.setID(id)
         problem.setGallery(gallery);
         hasData = true;
       }
@@ -78,22 +72,8 @@ export const EditProblem: React.FC<EditProblemProps> = ({ project, change, useAp
       }
 
       if (hasData) {
-        if (!problem.id) problem.setID(project?.id)
+        if (!problem.id) problem.setID(id)
       }
-
-      dispatch(updateProblem(problem)).then((res) => {
-        const problemObject: ProjectProblemObject | null = res?.payload;
-
-        if (!problemObject) {
-          setShow('show');
-          setMessage("No Project Problem data to save to this project.");
-          setMessageType('error');
-          return null;
-        }
-
-        project.setProblem(new ProjectProblem(problemObject))
-        change(project)
-      }).catch((err: Error) => { throw new Error(err.message) })
     } catch (error) {
       const err = error as Error;
       setShow('show');

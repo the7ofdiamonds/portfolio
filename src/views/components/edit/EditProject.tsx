@@ -2,7 +2,7 @@ import React, { useEffect, useState, ChangeEvent } from 'react';
 import type { TypedUseSelectorHook } from 'react-redux';
 
 import { EditName, EditTitle, EditSubtitle, EditPromotionalText, EditDescription, EditPath, Main, StatusBar } from '@the7ofdiamonds/ui-ux';
-import { Project } from '@the7ofdiamonds/ui-ux';
+import { Project, ProjectSolution, ProjectProcess, ProjectProblem, ProjectDetails } from '@the7ofdiamonds/ui-ux';
 
 import { EditDetails } from '../../../views/components/edit/EditDetails';
 import { EditProcess } from '../../../views/components/edit/process/EditProcess';
@@ -29,6 +29,10 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change, useAp
     const [promotionalText, setPromotionalText] = useState<string | null>(project?.promotionalText);
     const [description, setDescription] = useState<string | null>(project?.description);
     const [path, setPath] = useState<string | null>(project?.path);
+    const [solution, setSolution] = useState<ProjectSolution | null>(project?.solution);
+    const [process, setProcess] = useState<ProjectProcess | null>(project?.process);
+    const [problem, setProblem] = useState<ProjectProblem | null>(project?.problem);
+    const [details, setDetails] = useState<ProjectDetails | null>(project?.details);
 
     const [message, setMessage] = useState<string | null>(instructions);
     const [messageType, setMessageType] = useState<'info' | 'error' | 'success'>('info');
@@ -92,6 +96,10 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change, useAp
             setShowStatusBar('show');
         }
     };
+    console.log(solution)
+    console.log(process)
+    console.log(problem)
+    console.log(details)
 
     return (
         <Main>
@@ -121,19 +129,19 @@ export const EditProject: React.FC<EditProjectProps> = ({ project, change, useAp
 
             <hr />
 
-            <EditSolution project={project} change={change} useAppSelector={useAppSelector} useAppDispatch={useAppDispatch} />
+            <EditSolution id={project?.id ?? 0} solution={solution} setSolution={setSolution} />
 
             <hr />
 
-            <EditProcess project={project} change={change} useAppSelector={useAppSelector} useAppDispatch={useAppDispatch} />
+            <EditProcess id={project?.id ?? 0} process={process} setProcess={setProcess} />
 
             <hr />
 
-            <EditProblem project={project} change={change} useAppSelector={useAppSelector} useAppDispatch={useAppDispatch} />
+            <EditProblem id={project?.id ?? 0} problem={problem} setProblem={setProblem} />
 
             <hr />
 
-            <EditDetails project={project} change={change} useAppSelector={useAppSelector} useAppDispatch={useAppDispatch} />
+            <EditDetails id={project?.id ?? 0} details={details} setDetails={setDetails} />
 
             <br />
 
