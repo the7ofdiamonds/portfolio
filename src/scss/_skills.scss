@@ -1,11 +1,3 @@
 @use './title.scss';
 @use './message_card.scss';
 @use './tax_table.scss';
-
-.skills {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  scroll-margin: var(--scroll-margin);
-}

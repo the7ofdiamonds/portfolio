@@ -5,7 +5,7 @@ workflow:
     - when: never
     
 include:
-  - component: $CI_SERVER_FQDN/components/pipelines/packages_javascript_pipeline@1.0.58
+  - component: $CI_SERVER_FQDN/components/pipelines/packages_javascript_pipeline@1.0.65
     inputs:
       username: $GITHUB_USERNAME
       token: $AUTH_TOKEN

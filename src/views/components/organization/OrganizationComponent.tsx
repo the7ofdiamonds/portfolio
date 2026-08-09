@@ -38,6 +38,7 @@ export const OrganizationComponent: React.FC<HeaderOrganizationComponentProps> =
                 src={avatarURL}
                 alt={`${name} avatar`}
             />}
+            
             {name && <h2 className={styles.title}>{name}</h2>}
             {description && <DescriptionComponent description={description} />}
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ProjectSkills, Skills, TaxListIcon } from '@the7ofdiamonds/ui-ux';
-import { useHandleSkillClick } from '@the7ofdiamonds/ui-ux';
+import { TaxListIcon, Main } from '@the7ofdiamonds/ui-ux';
+import { ProjectSkills, Skills, useHandleSkillClick } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Skills.module.scss';
 
@@ -15,7 +15,7 @@ export const SkillsComponent: React.FC<SkillsComponentProps> = ({ skills }) => {
     return (
         <>
             {skills && (skills.types || skills.softwareApplications || skills.databases || skills.languages || skills.frameworks || skills.technologies || skills.cicdTools || skills.platforms || skills.cloudProviders) &&
-                <div className={styles.skills} id="skills">
+                <Main id="skills">
                     <h2 className={styles.title}>skills</h2>
 
                     {skills.types.size > 0 && (
@@ -61,7 +61,7 @@ export const SkillsComponent: React.FC<SkillsComponentProps> = ({ skills }) => {
                     {skills.cloudProviders.size > 0 && (
                         <TaxListIcon taxonomiesSet={skills.cloudProviders} taxonomiesTitle="Cloud Providers" handleClick={handleSkillClick} />
                     )}
-                </div>
+                </Main>
             }
         </>
     );

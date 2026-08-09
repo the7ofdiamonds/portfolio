@@ -1,8 +1,10 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import { DescriptionComponent } from '@the7ofdiamonds/ui-ux';
 import { Organization, Organizations } from '@the7ofdiamonds/ui-ux';
+import { Main } from '@the7ofdiamonds/ui-ux';
+
+import { OrganizationComponent } from '../organization/OrganizationComponent';
 
 import styles from './Organizations.module.scss';
 
@@ -33,7 +35,7 @@ export const OrganizationsComponent: React.FC<OrganizationsComponentProps> = ({ 
   return (
     <>
       {Array.isArray(organizations?.list) && organizations.list.length > 0 && (
-        <div className={styles.organizations}>
+        <Main>
           <h2 className='title'>
             {organizations.list.length === 1
               ? 'Organization'
@@ -41,21 +43,14 @@ export const OrganizationsComponent: React.FC<OrganizationsComponentProps> = ({ 
           </h2>
 
           {organizations.list.map((organization, index) => (
-            <div className={styles.organization} key={index}>
-              <button
-                key={index}
-                className={styles['organizations-button']}
-                onClick={() => handleClick(organization)}>
-                {organization.avatarURL && <img
-                  src={organization.avatarURL}
-                  alt={`${organization.name} avatar`}
-                />}
-              </button>
-              <h3>{organization.name}</h3>
-              {organization.description && <DescriptionComponent description={organization.description} />}
-            </div>
+            <button
+              key={index}
+              className={styles['organizations-button']}
+              onClick={() => handleClick(organization)}>
+              <OrganizationComponent organization={organization} />
+            </button>
           ))}
-        </div>
+        </Main>
       )}
     </>
   )
