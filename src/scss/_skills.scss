@@ -1,3 +1,7 @@
 @use './title.scss';
 @use './message_card.scss';
 @use './tax_table.scss';
+
+.title {
+    padding: 0 0.5em;
+}

@@ -317,33 +317,53 @@ export const getRepoFile = createAsyncThunk<string | null, RepoContentQuery>(
   async (query: RepoContentQuery) => {
     const { owner, repo, path, branch } = query;
 
+    if (
+      !owner?.trim() ||
+      !repo?.trim() ||
+      !path?.trim()
+    ) {
+      return null;
+    }
+
     try {
       const octokit = getInstance();
 
-      const response: OctokitResponse<any> = await octokit.repos.getContent({
-        owner,
-        repo,
-        path,
-        ref: branch,
-      });
+      const response: OctokitResponse<any> =
+        await octokit.repos.getContent({
+          owner,
+          repo,
+          path,
+          ref: branch,
+        });
 
-      if ((owner === null || owner.trim() === "") || (repo === null || repo.trim() === "") || (path === null || path.trim() === "")) {
+      if (response.data.type !== 'file') {
+        console.warn(
+          `Content at ${path} is not a file. Type: ${response.data.type}`
+        );
         return null;
       }
 
-      if (response.data.type === 'file') {
-        return atob(response.data.content);
-      }
+      const base64 = response.data.content.replace(/\s/g, '');
 
-      console.warn(`Content at ${path} is not a file. Type: ${response.data.type}`);
-      return null;
+      const binary = atob(base64);
+
+      const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+
+      return new TextDecoder('utf-8').decode(bytes);
+
     } catch (error: any) {
       if (error.status === 404) {
-        console.warn(`File not found: ${owner}/${repo}/${path} (branch: ${branch})`);
+        console.warn(
+          `File not found: ${owner}/${repo}/${path} (branch: ${branch})`
+        );
         return null;
       }
+
       console.error('GitHub API error:', error);
-      throw new Error(error.message || 'Unknown error fetching GitHub content');
+
+      throw new Error(
+        error.message || 'Unknown error fetching GitHub content'
+      );
     }
   }
 );
