@@ -13,6 +13,7 @@ import FeaturesComponent from '../../../views/components/project/Features';
 import ProjectURLsComponent from '../../../views/components/project/ProjectURLsComponent';
 
 import styles from './Project.module.scss';
+
 import { getRepoFile } from '../../../controllers/githubSlice';
 import { useAppDispatch } from '../../../model/hooks';
 
@@ -63,7 +64,7 @@ export const TheSolution: React.FC<SolutionProps> = ({ project }) => {
     }
   }, [project]);
 
-  const hasContent = gallery || query || projectURLs || features || version;
+  const hasContent = gallery || query || projectURLs || (features && version);
 
   return (
     <>

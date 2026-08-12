@@ -11,11 +11,15 @@ import {
   Portfolio,
   Project,
   Repo,
-  ProjectQuery
+  ProjectQuery,
+  Repos,
+  ProjectType,
+  ProjectSkills,
+  ProjectSkill
 } from '@the7ofdiamonds/ui-ux';
 
 import { getProject, removeProject } from './projectSlice';
-import { getRepoDetails } from './githubSlice';
+import { getRepoDetails, getPackages } from './githubSlice';
 import { getProjectData } from './databaseSlice';
 import type { RootState } from '../model/store';
 
@@ -226,7 +230,38 @@ export const getPortfolioDetails = createAsyncThunk(
 
       let updatedPortfolio = new Portfolio();
 
-      for (const project of portfolio.projects) {
+      for (const project of projects) {
+        const projectResponse = await thunkAPI.dispatch(getProject(project.query));
+
+        if (
+          getProject.fulfilled.match(projectResponse) &&
+          projectResponse.payload
+        ) {
+          const updatedProject = new Project(projectResponse.payload)
+          updatedPortfolio.addProject(updatedProject)
+          await thunkAPI.dispatch(maintainPortfolio(updatedProject.query));
+        }
+      }
+
+      return updatedPortfolio.toPortfolioObject();
+    } catch (error) {
+      console.error(error);
+      throw new Error((error as Error).message);
+    }
+  }
+);
+
+export const getPortfolioSkills = createAsyncThunk(
+  'portfolio/getPortfolioDetails',
+  async (portfolio: Portfolio, thunkAPI) => {
+    try {
+      const projects = portfolio?.projects;
+
+      if (!projects || projects.size === 0) return null;
+
+      let updatedPortfolio = new Portfolio();
+
+      for (const project of projects) {
         const projectResponse = await thunkAPI.dispatch(getProject(project.query));
 
         if (
@@ -292,6 +327,80 @@ export const getPortfolioProject = createAsyncThunk<ProjectObject | null, Portfo
   }
 );
 
+export type PortfolioSearchQuery = { taxonomy: string, type: string, term: string, portfolio: Portfolio }
+
+export const searchPortfolio = createAsyncThunk<PortfolioObject | null, PortfolioSearchQuery>(
+  'portfolio/searchPortfolio',
+  async (portfolioSearchQuery: PortfolioSearchQuery, thunkAPI) => {
+    try {
+      let updatedPortfolio = new Portfolio();
+
+      const { taxonomy, type, term, portfolio } = portfolioSearchQuery;
+
+      const portfolioDetailsResponse = await thunkAPI.dispatch(
+        getPortfolioDetails(portfolio)
+      );
+
+      if (
+        getPortfolioDetails.fulfilled.match(portfolioDetailsResponse) &&
+        portfolioDetailsResponse.payload
+      ) {
+        const portfolioResponse = portfolioDetailsResponse.payload;
+        if (portfolioResponse && Array.isArray(portfolioResponse?.projects) && portfolioResponse.projects.length > 0) {
+          updatedPortfolio.addProjectObjects(portfolioResponse.projects)
+        }
+      }
+
+      if (term === 'package') {
+        const packageReposResponse = await thunkAPI.dispatch(
+          getPackages('the7ofdiamonds')
+        );
+
+        if (
+          getPackages.fulfilled.match(packageReposResponse) &&
+          packageReposResponse.payload
+        ) {
+          const reposResponse = packageReposResponse.payload;
+
+          if (reposResponse && Array.isArray(reposResponse) && reposResponse.length > 0) {
+            const repos = new Repos(reposResponse);
+
+            const packagePortfolio = new Portfolio();
+            packagePortfolio.fromRepos(repos)
+
+            if (packagePortfolio.projects && packagePortfolio.projects.size > 0) {
+              const projects = updatedPortfolio?.projects;
+
+              if (!projects || projects.size === 0) return packagePortfolio.toPortfolioObject;
+
+              for (const project of projects) {
+                const packageProjects = packagePortfolio.projects;
+
+                for (const packageProject of packageProjects) {
+
+                  if (packageProject?.id === project?.id) {
+                    let skills = project.process.development.skills;
+                    if (!skills) skills = new ProjectSkills();
+                    skills.list.push(new ProjectSkill({ id: 'package', type: 'project_type' }));
+                  }
+                }
+
+                updatedPortfolio.addProject(project)
+              }
+            }
+          }
+        }
+      }
+
+      return updatedPortfolio.toPortfolioObject();
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      throw new Error(err.message);
+    }
+  }
+);
+
 export const portfolioSlice = createSlice({
   name: 'portfolio',
   initialState,
@@ -329,6 +438,13 @@ export const portfolioSlice = createSlice({
         state.portfolioError = null;
         state.portfolioErrorMessage = null;
         state.projectObject = action.payload;
+      })
+      .addCase(searchPortfolio.fulfilled, (state, action) => {
+        state.portfolioLoading = false;
+        state.portfolioError = null;
+        state.portfolioErrorMessage = null;
+        state.portfolioObject = action.payload;
+        state.hasDetails = true;
       })
       .addMatcher(isAnyOf(getPortfolioFromUser.pending, getPortfolioProject.pending), (state) => {
         state.portfolioLoading = true;

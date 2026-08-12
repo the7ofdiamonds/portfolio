@@ -172,6 +172,51 @@ export const getRepo = createAsyncThunk(
   }
 );
 
+export const getPackages = createAsyncThunk(
+  'github/getPackages',
+  async (owner: string, { rejectWithValue }) => {
+    try {
+      let packagesList: Array<RepoObject> = [];
+
+      if (!owner) {
+        throw new Error('Missing owner.');
+      }
+
+      const octokit = getInstance();
+
+      if (!octokit) {
+        console.error('Failed to initialize Octokit instance.');
+        return null;
+      }
+
+      const packages = await octokit.paginate(
+        'GET /users/{username}/packages',
+        { username: owner, package_type: 'npm', per_page: 100 }
+      );
+
+      if (packages && Array.isArray(packages) && packages.length > 0) {
+        packages.map((packageObject) => {
+          if (packageObject?.repository) {
+            const repo = new Repo();
+            repo.fromGitHub(packageObject?.repository);
+            packagesList.push(repo.toRepoObject())
+          }
+        })
+
+        return packagesList;
+      }
+
+      return null;
+    } catch (error: Error | RequestError) {
+      if (error instanceof RequestError && error.status === 404) {
+        return rejectWithValue('Project could not be found or does not exist.');
+      }
+
+      return rejectWithValue(error.message || 'An unknown error occurred.');
+    }
+  }
+);
+
 type RepoContentsResponse = GetResponseTypeFromEndpointMethod<
   typeof octokit.rest.repos.getContent
 >;
@@ -711,6 +756,7 @@ export const getAuthenticatedAccount = createAsyncThunk(
       }).then((res) => {
         const json = res.json()
           .then((json) => {
+
             if (json.errors) {
               const errorMessages = json.errors.map((error: any) => error.message).join(", ");
               throw new Error(errorMessages);
@@ -721,7 +767,6 @@ export const getAuthenticatedAccount = createAsyncThunk(
             }
 
             const jsonData = json.data as AccountGQLResponse;
-
             return jsonData;
           }).catch((error) => {
             console.error('Error parsing JSON response:', error);
@@ -937,7 +982,7 @@ export const getOrganizationDetails = createAsyncThunk(
           getSocialAccounts.fulfilled.match(contactsResponse) &&
           contactsResponse.payload
         ) {
-                    console.log(contactsResponse.payload)
+          console.log(contactsResponse.payload)
 
           const contactsObj = new ContactMethods(contactsResponse.payload);
           contactsObj.fromGitHub(contactsResponse.payload);

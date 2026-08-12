@@ -32,8 +32,6 @@ export * from './views/components/add/AddLanguages';
 export * from './views/components/add/AddProjectTypes';
 export * from './views/components/add/AddTechnologies';
 
-export * from './views/components/buttons/ButtonGitHub';
-
 export * from './views/components/edit/EditDetails';
 export * from './views/components/edit/EditPortfolioProject';
 export * from './views/components/edit/EditProblem';

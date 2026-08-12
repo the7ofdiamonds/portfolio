@@ -39,7 +39,7 @@ export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) =>
 
   useEffect(() => {
     if (delivery?.contentURL) {
-      setRepoContentQuery(delivery.contentURL.toRepoContentQuery())
+      setRepoContentQuery(delivery.contentURL)
     }
   }, [delivery?.contentURL]);
 

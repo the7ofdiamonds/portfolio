@@ -2,27 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Section, StatusBar, HeaderTaxonomyComponent } from '@the7ofdiamonds/ui-ux';
-import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
-import { Portfolio, Project, Skills, User } from '@the7ofdiamonds/ui-ux';
+import type { MessageType, StatusBarVisibility, ProjectObject } from '@the7ofdiamonds/ui-ux';
+import { Portfolio, Project, Skills, User, GitHubRepoQuery } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectsComponent } from '../views/components/portfolio/ProjectsComponent';
 import { SkillsComponent } from '../views/components/skills/SkillsComponent';
 
 import { useAppDispatch, useAppSelector } from '../model/hooks';
 
-import { getPortfolioDetails } from '../controllers/portfolioSlice';
+import { getPortfolioDetails, searchPortfolio } from '../controllers/portfolioSlice';
+import { getPackages } from '../controllers/githubSlice';
 
 interface SearchProps {
   portfolio: Portfolio | null;
+  setPortfolio: React.Dispatch<React.SetStateAction<Portfolio>>;
   skills: Skills
 }
 
-export const SearchPage: React.FC<SearchProps> = ({ portfolio, skills }) => {
+export const SearchPage: React.FC<SearchProps> = ({ portfolio, setPortfolio, skills }) => {
   const dispatch = useAppDispatch();
 
   const { taxonomy, type, term } = useParams<string>();
 
-  const { portfolioLoading, portfolioLoadingMessage, portfolioErrorMessage, hasDetails } = useAppSelector(
+  const { portfolioLoading, portfolioLoadingMessage, portfolioErrorMessage, hasDetails, portfolioObject } = useAppSelector(
     (state) => state.portfolio
   );
 
@@ -43,14 +45,27 @@ export const SearchPage: React.FC<SearchProps> = ({ portfolio, skills }) => {
   }, [term]);
 
   useEffect(() => {
-    if (!hasDetails && portfolio) {
-      dispatch(getPortfolioDetails(portfolio));
+    if (!hasDetails && portfolio && taxonomy && type && term) {
+      dispatch(searchPortfolio({ taxonomy: taxonomy, type: type, term: term, portfolio: portfolio }));
     }
-  }, [hasDetails, portfolio]);
+  }, [portfolio, taxonomy, type, term]);
 
   useEffect(() => {
-    if (portfolio && taxonomy && type && term) {
-      setProjects(portfolio.filterProjects(type, term));
+    if (portfolioObject) {
+      setPortfolio(new Portfolio(portfolioObject));
+    }
+  }, [portfolioObject]);
+
+  useEffect(() => {
+    try {
+      if (portfolio && taxonomy && type && term) {
+        setProjects(portfolio.filterProjects(type, term));
+      }
+    } catch (error) {
+      let err = error as Error;
+      setShowStatusBar('show')
+      setMessageType('error')
+      setMessage(err.message)
     }
   }, [portfolio, taxonomy, type, term]);
 
