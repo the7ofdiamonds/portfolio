@@ -53,30 +53,40 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
   useEffect(() => {
     if (project?.process?.development?.repoURL) {
       setRepoURL(project.process.development.repoURL)
+    } else {
+      setRepoURL(null)
     }
   }, [project?.process?.development?.repoURL]);
 
   useEffect(() => {
     if (project?.details?.privacy) {
       setPrivacy(project.details.privacy)
+    } else {
+      setPrivacy(null)
     }
   }, [project?.details?.privacy]);
 
   useEffect(() => {
     if (project?.details?.repoSize) {
       setRepoSize(project.details.repoSize)
+    } else {
+      setRepoSize(null)
     }
   }, [project?.details?.repoSize]);
 
   useEffect(() => {
-    if (project.details?.content && project.details?.content.owner && project.details?.content.repo && project.details?.content.path) {
+    if (project?.details?.content && project?.details?.content.owner && project?.details?.content.repo && project?.details?.content.path) {
       setRepoContentQuery(new RepoContentQuery(project.details?.content.owner, project.details?.content.repo, project.details?.content.path, project.details?.content.branch ?? ''))
+    } else {
+      setRepoContentQuery(null)
     }
   }, [project?.details?.content]);
 
   useEffect(() => {
     if (project?.details?.teamList?.list.length > 0) {
       setContributors(project.details.teamList.list)
+    } else {
+      setContributors(null)
     }
   }, [project?.details?.teamList]);
 

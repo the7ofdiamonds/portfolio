@@ -47,38 +47,46 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
   const [projectSkills, setProjectSkills] = useState<ProjectSkills | null>(null);
 
   useEffect(() => {
-    if (development
-      && development.versionsList) {
+    if (development?.versionsList) {
       setVersions(development.versionsList)
+    } else {
+      setVersions(null)
     }
   }, [development?.versionsList]);
 
   useEffect(() => {
-    if (solution && solution?.features) {
+    if (solution?.features) {
       setFeaturesRoadmap(new FeaturesRoadmap(solution.features.list))
+    } else {
+      setFeaturesRoadmap(null)
     }
   }, [solution?.features]);
 
   useEffect(() => {
-    if (development?.checkList?.tasks && development.checkList.tasks?.list.size > 0) {
+    if (development?.checkList) {
       setCheckList(development.checkList)
+    } else {
+      setCheckList(null)
     }
   }, [development?.checkList]);
 
   useEffect(() => {
-    if (development.contentURL && development.contentURL && development.contentURL.owner && development.contentURL.repo && development.contentURL.path) {
+    if (development?.contentURL && development.contentURL?.owner && development.contentURL?.repo && development.contentURL?.path) {
       setQuery(new RepoContentQuery(development.contentURL.owner, development.contentURL.repo, development.contentURL.path, development.contentURL.branch ?? ''))
+    } else {
+      setQuery(null)
     }
   }, [development?.contentURL]);
 
   useEffect(() => {
-    if (development
-      && development.skills) {
+    if (development?.skills) {
       setProjectSkills(development.skills)
+    } else {
+      setProjectSkills(null)
     }
   }, [development?.skills]);
 
-  const hasContent = versions || featuresRoadmap || (checkList && query) || skills;
+  const hasContent = versions || featuresRoadmap || checkList || query || skills;
 
   return (
     <>{hasContent &&

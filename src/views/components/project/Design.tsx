@@ -30,34 +30,60 @@ export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
   const [checkList, setCheckList] = useState<CheckList | null>(null);
 
   useEffect(() => {
-    setColors(Array.from(design?.colors?.list ?? []))
-  }, [design]);
-
-  useEffect(() => {
-    setLogos(design?.gallery?.logos ?? [])
-  }, [design]);
-
-  useEffect(() => {
-    setIcons(design?.gallery?.icons ?? [])
-  }, [design]);
-
-  useEffect(() => {
-    setAnimations(design?.gallery?.animations ?? [])
-  }, [design]);
-
-  useEffect(() => {
-    setUmlDiagrams(design?.gallery?.umlDiagrams ?? [])
-  }, [design]);
-
-  useEffect(() => {
-    if (design.contentURL && design.contentURL && design.contentURL.owner && design.contentURL.repo && design.contentURL.path) {
-      setRepoContentQuery(new RepoContentQuery(design.contentURL.owner, design.contentURL.repo, design.contentURL.path, design.contentURL.branch ?? ''))
+    if (design?.colors?.list) {
+      setColors(Array.from(design?.colors?.list))
+    } else {
+      setColors(null)
     }
-  }, [design]);
+  }, [design?.colors?.list]);
 
   useEffect(() => {
-    setCheckList(design?.checkList)
-  }, [design]);
+    if (design?.gallery?.logos) {
+      setLogos(design?.gallery?.logos)
+    } else {
+      setLogos(null)
+    }
+  }, [design?.gallery?.logos]);
+
+  useEffect(() => {
+    if (design?.gallery?.icons) {
+      setIcons(design?.gallery?.icons)
+    } else {
+      setIcons(null)
+    }
+  }, [design?.gallery?.icons]);
+
+  useEffect(() => {
+    if (design?.gallery?.animations) {
+      setAnimations(design?.gallery?.animations)
+    } else {
+      setAnimations(null)
+    }
+  }, [design?.gallery?.animations]);
+
+  useEffect(() => {
+    if (design?.gallery?.umlDiagrams) {
+      setUmlDiagrams(design?.gallery?.umlDiagrams)
+    } else {
+      setUmlDiagrams(null)
+    }
+  }, [design?.gallery?.umlDiagrams]);
+
+  useEffect(() => {
+    if (design?.contentURL && design.contentURL?.owner && design.contentURL?.repo && design.contentURL?.path) {
+      setRepoContentQuery(new RepoContentQuery(design.contentURL.owner, design.contentURL.repo, design.contentURL.path, design.contentURL.branch ?? ''))
+    } else {
+      setRepoContentQuery(null)
+    }
+  }, [design?.contentURL]);
+
+  useEffect(() => {
+    if (design?.checkList) {
+      setCheckList(design?.checkList)
+    } else {
+      setCheckList(null)
+    }
+  }, [design?.checkList]);
 
   const hasContent = colors || logos || icons || animations || umlDiagrams || repoContentQuery || checkList;
 

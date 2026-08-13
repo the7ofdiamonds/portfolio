@@ -31,9 +31,9 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
     (state) => state.portfolio
   );
 
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>("message");
   const [messageType, setMessageType] = useState<MessageType>('info');
-  const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
+  const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('show');
 
   const [project, setProject] = useState<Project | null>(null);
 
@@ -88,7 +88,7 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
         <ProjectComponent account={account} project={project} skills={skills} />
       }
 
-      {showStatusBar && message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
+      {<StatusBar show={showStatusBar} messageType={messageType} message={message} />}
     </Section>
   );
 }

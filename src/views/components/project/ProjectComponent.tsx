@@ -34,67 +34,85 @@ interface ProjectComponentProps {
 }
 
 export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, project, skills }) => {
-  const [title, setTitle] = useState<string | null>(project?.title);
-  const [subtitle, setSubtitle] = useState<string | null>(project?.subtitle);
-  const [description, setDescription] = useState<string | null>(project?.description);
-  const [solution, setSolution] = useState<ProjectSolution | null>(project?.solution);
-  const [process, setProcess] = useState<ProjectProcess | null>(project?.process);
-  const [problem, setProblem] = useState<ProjectProblem | null>(project?.problem);
-  const [owner, setOwner] = useState<Owner | null>(project?.owner);
-  const [details, setDetails] = useState<ProjectDetails | null>(project?.details);
-  const [query, setQuery] = useState<ProjectQuery | null>(project?.query);
+  const [title, setTitle] = useState<string | null>(null);
+  const [subtitle, setSubtitle] = useState<string | null>(null);
+  const [description, setDescription] = useState<string | null>(null);
+  const [solution, setSolution] = useState<ProjectSolution | null>(null);
+  const [process, setProcess] = useState<ProjectProcess | null>(null);
+  const [problem, setProblem] = useState<ProjectProblem | null>(null);
+  const [owner, setOwner] = useState<Owner | null>(null);
+  const [details, setDetails] = useState<ProjectDetails | null>(null);
+  const [query, setQuery] = useState<ProjectQuery | null>(null);
 
   useEffect(() => {
     if (project?.title) {
       setTitle(project.title)
+    } else {
+      setTitle(null)
     }
   }, [project?.title]);
 
   useEffect(() => {
     if (project?.subtitle) {
       setSubtitle(project.subtitle)
+    } else {
+      setSubtitle(null)
     }
   }, [project?.subtitle]);
 
   useEffect(() => {
     if (project?.description) {
       setDescription(project.description)
+    } else {
+      setDescription(null)
     }
   }, [project?.description]);
 
   useEffect(() => {
     if (project?.solution) {
       setSolution(project.solution)
+    } else {
+      setSolution(null)
     }
   }, [project?.solution]);
 
   useEffect(() => {
     if (project?.process) {
       setProcess(project.process)
+    } else {
+      setProcess(null)
     }
   }, [project?.process]);
 
   useEffect(() => {
     if (project?.problem) {
       setProblem(project.problem)
+    } else {
+      setProblem(null)
     }
   }, [project?.problem]);
 
   useEffect(() => {
     if (project?.owner) {
       setOwner(project.owner)
+    } else {
+      setOwner(null)
     }
   }, [project?.owner]);
 
   useEffect(() => {
     if (project?.details) {
       setDetails(project.details)
+    } else {
+      setDetails(null)
     }
   }, [project?.details]);
 
   useEffect(() => {
     if (project?.query) {
       setQuery(project.query)
+    } else {
+      setQuery(null)
     }
   }, [project?.query]);
 

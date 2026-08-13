@@ -36,36 +36,48 @@ export const TheProcess: React.FC<ProcessProps> = ({ project, projectQuery, skil
   useEffect(() => {
     if (project?.solution) {
       setSolution(project.solution)
+    } else {
+      setSolution(null)
     }
   }, [project?.solution]);
 
   useEffect(() => {
     if (project?.process?.status) {
       setStatus(project.process.status)
+    } else {
+      setStatus(null)
     }
   }, [project?.process?.status]);
 
   useEffect(() => {
     if (project?.process?.design) {
       setDesign(project.process.design)
+    } else {
+      setDesign(null)
     }
   }, [project?.process?.design]);
 
   useEffect(() => {
     if (project?.process?.development) {
-      setDevelopment(project?.process.development)
+      setDevelopment(project.process.development)
+    } else {
+      setDevelopment(null)
     }
   }, [project?.process?.development]);
 
   useEffect(() => {
     if (project?.process?.delivery) {
       setDelivery(project.process.delivery)
+    } else {
+      setDelivery(null)
     }
   }, [project?.process?.delivery]);
 
   useEffect(() => {
     if (projectQuery) {
       setQuery(projectQuery)
+    } else {
+      setQuery(null)
     }
   }, [projectQuery]);
 

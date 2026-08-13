@@ -34,18 +34,24 @@ export const Delivery: React.FC<DeliveryProps> = ({ delivery, projectQuery }) =>
   useEffect(() => {
     if (delivery?.gallery?.images?.length > 0) {
       setGallery(delivery.gallery)
+    } else {
+      setGallery(delivery.gallery)
     }
   }, [delivery?.gallery]);
 
   useEffect(() => {
     if (delivery?.contentURL) {
       setRepoContentQuery(delivery.contentURL)
+    } else {
+      setRepoContentQuery(delivery.contentURL)
     }
   }, [delivery?.contentURL]);
 
   useEffect(() => {
-    if (delivery?.checkList?.task?.length > 0) {
+    if (delivery?.checkList) {
       setCheckList(delivery.checkList)
+    } else {
+      setCheckList(null)
     }
   }, [delivery?.checkList]);
 
