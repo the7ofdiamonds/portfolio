@@ -16,7 +16,7 @@ export const Versions: React.FC<VersionsProps> = ({ projectVersions }) => {
           {projectVersions.current &&
             <span className={styles['current-version']}>
               <h4>Current Version</h4>
-              <h5>{projectVersions.current}</h5>
+              <h5 className={styles.version}>{projectVersions.current}</h5>
             </span>}
         </div>
       }

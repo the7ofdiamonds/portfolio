@@ -57,9 +57,7 @@ export const TheSolution: React.FC<SolutionProps> = ({ project }) => {
   }, [project]);
 
   useEffect(() => {
-    if (project.process && project.process.development
-      && project.process.development.versionsList
-      && project.process.development.versionsList.current) {
+    if (project?.process?.development?.versionsList?.current) {
       setVersion(new Version(project.process.development.versionsList.current))
     }
   }, [project]);

@@ -292,6 +292,34 @@ export const getRepoLanguages = createAsyncThunk(
   }
 );
 
+type RepoTagsResponse = GetResponseTypeFromEndpointMethod<
+  typeof octokit.rest.repos.listTags
+>;
+
+export type GitHubTags = RepoTagsResponse['data'];
+
+export const getRepoTags = createAsyncThunk(
+  'github/getRepoTags',
+  async (query: GitHubRepoQuery) => {
+    try {
+      const octokit = getInstance();
+
+      const repoTags: RepoTagsResponse =
+        await octokit.rest.repos.listTags({
+          owner: query.owner,
+          repo: query.repo,
+        });
+
+      if (!repoTags.data) return [];
+
+      return repoTags.data;
+    } catch (error) {
+      console.error(error);
+      throw new Error((error as Error).message);
+    }
+  }
+);
+
 type RepoContributorsResponse = GetResponseTypeFromEndpointMethod<
   typeof octokit.rest.repos.listContributors
 >;
@@ -558,6 +586,17 @@ export const getRepoDetails = createAsyncThunk<RepoObject | null, GitHubRepoQuer
           contentsResponse.payload
         ) {
           repo.filterContents(contentsResponse.payload);
+        }
+
+        const tagsResponse = await thunkAPI.dispatch(
+          getRepoTags(query)
+        );
+
+        if (
+          getRepoTags.fulfilled.match(tagsResponse) &&
+          tagsResponse.payload
+        ) {
+          repo.setTags(tagsResponse.payload);
         }
 
         const contributorsResponse = await thunkAPI.dispatch(
