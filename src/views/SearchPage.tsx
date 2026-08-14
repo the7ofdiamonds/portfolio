@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Section, StatusBar, HeaderTaxonomyComponent } from '@the7ofdiamonds/ui-ux';
-import type { MessageType, StatusBarVisibility, ProjectObject } from '@the7ofdiamonds/ui-ux';
-import { Portfolio, Project, Skills, User, GitHubRepoQuery } from '@the7ofdiamonds/ui-ux';
+import type { MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
+import { Portfolio, Project, Skills } from '@the7ofdiamonds/ui-ux';
 
 import { ProjectsComponent } from '../views/components/portfolio/ProjectsComponent';
 import { SkillsComponent } from '../views/components/skills/SkillsComponent';
 
 import { useAppDispatch, useAppSelector } from '../model/hooks';
 
-import { getPortfolioDetails, searchPortfolio } from '../controllers/portfolioSlice';
-import { getPackages } from '../controllers/githubSlice';
+import { searchPortfolio } from '../controllers/portfolioSlice';
 
 interface SearchProps {
   portfolio: Portfolio | null;
@@ -30,9 +29,9 @@ export const SearchPage: React.FC<SearchProps> = ({ portfolio, setPortfolio, ski
 
   const [projects, setProjects] = useState<Set<Project>>(new Set);
 
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>("show status bar");
   const [messageType, setMessageType] = useState<MessageType>('info');
-  const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
+  const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('show');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -70,7 +69,7 @@ export const SearchPage: React.FC<SearchProps> = ({ portfolio, setPortfolio, ski
   }, [portfolio, taxonomy, type, term]);
 
   useEffect(() => {
-    if (portfolioLoading) {
+    if (portfolioLoading && portfolioLoadingMessage) {
       setShowStatusBar('show')
       setMessage(portfolioLoadingMessage)
     }

@@ -19,7 +19,7 @@ import {
 } from '@the7ofdiamonds/ui-ux';
 
 import { getProject, removeProject } from './projectSlice';
-import { getRepoDetails, getPackages } from './githubSlice';
+import { getRepoDetails, getPackages, getRepoLanguages } from './githubSlice';
 import { getProjectData } from './databaseSlice';
 import type { RootState } from '../model/store';
 
@@ -50,6 +50,37 @@ const initialState: PortfolioState = {
   hasDetails: false,
   projectObject: null
 };
+
+export const getPortfolioFromUser = createAsyncThunk<PortfolioObject | null, UserObject>(
+  'portfolio/getPortfolioFromUser',
+  async (user: UserObject, thunkAPI) => {
+    try {
+      let portfolio: Portfolio | null = null;
+
+      if (user?.portfolio?.projects && user.portfolio.projects.length > 0) {
+        portfolio = new Portfolio()
+        portfolio.addProjectObjects(user?.portfolio?.projects)
+      }
+
+      if (user?.organizations && user.organizations.length > 0) {
+        user.organizations.forEach((org: OrganizationObject) => {
+          if (org?.portfolio?.projects && org.portfolio.projects.length > 0) {
+            if (!portfolio) portfolio = new Portfolio()
+            portfolio.addProjectObjects(org?.portfolio?.projects)
+          }
+        })
+      }
+
+      if (!portfolio) return null;
+
+      return portfolio.toPortfolioObject();
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      throw new Error(err.message);
+    }
+  }
+);
 
 export const getPortfolio = createAsyncThunk<ProjectObject | null, Project>(
   'portfolio/getPortfolioProject',
@@ -91,40 +122,6 @@ export const getPortfolio = createAsyncThunk<ProjectObject | null, Project>(
       }
 
       return project.toProjectObject();
-    } catch (error) {
-      const err = error as Error;
-      console.error(err);
-      throw new Error(err.message);
-    }
-  }
-);
-
-export const getPortfolioFromUser = createAsyncThunk<PortfolioObject | null, UserObject>(
-  'portfolio/getPortfolioFromUser',
-  async (user: UserObject, thunkAPI) => {
-    try {
-      const state = thunkAPI.getState() as RootState;
-      // const user = state.user.userObject;
-
-      let portfolio: Portfolio | null = null;
-
-      if (user?.portfolio?.projects && user.portfolio.projects.length > 0) {
-        portfolio = new Portfolio()
-        portfolio.addProjectObjects(user?.portfolio?.projects)
-      }
-
-      if (user?.organizations && user.organizations.length > 0) {
-        user.organizations.forEach((org: OrganizationObject) => {
-          if (org?.portfolio?.projects && org.portfolio.projects.length > 0) {
-            if (!portfolio) portfolio = new Portfolio()
-            portfolio.addProjectObjects(org?.portfolio?.projects)
-          }
-        })
-      }
-
-      if (!portfolio) return null;
-
-      return portfolio.toPortfolioObject();
     } catch (error) {
       const err = error as Error;
       console.error(err);
@@ -182,7 +179,7 @@ export const maintainPortfolio = createAsyncThunk<boolean, ProjectQuery>(
       const projectList = state.portfolio.projectList;
 
       let status: 'success' | 'failure' | null = null;
-
+      // has languages ???
       const projectListResponse = await thunkAPI.dispatch(addProjectList(projectQuery));
 
       if (
@@ -220,29 +217,74 @@ export const maintainPortfolio = createAsyncThunk<boolean, ProjectQuery>(
   }
 );
 
-export const getPortfolioDetails = createAsyncThunk(
-  'portfolio/getPortfolioDetails',
-  async (portfolio: Portfolio, thunkAPI) => {
+export const getPortfolioSkills = createAsyncThunk(
+  'portfolio/getPortfolioSkills',
+  async (portfolioSearchQuery: PortfolioSearchQuery, thunkAPI) => {
     try {
+      const { taxonomy, type, term, portfolio } = portfolioSearchQuery;
       const projects = portfolio?.projects;
 
       if (!projects || projects.size === 0) return null;
 
-      let updatedPortfolio = new Portfolio();
+      let updatedPortfolio = portfolio;
 
       for (const project of projects) {
-        const projectResponse = await thunkAPI.dispatch(getProject(project.query));
+        const query: GitHubRepoQuery = new GitHubRepoQuery({ repo: project.query.repo, owner: project.query.owner });
+        const langResponse = await thunkAPI.dispatch(getRepoLanguages(query));
+        const updatedProject = project;
 
         if (
-          getProject.fulfilled.match(projectResponse) &&
-          projectResponse.payload
+          getRepoLanguages.fulfilled.match(langResponse) &&
+          langResponse.payload
         ) {
-          const updatedProject = new Project(projectResponse.payload)
+          const skills = new ProjectSkills();
+          skills.languagesFromGithub(langResponse.payload);
+          updatedProject.process.development.setSkills(skills);
           updatedPortfolio.addProject(updatedProject)
-          await thunkAPI.dispatch(maintainPortfolio(updatedProject.query));
+          // await thunkAPI.dispatch(maintainPortfolio(updatedProject.query));
+          // has languages ???
         }
       }
 
+      const packageReposResponse = await thunkAPI.dispatch(
+        getPackages('the7ofdiamonds')
+      );
+
+      if (
+        getPackages.fulfilled.match(packageReposResponse) &&
+        packageReposResponse.payload
+      ) {
+        const reposResponse = packageReposResponse.payload;
+
+        if (reposResponse && Array.isArray(reposResponse) && reposResponse.length > 0) {
+          const repos = new Repos(reposResponse);
+          const packagePortfolio = new Portfolio();
+          packagePortfolio.fromRepos(repos)
+
+          if (packagePortfolio.projects && packagePortfolio.projects.size > 0) {
+            const projects = updatedPortfolio?.projects;
+
+            if (!projects || projects.size === 0) return packagePortfolio.toPortfolioObject;
+
+            for (const project of projects) {
+              const packageProjects = packagePortfolio.projects;
+
+              for (const packageProject of packageProjects) {
+
+                if ((packageProject?.query?.owner === project?.query?.owner) && (packageProject?.query?.repo === project?.query?.repo)) {
+                  let skills = project.process.development.skills;
+                  if (!skills) skills = new ProjectSkills();
+                  skills.list.push(new ProjectSkill({ id: 'package', type: 'project_type' }));
+                }
+              }
+
+              updatedPortfolio.addProject(project)
+            }
+          }
+        }
+      }
+
+      // has skills
       return updatedPortfolio.toPortfolioObject();
     } catch (error) {
       console.error(error);
@@ -251,7 +293,7 @@ export const getPortfolioDetails = createAsyncThunk(
   }
 );
 
-export const getPortfolioSkills = createAsyncThunk(
+export const getPortfolioDetails = createAsyncThunk(
   'portfolio/getPortfolioDetails',
   async (portfolio: Portfolio, thunkAPI) => {
     try {
@@ -337,58 +379,17 @@ export const searchPortfolio = createAsyncThunk<PortfolioObject | null, Portfoli
 
       const { taxonomy, type, term, portfolio } = portfolioSearchQuery;
 
-      const portfolioDetailsResponse = await thunkAPI.dispatch(
-        getPortfolioDetails(portfolio)
+      const portfolioSkillsResponse = await thunkAPI.dispatch(
+        getPortfolioSkills(portfolioSearchQuery)
       );
 
       if (
-        getPortfolioDetails.fulfilled.match(portfolioDetailsResponse) &&
-        portfolioDetailsResponse.payload
+        getPortfolioSkills.fulfilled.match(portfolioSkillsResponse) &&
+        portfolioSkillsResponse.payload
       ) {
-        const portfolioResponse = portfolioDetailsResponse.payload;
+        const portfolioResponse = portfolioSkillsResponse.payload;
         if (portfolioResponse && Array.isArray(portfolioResponse?.projects) && portfolioResponse.projects.length > 0) {
           updatedPortfolio.addProjectObjects(portfolioResponse.projects)
-        }
-      }
-
-      if (term === 'package') {
-        const packageReposResponse = await thunkAPI.dispatch(
-          getPackages('the7ofdiamonds')
-        );
-
-        if (
-          getPackages.fulfilled.match(packageReposResponse) &&
-          packageReposResponse.payload
-        ) {
-          const reposResponse = packageReposResponse.payload;
-
-          if (reposResponse && Array.isArray(reposResponse) && reposResponse.length > 0) {
-            const repos = new Repos(reposResponse);
-
-            const packagePortfolio = new Portfolio();
-            packagePortfolio.fromRepos(repos)
-
-            if (packagePortfolio.projects && packagePortfolio.projects.size > 0) {
-              const projects = updatedPortfolio?.projects;
-
-              if (!projects || projects.size === 0) return packagePortfolio.toPortfolioObject;
-
-              for (const project of projects) {
-                const packageProjects = packagePortfolio.projects;
-
-                for (const packageProject of packageProjects) {
-
-                  if (packageProject?.id === project?.id) {
-                    let skills = project.process.development.skills;
-                    if (!skills) skills = new ProjectSkills();
-                    skills.list.push(new ProjectSkill({ id: 'package', type: 'project_type' }));
-                  }
-                }
-
-                updatedPortfolio.addProject(project)
-              }
-            }
-          }
         }
       }
 
@@ -413,6 +414,12 @@ export const portfolioSlice = createSlice({
         state.portfolioErrorMessage = null;
         state.portfolioLoadingMessage = 'Now Loading Portfolio Details';
       })
+      .addCase(getPortfolioSkills.pending, (state, action) => {
+        state.portfolioLoading = true;
+        state.portfolioError = null;
+        state.portfolioErrorMessage = null;
+        state.portfolioLoadingMessage = 'Now Loading Portfolio Skills';
+      })
       .addCase(getPortfolioFromUser.fulfilled, (state, action) => {
         state.portfolioLoading = false;
         state.portfolioError = null;
@@ -424,6 +431,13 @@ export const portfolioSlice = createSlice({
         state.portfolioError = null;
         state.portfolioErrorMessage = null;
         state.projectList = action.payload;
+      })
+      .addCase(getPortfolioSkills.fulfilled, (state, action) => {
+        state.portfolioLoading = false;
+        state.portfolioLoadingMessage = null;
+        state.portfolioError = null;
+        state.portfolioErrorMessage = null;
+        state.portfolioObject = action.payload;
       })
       .addCase(getPortfolioDetails.fulfilled, (state, action) => {
         state.portfolioLoading = false;

@@ -119,6 +119,41 @@ export const getOrganizationData = createAsyncThunk(
   }
 );
 
+export const getPortfolioSkills = createAsyncThunk(
+  'database/getProjectData',
+  async (projectID: string) => {
+    try {
+      const api = getAPI();
+
+      if ((typeof api !== "string") || (typeof projectID !== "string")) {
+        return null;
+      }
+
+      const response = api
+        ? await fetch(`${api}/project/${projectID}`, {
+          method: 'GET',
+        })
+        : null;
+
+      const text = response ? await response.text() : null;
+
+      if (text) {
+        const json = JSON.parse(text);
+        const project = new Project();
+        project.fromDocumentData(json.data);
+        return project.toProjectDataObject();
+      }
+
+      return null;
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+
+      throw new Error(err.message);
+    }
+  }
+);
+
 export const getProjectData = createAsyncThunk(
   'database/getProjectData',
   async (projectID: string) => {
