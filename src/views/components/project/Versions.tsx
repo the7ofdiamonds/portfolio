@@ -1,6 +1,7 @@
 import React from "react";
 
 import { ProjectVersions } from '@the7ofdiamonds/ui-ux';
+import { VersionComponent } from '@the7ofdiamonds/ui-ux';
 
 import styles from './Project.module.scss';
 
@@ -16,8 +17,21 @@ export const Versions: React.FC<VersionsProps> = ({ projectVersions }) => {
           {projectVersions.current &&
             <span className={styles['current-version']}>
               <h4>Current Version</h4>
-              <h5 className={styles.version}>{projectVersions.current}</h5>
+              <h5>
+                <VersionComponent version={projectVersions.current} />
+              </h5>
             </span>}
+
+          {projectVersions.history.size > 0 &&
+            (<>
+              <h4>Version History</h4>
+              <div className={styles['version-history']}>
+                {Array.from(projectVersions.history).map((version, index) => (
+                  <p key={index}><VersionComponent version={version} /></p>
+                ))}
+              </div>
+            </>)
+          }
         </div>
       }
     </>

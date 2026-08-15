@@ -9,9 +9,10 @@ import {
 } from '@the7ofdiamonds/ui-ux';
 import { CheckList, Color, Image, ProjectDesign, ProjectQuery } from '@the7ofdiamonds/ui-ux';
 
-import styles from './Project.module.scss';
 import { getRepoFile } from '../../../controllers/githubSlice';
 import { useAppDispatch } from '../../../model/hooks';
+
+import styles from './Project.module.scss';
 
 interface DesignProps {
   design: ProjectDesign;
@@ -78,7 +79,7 @@ export const Design: React.FC<DesignProps> = ({ design, projectQuery }) => {
   }, [design?.contentURL]);
 
   useEffect(() => {
-    if (design?.checkList) {
+    if (design?.checkList && design.checkList?.task?.list > 0) {
       setCheckList(design?.checkList)
     } else {
       setCheckList(null)
