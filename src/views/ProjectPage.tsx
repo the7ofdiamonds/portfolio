@@ -49,7 +49,7 @@ export const ProjectPage: React.FC<ProjectPageProps<any, any>> = ({ account, por
           repo: projectID
         }), portfolio: portfolio
       }))
-    }
+   }
   }, [portfolio, owner, projectID]);
 
   useEffect(() => {

@@ -52,7 +52,7 @@ export const getProject = createAsyncThunk<ProjectObject | null, ProjectQuery>(
 
 
       if (!projectQuery?.repoType) {
-        errorMessage = errorMessage + ' ' + "Repo Type was not provided.";
+        errorMessage = errorMessage ? errorMessage + ' ' + "Repo Type was not provided." : "Repo Type was not provided.";
       }
 
       let repo: Repo | null = null;

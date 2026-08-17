@@ -25,7 +25,6 @@ import { ProjectDescription } from './ProjectDescription';
 import { TheSolution } from './the_solution/TheSolution';
 import { TheProcess } from './the_process/TheProcess';
 import { TheProblem } from './the_problem/TheProblem';
-
 import { ProjectDetailsComponent } from './the_details/Details';
 import { OwnerComponent } from './owner/OwnerComponent';
 
