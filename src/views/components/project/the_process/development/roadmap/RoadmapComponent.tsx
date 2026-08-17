@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { FeaturesRoadmap } from '@the7ofdiamonds/ui-ux';
 
-import styles from './Project.module.scss';
+import styles from './Roadmap.module.scss';
 
 interface RoadmapProps {
     roadmap: FeaturesRoadmap;

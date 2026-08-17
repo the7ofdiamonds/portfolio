@@ -391,9 +391,9 @@ export const getRepoFile = createAsyncThunk<string | null, RepoContentQuery>(
     const { owner, repo, path, branch } = query;
 
     if (
-      !owner?.trim() ||
-      !repo?.trim() ||
-      !path?.trim()
+      (!owner || !owner?.trim()) ||
+      (!repo || !repo?.trim()) ||
+      (!path || !path?.trim())
     ) {
       return null;
     }

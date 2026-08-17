@@ -119,7 +119,7 @@ export const getOrganizationData = createAsyncThunk(
   }
 );
 
-export const getPortfolioSkills = createAsyncThunk(
+export const getPortfolioSkillsData = createAsyncThunk(
   'database/getProjectData',
   async (projectID: string) => {
     try {

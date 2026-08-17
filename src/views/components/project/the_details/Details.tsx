@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { ContentComponent, RepoContentQuery } from '@the7ofdiamonds/ui-ux';
 
-import { ProjectTeamComponent } from '../../../views/components/project/ProjectTeam';
+import { ProjectTeamComponent } from './project_team/ProjectTeam';
 
 import type {
   MessageType,
@@ -11,30 +11,32 @@ import type {
 import {
   Contributor,
   Organization,
-  Project,
+  ProjectDetails,
   RepoSize,
   RepoURL,
-  User
+  User,
+  ProjectQuery
 } from '@the7ofdiamonds/ui-ux';
 
-import { useAppDispatch } from '../../../model/hooks';
-import { getRepoFile } from '../../../controllers/githubSlice';
+import { useAppDispatch } from '../../../../model/hooks';
+import { getRepoFile } from '../../../../controllers/githubSlice';
 
-import { Code } from './the_process/the_details/code/Code';
+import { Code } from './code/Code';
 
-import styles from './Project.module.scss';
+import styles from './Details.module.scss';
 
 interface ProjectDetailsProps {
+  query: ProjectQuery;
   account: Organization | User;
-  project: Project;
+  details: ProjectDetails;
+  repoURL: RepoURL;
 }
 
-export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account, project }) => {
+export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ query, account, details, repoURL }) => {
   const dispatch = useAppDispatch();
 
   const [privacy, setPrivacy] = useState<string>('public');
   const [repoSize, setRepoSize] = useState<String | null>(null);
-  const [repoURL, setRepoURL] = useState<RepoURL | null>(null);
   const [repoContentQuery, setRepoContentQuery] = useState<RepoContentQuery | null>(null);
   const [contributors, setContributors] = useState<Array<Contributor> | null>(null);
   const [show, setShow] = useState<StatusBarVisibility>('hide');
@@ -43,52 +45,44 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem('access_token');
-    const refreshToken = localStorage.getItem('refresh_token');
+  // useEffect(() => {
+  //   const accessToken = localStorage.getItem('access_token');
+  //   const refreshToken = localStorage.getItem('refresh_token');
 
-    setIsAuthenticated(Boolean(accessToken && refreshToken));
-  }, [project]);
-
-  useEffect(() => {
-    if (project?.process?.development?.repoURL) {
-      setRepoURL(project.process.development.repoURL)
-    } else {
-      setRepoURL(null)
-    }
-  }, [project?.process?.development?.repoURL]);
+  //   setIsAuthenticated(Boolean(accessToken && refreshToken));
+  // }, [project]);
 
   useEffect(() => {
-    if (project?.details?.privacy) {
-      setPrivacy(project.details.privacy)
+    if (details?.privacy) {
+      setPrivacy(details.privacy)
     } else {
       setPrivacy(null)
     }
-  }, [project?.details?.privacy]);
+  }, [details?.privacy]);
 
   useEffect(() => {
-    if (project?.details?.repoSize) {
-      setRepoSize(project.details.repoSize)
+    if (details?.repoSize) {
+      setRepoSize(details.repoSize)
     } else {
       setRepoSize(null)
     }
-  }, [project?.details?.repoSize]);
+  }, [details?.repoSize]);
 
   useEffect(() => {
-    if (project?.details?.content && project?.details?.content.owner && project?.details?.content.repo && project?.details?.content.path) {
-      setRepoContentQuery(new RepoContentQuery(project.details?.content.owner, project.details?.content.repo, project.details?.content.path, project.details?.content.branch ?? ''))
+    if (query?.owner && query?.repo && details?.content?.url) {
+      setRepoContentQuery(new RepoContentQuery(query.owner, query.repo, 'Details.md', details?.content?.branch ?? ''))
     } else {
       setRepoContentQuery(null)
     }
-  }, [project?.details?.content]);
+  }, [query, details?.content]);
 
   useEffect(() => {
-    if (project?.details?.teamList?.list.length > 0) {
-      setContributors(project.details.teamList.list)
+    if (details?.teamList?.list?.length > 0) {
+      setContributors(details.teamList.list)
     } else {
       setContributors(null)
     }
-  }, [project?.details?.teamList]);
+  }, [details?.teamList]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -120,8 +114,7 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
     }
   }, [isAuthenticated, privacy]);
 
-  const hasContent = project && project.details &&
-    (repoContentQuery || contributors || repoSize);
+  const hasContent = repoContentQuery || contributors || repoSize || repoURL;
 
   const showContent = repoContentQuery && (privacy === 'public' || (privacy === 'private' && isAuthenticated));
 
@@ -130,6 +123,9 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
       {hasContent && (
         <div className={styles['project-details']}>
           <h3 className={styles.title}>the details</h3>
+
+          {repoContentQuery &&
+            <ContentComponent<RepoContentQuery> title={null} query={repoContentQuery} getFile={getRepoFile} dispatch={dispatch} />}
 
           {repoURL && <Code
             isAuthenticated={isAuthenticated}
@@ -145,9 +141,6 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ account
               <span className={styles.colon}>:</span>
               <span className={styles['repo-size']}>{repoSize}</span>
             </h5>}
-
-          {showContent &&
-            <ContentComponent<RepoContentQuery> title={null} query={repoContentQuery} getFile={getRepoFile} dispatch={dispatch} />}
 
           {contributors &&
             <ProjectTeamComponent account={account} projectTeam={contributors} />}

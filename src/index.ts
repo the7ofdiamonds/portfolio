@@ -51,23 +51,29 @@ export * from './views/components/portfolio/PortfolioProject';
 export * from './views/components/portfolio/ProjectsComponent';
 
 export * from './views/components/project/ProjectDescription';
-export * from './views/components/project/Delivery';
-export * from './views/components/project/Design';
-export * from './views/components/project/Details';
-export * from './views/components/project/Development';
-export * from './views/components/project/Features';
-export * from './views/components/project/OwnerComponent';
+
+export * from './views/components/project/the_solution/TheSolution';
+export * from './views/components/project/the_solution/features/Features';
+export * from './views/components/project/the_solution/project_urls/ProjectURLsComponent';
+
+export * from './views/components/project/the_process/delivery/Delivery';
+export * from './views/components/project/the_process/design/Design';
+
+export * from './views/components/project/the_process/TheProcess';
+export * from './views/components/project/the_process/status/Status';
+export * from './views/components/project/the_process/development/Development';
+export * from './views/components/project/the_process/development/project_skills/ProjectSkillsComponent';
+export * from './views/components/project/the_process/development/versions/Versions';
+export * from './views/components/project/the_process/development/roadmap/RoadmapComponent';
+
+export * from './views/components/project/owner/OwnerComponent';
 export * from './views/components/project/ProjectComponent';
-export * from './views/components/project/ProjectSkillsComponent';
-export * from './views/components/project/ProjectURLsComponent';
-export * from './views/components/project/RoadmapComponent';
-export * from './views/components/project/Status';
-export * from './views/components/project/ProjectTeam';
-export * from './views/components/project/TheProblem';
-export * from './views/components/project/TheProcess';
-export * from './views/components/project/TheSolution';
-export * from './views/components/project/Versions';
-export * from './views/components/project/the_process/the_details/code/Code';
+
+export * from './views/components/project/the_problem/TheProblem';
+
+export * from './views/components/project/the_details/project_team/ProjectTeam';
+export * from './views/components/project/the_details/code/Code';
+export * from './views/components/project/the_details/Details';
 
 export * from './views/components/project_card/ProjectCard';
 

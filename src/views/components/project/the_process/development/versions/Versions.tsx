@@ -3,7 +3,7 @@ import React from "react";
 import { ProjectVersions } from '@the7ofdiamonds/ui-ux';
 import { VersionComponent } from '@the7ofdiamonds/ui-ux';
 
-import styles from './Project.module.scss';
+import styles from './Versions.module.scss';
 
 interface VersionsProps {
   projectVersions: ProjectVersions;

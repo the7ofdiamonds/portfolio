@@ -8,42 +8,37 @@ import {
   ProjectDevelopment,
   ProjectQuery,
   ProjectSkills,
-  ProjectSolution,
   ProjectVersions,
   RepoContentQuery,
-  RepoURL,
-  Skills
-} from '@the7ofdiamonds/ui-ux';
-import type {
-  MessageType,
-  StatusBarVisibility
+  Skills,
+  Features
 } from '@the7ofdiamonds/ui-ux';
 
-import { Versions } from '../../../views/components/project/Versions';
-import { RoadmapComponent } from '../../../views/components/project/RoadmapComponent';
 
-import { getRepoFile } from '../../../controllers/githubSlice';
+import { Versions } from './versions/Versions';
+import { RoadmapComponent } from './roadmap/RoadmapComponent';
+import { ProjectSkillsComponent } from './project_skills/ProjectSkillsComponent';
 
-import { useAppDispatch } from '../../../model/hooks';
+import { getRepoFile } from '../../../../../controllers/githubSlice';
 
-import { ProjectSkillsComponent } from './ProjectSkillsComponent';
+import { useAppDispatch } from '../../../../../model/hooks';
 
-import styles from './Project.module.scss';
+import styles from './Development.module.scss';
 
 interface DevelopmentProps {
-  solution: ProjectSolution | null;
+  query: ProjectQuery;
   development: ProjectDevelopment;
-  projectQuery: ProjectQuery | null;
   skills: Skills | null;
+  features: Features | null;
 }
 
-export const Development: React.FC<DevelopmentProps> = ({ solution, development, projectQuery, skills }) => {
+export const Development: React.FC<DevelopmentProps> = ({ query, development, skills, features }) => {
   const dispatch = useAppDispatch();
 
   const [versions, setVersions] = useState<ProjectVersions | null>(null);
   const [featuresRoadmap, setFeaturesRoadmap] = useState<FeaturesRoadmap | null>(null)
   const [checkList, setCheckList] = useState<CheckList | null>(null);
-  const [query, setQuery] = useState<RepoContentQuery | null>(null);
+  const [contentQuery, setContentQuery] = useState<RepoContentQuery | null>(null);
   const [projectSkills, setProjectSkills] = useState<ProjectSkills | null>(null);
 
   useEffect(() => {
@@ -55,12 +50,12 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
   }, [development?.versionsList]);
 
   useEffect(() => {
-    if (solution?.features) {
-      setFeaturesRoadmap(new FeaturesRoadmap(solution.features.list))
+    if (features?.list) {
+      setFeaturesRoadmap(new FeaturesRoadmap(features.list))
     } else {
       setFeaturesRoadmap(null)
     }
-  }, [solution?.features]);
+  }, [features?.list]);
 
   useEffect(() => {
     if (development?.checkList) {
@@ -71,12 +66,12 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
   }, [development?.checkList]);
 
   useEffect(() => {
-    if (development?.contentURL && development.contentURL?.owner && development.contentURL?.repo && development.contentURL?.path) {
-      setQuery(new RepoContentQuery(development.contentURL.owner, development.contentURL.repo, development.contentURL.path, development.contentURL.branch ?? ''))
+    if (query?.owner && query?.repo && development?.contentURL?.url) {
+      setContentQuery(new RepoContentQuery(query.owner, query.repo, 'Development.md', development?.contentURL?.branch ?? ''))
     } else {
-      setQuery(null)
+      setContentQuery(null)
     }
-  }, [development?.contentURL]);
+  }, [query, development?.contentURL]);
 
   useEffect(() => {
     if (development?.skills) {
@@ -86,7 +81,7 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
     }
   }, [development?.skills]);
 
-  const hasContent = versions || featuresRoadmap || checkList || query || skills;
+  const hasContent = versions || featuresRoadmap || checkList || contentQuery || skills;
 
   return (
     <>{hasContent &&
@@ -98,8 +93,8 @@ export const Development: React.FC<DevelopmentProps> = ({ solution, development,
 
         {featuresRoadmap && <RoadmapComponent roadmap={featuresRoadmap} />}
 
-        {query &&
-          <ContentComponent<RepoContentQuery> title={null} query={query} getFile={getRepoFile} dispatch={dispatch} />}
+        {contentQuery &&
+          <ContentComponent<RepoContentQuery> title={null} query={contentQuery} getFile={getRepoFile} dispatch={dispatch} />}
 
         {checkList && <CheckListComponent checkList={checkList} />}
 

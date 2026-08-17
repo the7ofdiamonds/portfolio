@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 
 import { Commits, ProjectProgress, ProjectStatus } from "@the7ofdiamonds/ui-ux";
 
-import styles from './Project.module.scss';
-import { ProjectCommits } from "./ProjectCommits";
+import { ProjectCommits } from "./project_commits/ProjectCommits";
+
+import styles from './Status.module.scss';
 
 interface ProjectStatusProps {
   status: ProjectStatus;

@@ -1,32 +1,32 @@
 import React, { useEffect, useState } from 'react'
 
-import { Project } from '@the7ofdiamonds/ui-ux';
+import { Owner } from '@the7ofdiamonds/ui-ux';
 
-import styles from './Project.module.scss';
+import styles from './Owner.module.scss';
 
 interface OwnerComponentProps {
-    project: Project;
+    owner: Owner;
 }
 
-export const OwnerComponent: React.FC<OwnerComponentProps> = ({ project }) => {
+export const OwnerComponent: React.FC<OwnerComponentProps> = ({ owner }) => {
     const [type, setType] = useState<string | null>(null);
     const [login, setLogin] = useState<string | null>(null);
     const [avatarURL, setAvatarURL] = useState<string | null>(null);
     const [name, setName] = useState<string | null>(null);
 
-    useEffect(() => { if (project?.owner?.type) { setType(project.owner.type.toLowerCase()) } }, [project?.owner]);
+    useEffect(() => { if (owner?.type) { setType(owner.type.toLowerCase()) } }, [owner?.type]);
 
-    useEffect(() => { if (project?.owner?.login) { setLogin(project.owner.login) } }, [project?.owner]);
+    useEffect(() => { if (owner?.login) { setLogin(owner.login) } }, [owner?.login]);
 
-    useEffect(() => { if (project?.owner?.avatarURL) { setAvatarURL(project.owner.avatarURL) } }, [project?.owner]);
+    useEffect(() => { if (owner?.avatarURL) { setAvatarURL(owner.avatarURL) } }, [owner?.avatarURL]);
 
     useEffect(() => {
-        if (project.owner.type === 'User') {
-            setName(project.owner.name)
-        } else if (project.owner.type === 'Organization') {
-            setName(project.owner.company ? project.owner.company : project.owner.name)
+        if (owner?.type === 'User') {
+            setName(owner.name)
+        } else if (owner.type === 'Organization' && (owner?.company || owner?.name)) {
+            setName(owner?.company ? owner.company : owner.name)
         }
-    }, [project?.owner]);
+    }, [owner]);
 
     const handleClick = () => {
         window.location.href = `/${type}/${login}`;

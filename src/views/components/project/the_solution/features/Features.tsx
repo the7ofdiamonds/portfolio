@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Feature, Version } from '@the7ofdiamonds/ui-ux';
 
-import styles from './Project.module.scss';
+import styles from './Features.module.scss';
 
 interface FeaturesProps {
   features: Set<Feature>;

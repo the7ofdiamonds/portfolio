@@ -4,7 +4,7 @@ import { Contributor, Organization, User } from '@the7ofdiamonds/ui-ux';
 
 import { UserCard } from '@the7ofdiamonds/communications';
 
-import styles from './Project.module.scss';
+import styles from './ProjectTeam.module.scss';
 
 interface TeamProps {
   account: Organization | User;

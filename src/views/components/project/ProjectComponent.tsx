@@ -11,19 +11,23 @@ import {
   ProjectSolution,
   ProjectQuery,
   Skills,
-  User
+  User,
+  Version,
+  RepoURL,
+  Features
 } from '@the7ofdiamonds/ui-ux';
 import {
   Main,
   StatusBar
 } from '@the7ofdiamonds/ui-ux';
 
-import { ProjectDetailsComponent } from '../../../views/components/project/Details';
-import { ProjectDescription } from '../../../views/components/project/ProjectDescription';
-import { TheSolution } from '../../../views/components/project/TheSolution';
-import { TheProcess } from '../../../views/components/project/TheProcess';
-import { TheProblem } from '../../../views/components/project/TheProblem';
-import { OwnerComponent } from '../../../views/components/project/OwnerComponent';
+import { ProjectDescription } from './ProjectDescription';
+import { TheSolution } from './the_solution/TheSolution';
+import { TheProcess } from './the_process/TheProcess';
+import { TheProblem } from './the_problem/TheProblem';
+
+import { ProjectDetailsComponent } from './the_details/Details';
+import { OwnerComponent } from './owner/OwnerComponent';
 
 import styles from './Project.module.scss';
 
@@ -34,15 +38,27 @@ interface ProjectComponentProps {
 }
 
 export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, project, skills }) => {
+  const [query, setQuery] = useState<ProjectQuery | null>(null);
   const [title, setTitle] = useState<string | null>(null);
   const [subtitle, setSubtitle] = useState<string | null>(null);
   const [description, setDescription] = useState<string | null>(null);
   const [solution, setSolution] = useState<ProjectSolution | null>(null);
   const [process, setProcess] = useState<ProjectProcess | null>(null);
   const [problem, setProblem] = useState<ProjectProblem | null>(null);
-  const [owner, setOwner] = useState<Owner | null>(null);
   const [details, setDetails] = useState<ProjectDetails | null>(null);
-  const [query, setQuery] = useState<ProjectQuery | null>(null);
+  const [owner, setOwner] = useState<Owner | null>(null);
+
+  const [version, setVersion] = useState<Version | null>(null);
+  const [repoURL, setRepoURL] = useState<RepoURL | null>(null);
+  const [features, setFeatures] = useState<Features | null>(null)
+
+  useEffect(() => {
+    if (project?.query) {
+      setQuery(project.query)
+    } else {
+      setQuery(null)
+    }
+  }, [project?.query]);
 
   useEffect(() => {
     if (project?.title) {
@@ -71,16 +87,37 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
   useEffect(() => {
     if (project?.solution) {
       setSolution(project.solution)
+
+      if (project.solution?.features) {
+        setFeatures(new Features(project.solution.features))
+      } else {
+        setFeatures(null)
+      }
     } else {
       setSolution(null)
+      setFeatures(null)
     }
   }, [project?.solution]);
 
   useEffect(() => {
     if (project?.process) {
       setProcess(project.process)
+
+      if (project.process.development?.versionsList?.current) {
+        setVersion(new Version(project.process.development.versionsList.current))
+      } else {
+        setVersion(null)
+      }
+
+      if (project.process.development?.repoURL) {
+        setRepoURL(project.process.development.repoURL)
+      } else {
+        setRepoURL(null)
+      }
     } else {
       setProcess(null)
+      setVersion(null)
+      setRepoURL(null)
     }
   }, [project?.process]);
 
@@ -108,14 +145,6 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
     }
   }, [project?.details]);
 
-  useEffect(() => {
-    if (project?.query) {
-      setQuery(project.query)
-    } else {
-      setQuery(null)
-    }
-  }, [project?.query]);
-
   return (
     project &&
     <Main>
@@ -125,15 +154,15 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
 
       {description && <ProjectDescription description={description} />}
 
-      {solution && <TheSolution project={project} />}
+      {solution && <TheSolution query={query} solution={solution} version={version} />}
 
-      {process && <TheProcess project={project} projectQuery={query} skills={skills} />}
+      {process && <TheProcess query={query} process={process} skills={skills} features={features} />}
 
-      {problem && <TheProblem project={project} />}
+      {problem && <TheProblem query={query} problem={problem} />}
 
-      {owner && <OwnerComponent project={project} />}
+      {details && <ProjectDetailsComponent query={query} account={account} details={details} repoURL={repoURL} />}
 
-      {details && <ProjectDetailsComponent account={account} project={project} />}
+      {owner && <OwnerComponent query={query} owner={owner} />}
     </Main>
   );
 }

@@ -1,3 +1,6 @@
+@use './title.scss';
+@use './project_process.scss';
+
 button.repo {
   i {
     color: var(--button-color);

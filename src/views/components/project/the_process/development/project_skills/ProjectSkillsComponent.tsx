@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { ProjectSkills, Skills } from '@the7ofdiamonds/ui-ux';
 
-import { SkillsComponent } from '../skills/SkillsComponent';
+import { SkillsComponent } from '../../../../skills/SkillsComponent';
 
 interface ProjectSkillsComponentProps {
     skills: Skills;

@@ -9,7 +9,7 @@ import {
     ProjectStatus
 } from '@the7ofdiamonds/ui-ux';
 
-import Status from '../../../../views/components/project/Status';
+import Status from '../../project/the_process/status/Status';
 
 interface EditStatusProps {
     id: string | number | null;
