@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import { Owner } from '@the7ofdiamonds/ui-ux';
+import { Owner, User } from '@the7ofdiamonds/ui-ux';
+import { UserCard } from '@the7ofdiamonds/communications';
 
 import styles from './Owner.module.scss';
 
@@ -9,44 +10,21 @@ interface OwnerComponentProps {
 }
 
 export const OwnerComponent: React.FC<OwnerComponentProps> = ({ owner }) => {
-    const [type, setType] = useState<string | null>(null);
-    const [login, setLogin] = useState<string | null>(null);
-    const [avatarURL, setAvatarURL] = useState<string | null>(null);
-    const [name, setName] = useState<string | null>(null);
-
-    useEffect(() => { if (owner?.type) { setType(owner.type.toLowerCase()) } }, [owner?.type]);
-
-    useEffect(() => { if (owner?.login) { setLogin(owner.login) } }, [owner?.login]);
-
-    useEffect(() => { if (owner?.avatarURL) { setAvatarURL(owner.avatarURL) } }, [owner?.avatarURL]);
-
+    const [user, setUser] = useState<User | null>(null);
+console.log(owner)
     useEffect(() => {
-        if (owner?.type === 'User') {
-            setName(owner.name)
-        } else if (owner.type === 'Organization' && (owner?.company || owner?.name)) {
-            setName(owner?.company ? owner.company : owner.name)
+        if (owner?.type && owner?.avatarURL && (owner?.login || owner.name)) {
+            setUser(owner.toAccount())
         }
-    }, [owner]);
-
-    const handleClick = () => {
-        window.location.href = `/${type}/${login}`;
-    };
+    }, [owner?.type]);
 
     return (
         <>
-            {avatarURL && name &&
+            {user &&
                 <div className={styles['project-owner']}>
                     <h2 className={styles.title}>project owner</h2>
 
-                    <button
-                        className="organizations-button"
-                        onClick={handleClick}>
-                        {avatarURL && <img
-                            src={avatarURL}
-                            alt={`${name} avatar`}
-                        />}
-                    </button>
-                    <h3>{name}</h3>
+                    <UserCard user={user} />
                 </div>
             }
         </>
