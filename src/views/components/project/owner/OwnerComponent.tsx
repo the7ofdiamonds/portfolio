@@ -11,7 +11,7 @@ interface OwnerComponentProps {
 
 export const OwnerComponent: React.FC<OwnerComponentProps> = ({ owner }) => {
     const [user, setUser] = useState<User | null>(null);
-console.log(owner)
+
     useEffect(() => {
         if (owner?.type && owner?.avatarURL && (owner?.login || owner.name)) {
             setUser(owner.toAccount())
