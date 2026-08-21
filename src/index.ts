@@ -50,7 +50,7 @@ export * from './views/components/portfolio/PortfolioComponent';
 export * from './views/components/portfolio/PortfolioProject';
 export * from './views/components/portfolio/ProjectsComponent';
 
-export * from './views/components/project/ProjectDescription';
+export * from './views/components/project/description/ProjectDescription';
 
 export * from './views/components/project/the_solution/TheSolution';
 export * from './views/components/project/the_solution/features/Features';
@@ -66,7 +66,7 @@ export * from './views/components/project/the_process/development/project_skills
 export * from './views/components/project/the_process/development/versions/Versions';
 export * from './views/components/project/the_process/development/roadmap/RoadmapComponent';
 
-export * from './views/components/project/owner/OwnerComponent';
+export * from './views/components/project/the_details/owner/OwnerComponent';
 export * from './views/components/project/ProjectComponent';
 
 export * from './views/components/project/the_problem/TheProblem';

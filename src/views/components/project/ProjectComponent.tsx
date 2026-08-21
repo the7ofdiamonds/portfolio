@@ -21,12 +21,11 @@ import {
   StatusBar
 } from '@the7ofdiamonds/ui-ux';
 
-import { ProjectDescription } from './ProjectDescription';
+import { ProjectDescription } from './description/ProjectDescription';
 import { TheSolution } from './the_solution/TheSolution';
 import { TheProcess } from './the_process/TheProcess';
 import { TheProblem } from './the_problem/TheProblem';
 import { ProjectDetailsComponent } from './the_details/Details';
-import { OwnerComponent } from './owner/OwnerComponent';
 
 import styles from './Project.module.scss';
 
@@ -45,7 +44,6 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
   const [process, setProcess] = useState<ProjectProcess | null>(null);
   const [problem, setProblem] = useState<ProjectProblem | null>(null);
   const [details, setDetails] = useState<ProjectDetails | null>(null);
-  const [owner, setOwner] = useState<Owner | null>(null);
 
   const [version, setVersion] = useState<Version | null>(null);
   const [repoURL, setRepoURL] = useState<RepoURL | null>(null);
@@ -129,14 +127,6 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
   }, [project?.problem]);
 
   useEffect(() => {
-    if (project?.owner) {
-      setOwner(project.owner)
-    } else {
-      setOwner(null)
-    }
-  }, [project?.owner]);
-
-  useEffect(() => {
     if (project?.details) {
       setDetails(project.details)
     } else {
@@ -160,8 +150,6 @@ export const ProjectComponent: React.FC<ProjectComponentProps> = ({ account, pro
       {problem && <TheProblem query={query} problem={problem} />}
 
       {details && <ProjectDetailsComponent query={query} account={account} details={details} repoURL={repoURL} />}
-
-      {owner && <OwnerComponent query={query} owner={owner} />}
     </Main>
   );
 }

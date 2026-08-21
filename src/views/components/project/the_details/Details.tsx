@@ -15,13 +15,15 @@ import {
   RepoSize,
   RepoURL,
   User,
-  ProjectQuery
+  ProjectQuery,
+  Owner
 } from '@the7ofdiamonds/ui-ux';
 
 import { useAppDispatch } from '../../../../model/hooks';
 import { getRepoFile } from '../../../../controllers/githubSlice';
 
 import { Code } from './code/Code';
+import { OwnerComponent } from './owner/OwnerComponent';
 
 import styles from './Details.module.scss';
 
@@ -39,6 +41,8 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ query, 
   const [repoSize, setRepoSize] = useState<String | null>(null);
   const [repoContentQuery, setRepoContentQuery] = useState<RepoContentQuery | null>(null);
   const [contributors, setContributors] = useState<Array<Contributor> | null>(null);
+  const [owner, setOwner] = useState<Owner | null>(null);
+
   const [show, setShow] = useState<StatusBarVisibility>('hide');
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<MessageType>('success');
@@ -78,11 +82,25 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ query, 
 
   useEffect(() => {
     if (details?.teamList?.list?.length > 0) {
-      setContributors(details.teamList.list)
+      const teamList = details?.teamList?.list;
+      const login = details?.owner?.login ?? null;
+      const filteredContributors = login ? teamList.filter((contributor: Contributor) => contributor.login !== login) : [];
+
+      if (filteredContributors.length > 0) {
+        setContributors(filteredContributors)
+      }
     } else {
       setContributors(null)
     }
   }, [details?.teamList]);
+
+  useEffect(() => {
+    if (details?.owner) {
+      setOwner(details.owner)
+    } else {
+      setOwner(null)
+    }
+  }, [details?.owner]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -144,6 +162,8 @@ export const ProjectDetailsComponent: React.FC<ProjectDetailsProps> = ({ query, 
 
           {contributors &&
             <ProjectTeamComponent account={account} projectTeam={contributors} />}
+
+          {owner && <OwnerComponent query={query} account={account} owner={owner} />}
         </div>
       )}
     </>
