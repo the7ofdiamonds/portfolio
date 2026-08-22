@@ -1,0 +1,21 @@
+.project-commits {
+    width: 100%;
+    border-collapse: separate;
+
+    thead tr th {
+        font-size: 1rem;
+        text-align: left;
+    }
+
+    tbody {
+        tr td {
+            padding: 0.25em;
+        }
+
+        tr:nth-child(even) {
+            width: 100%;
+            color: var(--font-color-secondary, white);
+            background-color: var(--background-color-secondary, black);
+        }
+    }
+}
